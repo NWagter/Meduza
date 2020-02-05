@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{15f6aceb-924b-4c90-aefb-a567595dfd6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gfx">
+      <UniqueIdentifier>{fcc5b54c-fcf0-427f-a54b-108bf6bfc5be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Window">
+      <UniqueIdentifier>{4524231a-0781-4dd0-8e80-99d191310d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gfx">
+      <UniqueIdentifier>{b9c4338a-d714-4012-9702-bba8cc6be397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{afb9f557-00e0-4fd0-a281-23f79465316d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window">
+      <UniqueIdentifier>{30ee8ac3-2b13-4ba8-ad67-623550df7f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gfx\DirectX">
+      <UniqueIdentifier>{0b1a012f-9e35-457c-9ff6-16d5a67b84b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gfx\DirectX">
+      <UniqueIdentifier>{7a64fda9-8ad1-4207-ae28-edac8f316fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helper">
+      <UniqueIdentifier>{0a6d4e20-cf87-4c1f-9e11-bb724776cf44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gfx\Common">
+      <UniqueIdentifier>{d5463b78-e3f7-48c6-a44e-d465db40210e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gfx\Common">
+      <UniqueIdentifier>{185888a4-14a9-40d4-9050-36a7cec484c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\phc">
+      <UniqueIdentifier>{8444367e-f3ad-4adf-a800-54bc7cd7ce20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pch">
+      <UniqueIdentifier>{886ceaf0-ac77-4e2a-b6b4-1c71a680758e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{616206b0-bf92-47f6-baaf-e541f34d13ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Renderer\Meduza.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\RenderLayer.h">
+      <Filter>Header Files\Gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_RenderLayer.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper\Helper.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\Device.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\Fence.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\Swapchain.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_Device.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_Fence.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_Swapchain.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_Descriptor.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\CommandQueue.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_CommandQueue.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_CommandList.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="pch\pch.h">
+      <Filter>Header Files\phc</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\CommandList.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\Window.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WinWindow.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_RenderTarget.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\Common\RenderTarget.h">
+      <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Renderer\Meduza.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_RenderLayer.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\Common\Device.cpp">
+      <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\Common\Fence.cpp">
+      <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\Common\Swapchain.cpp">
+      <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_Device.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_Fence.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_Swapchain.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_Descriptor.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_CommandQueue.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_CommandList.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="pch\pch.cpp">
+      <Filter>Source Files\pch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_impl_dx12.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_impl_win32.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\Common\CommandList.cpp">
+      <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\Window.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\WinWindow.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_RenderTarget.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\Common\RenderTarget.cpp">
+      <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\RenderLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -2,8 +2,11 @@
 bin/
 gen/
 out/
-#  Uncomment the following line in case you need and you don't have the release build type files in your app
-# release/
+.vs/
+debug/
+release/
+Intermediate/
+Executable/
 
 # Prerequisites
 *.d
@@ -17,6 +20,8 @@ out/
 # Precompiled Headers
 *.gch
 *.pch
+*.ipch
+
 
 # Compiled Dynamic libraries
 *.so
@@ -37,3 +42,6 @@ out/
 *.exe
 *.out
 *.app
+
+# File Types
+*.html

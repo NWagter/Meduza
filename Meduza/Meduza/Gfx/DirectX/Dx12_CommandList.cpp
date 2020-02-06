@@ -20,20 +20,24 @@ Dx12_CommandList::Dx12_CommandList(D3D12_COMMAND_LIST_TYPE a_type, const Dx12_De
 		nullptr,
 		IID_PPV_ARGS(m_commandList.GetAddressOf())));
 
+	CreateRootSignature(a_device);
+
+	m_pso = new Dx12_PSO(0, "Resources\\VertexShader.hlsl", "Resources\\PixelShader.hlsl", a_device, m_signature);
+
+	SetViewAndScissor(a_w, a_h);
+}
+void Dx12_CommandList::CreateRootSignature(const Dx12_Device& a_device)
+{
 	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ID3DBlob* signature;
 	D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr);
 	a_device.m_device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&m_signature));
-
-	m_pso = new Dx12_PSO(0, "Resources\\VertexShader.hlsl", "Resources\\PixelShader.hlsl", a_device, m_signature);
-
-	SetViewAndScissor(a_w, a_h);
 }
-void Dx12_CommandList::Reset()
+void Dx12_CommandList::Reset(int a_frameId)
 {
-	GetList()->Reset(m_cmdAllocator->Get(), m_pso->GetPSO().Get());
+	GetList()->Reset(m_cmdAllocator[a_frameId].Get(), m_pso->GetPSO().Get());
 }
 void Dx12_CommandList::Close()
 {
@@ -56,6 +60,11 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Dx12_CommandList::GetCurrentAlloc
 ID3D12GraphicsCommandList* Dx12_CommandList::GetList()
 {
 	return m_commandList.Get();
+}
+
+Dx12_PSO* Dx12_CommandList::GetPSO()
+{
+	return m_pso;
 }
 
 void Dx12_CommandList::SetSignature()

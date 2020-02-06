@@ -9,6 +9,7 @@
 #include "Dx12_CommandQueue.h"
 #include "Dx12_Descriptor.h"
 #include "Dx12_Mesh.h"
+#include "Dx12_PSO.h"
 
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx12.h"
@@ -46,6 +47,14 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 	srvDesc.NodeMask = 0;
 
 	m_srv = new Dx12_Descriptor(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, srvDesc, *m_device);
+
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
+	dsvHeapDesc.NumDescriptors = 1;
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	m_dsv = new Dx12_Descriptor(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, dsvHeapDesc, *m_device);
+
+	ResizeDepthBuffer(a_w,a_h);
 
 	m_swapChain->UpdateRTVView(*m_device, *m_rtv);
 
@@ -158,8 +167,9 @@ void Dx12_RenderLayer::Frame()
 	ID3D12DescriptorHeap* descriptorHeaps[] = { m_srv->GetHeap().Get() };
 	m_cmdList->GetList()->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
+	m_cmdList->GetList()->SetPipelineState(m_cmdList->GetPSO()->GetPSO().Get());
 	m_cmdList->SetSignature();
-	m_cmdList->SetViewPort(0);
+	m_cmdList->SetViewPort(1);
 
 	for (int i = 0; i < m_renderItems.size(); i++)
 	{
@@ -186,7 +196,7 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 	auto backBuffer = m_swapChain->GetCurrentBuffer();
 
 	commandAllocator->Reset();
-	m_cmdList->Reset();
+	m_cmdList->Reset(m_swapChain->GetCurrentFrameIndex());
 
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		backBuffer.Get(),
@@ -199,9 +209,12 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle (m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_swapChain->GetCurrentFrameIndex(), m_rtv->GetSize());
 
-	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	auto dsv = m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	m_cmdList->GetList()->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+
+	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, false, &dsv);
 }
 
 void Dx12_RenderLayer::DestroyLayer()
@@ -241,4 +254,37 @@ void Dx12_RenderLayer::EnableDebugger()
 	debugInterface->EnableDebugLayer();
 
 #endif
+}
+
+void Dx12_RenderLayer::ResizeDepthBuffer(int a_w, int a_h)
+{
+	auto device = m_device->m_device;
+
+	// Resize screen dependent resources.
+	// Create a depth buffer.
+	D3D12_CLEAR_VALUE optimizedClearValue = {};
+	optimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+	optimizedClearValue.DepthStencil = { 1.0f, 0 };
+
+	CD3DX12_HEAP_PROPERTIES dsvHeap = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	CD3DX12_RESOURCE_DESC tex = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, a_w, a_h,
+		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+	ThrowIfFailed(device->CreateCommittedResource(
+		&dsvHeap,
+		D3D12_HEAP_FLAG_NONE,
+		&tex,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&optimizedClearValue,
+		IID_PPV_ARGS(&m_depthBuffer)
+	));
+
+	// Update the depth-stencil view.
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsv = {};
+	dsv.Format = DXGI_FORMAT_D32_FLOAT;
+	dsv.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsv.Texture2D.MipSlice = 0;
+	dsv.Flags = D3D12_DSV_FLAG_NONE;
+
+	device->CreateDepthStencilView(m_depthBuffer.Get(), &dsv,
+		m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
 }

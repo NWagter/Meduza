@@ -7,6 +7,6 @@ public :
 	virtual void InitDevice() override;
 	virtual void DestroyDevice() override;
 
-	Microsoft::WRL::ComPtr<ID3D12Device> m_device;
+	Microsoft::WRL::ComPtr<ID3D12Device2> m_device;
 	Microsoft::WRL::ComPtr<IDXGIFactory4> m_factory;
 };

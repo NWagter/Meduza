@@ -30,6 +30,7 @@ protected:
 
 private:
 	void EnableDebugger();
+	void ResizeDepthBuffer(int, int);
 
 private:
 	Dx12_Device* m_device;
@@ -39,5 +40,7 @@ private:
 
 	Dx12_Descriptor* m_rtv;
 	Dx12_Descriptor* m_srv;
+	Dx12_Descriptor* m_dsv;
+	Microsoft::WRL::ComPtr<ID3D12Resource> m_depthBuffer;
 
 };

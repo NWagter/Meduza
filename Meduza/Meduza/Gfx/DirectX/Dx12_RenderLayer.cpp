@@ -8,6 +8,7 @@
 #include "Dx12_CommandList.h"
 #include "Dx12_CommandQueue.h"
 #include "Dx12_Descriptor.h"
+#include "Dx12_Mesh.h"
 
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx12.h"
@@ -34,6 +35,7 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = gs_frameBufferCount;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	m_rtv = new Dx12_Descriptor(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, desc, *m_device);
 
@@ -51,10 +53,88 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 
 	InitImGui();
 
-
-	m_cmdList->Close();
+	MakeTriangle();
 
 	m_cmdQueue->Flush();
+}
+
+void Dx12_RenderLayer::MakeTriangle()
+{
+	Vertex vList[] = {
+		{ { 0.0f, 0.5f, 0.5f } },
+		{ { 0.5f, -0.5f, 0.5f } },
+		{ { -0.5f, -0.5f, 0.5f } },
+	};
+
+	Dx12_Mesh* mesh = new Dx12_Mesh(0);
+
+	mesh->m_vertexBufferByteSize = sizeof(vList);
+	mesh->m_vertexByteStride = sizeof(Vertex);
+
+	// create default heap
+	// default heap is memory on the GPU. Only the GPU has access to this memory
+	// To get data into this heap, we will have to upload the data using
+	// an upload heap
+
+
+	CD3DX12_HEAP_PROPERTIES heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(mesh->m_vertexBufferByteSize);
+	m_device->m_device->CreateCommittedResource(
+		&heapDefault, // a default heap
+		D3D12_HEAP_FLAG_NONE, // no flags
+		&buffer, // resource description for a buffer
+		D3D12_RESOURCE_STATE_COPY_DEST, // we will start this heap in the copy destination state since we will copy data
+										// from the upload heap to this heap
+		nullptr, // optimized clear value must be null for this type of resource. used for render targets and depth/stencil buffers
+		IID_PPV_ARGS(&mesh->m_vertexBufferUploader));
+	mesh->m_vertexBufferUploader->SetName(L"Vertex Buffer Upload Resource Heap");
+
+	// create upload heap
+	// upload heaps are used to upload data to the GPU. CPU can write to it, GPU can read from it
+	// We will upload the vertex buffer using this heap to the default heap
+	ID3D12Resource* vBufferUploadHeap;
+	CD3DX12_HEAP_PROPERTIES heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	m_device->m_device->CreateCommittedResource(
+		&heapUpload, // upload heap
+		D3D12_HEAP_FLAG_NONE, // no flags
+		&buffer, // resource description for a buffer
+		D3D12_RESOURCE_STATE_GENERIC_READ, // GPU will read from this buffer and copy its contents to the default heap
+		nullptr,
+		IID_PPV_ARGS(&vBufferUploadHeap));
+	vBufferUploadHeap->SetName(L"Vertex Buffer Upload Resource Heap");
+
+	// store vertex buffer in upload heap
+	D3D12_SUBRESOURCE_DATA vertexData = {};
+	vertexData.pData = reinterpret_cast<BYTE*>(vList); // pointer to our vertex array
+	vertexData.RowPitch = mesh->m_vertexBufferByteSize; // size of all our triangle vertex data
+	vertexData.SlicePitch = mesh->m_vertexBufferByteSize; // also the size of our triangle vertex data
+
+	// we are now creating a command with the command list to copy the data from
+	// the upload heap to the default heap
+	UpdateSubresources(m_cmdList->GetList(), mesh->m_vertexBufferUploader.Get(), vBufferUploadHeap, 0, 0, 1, &vertexData);
+
+	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(mesh->m_vertexBufferUploader.Get()
+		, D3D12_RESOURCE_STATE_COPY_DEST,
+		D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+
+	// transition the vertex buffer data from copy destination state to vertex buffer state
+	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
+
+	m_cmdQueue->ExecuteList(m_cmdList);
+
+	D3DCreateBlob(sizeof(vList), &mesh->m_vertexBufferCPU);
+	CopyMemory(mesh->m_vertexBufferCPU->GetBufferPointer(), vList, sizeof(vList));
+	mesh->m_vertexBufferGPU = vBufferUploadHeap;
+
+	RenderItem* rItem = new RenderItem();
+	rItem->m_mesh = mesh; 
+	rItem->m_typology =	D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	rItem->m_indexCount = 3;
+	rItem->m_startIndexLocation = 0;
+	rItem->m_baseVertexLocation = 0;
+
+
+	m_renderItems.push_back(rItem);
 }
 
 Dx12_RenderLayer::~Dx12_RenderLayer()
@@ -75,12 +155,16 @@ void Dx12_RenderLayer::Update(float)
 
 void Dx12_RenderLayer::Frame()
 {
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(), m_swapChain->GetCurrentFrameIndex(), m_rtv->GetSize());
-
-	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, true, nullptr);
-
 	ID3D12DescriptorHeap* descriptorHeaps[] = { m_srv->GetHeap().Get() };
 	m_cmdList->GetList()->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	m_cmdList->SetSignature();
+	m_cmdList->SetViewPort(0);
+
+	for (int i = 0; i < m_renderItems.size(); i++)
+	{
+		m_cmdList->Draw(m_renderItems[i]);
+	}
 
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_cmdList->GetList());
@@ -102,9 +186,7 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 	auto backBuffer = m_swapChain->GetCurrentBuffer();
 
 	commandAllocator->Reset();
-	m_cmdList->GetList()->Reset(commandAllocator.Get(), nullptr);
-
-	m_cmdList->SetViewPort(0);
+	m_cmdList->Reset();
 
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		backBuffer.Get(),
@@ -116,6 +198,8 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle (m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_swapChain->GetCurrentFrameIndex(), m_rtv->GetSize());
+
+	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 }
@@ -155,5 +239,6 @@ void Dx12_RenderLayer::EnableDebugger()
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	ThrowIfFailed(D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface)));
 	debugInterface->EnableDebugLayer();
+
 #endif
 }

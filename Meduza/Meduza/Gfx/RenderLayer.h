@@ -20,6 +20,8 @@ protected:
 	virtual void InitImGui();
 
 	ImGuiIO m_io;
-	Window* m_window;
+	Window* m_window = nullptr;
+
+	std::vector<RenderItem*> m_renderItems;
 };
 

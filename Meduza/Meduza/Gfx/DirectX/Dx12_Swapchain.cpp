@@ -74,7 +74,7 @@ void Dx12_Swapchain::Present()
 	
 	//Fence with Queue
 
-	m_currentframeBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+	m_currentframeBufferIndex = (m_currentframeBufferIndex + 1) % gs_frameBufferCount;
 	m_queue->Flush();
 }
 

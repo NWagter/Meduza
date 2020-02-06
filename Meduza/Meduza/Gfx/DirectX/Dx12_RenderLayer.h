@@ -13,6 +13,7 @@ class Dx12_RenderLayer : public RenderLayer
 {
 public:
 	Dx12_RenderLayer(int,int,const char*);
+	
 	~Dx12_RenderLayer();
 
 public:
@@ -21,6 +22,7 @@ public:
 	virtual void Clear(Colour) override;
 	virtual void DestroyLayer() override;
 	virtual void Draw(Drawable) override;
+	void MakeTriangle();
 
 protected:
 	virtual void CreateNewWindow(int, int, const char*) override;

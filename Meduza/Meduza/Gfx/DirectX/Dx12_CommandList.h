@@ -2,20 +2,22 @@
 #include "../Common/CommandList.h"
 
 class Dx12_Device;
+class Dx12_PSO;
 
 class Dx12_CommandList : public CommandList
 {
 public:
 	Dx12_CommandList(D3D12_COMMAND_LIST_TYPE, const Dx12_Device&, int a_w, int a_h);
 
+	virtual void Reset() override;
 	virtual void Close() override;
-	virtual void Draw(uint32_t, uint32_t, uint32_t, uint32_t) override;
-	virtual void DrawIndexed(uint32_t, uint32_t, uint32_t, int32_t, uint32_t) override;
+	virtual void Draw(RenderItem* a_item) override;
 	
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(int);
 
 	ID3D12GraphicsCommandList* GetList();
 
+	void SetSignature();
 	void SetViewPort(int);
 	void SetViewAndScissor(int a_w, int a_h);
 
@@ -24,6 +26,10 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_cmdAllocator[gs_frameBufferCount];
+
+	Dx12_PSO* m_pso;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_signature;
+
 	D3D12_RECT m_scissorRect;
 	D3D12_VIEWPORT m_viewport;
 };

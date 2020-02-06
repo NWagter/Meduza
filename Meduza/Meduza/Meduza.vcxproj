@@ -38,6 +38,8 @@
     <ClCompile Include="Gfx\Common\CommandList.cpp" />
     <ClCompile Include="Gfx\Common\Device.cpp" />
     <ClCompile Include="Gfx\Common\Fence.cpp" />
+    <ClCompile Include="Gfx\Common\Mesh.cpp" />
+    <ClCompile Include="Gfx\Common\PSO.cpp" />
     <ClCompile Include="Gfx\Common\RenderTarget.cpp" />
     <ClCompile Include="Gfx\Common\Swapchain.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_CommandList.cpp" />
@@ -45,6 +47,8 @@
     <ClCompile Include="Gfx\DirectX\Dx12_Descriptor.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Device.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Fence.cpp" />
+    <ClCompile Include="Gfx\DirectX\Dx12_Mesh.cpp" />
+    <ClCompile Include="Gfx\DirectX\Dx12_PSO.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_RenderLayer.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_RenderTarget.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Swapchain.cpp" />
@@ -66,6 +70,8 @@
     <ClInclude Include="Gfx\Common\CommandQueue.h" />
     <ClInclude Include="Gfx\Common\Device.h" />
     <ClInclude Include="Gfx\Common\Fence.h" />
+    <ClInclude Include="Gfx\Common\Mesh.h" />
+    <ClInclude Include="Gfx\Common\PSO.h" />
     <ClInclude Include="Gfx\Common\RenderTarget.h" />
     <ClInclude Include="Gfx\Common\Swapchain.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_CommandList.h" />
@@ -73,10 +79,13 @@
     <ClInclude Include="Gfx\DirectX\Dx12_Descriptor.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Device.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Fence.h" />
+    <ClInclude Include="Gfx\DirectX\Dx12_Mesh.h" />
+    <ClInclude Include="Gfx\DirectX\Dx12_PSO.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_RenderLayer.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_RenderTarget.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Swapchain.h" />
     <ClInclude Include="Gfx\RenderLayer.h" />
+    <ClInclude Include="Helper\Dx12_Helper.h" />
     <ClInclude Include="Helper\Helper.h" />
     <ClInclude Include="pch\pch.h" />
     <ClInclude Include="Renderer\Meduza.h" />
@@ -136,6 +145,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\glm;$(ProjectDir);$(SolutionDir)External\Dx12;$(SolutionDir)External\ImGui;$(ProjectDir)pch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch\pch.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,13 +161,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(SolutionDir)External;$(SolutionDir)External\glm;$(ProjectDir);$(SolutionDir)External\Dx12;$(SolutionDir)External\ImGui;$(ProjectDir)pch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <SupportJustMyCode>false</SupportJustMyCode>
       <PrecompiledHeaderFile>pch\pch.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

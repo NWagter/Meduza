@@ -6,7 +6,7 @@ The purpose of this project is to learn DirectX12 and how to write a Graphics En
 This project is in the early stages of development and does not contain a lot yet,
 but what is currently planned is the following :
 
--Rendering
+- Rendering
   - 2D Rendering
     - Sprites
     - Particle System
@@ -21,7 +21,7 @@ but what is currently planned is the following :
     - Lights
       - Point Lights
       - Directional Lights
--Engine
+- Engine
   - ImGui Menus
     - Object hierarchy
     - Object Spawning

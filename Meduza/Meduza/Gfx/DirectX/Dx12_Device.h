@@ -4,6 +4,8 @@
 class Dx12_Device : public Device {
 
 public :
+	~Dx12_Device();
+
 	virtual void InitDevice() override;
 	virtual void DestroyDevice() override;
 

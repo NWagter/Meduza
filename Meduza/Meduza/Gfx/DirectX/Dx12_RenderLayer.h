@@ -8,6 +8,8 @@ class Dx12_CommandQueue;
 class Dx12_CommandList;
 class Dx12_CommandAllocator;
 class Dx12_Descriptor;
+class Dx12_PSO;
+class Dx12_RootSignature;
 
 class Dx12_RenderLayer : public RenderLayer
 {
@@ -42,5 +44,10 @@ private:
 	Dx12_Descriptor* m_srv;
 	Dx12_Descriptor* m_dsv;
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_depthBuffer;
+
+	Dx12_RootSignature* m_signature;
+	Dx12_PSO* m_currentPso;
+	std::vector<Dx12_PSO*> m_pipelineStateObjects;
+
 
 };

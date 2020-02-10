@@ -55,6 +55,12 @@
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{616206b0-bf92-47f6-baaf-e541f34d13ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Gfx\DirectX\Meshes">
+      <UniqueIdentifier>{1215749a-4260-45c4-afc8-a6b4a5222220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gfx\DirectX\Meshes">
+      <UniqueIdentifier>{58240b0b-dd61-45c2-8478-88384c7fa29b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer\Meduza.h">
@@ -123,14 +129,23 @@
     <ClInclude Include="Gfx\Common\Mesh.h">
       <Filter>Header Files\Gfx\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Gfx\DirectX\Dx12_Mesh.h">
-      <Filter>Header Files\Gfx\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="Gfx\DirectX\Dx12_PSO.h">
       <Filter>Header Files\Gfx\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Gfx\Common\PSO.h">
       <Filter>Header Files\Gfx\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_RootSignature.h">
+      <Filter>Header Files\Gfx\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Mesh.h">
+      <Filter>Header Files\Gfx\DirectX\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Quad.h">
+      <Filter>Header Files\Gfx\DirectX\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Triangle.h">
+      <Filter>Header Files\Gfx\DirectX\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,14 +224,26 @@
     <ClCompile Include="Gfx\Common\Mesh.cpp">
       <Filter>Source Files\Gfx\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Gfx\DirectX\Dx12_Mesh.cpp">
-      <Filter>Source Files\Gfx\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="Gfx\DirectX\Dx12_PSO.cpp">
       <Filter>Source Files\Gfx\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="Gfx\Common\PSO.cpp">
       <Filter>Source Files\Gfx\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_RootSignature.cpp">
+      <Filter>Source Files\Gfx\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Mesh.cpp">
+      <Filter>Source Files\Gfx\DirectX\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Quad.cpp">
+      <Filter>Source Files\Gfx\DirectX\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Triangle.cpp">
+      <Filter>Source Files\Gfx\DirectX\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper\Dx12_Helper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

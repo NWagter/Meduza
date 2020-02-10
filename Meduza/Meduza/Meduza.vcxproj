@@ -47,12 +47,16 @@
     <ClCompile Include="Gfx\DirectX\Dx12_Descriptor.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Device.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Fence.cpp" />
-    <ClCompile Include="Gfx\DirectX\Dx12_Mesh.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_PSO.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_RenderLayer.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_RenderTarget.cpp" />
+    <ClCompile Include="Gfx\DirectX\Dx12_RootSignature.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Swapchain.cpp" />
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Mesh.cpp" />
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Quad.cpp" />
+    <ClCompile Include="Gfx\DirectX\Meshes\Dx12_Triangle.cpp" />
     <ClCompile Include="Gfx\RenderLayer.cpp" />
+    <ClCompile Include="Helper\Dx12_Helper.cpp" />
     <ClCompile Include="pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -79,11 +83,14 @@
     <ClInclude Include="Gfx\DirectX\Dx12_Descriptor.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Device.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Fence.h" />
-    <ClInclude Include="Gfx\DirectX\Dx12_Mesh.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_PSO.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_RenderLayer.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_RenderTarget.h" />
+    <ClInclude Include="Gfx\DirectX\Dx12_RootSignature.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Swapchain.h" />
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Mesh.h" />
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Quad.h" />
+    <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Triangle.h" />
     <ClInclude Include="Gfx\RenderLayer.h" />
     <ClInclude Include="Helper\Dx12_Helper.h" />
     <ClInclude Include="Helper\Helper.h" />

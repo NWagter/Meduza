@@ -1,11 +1,14 @@
 #pragma once
 
-#include "../Common/Mesh.h"
+#include "../../Common/Mesh.h"
+
+class Dx12_Device;
+class Dx12_CommandList;
 
 class Dx12_Mesh : public Mesh {
 
 public:
-	Dx12_Mesh(int);
+	Dx12_Mesh(MeshType);
 	DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R16_UINT;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;

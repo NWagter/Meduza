@@ -2,8 +2,9 @@
 #include "Dx12_PSO.h"
 
 #include "Dx12_Device.h"
+#include "Dx12_RootSignature.h"
 
-Dx12_PSO::Dx12_PSO(int a_id, std::string a_vertShader, std::string a_pixShader, const Dx12_Device& a_device, Microsoft::WRL::ComPtr<ID3D12RootSignature> a_signature) : PSO(a_id)
+Dx12_PSO::Dx12_PSO(int a_id, std::string a_vertShader, std::string a_pixShader, const Dx12_Device& a_device, Dx12_RootSignature* a_signature) : PSO(a_id)
 {
 	m_vertShader = a_vertShader;
 	m_pixShader = a_pixShader;
@@ -27,7 +28,7 @@ Dx12_PSO::Dx12_PSO(int a_id, std::string a_vertShader, std::string a_pixShader, 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 	psoDesc.InputLayout = inputLayoutDesc;
-	psoDesc.pRootSignature = a_signature.Get();
+	psoDesc.pRootSignature = a_signature->GetSiganture().Get();
 	psoDesc.VS = {
 		reinterpret_cast<BYTE*>(m_shaders[ShaderType::VertexShader]->GetBufferPointer()),
 		m_shaders[ShaderType::VertexShader]->GetBufferSize()

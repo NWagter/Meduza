@@ -38,6 +38,11 @@ inline void ThrowIfFailed(HRESULT a_Hr)
 
 
 struct Vertex {
+
+	Vertex(float x, float y, float z) {
+		pos = DirectX::XMFLOAT3(x, y, z);
+	}
+
 	DirectX::XMFLOAT3 pos;
 };
 
@@ -64,4 +69,13 @@ struct RenderItem {
 	unsigned int m_indexCount = 0;
 	unsigned int m_startIndexLocation = 0;
 	int m_baseVertexLocation = 0;
+};
+
+class Dx12Helper {
+public:
+	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBuffer(ID3D12Device*,
+		ID3D12GraphicsCommandList*,
+		const void*,
+		UINT64,
+		Microsoft::WRL::ComPtr<ID3D12Resource>&);
 };

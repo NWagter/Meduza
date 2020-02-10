@@ -8,6 +8,8 @@ class Window;
 class RenderLayer
 {
 public:
+	~RenderLayer();
+
 	virtual void Update(float) = 0;
 	virtual void Frame() = 0;
 	virtual void Clear(Colour) = 0; 

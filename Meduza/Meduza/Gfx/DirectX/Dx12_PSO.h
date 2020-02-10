@@ -2,6 +2,7 @@
 
 #include "../Common/PSO.h"
 
+class Dx12_RootSignature;
 class Dx12_Device;
 
 enum class ShaderType {
@@ -11,7 +12,7 @@ enum class ShaderType {
 
 class Dx12_PSO: public PSO{
 public:
-	Dx12_PSO(int, std::string, std::string, const Dx12_Device&, Microsoft::WRL::ComPtr<ID3D12RootSignature>);
+	Dx12_PSO(int, std::string, std::string, const Dx12_Device&, Dx12_RootSignature*);
 
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> GetPSO();

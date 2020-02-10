@@ -4,6 +4,7 @@ class Window {
 	
 public:
 	Window(int a_width, int a_height, std::string a_title);
+	~Window();
 
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;

@@ -3,7 +3,9 @@
 
 #include "Dx12_Device.h"
 #include "Dx12_PSO.h"
-#include "Dx12_Mesh.h"
+#include "Meshes\Dx12_Mesh.h"
+
+#include "Dx12_RootSignature.h"
 
 Dx12_CommandList::Dx12_CommandList(D3D12_COMMAND_LIST_TYPE a_type, const Dx12_Device& a_device, int a_w, int a_h)
 {
@@ -20,24 +22,22 @@ Dx12_CommandList::Dx12_CommandList(D3D12_COMMAND_LIST_TYPE a_type, const Dx12_De
 		nullptr,
 		IID_PPV_ARGS(m_commandList.GetAddressOf())));
 
-	CreateRootSignature(a_device);
-
-	m_pso = new Dx12_PSO(0, "Resources\\VertexShader.hlsl", "Resources\\PixelShader.hlsl", a_device, m_signature);
-
 	SetViewAndScissor(a_w, a_h);
 }
-void Dx12_CommandList::CreateRootSignature(const Dx12_Device& a_device)
-{
-	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-	ID3DBlob* signature;
-	D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, nullptr);
-	a_device.m_device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&m_signature));
-}
-void Dx12_CommandList::Reset(int a_frameId)
+Dx12_CommandList::~Dx12_CommandList()
 {
-	GetList()->Reset(m_cmdAllocator[a_frameId].Get(), m_pso->GetPSO().Get());
+	m_commandList.ReleaseAndGetAddressOf();
+	for (int i = 0; i < gs_frameBufferCount; i++)
+	{
+		m_cmdAllocator[i].ReleaseAndGetAddressOf();
+	}
+}
+
+void Dx12_CommandList::Reset(int a_frameId, PSO* a_pso)
+{
+	Dx12_PSO* pso = static_cast<Dx12_PSO*>(a_pso);
+	GetList()->Reset(m_cmdAllocator[a_frameId].Get(), pso->GetPSO().Get());
 }
 void Dx12_CommandList::Close()
 {
@@ -47,9 +47,17 @@ void Dx12_CommandList::Close()
 void Dx12_CommandList::Draw(RenderItem* a_rItem)
 {
 	D3D12_VERTEX_BUFFER_VIEW vBufferView = a_rItem->m_mesh->VertexBufferView();
+
+	D3D12_INDEX_BUFFER_VIEW iBufferView = a_rItem->m_mesh->IndexBufferView();
+
 	m_commandList->IASetVertexBuffers(0, 1, &vBufferView);
+
+	//m_commandList->IASetIndexBuffer(&iBufferView);
+
 	m_commandList->IASetPrimitiveTopology(a_rItem->m_typology);
-	m_commandList->DrawInstanced(3, 1, 0, 0);
+	m_commandList->DrawInstanced(a_rItem->m_indexCount, 1, 0, 0);
+
+	//m_commandList->DrawIndexedInstanced(a_rItem->m_indexCount, 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Dx12_CommandList::GetCurrentAllocator(int a_id)
@@ -62,14 +70,14 @@ ID3D12GraphicsCommandList* Dx12_CommandList::GetList()
 	return m_commandList.Get();
 }
 
-Dx12_PSO* Dx12_CommandList::GetPSO()
+void Dx12_CommandList::SetPSO(Dx12_PSO* a_pso)
 {
-	return m_pso;
+	m_commandList->SetPipelineState(a_pso->GetPSO().Get());
 }
 
-void Dx12_CommandList::SetSignature()
+void Dx12_CommandList::SetSignature(Dx12_RootSignature* a_signature)
 {
-	m_commandList->SetGraphicsRootSignature(m_signature.Get());
+	m_commandList->SetGraphicsRootSignature(a_signature->GetSiganture().Get());
 }
 
 void Dx12_CommandList::SetViewPort(int a_numViewport)

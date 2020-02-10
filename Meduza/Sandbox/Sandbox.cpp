@@ -27,16 +27,16 @@ void Sandbox::Run()
 
 		Colour cColour = { m_colour[0], m_colour[1], m_colour[2], m_colour[3] };
 
-		Meduza::Clear(cColour);
 
-		Meduza::Update(0);
-
-		ImGuiUpdate();
-
-		Meduza::Frame();
-
-		if (!Meduza::IsActive())
+		Meduza::Update(m_shaderTest);
+		if (!Meduza::IsActive()) {
 			m_sandboxRun = false;
+			break;
+		}
+
+		Meduza::Clear(cColour);
+		ImGuiUpdate();
+		Meduza::Frame();
 	}
 
 	Meduza::Destroy();
@@ -63,6 +63,25 @@ void Sandbox::ImGuiUpdate()
 		if (ImGui::Button("Light"))
 		{
 			ImGui::StyleColorsLight();
+		}
+	}
+	if (ImGui::CollapsingHeader("Triangle Shader"))
+	{
+		if (ImGui::Button("Shader1"))
+		{
+			m_shaderTest = 0;
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Shader2"))
+		{
+			m_shaderTest = 1;
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Shader3"))
+		{
+			m_shaderTest = 2;
 		}
 	}
 	ImGui::Text("Clear Colour");

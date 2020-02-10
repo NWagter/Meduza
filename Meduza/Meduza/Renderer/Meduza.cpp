@@ -2,6 +2,7 @@
 #include "Meduza.h"
 
 #include "../Gfx/DirectX/Dx12_RenderLayer.h"
+#include "imgui.h"
 
 #include <iostream>
 
@@ -17,6 +18,7 @@ Meduza::Meduza(GfxAPI a_API)
 
 Meduza::~Meduza()
 {
+	delete m_renderLayer;
 }
 
 void Meduza::Update(float a_dt)
@@ -25,6 +27,7 @@ void Meduza::Update(float a_dt)
 		m_instance->m_RendererActive = false;
 		return;
 	}
+
 	m_instance->m_renderLayer->Update(a_dt);
 }
 
@@ -66,7 +69,7 @@ void Meduza::ChangeAPI(GfxAPI a_newAPI)
 
 void Meduza::Destroy()
 {
-	delete m_instance;
+	m_instance->m_renderLayer->DestroyLayer();
 }
 
 bool Meduza::IsActive()

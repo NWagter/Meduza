@@ -13,6 +13,7 @@ public:
 
 private:
 	float m_colour[4];
+	float m_shaderTest = 0;
 	bool m_sandboxRun = false;
 };
 

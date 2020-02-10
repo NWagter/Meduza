@@ -24,3 +24,11 @@ struct Drawable {
 	Colour colour;
 	std::string textureLoc;
 };
+
+enum class MeshType {
+	Triangle = 0,
+	Quad,
+	Cube,
+	Sphere,
+	Plane
+};

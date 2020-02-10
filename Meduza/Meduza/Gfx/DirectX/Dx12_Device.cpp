@@ -1,6 +1,11 @@
 #include "pch/pch.h"
 #include "Dx12_Device.h"
 
+Dx12_Device::~Dx12_Device()
+{
+	DestroyDevice();
+}
+
 void Dx12_Device::InitDevice()
 {
 	ThrowIfFailed(CreateDXGIFactory(IID_PPV_ARGS(&m_factory)));
@@ -17,4 +22,6 @@ void Dx12_Device::InitDevice()
 
 void Dx12_Device::DestroyDevice()
 {
+	m_device.ReleaseAndGetAddressOf();
+	m_factory.ReleaseAndGetAddressOf();
 }

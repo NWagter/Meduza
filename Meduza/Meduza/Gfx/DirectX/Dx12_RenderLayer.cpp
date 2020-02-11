@@ -8,7 +8,9 @@
 #include "Dx12_CommandList.h"
 #include "Dx12_CommandQueue.h"
 #include "Dx12_Descriptor.h"
-#include "Meshes\Dx12_Triangle.h"
+
+#include "Meshes/Dx12_Triangle.h"
+#include "Meshes/Dx12_Quad.h"
 
 #include "Dx12_PSO.h"
 #include "Dx12_RootSignature.h"
@@ -82,13 +84,13 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 
 void Dx12_RenderLayer::MakeTriangle()
 {
-	Dx12_Mesh* mesh = new Dx12_Triangle(MeshType::Triangle, *m_device, m_cmdList);
+	Dx12_Mesh* mesh = new Dx12_Quad(MeshType::Quad, *m_device, m_cmdList);
 	RenderItem* rItem = new RenderItem();
 	rItem->m_mesh = mesh; 
-	rItem->m_typology =	D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	rItem->m_indexCount = 3;
-	rItem->m_startIndexLocation = 1;
-	rItem->m_baseVertexLocation = 1;
+	rItem->m_typology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	rItem->m_indexCount = 6;
+	rItem->m_startIndexLocation = 0;
+	rItem->m_baseVertexLocation = 0;
 
 	m_renderItems.push_back(rItem);
 }
@@ -178,12 +180,13 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle (m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_swapChain->GetCurrentFrameIndex(), m_rtv->GetSize());
 
+	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	auto dsv = m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	m_cmdList->GetList()->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	/*auto dsv = m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	m_cmdList->GetList()->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);*/
 
 
-	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, false, &dsv);
 }
 
 void Dx12_RenderLayer::DestroyLayer()

@@ -52,12 +52,12 @@ void Dx12_CommandList::Draw(RenderItem* a_rItem)
 
 	m_commandList->IASetVertexBuffers(0, 1, &vBufferView);
 
-	//m_commandList->IASetIndexBuffer(&iBufferView);
+	m_commandList->IASetIndexBuffer(&iBufferView);
 
 	m_commandList->IASetPrimitiveTopology(a_rItem->m_typology);
-	m_commandList->DrawInstanced(a_rItem->m_indexCount, 1, 0, 0);
+	//m_commandList->DrawInstanced(a_rItem->m_indexCount, 1, 0, 0);
 
-	//m_commandList->DrawIndexedInstanced(a_rItem->m_indexCount, 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
+	m_commandList->DrawIndexedInstanced(a_rItem->m_indexCount, 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Dx12_CommandList::GetCurrentAllocator(int a_id)

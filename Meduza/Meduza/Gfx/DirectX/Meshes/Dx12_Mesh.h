@@ -9,6 +9,9 @@ class Dx12_Mesh : public Mesh {
 
 public:
 	Dx12_Mesh(MeshType);
+
+	void InitilizeMesh(const Dx12_Device&, Dx12_CommandList*);
+
 	DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R16_UINT;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;
@@ -27,4 +30,8 @@ public:
 	D3D12_INDEX_BUFFER_VIEW IndexBufferView()const;
 
 	void DisposeUploaders();
+
+protected:
+	std::vector<Vertex> m_vertices;
+	std::vector<std::uint16_t> m_indices;
 };

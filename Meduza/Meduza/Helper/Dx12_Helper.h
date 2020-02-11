@@ -66,7 +66,6 @@ struct RenderItem {
 	D3D12_PRIMITIVE_TOPOLOGY m_typology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 
 	// DrawIndexedInstanced parameters.
-	unsigned int m_indexCount = 0;
 	unsigned int m_startIndexLocation = 0;
 	int m_baseVertexLocation = 0;
 };

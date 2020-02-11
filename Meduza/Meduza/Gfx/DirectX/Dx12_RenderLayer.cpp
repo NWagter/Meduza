@@ -88,7 +88,6 @@ void Dx12_RenderLayer::MakeTriangle()
 	RenderItem* rItem = new RenderItem();
 	rItem->m_mesh = mesh; 
 	rItem->m_typology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	rItem->m_indexCount = 6;
 	rItem->m_startIndexLocation = 0;
 	rItem->m_baseVertexLocation = 0;
 

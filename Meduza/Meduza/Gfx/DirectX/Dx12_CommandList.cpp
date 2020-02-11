@@ -46,18 +46,21 @@ void Dx12_CommandList::Close()
 
 void Dx12_CommandList::Draw(RenderItem* a_rItem)
 {
+
 	D3D12_VERTEX_BUFFER_VIEW vBufferView = a_rItem->m_mesh->VertexBufferView();
-
-	D3D12_INDEX_BUFFER_VIEW iBufferView = a_rItem->m_mesh->IndexBufferView();
-
 	m_commandList->IASetVertexBuffers(0, 1, &vBufferView);
-
-	m_commandList->IASetIndexBuffer(&iBufferView);
-
 	m_commandList->IASetPrimitiveTopology(a_rItem->m_typology);
-	//m_commandList->DrawInstanced(a_rItem->m_indexCount, 1, 0, 0);
 
-	m_commandList->DrawIndexedInstanced(a_rItem->m_indexCount, 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
+	if (a_rItem->m_mesh->m_meshId == MeshType::Triangle)
+	{
+		m_commandList->DrawInstanced(a_rItem->m_mesh->GetIndexCount(), 1, 0, 0);
+	}
+	else {
+		D3D12_INDEX_BUFFER_VIEW iBufferView = a_rItem->m_mesh->IndexBufferView();
+		m_commandList->IASetIndexBuffer(&iBufferView);
+		m_commandList->DrawIndexedInstanced(a_rItem->m_mesh->GetIndexCount(), 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
+	}
+
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Dx12_CommandList::GetCurrentAllocator(int a_id)

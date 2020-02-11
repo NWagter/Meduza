@@ -10,7 +10,7 @@ Dx12_Triangle::Dx12_Triangle(MeshType a_id, const Dx12_Device& a_device, Dx12_Co
 	};
 
 	m_indices = {
-		0, 1, 1, 2, 2, 0
+		0, 1, 3
 	};
 
 	InitilizeMesh(a_device, a_cmdList);

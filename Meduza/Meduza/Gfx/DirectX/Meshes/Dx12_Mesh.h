@@ -12,6 +12,18 @@ public:
 
 	void InitilizeMesh(const Dx12_Device&, Dx12_CommandList*);
 
+	D3D12_VERTEX_BUFFER_VIEW VertexBufferView()const;
+
+	D3D12_INDEX_BUFFER_VIEW IndexBufferView()const;
+
+	void DisposeUploaders();
+
+	int GetIndexCount();
+
+protected:
+	std::vector<Vertex> m_vertices;
+	std::vector<std::uint16_t> m_indices;
+
 	DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R16_UINT;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;
@@ -24,14 +36,4 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferUploader = nullptr;
 
 	std::unordered_map<int, SubmeshGeometry> m_drawArgs;
-
-	D3D12_VERTEX_BUFFER_VIEW VertexBufferView()const;
-
-	D3D12_INDEX_BUFFER_VIEW IndexBufferView()const;
-
-	void DisposeUploaders();
-
-protected:
-	std::vector<Vertex> m_vertices;
-	std::vector<std::uint16_t> m_indices;
 };

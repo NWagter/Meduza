@@ -55,3 +55,8 @@ void Dx12_Mesh::DisposeUploaders()
 	m_vertexBufferUploader = nullptr;
 	m_indexBufferUploader = nullptr;
 }
+
+int Dx12_Mesh::GetIndexCount()
+{
+	return static_cast<int>(m_indices.size());
+}

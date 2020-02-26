@@ -147,6 +147,9 @@
     <ClInclude Include="Gfx\DirectX\Meshes\Dx12_Triangle.h">
       <Filter>Header Files\Gfx\DirectX\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="Gfx\DirectX\Dx12_ConstantBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer\Meduza.cpp">
@@ -243,6 +246,9 @@
       <Filter>Source Files\Gfx\DirectX\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Helper\Dx12_Helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gfx\DirectX\Dx12_ConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

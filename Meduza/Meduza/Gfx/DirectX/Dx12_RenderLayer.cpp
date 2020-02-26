@@ -8,6 +8,7 @@
 #include "Dx12_CommandList.h"
 #include "Dx12_CommandQueue.h"
 #include "Dx12_Descriptor.h"
+#include "Dx12_ConstantBuffer.h"
 
 #include "Meshes/Dx12_Triangle.h"
 #include "Meshes/Dx12_Quad.h"
@@ -76,6 +77,19 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 	InitImGui();
 
 	MakeTriangle();
+	D3D12_DESCRIPTOR_HEAP_DESC cbvDesc = {};
+	cbvDesc.NumDescriptors = 1;
+	cbvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	cbvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+
+	for (int i = 0; i < gs_frameBufferCount; ++i)
+	{
+		m_cbv[i] = new Dx12_Descriptor(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, cbvDesc, *m_device);
+	}
+	for (int i = 0; i < gs_frameBufferCount; ++i)
+	{
+		m_cBuffer[i] = new Dx12_ConstantBuffer(*m_device, *m_cbv[i]);
+	}
 
 	m_cmdQueue->ExecuteList(m_cmdList);
 
@@ -84,14 +98,8 @@ Dx12_RenderLayer::Dx12_RenderLayer(int a_w, int a_h, const char* a_t) {
 
 void Dx12_RenderLayer::MakeTriangle()
 {
-	Dx12_Mesh* mesh = new Dx12_Quad(MeshType::Quad, *m_device, m_cmdList);
-	RenderItem* rItem = new RenderItem();
-	rItem->m_mesh = mesh; 
-	rItem->m_typology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	rItem->m_startIndexLocation = 0;
-	rItem->m_baseVertexLocation = 0;
-
-	m_renderItems.push_back(rItem);
+	m_meshes.push_back(new Dx12_Triangle(MeshType::Triangle, *m_device, m_cmdList));
+	m_meshes.push_back(new Dx12_Quad(MeshType::Quad, *m_device, m_cmdList));
 }
 
 Dx12_RenderLayer::~Dx12_RenderLayer()
@@ -113,18 +121,8 @@ Dx12_RenderLayer::~Dx12_RenderLayer()
 	delete m_currentPso;
 }
 
-void Dx12_RenderLayer::Update(float a_dt)
+void Dx12_RenderLayer::Update(float)
 {
-	if (a_dt == 0) {
-		m_currentPso = m_pipelineStateObjects[0];
-	}
-	else if(a_dt == 1){
-		m_currentPso = m_pipelineStateObjects[1];
-	}
-	else {
-		m_currentPso = m_pipelineStateObjects[2];
-	}
-
 	m_window->PeekMsg();
 
 	ImGui_ImplDX12_NewFrame();
@@ -134,17 +132,35 @@ void Dx12_RenderLayer::Update(float a_dt)
 
 void Dx12_RenderLayer::Frame()
 {
-	ID3D12DescriptorHeap* descriptorHeaps[] = { m_srv->GetHeap().Get() };
-	m_cmdList->GetList()->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+	
+	ID3D12DescriptorHeap* cbvDescriptorHeaps[] = { m_cbv[m_swapChain->GetCurrentFrameIndex()]->GetHeap().Get() };
+	m_cmdList->GetList()->SetDescriptorHeaps(_countof(cbvDescriptorHeaps), cbvDescriptorHeaps);
 
 	m_cmdList->SetPSO(m_currentPso);
 	m_cmdList->SetSignature(m_signature);
 	m_cmdList->SetViewPort(1);
 
+	//GetCurrentBuffer
+	Dx12_ConstantBuffer* cCBuffer = m_cBuffer[m_swapChain->GetCurrentFrameIndex()];
+
 	for (int i = 0; i < m_renderItems.size(); i++)
 	{
-		m_cmdList->Draw(m_renderItems[i]);
+		int alignmentSize = (cCBuffer->GetBufferAlignment() * i);
+
+		if (m_renderItems[i]->m_shaderId != m_psoCId) {
+			m_psoCId = m_renderItems[i]->m_shaderId;
+			m_cmdList->SetPSO(m_pipelineStateObjects[m_psoCId]);
+		}
+
+		cCBuffer->m_constBufferData.pos.x = m_renderItems[i]->m_position.x;
+		cCBuffer->m_constBufferData.pos.y = m_renderItems[i]->m_position.y;
+		cCBuffer->CopyData(alignmentSize);
+
+		m_cmdList->Draw(m_renderItems[i], cCBuffer->GetResource(), alignmentSize);
 	}
+
+	ID3D12DescriptorHeap* srvDescriptorHeaps[] = { m_srv->GetHeap().Get() };
+	m_cmdList->GetList()->SetDescriptorHeaps(_countof(srvDescriptorHeaps), srvDescriptorHeaps);
 
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_cmdList->GetList());
@@ -158,6 +174,8 @@ void Dx12_RenderLayer::Frame()
 	m_cmdQueue->ExecuteList(m_cmdList);
 
 	m_swapChain->Present();
+
+	m_renderItems.clear();
 }
 
 void Dx12_RenderLayer::Clear(Colour a_colour)
@@ -184,8 +202,6 @@ void Dx12_RenderLayer::Clear(Colour a_colour)
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	/*auto dsv = m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart();
 	m_cmdList->GetList()->ClearDepthStencilView(dsv, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);*/
-
-
 }
 
 void Dx12_RenderLayer::DestroyLayer()
@@ -193,8 +209,18 @@ void Dx12_RenderLayer::DestroyLayer()
 	delete this;
 }
 
-void Dx12_RenderLayer::Draw(Drawable)
+void Dx12_RenderLayer::Draw(Drawable a_drawable)
 {
+	RenderItem* rItem = new RenderItem();
+	rItem->m_mesh = m_meshes[(int)a_drawable.meshType];
+	rItem->m_shaderId = a_drawable.shaderId;
+	rItem->m_typology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	rItem->m_startIndexLocation = 0;
+	rItem->m_baseVertexLocation = 0;
+	rItem->m_position.x = a_drawable.posX;
+	rItem->m_position.y = a_drawable.posY;
+
+	m_renderItems.push_back(rItem);
 }
 
 void Dx12_RenderLayer::InitImGui()

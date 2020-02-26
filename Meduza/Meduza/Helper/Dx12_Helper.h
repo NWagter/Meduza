@@ -68,6 +68,9 @@ struct RenderItem {
 	// DrawIndexedInstanced parameters.
 	unsigned int m_startIndexLocation = 0;
 	int m_baseVertexLocation = 0;
+	int m_shaderId;
+
+	DirectX::XMFLOAT3 m_position;
 };
 
 class Dx12Helper {
@@ -77,4 +80,9 @@ public:
 		const void*,
 		UINT64,
 		Microsoft::WRL::ComPtr<ID3D12Resource>&);
+};
+
+// this is the structure of our constant buffer.
+struct ConstantBuffer {
+	DirectX::XMFLOAT4 pos;
 };

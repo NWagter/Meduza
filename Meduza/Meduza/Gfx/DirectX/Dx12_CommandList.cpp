@@ -44,8 +44,10 @@ void Dx12_CommandList::Close()
 	m_commandList->Close();
 }
 
-void Dx12_CommandList::Draw(RenderItem* a_rItem)
+void Dx12_CommandList::Draw(RenderItem* a_rItem, ID3D12Resource* a_heaps, int a_alignment)
 {
+	// set the root descriptor table 0 to the constant buffer descriptor heap
+	m_commandList->SetGraphicsRootConstantBufferView(0, a_heaps->GetGPUVirtualAddress() + a_alignment);
 
 	D3D12_VERTEX_BUFFER_VIEW vBufferView = a_rItem->m_mesh->VertexBufferView();
 	m_commandList->IASetVertexBuffers(0, 1, &vBufferView);
@@ -60,7 +62,6 @@ void Dx12_CommandList::Draw(RenderItem* a_rItem)
 		m_commandList->IASetIndexBuffer(&iBufferView);
 		m_commandList->DrawIndexedInstanced(a_rItem->m_mesh->GetIndexCount(), 1, a_rItem->m_startIndexLocation, a_rItem->m_baseVertexLocation, 0);
 	}
-
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Dx12_CommandList::GetCurrentAllocator(int a_id)

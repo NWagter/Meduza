@@ -1,5 +1,13 @@
+cbuffer cbPerObject : register(b0)
+{
+	float4 position : POSITION;
+}
+
 float4 main(float3 pos : POSITION) : SV_POSITION
 {
-	float3 newPos = {pos.x - 0.5f, pos.y,pos.z};
-	return float4(newPos, 1.0f);
+	float4 newPos = float4(pos, 1);
+	newPos.x += position.x;
+	newPos.y += position.y;
+
+	return newPos;
 }

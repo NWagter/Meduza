@@ -1,6 +1,5 @@
 #include "Sandbox.h"
 
-#include "../Meduza/Helper/Helper.h"
 #include "../Meduza/Renderer/Meduza.h"
 
 #include "ImGui.h"
@@ -13,10 +12,23 @@ Sandbox::Sandbox(bool a_run)
 	m_colour[1] = 0.6f;
 	m_colour[2] = 0.9f;
 	m_colour[3] = 1.0f;
+
+	d.meshType = MeshType::Triangle;
+	d.type = DrawableType::Sprite;
+	d.shaderId = 1;
+	d2.meshType = MeshType::Quad;
+	d2.type = DrawableType::Sprite;
+	d2.shaderId = 0;
 }
 
 Sandbox::~Sandbox()
 {
+}
+
+void Sandbox::Update(float)
+{	
+	Meduza::Draw(d);
+	Meduza::Draw(d2);
 }
 
 void Sandbox::Run()
@@ -28,13 +40,14 @@ void Sandbox::Run()
 		Colour cColour = { m_colour[0], m_colour[1], m_colour[2], m_colour[3] };
 
 
-		Meduza::Update(m_shaderTest);
+		Meduza::Update(0);
 		if (!Meduza::IsActive()) {
 			m_sandboxRun = false;
 			break;
 		}
 
 		Meduza::Clear(cColour);
+		Update(0);
 		ImGuiUpdate();
 		Meduza::Frame();
 	}
@@ -65,26 +78,13 @@ void Sandbox::ImGuiUpdate()
 			ImGui::StyleColorsLight();
 		}
 	}
-	if (ImGui::CollapsingHeader("Triangle Shader"))
-	{
-		if (ImGui::Button("Shader1"))
-		{
-			m_shaderTest = 0;
-		}
-		ImGui::SameLine();
-
-		if (ImGui::Button("Shader2"))
-		{
-			m_shaderTest = 1;
-		}
-		ImGui::SameLine();
-
-		if (ImGui::Button("Shader3"))
-		{
-			m_shaderTest = 2;
-		}
-	}
 	ImGui::Text("Clear Colour");
 	ImGui::ColorEdit3("Colour", (float*)&m_colour);
+
+	ImGui::Text("Change Position Drawable One");
+	ImGui::SliderFloat2("Postion", &d.posX, -1.5f, 1.5f);
+
+	/*ImGui::Text("Change Position Drawable Two");
+	ImGui::SliderFloat2("Postion", &d2.posX, -1.5f, 1.5f);*/
 	ImGui::End();
 }

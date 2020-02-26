@@ -13,7 +13,7 @@ public:
 
 	virtual void Reset(int, PSO*) override;
 	virtual void Close() override;
-	virtual void Draw(RenderItem* a_item) override;
+	virtual void Draw(RenderItem* a_item, ID3D12Resource*, int);
 	
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(int);
 

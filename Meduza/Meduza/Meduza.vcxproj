@@ -44,6 +44,7 @@
     <ClCompile Include="Gfx\Common\Swapchain.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_CommandList.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_CommandQueue.cpp" />
+    <ClCompile Include="Gfx\DirectX\Dx12_ConstantBuffer.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Descriptor.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Device.cpp" />
     <ClCompile Include="Gfx\DirectX\Dx12_Fence.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="Gfx\Common\Swapchain.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_CommandList.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_CommandQueue.h" />
+    <ClInclude Include="Gfx\DirectX\Dx12_ConstantBuffer.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Descriptor.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Device.h" />
     <ClInclude Include="Gfx\DirectX\Dx12_Fence.h" />

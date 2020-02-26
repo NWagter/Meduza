@@ -8,6 +8,7 @@ class Dx12_CommandQueue;
 class Dx12_CommandList;
 class Dx12_CommandAllocator;
 class Dx12_Descriptor;
+class Dx12_ConstantBuffer;
 class Dx12_PSO;
 class Dx12_RootSignature;
 
@@ -48,6 +49,10 @@ private:
 	Dx12_RootSignature* m_signature;
 	Dx12_PSO* m_currentPso;
 	std::vector<Dx12_PSO*> m_pipelineStateObjects;
+	int m_psoCId = 0;
 
+	std::vector<Dx12_Mesh*> m_meshes;
 
+	Dx12_Descriptor* m_cbv[gs_frameBufferCount];
+	Dx12_ConstantBuffer* m_cBuffer[gs_frameBufferCount];
 };

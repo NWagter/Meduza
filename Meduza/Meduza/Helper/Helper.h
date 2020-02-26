@@ -14,21 +14,23 @@ enum class DrawableType {
 	Text
 };
 
+enum class MeshType {
+	Triangle = 0,
+	Quad,
+};
+
 struct Colour {
 	float r, g, b, a;
 };
 
 struct Drawable {
 
+	MeshType meshType;
 	DrawableType type;
 	Colour colour;
 	std::string textureLoc;
-};
+	int shaderId = 0;
 
-enum class MeshType {
-	Triangle = 0,
-	Quad,
-	Cube,
-	Sphere,
-	Plane
+	float posX = 0;
+	float posY = 0;
 };

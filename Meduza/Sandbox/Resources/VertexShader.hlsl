@@ -1,13 +1,25 @@
 cbuffer cbPerObject : register(b0)
 {
-	float4 position : POSITION;
+	float4x4 transform;
+	float4 colour;
 }
 
-float4 main(float3 pos : POSITION) : SV_POSITION
-{
-	float4 newPos = float4(pos, 1);
-	newPos.x += position.x;
-	newPos.y += position.y;
+struct VS_INPUT {
+	float3 pos : POSITION;
+};
 
-	return newPos;
+struct VS_OUTPUT
+{
+	float4 pos: SV_POSITION;
+	float4 colour: COLOUR;
+};
+
+VS_OUTPUT main(VS_INPUT a_input)
+{
+	VS_OUTPUT outPut;
+	float4 newPos = mul(float4(a_input.pos, 1.f), transform);
+	outPut.pos = newPos;
+	outPut.colour = colour;
+
+	return outPut;
 }

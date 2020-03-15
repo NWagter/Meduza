@@ -1,48 +1,31 @@
-#include "cepch.h"
+#include "mePch.h"
+
 #include "Gfx/RenderLayer.h"
+#include "Gfx/Window.h"
 
-#include "Gfx/Camera.h"
-
-#include "Core/Core.h"
 #ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/DX12_RenderLayer.h"
-static cr::RenderAPI gs_currentAPI = cr::RenderAPI::DX12;
-#else 
-#include "Platform/Switch/NVN_RenderLayer.h"
-static cr::RenderAPI gs_currentAPI = cr::RenderAPI::NVN;
-#endif
+static mr::RenderAPI gs_currentRenderAPI = mr::RenderAPI::DX12;
+#include "Platform/Windows/DirectX12/DX12_RenderLayer.h"
+#endif // PLATFORM_WINDOWS
 
 
-cr::RenderLayer * cr::RenderLayer::CreateRenderLayer(cr::Window& a_window)
+mr::RenderLayer* mr::RenderLayer::CreateRenderLayer(Window& a_window)
 {
-	switch (gs_currentAPI)
+	
+	switch (gs_currentRenderAPI)
 	{
-	case RenderAPI::None:
-		CE_GFX_WARN("Can't create render layer no API defined");
-		return nullptr;
-	case RenderAPI::DX12:
-#ifdef PLATFORM_WINDOWS
-		CE_GFX_INFO("DX12 render layer generated");
-		return new DX12_RenderLayer(a_window);
-#else // 
-		CE_GFX_WARN("Can't Create Window no API defined");
-		return nullptr;
-#endif
-	case RenderAPI::NVN:
-#ifdef PLATFORM_SWITCH
-		return new NVN_RenderLayer(a_window);
-		CE_CORE_ASSERT_M(false, "Text");
-#else // 
-		CE_GFX_WARN("Can't Create for Switch no API defined");
-		return nullptr;
-#endif
+	case mr::RenderAPI::None:
+		break;
+	case mr::RenderAPI::DX12:
+		return new DX12_Renderlayer(a_window);
+		break;
+	default:
 		break;
 	}
-
 	return nullptr;
 }
 
-cr::RenderAPI cr::RenderLayer::GetUsedAPI()
+mr::RenderAPI mr::RenderLayer::GetAPI()
 {
-	return gs_currentAPI;
+	return gs_currentRenderAPI;
 }

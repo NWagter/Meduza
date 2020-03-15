@@ -21,9 +21,15 @@
     <ClCompile Include="Source\Sandbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Sandbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

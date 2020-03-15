@@ -1,10 +1,11 @@
+#include "pch.h"
 #include "Sandbox.h"
 
-#include "Core/Meduza.h"
+#include "../../Meduza/Include/Core/Meduza.h"
 
-Sandbox::Sandbox(bool a_run)
+Sandbox::Sandbox()
 {
-	m_sandboxRun = a_run;
+	m_meduza = new me::Meduza();
 
 	m_colour[0] = 0.4f;
 	m_colour[1] = 0.6f;
@@ -14,24 +15,21 @@ Sandbox::Sandbox(bool a_run)
 
 Sandbox::~Sandbox()
 {
+	delete m_meduza;
 }
 
 void Sandbox::Update(float)
 {	
-
+	//Game Update Loop
 }
 
 void Sandbox::Run()
 {
-
-	while (m_sandboxRun)
+	while (m_meduza->IsActive())
 	{
-
-
+		m_meduza->Clear(m_colour);
+		Update(0);
+		m_meduza->Update(0);
+		m_meduza->Render();
 	}
-}
-
-void Sandbox::ImGuiUpdate()
-{
-	
 }

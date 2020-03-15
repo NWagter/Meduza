@@ -1,20 +1,22 @@
 #pragma once
 
-
+namespace me {
+	class Meduza;
+}
 
 class Sandbox
 {
 public:
-	Sandbox(bool a_run = false);
+	Sandbox();
 	~Sandbox();
 
-	void Update(float);
 	void Run();
 
-	void ImGuiUpdate();
 
 private:
+	void Update(float);
+
+	me::Meduza* m_meduza = nullptr;
 	float m_colour[4];
-	bool m_sandboxRun = false;
 };
 

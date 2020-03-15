@@ -1,13 +1,15 @@
+#include "pch.h"
 #include "Sandbox.h"
-#ifdef DEBUG
+
+#ifdef _DEBUG
 #include <vld.h>
 #endif // DEBUG
 
+int main()
+{
+	Sandbox* app = new Sandbox();
 
+	app->Run();
 
-int main() {
-
-	Sandbox app = Sandbox(true);
-
-	app.Run();
+	delete app;
 }

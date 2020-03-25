@@ -18,5 +18,5 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.0
 
     - name: BuildMeduza
-      working-directory: Sandbox/
-      run: msbuild Sandbox.vcxproj
+      working-directory: Meduza/
+      run: msbuild Meduza.sln

@@ -5,10 +5,12 @@
 class InputManager;
 
 
-namespace mr {
+namespace mr
+{
 	class Window;
 
-	class WinWindow : public mr::Window {
+	class WinWindow : public mr::Window 
+	{
 	public:
 		WinWindow(int, int, std::string);
 		virtual ~WinWindow();
@@ -22,7 +24,8 @@ namespace mr {
 
 		inline const HWND GetHWND() { return m_windowHandle; }
 
-		class WindowClass {
+		class WindowClass 
+		{
 		public:
 			static const char* GetName();
 			static HINSTANCE GetInstance();

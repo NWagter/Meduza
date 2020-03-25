@@ -33,6 +33,42 @@
     <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_RenderLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Device.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Fence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_UploadBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_Helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Gfx\GfxHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Cross Platform\Vulkan\VK_RenderLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp">
@@ -51,6 +87,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\Windows\DirectX12\DX12_RenderLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Fence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Cross Platform\Vulkan\VK_RenderLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

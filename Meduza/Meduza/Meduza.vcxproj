@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)External\Dx12;$(VULKAN_SDK)\Include;$(SolutionDir)External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -68,6 +68,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -77,7 +82,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)External\Dx12;$(VULKAN_SDK)\Include;$(SolutionDir)External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -92,10 +97,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Meduza.h" />
+    <ClInclude Include="Include\Gfx\GfxHelper.h" />
     <ClInclude Include="Include\Gfx\RenderLayer.h" />
     <ClInclude Include="Include\Gfx\Window.h" />
     <ClInclude Include="Include\mePch.h" />
+    <ClInclude Include="Include\Platform\Cross Platform\Vulkan\VK_RenderLayer.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_Helper.h" />
     <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_RenderLayer.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandList.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Device.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Fence.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.h" />
+    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_UploadBuffer.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +123,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Platform\Cross Platform\Vulkan\VK_RenderLayer.cpp" />
     <ClCompile Include="Source\Platform\Windows\DirectX12\DX12_RenderLayer.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandList.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Device.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Fence.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.cpp" />
+    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.cpp" />
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

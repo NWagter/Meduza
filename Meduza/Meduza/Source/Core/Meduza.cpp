@@ -4,6 +4,7 @@
 #include "Gfx/Window.h"
 #include "Gfx/RenderLayer.h"
 
+
 me::Meduza::Meduza()
 {
 	m_window = mr::Window::NewWindow(720, 480, mr::RenderLayer::GetAPI());
@@ -12,15 +13,14 @@ me::Meduza::Meduza()
 
 me::Meduza::~Meduza()
 {
-	delete m_window;
 	delete m_renderLayer;
+	delete m_window;
 }
 
 void me::Meduza::Update(float)
 {
 	//Engine Update Loop
 	m_window->Peek();
-	m_renderLayer->Update();
 }
 
 void me::Meduza::Clear(float a_c[4])
@@ -30,6 +30,7 @@ void me::Meduza::Clear(float a_c[4])
 
 void me::Meduza::Render()
 {
+	m_renderLayer->PreRender();
 	m_renderLayer->Render();
 }
 

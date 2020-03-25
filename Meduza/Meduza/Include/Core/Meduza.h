@@ -1,20 +1,25 @@
 #pragma once
 
-namespace mr {
+namespace mr 
+{
 	class RenderLayer;
 	class Window;
 }
 
-namespace me {
+namespace me 
+{
 
-	class Meduza {
+	class Meduza 
+	{
 	public:
 		Meduza();
 		~Meduza();
 
 		void Update(float);
+
 		void Clear(float[4]);
 		void Render();
+
 		bool IsActive();
 
 	private:

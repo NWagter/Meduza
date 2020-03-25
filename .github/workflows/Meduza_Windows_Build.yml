@@ -1,0 +1,22 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: BuildMeduza
+      working-directory: Meduza/
+      run: msbuild Meduza.sln

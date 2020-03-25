@@ -20,7 +20,9 @@
 #include <chrono>
 
 
+#ifdef VULKAN_USE
 #include <vulkan/vulkan.h>
+#endif
 
 #ifdef PLATFORM_WINDOWS
 

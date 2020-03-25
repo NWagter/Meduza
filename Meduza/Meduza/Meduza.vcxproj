@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)External\Dx12;$(VULKAN_SDK)\Include;$(SolutionDir)External\Optick\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)External\Dx12;$(SolutionDir)External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -101,7 +101,10 @@
     <ClInclude Include="Include\Gfx\RenderLayer.h" />
     <ClInclude Include="Include\Gfx\Window.h" />
     <ClInclude Include="Include\mePch.h" />
-    <ClInclude Include="Include\Platform\Cross Platform\Vulkan\VK_RenderLayer.h" />
+    <ClInclude Include="Include\Platform\Cross Platform\Vulkan\VK_RenderLayer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_Helper.h" />
     <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_RenderLayer.h" />
     <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandList.h" />
@@ -123,7 +126,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Platform\Cross Platform\Vulkan\VK_RenderLayer.cpp" />
+    <ClCompile Include="Source\Platform\Cross Platform\Vulkan\VK_RenderLayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Source\Platform\Windows\DirectX12\DX12_RenderLayer.cpp" />
     <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandList.cpp" />
     <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.cpp" />

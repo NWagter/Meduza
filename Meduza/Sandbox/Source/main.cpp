@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "Sandbox.h"
 
+/*
 #ifdef _DEBUG
 #include <vld.h>
 #endif // DEBUG
+*/
 
 int main()
 {

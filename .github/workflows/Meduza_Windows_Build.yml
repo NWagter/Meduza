@@ -12,12 +12,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - uses: actions/checkout@master
+
+    - name: Setup VS2019
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: MSBuild
+      working-directory: Meduza/Sandbox/
+      run: msbuild Sandbox.vcxproj

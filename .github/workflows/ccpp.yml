@@ -1,0 +1,20 @@
+name: C/C++ CI
+
+on:
+  schedule:
+    - cron: '10 17 * * *'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Build Meduza
+      working-directory: Meduza/
+      run: msbuild Meduza.sln -p:Configuration=Release

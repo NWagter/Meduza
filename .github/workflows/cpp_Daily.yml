@@ -2,7 +2,7 @@ name: C++ Daily Windows
 
 on:
   schedule:
-    - cron: '30 * * * *'
+    - cron: '00 16 * * *'
 
 jobs:
   build:

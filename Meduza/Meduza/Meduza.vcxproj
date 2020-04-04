@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Developer|x64">
+      <Configuration>Developer</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
@@ -30,6 +34,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -41,12 +52,19 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
@@ -95,51 +113,38 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Meduza.h" />
-    <ClInclude Include="Include\Gfx\GfxHelper.h" />
-    <ClInclude Include="Include\Gfx\RenderLayer.h" />
-    <ClInclude Include="Include\Gfx\Window.h" />
     <ClInclude Include="Include\mePch.h" />
-    <ClInclude Include="Include\Platform\Cross Platform\Vulkan\VK_RenderLayer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_Helper.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\DX12_RenderLayer.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandList.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Device.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Fence.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.h" />
-    <ClInclude Include="Include\Platform\Windows\DirectX12\Gfx\DX12_UploadBuffer.h" />
-    <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Gfx\Window.cpp" />
-    <ClCompile Include="Source\Gfx\RenderLayer.cpp" />
     <ClCompile Include="Source\Core\Meduza.cpp" />
     <ClCompile Include="Source\mePch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Platform\Cross Platform\Vulkan\VK_RenderLayer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Source\Platform\Windows\DirectX12\DX12_RenderLayer.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandList.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_CommandQueue.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Descriptor.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Device.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Fence.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_PipelineStateObject.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_SignatureRoot.cpp" />
-    <ClCompile Include="Source\Platform\Windows\DirectX12\Gfx\DX12_Swapchain.cpp" />
-    <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

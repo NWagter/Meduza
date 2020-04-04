@@ -1,6 +1,6 @@
 #pragma once
 
-namespace me 
+namespace meduza
 {
 	class Meduza;
 }
@@ -17,7 +17,7 @@ public:
 private:
 	void Update(float);
 
-	me::Meduza* m_meduza = nullptr;
+	meduza::Meduza* m_meduza = nullptr;
 	float m_colour[4];
 };
 

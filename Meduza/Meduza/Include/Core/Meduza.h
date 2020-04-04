@@ -1,13 +1,12 @@
 #pragma once
 
-namespace mr 
+namespace meduza
 {
-	class RenderLayer;
-	class Window;
-}
+	enum class API
+	{
 
-namespace me 
-{
+	};
+
 
 	class Meduza 
 	{
@@ -15,15 +14,14 @@ namespace me
 		Meduza();
 		~Meduza();
 
-		void Update(float);
 
-		void Clear(float[4]);
+
+		void Clear(float[]);
+
 		void Render();
-
-		bool IsActive();
+		bool IsWindowActive() const { return m_windowActive; }
 
 	private:
-		mr::Window* m_window;
-		mr::RenderLayer* m_renderLayer;
+		bool m_windowActive = false;
 	};
 }

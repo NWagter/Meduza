@@ -8,7 +8,7 @@
 
 Sandbox::Sandbox()
 {
-	m_meduza = new me::Meduza();
+	m_meduza = new meduza::Meduza();
 
 	m_colour[0] = 0.29f;
 	m_colour[1] = 0.59f;
@@ -28,15 +28,12 @@ void Sandbox::Update(float)
 
 void Sandbox::Run()
 {
-	while (m_meduza->IsActive())
+	while (m_meduza->IsWindowActive())
 	{
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 
 		m_meduza->Clear(m_colour);
-
-		//Engine Update
-		m_meduza->Update(0);
 
 		//Game Update
 		Update(0);

@@ -1,4 +1,4 @@
-name: Daily Windows Build
+name: C/C++ Daily Workflow
 
 on:
   schedule:

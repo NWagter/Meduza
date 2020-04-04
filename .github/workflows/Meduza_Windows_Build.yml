@@ -17,4 +17,4 @@ jobs:
 
     - name: Build Meduza
       working-directory: Meduza/
-      run: msbuild Meduza.sln , --Release
+      run: msbuild Meduza.sln , --config Release

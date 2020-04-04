@@ -21,6 +21,9 @@
     <ClInclude Include="Include\mePch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\MeduzaHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp">

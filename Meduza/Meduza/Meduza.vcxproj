@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Meduza.h" />
+    <ClInclude Include="Include\Core\MeduzaHelper.h" />
     <ClInclude Include="Include\mePch.h" />
   </ItemGroup>
   <ItemGroup>

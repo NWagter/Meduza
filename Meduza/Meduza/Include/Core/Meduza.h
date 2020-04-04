@@ -4,6 +4,12 @@ namespace meduza
 {
 	enum class API
 	{
+		OpenGL,
+#ifdef PLATFORM_PI
+		OpenGLES2,
+#elif PLATFORM_WINDOWS
+		DirectX12
+#endif // PLATFORM_WINDOWS
 
 	};
 

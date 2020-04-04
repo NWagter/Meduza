@@ -59,6 +59,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
@@ -67,6 +68,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -76,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS;DEV</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -123,7 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS;DEV</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>

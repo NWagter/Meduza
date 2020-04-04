@@ -3,8 +3,6 @@
 
 #include "../../Meduza/Include/Core/Meduza.h"
 
-#include "optick.h"
-#include "optick.config.h"
 
 Sandbox::Sandbox()
 {
@@ -30,9 +28,10 @@ void Sandbox::Run()
 {
 	while (m_meduza->IsWindowActive())
 	{
+#ifdef DEV
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
-
+#endif // DEV
 		m_meduza->Clear(m_colour);
 
 		//Game Update

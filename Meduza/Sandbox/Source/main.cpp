@@ -1,11 +1,10 @@
-#include "pch.h"
 #include "Sandbox.h"
 
-/*
-#ifdef _DEBUG
+
+#ifdef DEV
 #include <vld.h>
-#endif // DEBUG
-*/
+#endif // DEV
+
 
 int main()
 {

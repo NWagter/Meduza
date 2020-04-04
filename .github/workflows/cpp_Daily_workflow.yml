@@ -1,4 +1,4 @@
-ame: C/C++ Daily Workflow
+name: C/C++ Daily Workflow
 
 on:
   schedule:

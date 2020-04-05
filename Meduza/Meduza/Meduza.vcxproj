@@ -141,10 +141,12 @@
     <ClInclude Include="Include\Core\MeduzaHelper.h" />
     <ClInclude Include="Include\Core\Renderer.h" />
     <ClInclude Include="Include\mePch.h" />
+    <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp" />
     <ClCompile Include="Source\Core\Renderer.cpp" />
+    <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp" />
     <ClCompile Include="Source\mePch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -17,7 +17,7 @@ meduza::Meduza::~Meduza()
 
 }
 
-void meduza::Meduza::Clear(float a_colour[4])
+void meduza::Meduza::Clear(float a_colour[])
 {
 	if (m_renderer != nullptr)
 	{

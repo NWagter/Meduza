@@ -24,7 +24,7 @@ namespace meduza
 		bool IsWindowActive() const { return m_windowActive; }
 
 	private:
-		bool m_windowActive = true;
+		bool m_windowActive = false;
 		renderer::Renderer* m_renderer;
 	};
 }

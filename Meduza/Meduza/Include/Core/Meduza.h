@@ -18,7 +18,7 @@ namespace meduza
 
 
 
-		void Clear(float[]);
+		void Clear(float[4]);
 
 		void Render();
 		bool IsWindowActive() const { return m_windowActive; }

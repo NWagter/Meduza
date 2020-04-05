@@ -12,6 +12,7 @@ namespace meduza
 		{
 		public:
 			static Renderer* CreateRenderer(API);
+			virtual ~Renderer() = default;
 
 			virtual void Clear(float[4]) = 0;
 

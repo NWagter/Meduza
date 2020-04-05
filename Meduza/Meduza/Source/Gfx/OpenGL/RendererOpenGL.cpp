@@ -4,11 +4,12 @@
 
 meduza::renderer::RendererOpenGL::RendererOpenGL()
 {
-	printf("OpenGL Renderer \n");
+	printf("Create OpenGL Renderer \n");
 }
 
 meduza::renderer::RendererOpenGL::~RendererOpenGL()
 {
+	printf("Delete OpenGL Renderer \n");
 }
 
 void meduza::renderer::RendererOpenGL::Clear(float[])

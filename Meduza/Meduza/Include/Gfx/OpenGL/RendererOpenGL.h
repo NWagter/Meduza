@@ -10,7 +10,7 @@ namespace meduza
 		{
 		public:
 			RendererOpenGL();
-			~RendererOpenGL();
+			~RendererOpenGL() override;
 
 			void Clear(float[]) override;
 

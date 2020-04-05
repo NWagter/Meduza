@@ -1,18 +1,14 @@
 #pragma once
 
+#include "MeduzaHelper.h"
+
+
 namespace meduza
 {
-	enum class API
+	namespace renderer
 	{
-		OpenGL,
-#ifdef PLATFORM_PI
-		OpenGLES2,
-#elif PLATFORM_WINDOWS
-		DirectX12
-#endif // PLATFORM_WINDOWS
-
-	};
-
+		class Renderer;
+	}
 
 	class Meduza 
 	{
@@ -28,6 +24,7 @@ namespace meduza
 		bool IsWindowActive() const { return m_windowActive; }
 
 	private:
-		bool m_windowActive = false;
+		bool m_windowActive = true;
+		renderer::Renderer* m_renderer;
 	};
 }

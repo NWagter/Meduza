@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@Development
 
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1.0.0

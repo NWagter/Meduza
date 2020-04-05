@@ -10,6 +10,7 @@ but what is currently planned is the following :
   - 2D Rendering
     - Sprites
     - Particle System
+    - Animator 2D
   - 3D Rendering
     - Geometry
       - Cubes
@@ -21,13 +22,16 @@ but what is currently planned is the following :
     - Lights
       - Point Lights
       - Directional Lights
+    - Skeletal animations
 - Engine
   - ImGui Menus
     - Object hierarchy
     - Object Spawning
 
 # Graphics APIs :
+- OpenGL
 - DirectX 12
 
 # Libraries Used :
 - ImGui
+- Optick

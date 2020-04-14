@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Core/MeduzaHelper.h"
+#include "MeduzaUtil.h"
 
 namespace meduza
 {
-
-
 	namespace renderer
 	{
 		class Renderer
@@ -14,7 +12,7 @@ namespace meduza
 			static Renderer* CreateRenderer(API);
 			virtual ~Renderer() = default;
 
-			virtual void Clear(float[4]) = 0;
+			virtual void Clear(Colour) = 0;
 
 			virtual void Draw(Sprite) = 0;
 			virtual void Draw(Mesh) = 0;

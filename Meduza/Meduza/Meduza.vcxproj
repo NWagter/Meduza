@@ -59,16 +59,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
-    <TargetName>$(ProjectName)_d</TargetName>
+    <TargetName>Win64_$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <TargetName>Win64_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
     <OutDir>$(SolutionDir)Executable\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>Win64_$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -78,7 +79,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS;DEV</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -127,7 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS;DEV</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -141,14 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Meduza.h" />
-    <ClInclude Include="Include\Core\MeduzaHelper.h" />
+    <ClInclude Include="Include\Core\MeduzaUtil.h" />
     <ClInclude Include="Include\Core\Renderer.h" />
+    <ClInclude Include="Include\Gfx\DirectX12\RendererDX12.h" />
     <ClInclude Include="Include\mePch.h" />
     <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp" />
+    <ClCompile Include="Source\Core\MeduzaUtil.cpp" />
     <ClCompile Include="Source\Core\Renderer.cpp" />
+    <ClCompile Include="Source\Gfx\DirectX12\RendererDX12.cpp" />
     <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp" />
     <ClCompile Include="Source\mePch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

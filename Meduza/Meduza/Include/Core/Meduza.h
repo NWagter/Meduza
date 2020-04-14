@@ -1,7 +1,6 @@
 #pragma once
 
-#include "MeduzaHelper.h"
-
+#include "MeduzaUtil.h"
 
 namespace meduza
 {
@@ -13,12 +12,12 @@ namespace meduza
 	class Meduza 
 	{
 	public:
-		Meduza();
+		Meduza(API);
 		~Meduza();
 
 
 
-		void Clear(float[4]);
+		void Clear(Colour);
 
 		void Render();
 		bool IsWindowActive() const { return m_windowActive; }

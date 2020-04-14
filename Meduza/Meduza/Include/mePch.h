@@ -26,6 +26,8 @@
 
 #ifdef PLATFORM_WINDOWS
 
+#define WIN 1
+
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

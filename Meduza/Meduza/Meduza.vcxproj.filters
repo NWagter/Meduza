@@ -21,13 +21,16 @@
     <ClInclude Include="Include\mePch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\MeduzaHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Gfx\DirectX12\RendererDX12.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\MeduzaUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -42,6 +45,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gfx\DirectX12\RendererDX12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\MeduzaUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

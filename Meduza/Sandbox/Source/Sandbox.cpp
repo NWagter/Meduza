@@ -1,17 +1,16 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#include "../../Meduza/Include/Core/Meduza.h"
+#define WIN 1
 
+#include "../../Meduza/Include/Core/Meduza.h"
 
 Sandbox::Sandbox()
 {
-	m_meduza = new meduza::Meduza();
 
-	m_colour[0] = 0.29f;
-	m_colour[1] = 0.59f;
-	m_colour[2] = 0.82f;
-	m_colour[3] = 1.0f;
+	meduza::API::OpenGL;
+	m_meduza = new meduza::Meduza(meduza::API::DirectX12);
+
 }
 
 Sandbox::~Sandbox()
@@ -32,7 +31,7 @@ void Sandbox::Run()
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 #endif // DEV
-		m_meduza->Clear(m_colour);
+		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
 
 		//Game Update
 		Update(0);

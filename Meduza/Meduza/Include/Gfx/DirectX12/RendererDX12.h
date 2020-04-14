@@ -6,11 +6,11 @@ namespace meduza
 {
 	namespace renderer
 	{
-		class RendererOpenGL : public Renderer
+		class RendererDX12 : public Renderer
 		{
 		public:
-			RendererOpenGL();
-			~RendererOpenGL() override;
+			RendererDX12();
+			~RendererDX12() override;
 
 			void Clear(Colour) override;
 

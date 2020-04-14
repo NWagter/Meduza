@@ -3,21 +3,27 @@
 
 #include "Core/Renderer.h"
 
-meduza::Meduza::Meduza()
+meduza::Meduza::Meduza(API a_api)
 {
-	m_windowActive = true;
-
-	API api = API::OpenGL;
+	API api = a_api;
 
 	m_renderer = renderer::Renderer::CreateRenderer(api);
+
+	if (m_renderer != nullptr)
+	{
+		m_windowActive = true;
+	}
 }
 
 meduza::Meduza::~Meduza()
 {
-	delete m_renderer;
+	if (m_renderer != nullptr)
+	{
+		delete m_renderer;
+	}
 }
 
-void meduza::Meduza::Clear(float a_colour[4])
+void meduza::Meduza::Clear(Colour a_colour)
 {
 	if (m_renderer != nullptr)
 	{

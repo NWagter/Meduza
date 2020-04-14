@@ -12,7 +12,7 @@ meduza::renderer::RendererOpenGL::~RendererOpenGL()
 	printf("Delete OpenGL Renderer \n");
 }
 
-void meduza::renderer::RendererOpenGL::Clear(float[])
+void meduza::renderer::RendererOpenGL::Clear(Colour)
 {
 }
 

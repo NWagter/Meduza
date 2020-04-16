@@ -9,7 +9,7 @@ namespace meduza
 		class RendererOpenGL : public Renderer
 		{
 		public:
-			RendererOpenGL();
+			RendererOpenGL(Window&);
 			~RendererOpenGL() override;
 
 			void Clear(Colour) override;

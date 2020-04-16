@@ -1,7 +1,6 @@
 #include "mePch.h"
 
 #include "Core/Renderer.h"
-
 #ifdef PLATFORM_WINDOWS
 
 #include "Gfx/OpenGL/RendererOpenGL.h"
@@ -10,7 +9,7 @@
 #endif // PLATFORM_WINDOWS
 
 
-meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api)
+meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api, Window& a_window)
 {
 	switch (a_api)
 	{
@@ -18,7 +17,7 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 
 #ifdef PLATFORM_WINDOWS
 
-		return new RendererOpenGL();
+		return new RendererOpenGL(a_window);
 
 #else // PLATFORM_WINDOWS
 
@@ -29,7 +28,7 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	case meduza::API::DirectX12:
 #ifdef PLATFORM_WINDOWS
 
-		return new RendererDX12();
+		return new RendererDX12(a_window);
 
 #else // PLATFORM_WINDOWS
 
@@ -40,3 +39,4 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 
 	return nullptr;
 }
+

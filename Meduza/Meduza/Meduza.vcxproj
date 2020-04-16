@@ -144,14 +144,21 @@
     <ClInclude Include="Include\Core\Meduza.h" />
     <ClInclude Include="Include\Core\MeduzaUtil.h" />
     <ClInclude Include="Include\Core\Renderer.h" />
+    <ClInclude Include="Include\Core\Window.h" />
+    <ClInclude Include="Include\Gfx\DirectX12\DeviceDX12.h" />
+    <ClInclude Include="Include\Gfx\DirectX12\HelperDX12.h" />
     <ClInclude Include="Include\Gfx\DirectX12\RendererDX12.h" />
     <ClInclude Include="Include\mePch.h" />
     <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
+    <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp" />
     <ClCompile Include="Source\Core\MeduzaUtil.cpp" />
     <ClCompile Include="Source\Core\Renderer.cpp" />
+    <ClCompile Include="Source\Core\Window.cpp" />
+    <ClCompile Include="Source\Gfx\DirectX12\DeviceDX12.cpp" />
+    <ClCompile Include="Source\Gfx\DirectX12\HelperDX12.cpp" />
     <ClCompile Include="Source\Gfx\DirectX12\RendererDX12.cpp" />
     <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp" />
     <ClCompile Include="Source\mePch.cpp">
@@ -159,6 +166,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

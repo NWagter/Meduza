@@ -4,12 +4,16 @@
 
 namespace meduza
 {
+	class Window;
+
 	namespace renderer
 	{
+		class DeviceDX12;
+
 		class RendererDX12 : public Renderer
 		{
 		public:
-			RendererDX12();
+			RendererDX12(Window&);
 			~RendererDX12() override;
 
 			void Clear(Colour) override;
@@ -19,6 +23,10 @@ namespace meduza
 			void Draw(Text) override;
 
 			void Render() override;
+
+		private:
+			DeviceDX12* m_device;
+			Window* m_window;
 		};
 	}
 }

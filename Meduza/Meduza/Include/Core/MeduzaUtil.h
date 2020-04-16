@@ -5,10 +5,7 @@ namespace meduza
 	enum class API
 	{
 		OpenGL = 0,
-
-#if WIN
 		DirectX12,
-#endif // WIN
 
 	};
 

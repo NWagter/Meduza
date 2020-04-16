@@ -4,12 +4,14 @@
 
 namespace meduza
 {
+	class Window;
+
 	namespace renderer
 	{
 		class Renderer
 		{
 		public:
-			static Renderer* CreateRenderer(API);
+			static Renderer* CreateRenderer(API, Window&);
 			virtual ~Renderer() = default;
 
 			virtual void Clear(Colour) = 0;

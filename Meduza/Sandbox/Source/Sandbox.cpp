@@ -1,16 +1,13 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#define WIN 1
-
 #include "../../Meduza/Include/Core/Meduza.h"
 
 Sandbox::Sandbox()
 {
 
-	meduza::API::OpenGL;
 	m_meduza = new meduza::Meduza(meduza::API::DirectX12);
-
+	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 
 Sandbox::~Sandbox()
@@ -21,6 +18,7 @@ Sandbox::~Sandbox()
 void Sandbox::Update(float)
 {	
 	//Game Update Loop
+	m_meduza->Peek();
 }
 
 void Sandbox::Run()

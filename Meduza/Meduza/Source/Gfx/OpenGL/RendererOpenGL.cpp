@@ -2,7 +2,7 @@
 
 #include "Gfx/OpenGL/RendererOpenGL.h"
 
-meduza::renderer::RendererOpenGL::RendererOpenGL()
+meduza::renderer::RendererOpenGL::RendererOpenGL(Window&)
 {
 	printf("Create OpenGL Renderer \n");
 }

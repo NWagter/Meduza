@@ -4,12 +4,15 @@
 
 namespace meduza
 {
+	class Window;
+
 	namespace renderer
 	{
 		class RendererOpenGL : public Renderer
 		{
 		public:
 			RendererOpenGL(Window&);
+			void CreateContext();
 			~RendererOpenGL() override;
 
 			void Clear(Colour) override;
@@ -19,6 +22,9 @@ namespace meduza
 			void Draw(Text) override;
 
 			void Render() override;
+
+		private:
+			Window* m_window;
 		};
 	}
 }

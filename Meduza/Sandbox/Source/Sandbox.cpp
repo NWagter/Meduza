@@ -6,7 +6,7 @@
 Sandbox::Sandbox()
 {
 
-	m_meduza = new meduza::Meduza(meduza::API::DirectX12);
+	m_meduza = new meduza::Meduza(meduza::API::OpenGL);
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 

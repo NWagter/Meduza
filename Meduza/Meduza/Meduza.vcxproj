@@ -151,6 +151,7 @@
     <ClInclude Include="Include\mePch.h" />
     <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
+    <ClInclude Include="Include\Util\MeduzaMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp" />
@@ -167,6 +168,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
+    <ClCompile Include="Source\Util\MeduzaMath.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

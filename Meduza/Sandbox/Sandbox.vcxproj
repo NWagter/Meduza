@@ -89,7 +89,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Win64_Meduza_d.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Win64_Meduza_d.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;OptickCore.lib;Opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\OptickCore.dll" "$(outDir)"</Command>

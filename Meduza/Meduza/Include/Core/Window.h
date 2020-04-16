@@ -2,6 +2,7 @@
 
 
 #include "MeduzaUtil.h"
+#include "Util/MeduzaMath.h"
 
 namespace meduza
 {
@@ -17,5 +18,7 @@ namespace meduza
 		virtual std::string GetTitle() = 0;
 		
 		virtual bool WindowActive() = 0;
+
+		virtual math::Vec2 GetSize() = 0;
 	};
 }

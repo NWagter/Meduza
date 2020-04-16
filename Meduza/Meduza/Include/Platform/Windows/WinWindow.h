@@ -34,7 +34,10 @@ namespace meduza
 		bool WindowActive() override;
 
 		void SetTitle(std::string) override;
+
+		inline math::Vec2 GetSize() override { return m_size; }
 		inline std::string GetTitle() override { return m_title; }
+		inline HWND GetHandle() { return m_windowHandle; }
 
 	private:
 		static LRESULT WINAPI HandleMsgSetup(HWND, UINT, WPARAM, LPARAM);
@@ -46,6 +49,7 @@ namespace meduza
 		HWND m_windowHandle;
 
 		std::string m_title;
+		math::Vec2 m_size;
 		bool m_windowActive = false;
 	};
 }

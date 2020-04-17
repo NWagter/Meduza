@@ -8,12 +8,13 @@ namespace meduza
 
 	namespace renderer
 	{
-		class RendererOpenGL : public Renderer
+		class DeviceDX12;
+
+		class RendererDX12 : public Renderer
 		{
 		public:
-			RendererOpenGL(Window&);
-			void CreateContext();
-			~RendererOpenGL() override;
+			RendererDX12(Window&);
+			~RendererDX12() override;
 
 			void Clear(Colour) override;
 
@@ -24,6 +25,7 @@ namespace meduza
 			void Render() override;
 
 		private:
+			DeviceDX12* m_device;
 			Window* m_window;
 		};
 	}

@@ -1,5 +1,6 @@
 #pragma once
 
+
 namespace meduza
 {
 	class Meduza;
@@ -18,6 +19,5 @@ private:
 	void Update(float);
 
 	meduza::Meduza* m_meduza = nullptr;
-	float m_colour[4];
 };
 

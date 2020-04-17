@@ -26,11 +26,15 @@
 
 #ifdef PLATFORM_WINDOWS
 
+#define WIN
+
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
+#pragma warning(disable:4265)
 #include <wrl.h>
+#pragma warning(default:4265)
 
 // DirectX 12 specific headers.
 #include <d3d12.h>

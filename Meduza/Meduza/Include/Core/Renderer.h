@@ -1,19 +1,20 @@
 #pragma once
 
-#include "Core/MeduzaHelper.h"
+#include "MeduzaUtil.h"
 
 namespace meduza
 {
-
+	class Window;
 
 	namespace renderer
 	{
 		class Renderer
 		{
 		public:
-			static Renderer* CreateRenderer(API);
+			static Renderer* CreateRenderer(API, Window&);
+			virtual ~Renderer() = default;
 
-			virtual void Clear(float[4]) = 0;
+			virtual void Clear(Colour) = 0;
 
 			virtual void Draw(Sprite) = 0;
 			virtual void Draw(Mesh) = 0;

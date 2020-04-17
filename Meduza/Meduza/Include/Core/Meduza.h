@@ -1,10 +1,11 @@
 #pragma once
 
-#include "MeduzaHelper.h"
-
+#include "MeduzaUtil.h"
 
 namespace meduza
 {
+	class Window;
+
 	namespace renderer
 	{
 		class Renderer;
@@ -13,18 +14,22 @@ namespace meduza
 	class Meduza 
 	{
 	public:
-		Meduza();
+		Meduza(API);
 		~Meduza();
 
 
 
-		void Clear(float[]);
-
+		void Clear(Colour);
 		void Render();
-		bool IsWindowActive() const { return m_windowActive; }
+
+
+		void Peek();
+		bool IsWindowActive() const;
+		std::string GetWindowName();
 
 	private:
 		bool m_windowActive = false;
-		renderer::Renderer* m_renderer;
+		renderer::Renderer* m_renderer = nullptr;
+		Window* m_window;
 	};
 }

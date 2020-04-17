@@ -8,6 +8,8 @@ release/
 Intermediate/
 Executable/
 
+!glew32s.lib
+
 # Prerequisites
 *.d
 

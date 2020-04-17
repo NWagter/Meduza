@@ -5,7 +5,9 @@ namespace meduza
 	enum class API
 	{
 		OpenGL = 0,
+#ifdef WIN
 		DirectX12,
+#endif // WIN
 
 	};
 
@@ -51,7 +53,6 @@ namespace meduza
 		static const Colour ROYAL_PURPLE = Colour(0.47f, 0.32f, 0.66f, 1.0f);
 		static const Colour CELESTIAL_BLUE = Colour(0.29f, 0.59f, 0.82f, 1.0f);
 	}
-
 
 	struct Material
 	{

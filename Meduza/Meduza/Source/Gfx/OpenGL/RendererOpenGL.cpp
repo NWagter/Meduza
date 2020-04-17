@@ -1,7 +1,10 @@
 #include "mePch.h"
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
+#pragma comment( lib, "Opengl32.lib" )
+#pragma comment( lib, "glu32.lib" )
+#pragma comment( lib, "glew32s.lib" )
+
+#include <GL/glew.h>
 
 #include "Gfx/OpenGL/RendererOpenGL.h"
 #include "Platform/Windows/WinWindow.h"
@@ -12,6 +15,12 @@ meduza::renderer::RendererOpenGL::RendererOpenGL(Window& a_window)
 	m_window = &a_window;
 
 	CreateContext();
+
+	if (glewInit() != GLEW_OK)
+	{
+		printf("Glew couldn't init!");
+	}
+
 	glViewport(0, 0, int(m_window->GetSize().m_x), int(m_window->GetSize().m_y));
 }
 
@@ -21,17 +30,17 @@ void meduza::renderer::RendererOpenGL::CreateContext()
 	{
 		sizeof(PIXELFORMATDESCRIPTOR),
 		1,
-		PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    //Flags
-		PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-		32,                   // Colordepth of the framebuffer.
+		PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+		PFD_TYPE_RGBA, 
+		32,               
 		0, 0, 0, 0, 0, 0,
 		0,
 		0,
 		0,
 		0, 0, 0, 0,
-		24,                   // Number of bits for the depthbuffer
-		8,                    // Number of bits for the stencilbuffer
-		0,                    // Number of Aux buffers in the framebuffer.
+		24,
+		8,
+		0, 
 		PFD_MAIN_PLANE,
 		0,
 		0, 0, 0
@@ -53,6 +62,7 @@ void meduza::renderer::RendererOpenGL::CreateContext()
 meduza::renderer::RendererOpenGL::~RendererOpenGL()
 {
 	printf("Delete OpenGL Renderer \n");
+
 }
 
 void meduza::renderer::RendererOpenGL::Clear(Colour a_colour)

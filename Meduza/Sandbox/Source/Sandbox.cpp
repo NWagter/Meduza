@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#include "../../Meduza/Include/Core/Meduza.h"
+#define WIN
+
+#include <Meduza.h>
 
 Sandbox::Sandbox()
 {

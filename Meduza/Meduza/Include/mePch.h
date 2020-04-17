@@ -26,7 +26,7 @@
 
 #ifdef PLATFORM_WINDOWS
 
-#define WIN 1
+#define WIN
 
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN

@@ -77,9 +77,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -104,9 +104,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -126,9 +126,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>mePch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
@@ -170,6 +170,8 @@
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
     <ClCompile Include="Source\Util\MeduzaMath.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

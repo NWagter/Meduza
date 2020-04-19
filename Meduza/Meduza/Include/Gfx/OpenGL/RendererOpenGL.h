@@ -17,7 +17,8 @@ namespace meduza
 
 			void Clear(Colour) override;
 
-			void Draw(drawable::Drawable*) override;
+			void Submit(drawable::Drawable*) override;
+			void Submit(std::vector<drawable::Drawable*>) override;
 
 			void Render() override;
 

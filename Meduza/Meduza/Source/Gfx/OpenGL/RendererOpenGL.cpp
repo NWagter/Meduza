@@ -8,6 +8,9 @@
 #include "Gfx/OpenGL/RendererOpenGL.h"
 #include "Platform/Windows/WinWindow.h"
 
+#include "Drawable/Drawable.h"
+#include "Util/MeduzaHelper.h"
+
 meduza::renderer::RendererOpenGL::RendererOpenGL(Window& a_window)
 {
 	printf("Create OpenGL Renderer \n");
@@ -70,8 +73,38 @@ void meduza::renderer::RendererOpenGL::Clear(Colour a_colour)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void meduza::renderer::RendererOpenGL::Draw(drawable::Drawable*)
+void meduza::renderer::RendererOpenGL::Submit(drawable::Drawable*)
 {
+
+	/*
+	printf("\n  -------------------------------------------- \n");
+
+	glm::vec2 pos = a_drawable->GetDrawData()->m_position;
+	printf("drawable pos : %f - %f \n", pos.x, pos.y);
+	
+	printf("\n  -------------------------------------------- \n");
+	*/
+}
+
+void meduza::renderer::RendererOpenGL::Submit(std::vector<drawable::Drawable*>)
+{
+
+	/*
+
+	unsigned int size = unsigned int(a_drawables.size());
+
+	printf("\n Amount of Drawables : %i \n", size);
+
+
+	printf("\n  -------------------------------------------- \n");
+	for (auto d : a_drawables)
+	{
+		glm::vec2 pos = d->GetDrawData()->m_position;
+		printf("d pos : %f - %f \n", pos.x, pos.y);
+	}
+	printf("\n  -------------------------------------------- \n");
+
+	*/
 }
 
 void meduza::renderer::RendererOpenGL::Render()

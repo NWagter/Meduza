@@ -29,6 +29,26 @@ meduza::Meduza::~Meduza()
 	delete m_window;
 }
 
+void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
+{
+	if (m_renderer == nullptr)
+	{
+		static_assert(1,"Renderer is not created!");
+	}
+
+	m_renderer->Submit(a_drawable);
+}
+
+void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
+{
+	if (m_renderer == nullptr)
+	{
+		static_assert(1, "Renderer is not created!");
+	}
+
+	m_renderer->Submit(a_drawables);
+}
+
 void meduza::Meduza::Clear(Colour a_colour)
 {
 	if (m_renderer != nullptr)

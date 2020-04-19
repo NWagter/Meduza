@@ -20,8 +20,6 @@
 #include <chrono>
 
 #include <glm/glm.hpp>
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
 
 #ifdef VULKAN_USE
 #include <vulkan/vulkan.h>

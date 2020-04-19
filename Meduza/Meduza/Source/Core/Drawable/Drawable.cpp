@@ -4,7 +4,12 @@
 
 #include "Gfx/Core/Renderer.h"
 
+meduza::drawable::Drawable::~Drawable()
+{
+
+}
+
 void meduza::drawable::Drawable::Submit(renderer::Renderer& a_renderer)
 {
-	a_renderer.Draw(this);
+	a_renderer.Submit(this);
 }

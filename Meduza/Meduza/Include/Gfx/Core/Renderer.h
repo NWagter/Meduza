@@ -21,7 +21,9 @@ namespace meduza
 
 			virtual void Clear(Colour) = 0;
 
-			virtual void Draw(drawable::Drawable*) = 0;
+			virtual void Submit(drawable::Drawable*) = 0;
+			
+			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
 
 			virtual void Render() = 0;
 		};

@@ -2,6 +2,8 @@
 
 #include "MeduzaUtil.h"
 
+#include "Drawable/Sprite.h"
+
 namespace meduza
 {
 	class Window;
@@ -17,7 +19,9 @@ namespace meduza
 		Meduza(API);
 		~Meduza();
 
+		void Submit(drawable::Drawable*);
 
+		void Submit(std::vector<drawable::Drawable*>);
 
 		void Clear(Colour);
 		void Render();
@@ -26,6 +30,18 @@ namespace meduza
 		void Peek();
 		bool IsWindowActive() const;
 		std::string GetWindowName();
+
+		inline renderer::Renderer& GetGfx()
+		{
+			if (m_renderer != nullptr)
+			{
+				return *m_renderer;
+			}
+
+			static_assert(1, "NO RENDERER AVAILABLE");
+
+			return *m_renderer;
+		}
 
 	private:
 		bool m_windowActive = false;

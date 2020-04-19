@@ -1,8 +1,6 @@
 #pragma once
 
 
-#include "Util/MeduzaMath.h"
-
 namespace meduza
 {
 	class Window

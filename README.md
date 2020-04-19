@@ -33,6 +33,8 @@ but what is currently planned is the following :
 # Libraries Used :
 - ImGui
 - Optick
+- GLM
+- GLEW
 
 # Project description
 Meduza will be a static library that will be as user friendly as possible.

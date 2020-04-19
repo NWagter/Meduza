@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Renderer.h"
+#include "Gfx/Core/Renderer.h"
 
 namespace meduza
 {
@@ -17,9 +17,7 @@ namespace meduza
 
 			void Clear(Colour) override;
 
-			void Draw(Sprite) override;
-			void Draw(Mesh) override;
-			void Draw(Text) override;
+			void Draw(drawable::Drawable*) override;
 
 			void Render() override;
 

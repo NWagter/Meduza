@@ -2,7 +2,6 @@
 
 #pragma comment( lib, "Opengl32.lib" )
 #pragma comment( lib, "glu32.lib" )
-#pragma comment( lib, "glew32s.lib" )
 
 #include <GL/glew.h>
 
@@ -21,7 +20,7 @@ meduza::renderer::RendererOpenGL::RendererOpenGL(Window& a_window)
 		printf("Glew couldn't init!");
 	}
 
-	glViewport(0, 0, int(m_window->GetSize().m_x), int(m_window->GetSize().m_y));
+	glViewport(0, 0, int(m_window->GetSize().x), int(m_window->GetSize().y));
 }
 
 void meduza::renderer::RendererOpenGL::CreateContext()
@@ -71,16 +70,7 @@ void meduza::renderer::RendererOpenGL::Clear(Colour a_colour)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void meduza::renderer::RendererOpenGL::Draw(Sprite)
-{
-
-}
-
-void meduza::renderer::RendererOpenGL::Draw(Mesh)
-{
-}
-
-void meduza::renderer::RendererOpenGL::Draw(Text)
+void meduza::renderer::RendererOpenGL::Draw(drawable::Drawable*)
 {
 }
 

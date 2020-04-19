@@ -63,34 +63,6 @@ namespace meduza
 
 	};
 
-	struct Drawable
-	{
-		//Position
-		//Size
-		//Rotation
-	};
-
-	struct Sprite : Drawable
-	{
-		//Texture
-		//VBO Quad
-		Material m_material;
-	};
-
-	struct Mesh : Drawable
-	{
-		//Texture
-		//VBO
-		Material m_material;
-	};
-
-	struct Text : Drawable
-	{
-		//Font
-		//Albedo
-
-	};
-
 	class MeduzaHelper
 	{
 	public:

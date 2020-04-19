@@ -29,15 +29,7 @@ void meduza::renderer::RendererDX12::Clear(Colour)
 	
 }
 
-void meduza::renderer::RendererDX12::Draw(Sprite)
-{
-}
-
-void meduza::renderer::RendererDX12::Draw(Mesh)
-{
-}
-
-void meduza::renderer::RendererDX12::Draw(Text)
+void meduza::renderer::RendererDX12::Draw(drawable::Drawable*)
 {
 }
 

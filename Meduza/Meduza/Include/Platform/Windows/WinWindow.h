@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Window.h"
+#include "Gfx/Core/Window.h"
 
 namespace meduza
 {
@@ -35,7 +35,7 @@ namespace meduza
 
 		void SetTitle(std::string) override;
 
-		inline math::Vec2 GetSize() override { return m_size; }
+		inline glm::vec2 GetSize() override { return m_size; }
 		inline std::string GetTitle() override { return m_title; }
 		inline HWND GetHandle() { return m_windowHandle; }
 
@@ -49,7 +49,7 @@ namespace meduza
 		HWND m_windowHandle;
 
 		std::string m_title;
-		math::Vec2 m_size;
+		glm::vec2 m_size;
 		bool m_windowActive = false;
 	};
 }

@@ -2,7 +2,7 @@
 #include "Core/Meduza.h"
 
 #include "Platform/Windows/WinWindow.h"
-#include "Core/Renderer.h"
+#include "Gfx/Core/Renderer.h"
 
 meduza::Meduza::Meduza(API a_api)
 {

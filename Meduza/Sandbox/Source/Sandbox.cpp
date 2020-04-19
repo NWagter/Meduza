@@ -3,7 +3,7 @@
 
 #define WIN
 
-#include <Meduza.h>
+#include <Core/Meduza.h>
 
 Sandbox::Sandbox()
 {

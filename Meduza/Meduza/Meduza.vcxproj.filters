@@ -21,9 +21,6 @@
     <ClInclude Include="Include\mePch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,10 +36,16 @@
     <ClInclude Include="Include\Gfx\DirectX12\HelperDX12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Window.h">
+    <ClInclude Include="Include\Platform\Windows\WinWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Platform\Windows\WinWindow.h">
+    <ClInclude Include="Include\Gfx\Core\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Gfx\Core\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Drawable\Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Util\MeduzaMath.h">
@@ -54,9 +57,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\mePch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp">
@@ -74,14 +74,23 @@
     <ClCompile Include="Source\Gfx\DirectX12\DeviceDX12.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Window.cpp">
+    <ClCompile Include="Source\Platform\Windows\WinWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Platform\Windows\WinWindow.cpp">
+    <ClCompile Include="Source\Gfx\Core\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gfx\Core\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Drawable\Drawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Util\MeduzaMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="External\libs\glew32s.lib" />
   </ItemGroup>
 </Project>

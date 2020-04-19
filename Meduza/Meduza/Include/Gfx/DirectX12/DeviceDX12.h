@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Renderer.h"
+#include "Gfx/Core/Renderer.h"
 
 namespace meduza
 {

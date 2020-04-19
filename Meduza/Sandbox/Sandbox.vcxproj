@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);%(PreprocessorDefinitions);DEV</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -107,7 +107,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -137,7 +137,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

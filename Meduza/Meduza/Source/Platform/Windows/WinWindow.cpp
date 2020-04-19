@@ -6,7 +6,7 @@ meduza::WinWindow::WinWindow(int a_width, int a_height, std::string a_title)
 {
 	m_title = a_title;
 
-	m_size = math::Vec2(float(a_width), float(a_height));
+	m_size = glm::vec2(float(a_width), float(a_height));
 
 	RECT wr;
 	wr.left = 100;

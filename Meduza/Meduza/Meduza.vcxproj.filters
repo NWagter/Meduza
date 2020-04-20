@@ -113,8 +113,8 @@
     <ClCompile Include="Source\Core\Math\MeduzaMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="External\OpenGL\glew\lib\glew32s.lib" />
+    <ClCompile Include="External\Glad\src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

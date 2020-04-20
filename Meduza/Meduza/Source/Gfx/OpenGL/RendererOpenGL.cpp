@@ -3,7 +3,7 @@
 #pragma comment( lib, "Opengl32.lib" )
 #pragma comment( lib, "glu32.lib" )
 
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 #include "Gfx/OpenGL/RendererOpenGL.h"
 #include "Platform/Windows/WinWindow.h"
@@ -18,10 +18,12 @@ meduza::renderer::RendererOpenGL::RendererOpenGL(Window& a_window)
 
 	CreateContext();
 
-	if (glewInit() != GLEW_OK)
-	{
-		printf("Glew couldn't init!");
-	}
+	int status = gladLoadGL();
+	if (status != 0)
+		static_assert(1, "Failed to initlize Glad!");
+
+	std::string version = (char*)(glGetString(GL_VERSION));
+	printf("OpenGl version : %s \n", version.c_str());
 
 	glViewport(0, 0, int(m_window->GetSize().x), int(m_window->GetSize().y));
 }
@@ -56,9 +58,6 @@ void meduza::renderer::RendererOpenGL::CreateContext()
 
 	HGLRC ourOpenGLRenderingContext = wglCreateContext(hdc);
 	wglMakeCurrent(hdc, ourOpenGLRenderingContext);
-	std::string version = (char*)(glGetString(GL_VERSION));
-
-	printf("OpenGl version : %s \n", version.c_str());
 }
 
 meduza::renderer::RendererOpenGL::~RendererOpenGL()
@@ -109,5 +108,6 @@ void meduza::renderer::RendererOpenGL::Submit(std::vector<drawable::Drawable*>)
 
 void meduza::renderer::RendererOpenGL::Render()
 {
+
 	SwapBuffers(wglGetCurrentDC());
 }

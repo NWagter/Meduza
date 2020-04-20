@@ -5,6 +5,7 @@
 
 meduza::drawable::Sprite::Sprite()
 {
+	m_drawType = Type::Sprite;
 	m_drawData = new DrawData();
 }
 

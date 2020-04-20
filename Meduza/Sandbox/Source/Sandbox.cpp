@@ -32,7 +32,7 @@ void Sandbox::Run()
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
+	sprites.emplace_back(new meduza::drawable::Drawable());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 
@@ -42,8 +42,6 @@ void Sandbox::Run()
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPostion(pos);
 	pos = meduza::math::Vec2(4, 6);
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[2])->SetPostion(pos);
-	pos = meduza::math::Vec2(8, 2);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[4])->SetPostion(pos);
 	pos = meduza::math::Vec2(1, 9);
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[4])->SetPostion(pos);
 	pos = meduza::math::Vec2(14, 5);

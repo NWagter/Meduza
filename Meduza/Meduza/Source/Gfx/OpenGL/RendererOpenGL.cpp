@@ -87,9 +87,7 @@ void meduza::renderer::RendererOpenGL::Submit(drawable::Drawable*)
 
 void meduza::renderer::RendererOpenGL::Submit(std::vector<drawable::Drawable*>)
 {
-
-	/*
-
+/*
 	unsigned int size = unsigned int(a_drawables.size());
 
 	printf("\n Amount of Drawables : %i \n", size);
@@ -98,11 +96,28 @@ void meduza::renderer::RendererOpenGL::Submit(std::vector<drawable::Drawable*>)
 	printf("\n  -------------------------------------------- \n");
 	for (auto d : a_drawables)
 	{
-		glm::vec2 pos = d->GetDrawData()->m_position;
-		printf("d pos : %f - %f \n", pos.x, pos.y);
+		if (d->GetDrawData() != nullptr)
+		{
+			glm::vec3 pos = d->GetDrawData()->m_position;
+
+			if (d->GetDrawType() == Type::Sprite)
+			{
+				printf("d=Sprite pos : %f - %f \n", pos.x, pos.y);
+			}
+			else if (d->GetDrawType() == Type::Model)
+			{
+				printf("d=Model pos : %f - %f - %f \n", pos.x, pos.y, pos.z);
+			}
+		}
+		else
+		{
+			if (d->GetDrawType() == Type::None)
+			{
+				printf("d=None \n");
+			}
+		}
 	}
 	printf("\n  -------------------------------------------- \n");
-
 	*/
 }
 

@@ -22,7 +22,7 @@ meduza::renderer::RendererOpenGL::RendererOpenGL(Window& a_window)
 	if (status != 0)
 		static_assert(1, "Failed to initlize Glad!");
 
-	std::string version = (char*)(glGetString(GL_VERSION));
+		std::string version = (char*)(glGetString(GL_VERSION));
 	printf("OpenGl version : %s \n", version.c_str());
 
 	glViewport(0, 0, int(m_window->GetSize().x), int(m_window->GetSize().y));

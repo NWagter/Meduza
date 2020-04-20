@@ -90,7 +90,8 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\;$(SolutionDir)Libs;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza_d.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\OptickCore.dll" "$(outDir)"</Command>
@@ -120,7 +121,8 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -151,7 +153,8 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\Release;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\Release\OptickCore.dll" "$(outDir)"</Command>

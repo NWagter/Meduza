@@ -34,7 +34,7 @@ but what is currently planned is the following :
 - ImGui
 - Optick
 - GLM
-- GLEW
+- GLAD
 
 # Project description
 Meduza will be a static library that will be as user friendly as possible.

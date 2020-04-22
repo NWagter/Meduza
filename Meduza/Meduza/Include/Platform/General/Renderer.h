@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Core/MeduzaUtil.h"
+#include "MeduzaUtil.h"
+
+#include "Math/MeduzaMath.h"
 
 namespace meduza
 {
@@ -16,16 +18,19 @@ namespace meduza
 		class Renderer
 		{
 		public:
-			static Renderer* CreateRenderer(API, Window&);
+			static Renderer* CreateRenderer(API, math::Vec2);
 			virtual ~Renderer() = default;
-
-			virtual void Clear(Colour) = 0;
-
-			virtual void Submit(drawable::Drawable*) = 0;
 			
+			virtual void Clear(Colour) = 0;
+			virtual void SwapBuffers() = 0;
+
+			virtual void Draw(drawable::Drawable*) = 0;
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
 
-			virtual void Render() = 0;
+			Window& GetWindow() const;
+
+		private:
+			static Window* m_window;
 		};
 	}
 }

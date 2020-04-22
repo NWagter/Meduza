@@ -94,8 +94,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,6 +120,9 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)External/OpenGL/glew/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glu32.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
     <ClCompile>
@@ -145,6 +147,9 @@
       <AdditionalLibraryDirectories>D:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories);$(ProjectDir)External\OpenGL\glew\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glu32.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Drawable\Drawable.h" />
@@ -153,13 +158,12 @@
     <ClInclude Include="Include\Core\MeduzaUtil.h" />
     <ClInclude Include="Include\Core\Resources\Resource.h" />
     <ClInclude Include="Include\Core\Resources\Texture.h" />
-    <ClInclude Include="Include\Gfx\Core\Renderer.h" />
-    <ClInclude Include="Include\Gfx\Core\Window.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\DeviceDX12.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\HelperDX12.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\RendererDX12.h" />
     <ClInclude Include="Include\mePch.h" />
-    <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
+    <ClInclude Include="Include\Platform\General\Context.h" />
+    <ClInclude Include="Include\Platform\General\Renderer.h" />
+    <ClInclude Include="Include\Platform\General\Window.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\ContextGL.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\RendererGL.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
     <ClInclude Include="Include\Util\MeduzaHelper.h" />
     <ClInclude Include="Include\Core\Math\MeduzaMath.h" />
@@ -176,17 +180,14 @@
     <ClCompile Include="Source\Core\Meduza.cpp" />
     <ClCompile Include="Source\Core\MeduzaUtil.cpp" />
     <ClCompile Include="Source\Core\Resources\Resource.cpp" />
-    <ClCompile Include="Source\Gfx\Core\Renderer.cpp" />
-    <ClCompile Include="Source\Gfx\Core\Window.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\DeviceDX12.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\HelperDX12.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\RendererDX12.cpp" />
-    <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp" />
     <ClCompile Include="Source\mePch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Platform\General\Renderer.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\ContextGL.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\RendererGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
     <ClCompile Include="Source\Util\MeduzaHelper.cpp" />
     <ClCompile Include="Source\Core\Math\MeduzaMath.cpp" />

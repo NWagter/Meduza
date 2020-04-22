@@ -1,90 +1,62 @@
 #include "mePch.h"
 #include "Core/Meduza.h"
 
-#include "Platform/Windows/WinWindow.h"
-#include "Gfx/Core/Renderer.h"
+#include "Platform/General/Renderer.h"
+#include "Platform/General/Window.h"
+
 
 meduza::Meduza::Meduza(API a_api)
 {
-	API api = a_api;
-
-	m_window = Window::CreateNewWindow(720,480);
-	m_renderer = renderer::Renderer::CreateRenderer(api, *m_window);
-
-	
-
-	if (m_renderer != nullptr)
-	{
-		m_windowActive = true;
-	}
+	m_renderer = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
 }
 
 meduza::Meduza::~Meduza()
 {
-	if (m_renderer != nullptr)
-	{
-		delete m_renderer;
-	}
-
-	delete m_window;
 }
 
-void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
+void meduza::Meduza::Submit(drawable::Drawable*)
 {
-	if (m_renderer == nullptr)
-	{
-		static_assert(1,"Renderer is not created!");
-	}
 
-	m_renderer->Submit(a_drawable);
 }
 
-void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
+void meduza::Meduza::Submit(std::vector<drawable::Drawable*>)
 {
-	if (m_renderer == nullptr)
-	{
-		static_assert(1, "Renderer is not created!");
-	}
 
-	m_renderer->Submit(a_drawables);
 }
 
-void meduza::Meduza::Clear(Colour a_colour)
+void meduza::Meduza::Clear(Colour)
 {
-	if (m_renderer != nullptr)
-	{
-		m_renderer->Clear(a_colour);
-	}
+
 }
 
 void meduza::Meduza::Render()
 {
-	if (m_renderer != nullptr)
-	{
-		m_renderer->Render();
-	}
+
 }
 
 void meduza::Meduza::Peek()
 {
-	m_window->Peek();
+
 }
 
 bool meduza::Meduza::IsWindowActive() const
 {
-	return m_window->WindowActive();
+	if (m_renderer != nullptr)
+	{
+		return m_renderer->GetWindow().GetActive();
+	}
+
+	return false;
 }
 
 std::string meduza::Meduza::GetWindowName()
 { 
-	if (m_window != nullptr)
+	if (m_renderer != nullptr)
 	{
-		return m_window->GetTitle();
+		return m_renderer->GetWindow().GetTitle();
 	}
-	else
-	{
-		return "Unknown";
-	}
+
+	return "Unknown";
 }
 
 

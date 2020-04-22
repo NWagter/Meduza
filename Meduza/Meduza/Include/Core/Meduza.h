@@ -20,8 +20,13 @@ namespace meduza
 		~Meduza();
 
 		void Submit(drawable::Drawable*);
-
 		void Submit(std::vector<drawable::Drawable*>);
+
+		inline void Clear(float a_colour[4])
+		{
+			Colour c = Colour(a_colour);
+			Clear(c);
+		}
 
 		void Clear(Colour);
 		void Render();
@@ -44,8 +49,8 @@ namespace meduza
 		}
 
 	private:
-		bool m_windowActive = false;
+
 		renderer::Renderer* m_renderer = nullptr;
-		Window* m_window;
+
 	};
 }

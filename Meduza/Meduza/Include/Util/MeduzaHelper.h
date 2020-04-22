@@ -27,11 +27,14 @@ namespace meduza
 		Vertex(float a_x, float a_y, float a_z)
 		{
 			m_vertexPos = glm::vec3(a_x, a_y, a_z);
+			m_textureCoord = glm::vec2(0);
+			m_normals = glm::vec2(0);
 		}
 		Vertex(float a_x, float a_y, float a_z, float a_u, float a_v)
 		{
 			m_vertexPos = glm::vec3(a_x, a_y, a_z);
 			m_textureCoord = glm::vec2(a_u, a_v);
+			m_normals = glm::vec2(0);
 		}
 		Vertex(float a_x, float a_y, float a_z, float a_u, float a_v, float a_nX, float a_nY)
 		{

@@ -7,6 +7,7 @@
 #include <utility>
 #include <algorithm>
 
+#include <cassert>
 #include <string>
 #include <sstream>
 #include <ostream>

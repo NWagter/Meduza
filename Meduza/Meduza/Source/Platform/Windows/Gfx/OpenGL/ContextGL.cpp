@@ -2,6 +2,9 @@
 
 #include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
 
+#pragma comment( lib, "Opengl32.lib")
+#pragma comment( lib, "glu32.lib")
+
 #include <glad/glad.h>
 
 meduza::renderer::ContextGL::ContextGL(HWND a_hwnd)

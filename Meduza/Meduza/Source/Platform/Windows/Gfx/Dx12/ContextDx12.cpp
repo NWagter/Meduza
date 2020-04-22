@@ -1,5 +1,10 @@
 #include "mePch.h"
 
+#pragma comment( lib, "d3d12.lib")
+#pragma comment( lib, "dxgi.lib")
+#pragma comment( lib, "d3dcompiler.lib")
+#pragma comment( lib, "dxguid.lib")
+
 #include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"

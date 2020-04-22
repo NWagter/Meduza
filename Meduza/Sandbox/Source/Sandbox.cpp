@@ -28,7 +28,6 @@ void Sandbox::Run()
 {
 	std::vector<meduza::drawable::Drawable*> sprites;
 
-
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());

@@ -18,17 +18,23 @@ meduza::renderer::RendererGL::RendererGL()
 
 meduza::renderer::RendererGL::~RendererGL()
 {
-
+	delete Renderer::m_window;
 }
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
 {
+#if OPTICK
+	OPTICK_GPU_EVENT("Clear");
+#endif
+
 	glClearColor(a_colour.m_r, a_colour.m_g, a_colour.m_b, a_colour.m_a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void meduza::renderer::RendererGL::SwapBuffers()
 {
+	PopulateBuffers();
+
 	Renderer::GetWindow().SwapBuffers();
 }
 
@@ -38,4 +44,16 @@ void meduza::renderer::RendererGL::Draw(drawable::Drawable*)
 
 void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*>)
 {
+}
+
+void meduza::renderer::RendererGL::PreRender()
+{
+}
+
+void meduza::renderer::RendererGL::PopulateBuffers()
+{
+	PreRender();
+#if OPTICK
+	OPTICK_GPU_EVENT("Render Frame");
+#endif // 
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Platform/General/Window.h"
-#include "MeduzaUtil.h"
 
 namespace meduza
 {
@@ -27,13 +26,14 @@ namespace meduza
 
 
 	public:
-		WinWindow(math::Vec2, API);
+		WinWindow(math::Vec2);
 		~WinWindow() override;
 
 		void Peek() override;
 		void SwapBuffers() override;
 
 		void SetTitle(std::string) override;
+		void CreateContext(API) override;
 
 	private:
 

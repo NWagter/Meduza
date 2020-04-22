@@ -1,17 +1,21 @@
 #pragma once
 
 #include "Platform/General/Renderer.h"
+#include "Math/MeduzaMath.h"
 
 namespace meduza
 {
-
 	namespace renderer
 	{
-		class RendererGL : public Renderer
+		class ContextDx12;
+		class CommandListDx12;
+		class DescriptorDx12;
+
+		class RendererDx12 : public Renderer
 		{
 		public:
-			RendererGL();
-			~RendererGL() override;
+			RendererDx12();
+			~RendererDx12() override;
 
 			void Clear(Colour) override;
 			void SwapBuffers() override;
@@ -22,7 +26,12 @@ namespace meduza
 		private:
 			void PreRender();
 			void PopulateBuffers();
+
+			ContextDx12* m_context;
+			
+			CommandListDx12* m_cmdList;
+			DescriptorDx12* m_rtv;
+			DescriptorDx12* m_srv;
 		};
 	}
-
 }

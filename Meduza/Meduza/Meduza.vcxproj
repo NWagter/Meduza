@@ -94,7 +94,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,7 +121,7 @@
       <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
@@ -148,7 +148,7 @@
       <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>Opengl32.lib;glu32.lib</AdditionalDependencies>
+      <AdditionalDependencies>Opengl32.lib;glu32.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,6 +162,13 @@
     <ClInclude Include="Include\Platform\General\Context.h" />
     <ClInclude Include="Include\Platform\General\Renderer.h" />
     <ClInclude Include="Include\Platform\General\Window.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\CommandListDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\CommandQueueDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\ContextDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DescriptorDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DeviceDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\FenceDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\RendererDx12.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\ContextGL.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\RendererGL.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
@@ -186,6 +193,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Platform\General\Renderer.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandListDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandQueueDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\ContextDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DescriptorDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DeviceDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\FenceDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\RendererDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\ContextGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\RendererGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />

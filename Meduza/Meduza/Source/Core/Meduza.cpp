@@ -12,6 +12,7 @@ meduza::Meduza::Meduza(API a_api)
 
 meduza::Meduza::~Meduza()
 {
+	delete m_renderer;
 }
 
 void meduza::Meduza::Submit(drawable::Drawable*)

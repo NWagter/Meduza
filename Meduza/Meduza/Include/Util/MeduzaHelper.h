@@ -2,6 +2,8 @@
 
 namespace meduza
 {
+	static const int  GS_FRAMEBUFFERS = 3;
+
 	struct DrawData
 	{
 		DrawData()

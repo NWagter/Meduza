@@ -48,3 +48,5 @@
 
 #endif // PLATFORM_WINDOWS
 
+#include <optick.h>
+

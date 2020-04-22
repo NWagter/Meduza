@@ -9,7 +9,7 @@
 Sandbox::Sandbox()
 {
 
-	m_meduza = new meduza::Meduza(meduza::API::OpenGL);
+	m_meduza = new meduza::Meduza(meduza::API::DirectX12);
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 
@@ -60,5 +60,10 @@ void Sandbox::Run()
 		Update(0);
 
 		m_meduza->SwapBuffers();
+	}
+
+	for (auto d : sprites)
+	{
+		delete d;
 	}
 }

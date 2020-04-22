@@ -25,6 +25,9 @@ meduza::renderer::ContextGL::~ContextGL()
 
 void meduza::renderer::ContextGL::SwapBuffer()
 {
+#if OPTICK
+	OPTICK_GPU_EVENT("Present");
+#endif
 	SwapBuffers(wglGetCurrentDC());
 }
 

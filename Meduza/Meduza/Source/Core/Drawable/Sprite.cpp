@@ -20,6 +20,7 @@ meduza::drawable::Sprite::Sprite(float a_pos[2], float a_size[2], float a_z, Tex
 
 meduza::drawable::Sprite::~Sprite()
 {
+	delete m_drawData;
 }
 
 void meduza::drawable::Sprite::SetPosition(float a_x, float a_y)

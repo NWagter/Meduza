@@ -6,7 +6,8 @@
 
 #include "Platform/Windows/WinWindow.h"
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
-
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/General/Context.h"
 #endif
 
 meduza::Window* meduza::renderer::Renderer::m_window = nullptr;
@@ -17,7 +18,8 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	{
 	case meduza::API::OpenGL:
 #ifdef WIN
-		m_window = new WinWindow(a_size, a_api);
+		m_window = new WinWindow(a_size);
+		m_window->CreateContext(a_api);
 		return new RendererGL();
 #else // WIN
 		break;
@@ -25,13 +27,12 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	case meduza::API::DirectX12:
 
 #ifdef WIN
-		m_window = new WinWindow(a_size, a_api);
-		return nullptr;
+		m_window = new WinWindow(a_size);
+		m_window->CreateContext(a_api);
+		return new RendererDx12();
 #else // WIN
 		break;
 #endif
-	default:
-		break;
 	}
 
 	return nullptr;

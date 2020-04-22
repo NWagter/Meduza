@@ -15,6 +15,7 @@ namespace meduza
 			void SwapBuffer() override;
 
 		private:
+
 			PIXELFORMATDESCRIPTOR CreateFormat();
 			PIXELFORMATDESCRIPTOR m_pFormat;
 			HGLRC m_glContext;

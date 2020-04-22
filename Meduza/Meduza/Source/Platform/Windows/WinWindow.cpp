@@ -1,12 +1,14 @@
 #include "mePch.h"
 
 #include "Platform/Windows/WinWindow.h"
-#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
 
-meduza::WinWindow::WinWindow(math::Vec2 a_size, API a_api)
+#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
+#include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
+
+meduza::WinWindow::WinWindow(math::Vec2 a_size)
 {
 	m_windowActive = true;
-	std::string title = "Meduza | Renderer | Windows";
+	std::string title = "Create WinWindow";
 	SetTitle(title);
 
 	RECT wr;
@@ -23,20 +25,11 @@ meduza::WinWindow::WinWindow(math::Vec2 a_size, API a_api)
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
-	
-	switch (a_api)
-	{
-	case meduza::API::OpenGL:
-		m_context = new renderer::ContextGL(m_hWnd);
-		SetTitle(title + "| OpenGL");
-		break;
-	case meduza::API::DirectX12:
-		break;
-	}
 }
 
 meduza::WinWindow::~WinWindow()
 {
+	delete m_context;
 	DestroyWindow(m_hWnd);
 }
 
@@ -65,6 +58,28 @@ void meduza::WinWindow::SetTitle(std::string a_title)
 {
 	m_title = a_title;
 	SetWindowText(m_hWnd, m_title.c_str());
+}
+
+void meduza::WinWindow::CreateContext(API a_api)
+{
+	std::string title = "Meduza | Renderer | Windows";
+
+	if (m_context != nullptr)
+	{
+		delete m_context;
+	}
+
+	switch (a_api)
+	{
+	case meduza::API::OpenGL:
+		m_context = new renderer::ContextGL(m_hWnd);
+		SetTitle(title + "| OpenGL");
+		break;
+	case meduza::API::DirectX12:
+		m_context = new renderer::ContextDx12(m_hWnd);
+		SetTitle(title + "| DX12");
+		break;
+	}
 }
 
 LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)

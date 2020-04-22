@@ -29,7 +29,7 @@ namespace meduza
 
 			Window& GetWindow() const;
 
-		private:
+		protected:
 			static Window* m_window;
 		};
 	}

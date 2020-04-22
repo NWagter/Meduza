@@ -9,10 +9,15 @@ namespace meduza
 		class ContextGL : public Context
 		{
 		public:
-			ContextGL();
+			ContextGL(HWND);
 			~ContextGL() override;
 
-			void SwapBuffers() override;
+			void SwapBuffer() override;
+
+		private:
+			PIXELFORMATDESCRIPTOR CreateFormat();
+			PIXELFORMATDESCRIPTOR m_pFormat;
+			HGLRC m_glContext;
 		};
 	}
 }

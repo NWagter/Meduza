@@ -29,7 +29,7 @@ namespace meduza
 		}
 
 		void Clear(Colour);
-		void Render();
+		void SwapBuffers();
 
 
 		void Peek();

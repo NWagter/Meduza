@@ -59,6 +59,6 @@ void Sandbox::Run()
 		//Game Update
 		Update(0);
 
-		m_meduza->Render();
+		m_meduza->SwapBuffers();
 	}
 }

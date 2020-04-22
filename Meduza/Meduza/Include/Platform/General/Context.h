@@ -10,7 +10,7 @@ namespace meduza
 			Context() = default;
 			virtual ~Context() = default;
 
-			virtual void SwapBuffers() = 0;
+			virtual void SwapBuffer() = 0;
 		};
 	}
 }

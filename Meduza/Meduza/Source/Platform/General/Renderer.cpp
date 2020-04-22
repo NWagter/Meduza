@@ -17,7 +17,7 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	{
 	case meduza::API::OpenGL:
 #ifdef WIN
-		m_window = new WinWindow(a_size);
+		m_window = new WinWindow(a_size, a_api);
 		return new RendererGL();
 #else // WIN
 		break;
@@ -25,7 +25,7 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	case meduza::API::DirectX12:
 
 #ifdef WIN
-		m_window = new WinWindow(a_size);
+		m_window = new WinWindow(a_size, a_api);
 		return nullptr;
 #else // WIN
 		break;

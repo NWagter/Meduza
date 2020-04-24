@@ -1,5 +1,8 @@
 #pragma once
 
+// Use (void) to silent unused warnings.
+#define assertm(exp, msg) assert(((void)msg, exp))
+
 namespace meduza
 {
 	enum class API
@@ -60,34 +63,6 @@ namespace meduza
 		unsigned int m_textureld = 0;
 
 		float m_albedo[4] = { 1,1,1,1 };
-
-	};
-
-	struct Drawable
-	{
-		//Position
-		//Size
-		//Rotation
-	};
-
-	struct Sprite : Drawable
-	{
-		//Texture
-		//VBO Quad
-		Material m_material;
-	};
-
-	struct Mesh : Drawable
-	{
-		//Texture
-		//VBO
-		Material m_material;
-	};
-
-	struct Text : Drawable
-	{
-		//Font
-		//Albedo
 
 	};
 

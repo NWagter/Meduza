@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);%(PreprocessorDefinitions);DEV</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -90,6 +90,8 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\;$(SolutionDir)Libs;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza_d.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\$(Configuration)\OptickCore.dll" "$(outDir)"</Command>
@@ -107,7 +109,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -119,6 +121,8 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -137,7 +141,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\Include\Core;$(SolutionDir)Meduza\External\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -149,6 +153,8 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Executable\$(Configuration)\$(Platform);%(AdditionalLibraryDirectories);$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\Release;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Meduza\External\OpenGL\glew\lib;$(SolutionDir)Libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>Win64_Meduza.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Meduza\External\Optick\lib\$(Platform)\Release\OptickCore.dll" "$(outDir)"</Command>

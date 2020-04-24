@@ -77,7 +77,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\Glad\include;$(SolutionDir)Meduza\External\;$(ProjectDir)Include\Core</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -89,11 +89,12 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>D:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories);$(ProjectDir)External/OpenGL/glew/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,7 +105,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\Glad\include;$(SolutionDir)Meduza\External\;$(ProjectDir)Include\Core</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -116,7 +117,12 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)External/OpenGL/glew/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">
     <ClCompile>
@@ -126,7 +132,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\OpenGL\glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(SolutionDir)Meduza\External\Dx12;$(SolutionDir)Meduza\External\Optick\Include;$(SolutionDir)Meduza\External\Glad\include;$(SolutionDir)Meduza\External\;$(ProjectDir)Include\Core</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEV;PLATFORM_WINDOWS;GLEW_STATIC</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -138,41 +144,75 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>D:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories);$(ProjectDir)External\OpenGL\glew\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Drawable\Drawable.h" />
+    <ClInclude Include="Include\Core\Drawable\Sprite.h" />
     <ClInclude Include="Include\Core\Meduza.h" />
     <ClInclude Include="Include\Core\MeduzaUtil.h" />
-    <ClInclude Include="Include\Core\Renderer.h" />
-    <ClInclude Include="Include\Core\Window.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\DeviceDX12.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\HelperDX12.h" />
-    <ClInclude Include="Include\Gfx\DirectX12\RendererDX12.h" />
+    <ClInclude Include="Include\Core\Resources\Resource.h" />
+    <ClInclude Include="Include\Core\Resources\Texture.h" />
     <ClInclude Include="Include\mePch.h" />
-    <ClInclude Include="Include\Gfx\OpenGL\RendererOpenGL.h" />
+    <ClInclude Include="Include\Platform\General\Context.h" />
+    <ClInclude Include="Include\Platform\General\Mesh.h" />
+    <ClInclude Include="Include\Platform\General\Renderer.h" />
+    <ClInclude Include="Include\Platform\General\Window.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\CommandListDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\CommandQueueDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\ContextDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DescriptorDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DeviceDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\FenceDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\HelperDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\MeshDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\RendererDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\ContextGL.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\MeshGL.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\RendererGL.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
-    <ClInclude Include="Include\Util\MeduzaMath.h" />
+    <ClInclude Include="Include\Util\MeduzaHelper.h" />
+    <ClInclude Include="Include\Core\Math\MeduzaMath.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="External\Glad\src\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Resources\Texture.cpp" />
+    <ClCompile Include="Source\Core\Drawable\Drawable.cpp" />
+    <ClCompile Include="Source\Core\Drawable\Sprite.cpp" />
     <ClCompile Include="Source\Core\Meduza.cpp" />
     <ClCompile Include="Source\Core\MeduzaUtil.cpp" />
-    <ClCompile Include="Source\Core\Renderer.cpp" />
-    <ClCompile Include="Source\Core\Window.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\DeviceDX12.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\HelperDX12.cpp" />
-    <ClCompile Include="Source\Gfx\DirectX12\RendererDX12.cpp" />
-    <ClCompile Include="Source\Gfx\OpenGL\RendererOpenGL.cpp" />
+    <ClCompile Include="Source\Core\Resources\Resource.cpp" />
     <ClCompile Include="Source\mePch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Platform\General\Mesh.cpp" />
+    <ClCompile Include="Source\Platform\General\Renderer.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandListDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandQueueDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\ContextDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DescriptorDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DeviceDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\FenceDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\HelperDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\MeshDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\RendererDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\ContextGL.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\MeshGL.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\RendererGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
-    <ClCompile Include="Source\Util\MeduzaMath.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="Source\Util\MeduzaHelper.cpp" />
+    <ClCompile Include="Source\Core\Math\MeduzaMath.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

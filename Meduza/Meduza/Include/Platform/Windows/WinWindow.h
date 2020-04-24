@@ -1,55 +1,46 @@
 #pragma once
 
-#include "Core/Window.h"
+#include "Platform/General/Window.h"
 
 namespace meduza
 {
 	class WinWindow : public Window
 	{
-	public:
-		WinWindow(int,int,std::string);
-		~WinWindow() override;
-		WinWindow(const Window&) = delete;
-		WinWindow& operator=(const Window&) = delete;
-
-		class WindowClass
-		{
+	private:
+		//Singleton for register and cleanup window class
+		class WindowClass {
 		public:
-			inline static const char* GetName() { return ms_wndClassName; }
-			inline static HINSTANCE GetInstance() { return ms_windowClass.m_hInstance; }
+			static inline const char* GetName() { return ms_wndName; }
+			static inline HINSTANCE GetInstance() { return ms_wndClass.m_hInstance; }
 		private:
 			WindowClass();
 			~WindowClass();
 
 			WindowClass(const WindowClass&) = delete;
 			WindowClass& operator=(const WindowClass&) = delete;
+			static constexpr const char* ms_wndName = "WinWindow";
+			static WindowClass ms_wndClass;
+			HINSTANCE m_hInstance;
 
-			static constexpr const char* ms_wndClassName = "Window";
-			static WindowClass ms_windowClass;
-			HINSTANCE m_hInstance{ nullptr };
 		};
 
 
+	public:
+		WinWindow(math::Vec2);
+		~WinWindow() override;
+
 		void Peek() override;
-		bool WindowActive() override;
+		void SwapBuffers() override;
 
 		void SetTitle(std::string) override;
-
-		inline math::Vec2 GetSize() override { return m_size; }
-		inline std::string GetTitle() override { return m_title; }
-		inline HWND GetHandle() { return m_windowHandle; }
+		void CreateContext(API) override;
 
 	private:
+
 		static LRESULT WINAPI HandleMsgSetup(HWND, UINT, WPARAM, LPARAM);
 		static LRESULT WINAPI HandleMsgThunk(HWND, UINT, WPARAM, LPARAM);
-
-		// Handle messages, Keyboard and mouse input etc.
 		LRESULT HandleMsg(HWND, UINT, WPARAM, LPARAM);
 
-		HWND m_windowHandle;
-
-		std::string m_title;
-		math::Vec2 m_size;
-		bool m_windowActive = false;
+		HWND m_hWnd;
 	};
 }

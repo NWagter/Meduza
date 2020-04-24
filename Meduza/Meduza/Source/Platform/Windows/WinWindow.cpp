@@ -2,31 +2,35 @@
 
 #include "Platform/Windows/WinWindow.h"
 
-meduza::WinWindow::WinWindow(int a_width, int a_height, std::string a_title)
-{
-	m_title = a_title;
+#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
+#include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
 
-	m_size = math::Vec2(float(a_width), float(a_height));
+meduza::WinWindow::WinWindow(math::Vec2 a_size)
+{
+	m_windowActive = true;
+	std::string title = "Create WinWindow";
+	SetTitle(title);
 
 	RECT wr;
 	wr.left = 100;
-	wr.right = a_width + wr.left;
+	wr.right = int(a_size.m_x) + wr.left;
 	wr.top = 100;
-	wr.bottom = a_height + wr.top;
+	wr.bottom = int(a_size.m_y) + wr.top;
 
-	m_windowHandle = CreateWindow(WindowClass::GetName(), a_title.c_str(),
-		WS_OVERLAPPEDWINDOW,
+	m_size = a_size;
+
+	m_hWnd = CreateWindow(WindowClass::GetName(), title.c_str(),
+		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
-	ShowWindow(m_windowHandle, SW_SHOWDEFAULT);
-	m_windowActive = true;
-	
+	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 }
 
 meduza::WinWindow::~WinWindow()
 {
-	printf("%s destroy! \n  ", m_title.c_str());
+	delete m_context;
+	DestroyWindow(m_hWnd);
 }
 
 void meduza::WinWindow::Peek()
@@ -42,63 +46,90 @@ void meduza::WinWindow::Peek()
 
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
-
 	}
 }
 
-bool meduza::WinWindow::WindowActive()
+void meduza::WinWindow::SwapBuffers()
 {
-	return m_windowActive;
+	m_context->SwapBuffer();
 }
 
 void meduza::WinWindow::SetTitle(std::string a_title)
 {
 	m_title = a_title;
-
-	SetWindowText(m_windowHandle, m_title.c_str());
+	SetWindowText(m_hWnd, m_title.c_str());
 }
 
-LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hWnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
+void meduza::WinWindow::CreateContext(API a_api)
 {
-	if (a_msg == WM_NCCREATE)
+	std::string title = "Meduza | Renderer | Windows";
+
+	if (m_context != nullptr)
 	{
-		//extract ptr to window class from creation data!
+		delete m_context;
+	}
+
+	switch (a_api)
+	{
+	case meduza::API::OpenGL:
+		m_context = new renderer::ContextGL(m_hWnd);
+		SetTitle(title + "| OpenGL");
+		break;
+	case meduza::API::DirectX12:
+		m_context = new renderer::ContextDx12(m_hWnd);
+		SetTitle(title + "| DX12");
+		break;
+	}
+}
+
+LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
+{
+
+	if (a_msg == WM_NCCREATE) {
 		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(a_lParam);
 		WinWindow* const pWnd = static_cast<WinWindow*>(pCreate->lpCreateParams);
-		//Set WinAPI-managed user data to store window class ptr
-		SetWindowLongPtr(a_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
-		//Set Message proc to normal handler in stead of the setup one!
-		SetWindowLongPtr(a_hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WinWindow::HandleMsgThunk));
-		// forward message to window class handler
-		return pWnd->HandleMsg(a_hWnd, a_msg, a_wParam, a_lParam);
+		SetWindowLongPtr(a_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
+		SetWindowLongPtr(a_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WinWindow::HandleMsgThunk));
+		return pWnd->HandleMsg(a_hwnd, a_msg, a_wParam, a_lParam);
 	}
-	return DefWindowProc(a_hWnd, a_msg, a_wParam, a_lParam);
+	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
 }
 
-LRESULT __stdcall meduza::WinWindow::HandleMsgThunk(HWND a_hWnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
-{
-	WinWindow* const pWnd = reinterpret_cast<WinWindow*>(GetWindowLongPtr(a_hWnd, GWLP_USERDATA));
+LRESULT __stdcall meduza::WinWindow::HandleMsgThunk(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
+{	//Get The window ptr stored in the API user data
+
+	WinWindow* const pWnd = reinterpret_cast<WinWindow*>(GetWindowLongPtr(a_hwnd, GWLP_USERDATA));
 
 	//Handle the messages!
-	return pWnd->HandleMsg(a_hWnd, a_msg, a_wParam, a_lParam);
+	return pWnd->HandleMsg(a_hwnd, a_msg, a_wParam, a_lParam);
 }
 
-LRESULT meduza::WinWindow::HandleMsg(HWND a_hWnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
 	switch (a_msg)
 	{
-		case WM_CLOSE:
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		break;
+	case WM_SIZE:
+	{
+		m_size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
+
+		if (m_context != nullptr)
 		{
-			PostQuitMessage(0);
-			break;
+			m_context->Resize(m_size);
 		}
 	}
-	return DefWindowProc(a_hWnd, a_msg, a_wParam, a_lParam);
+
+	}
+
+	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
 }
 
-meduza::WinWindow::WindowClass meduza::WinWindow::WindowClass::ms_windowClass;
+meduza::WinWindow::WindowClass meduza::WinWindow::WindowClass::ms_wndClass;
 
-meduza::WinWindow::WindowClass::WindowClass() : m_hInstance(nullptr)
+meduza::WinWindow::WindowClass::WindowClass():
+	m_hInstance(GetModuleHandle(nullptr))
 {
 	WNDCLASSEX wc = { 0 };
 	wc.cbSize = sizeof(wc);
@@ -115,10 +146,11 @@ meduza::WinWindow::WindowClass::WindowClass() : m_hInstance(nullptr)
 	wc.lpszClassName = GetName();
 	//Load image from resources
 	wc.hIconSm = nullptr;
+
 	RegisterClassEx(&wc);
 }
 
 meduza::WinWindow::WindowClass::~WindowClass()
 {
-	UnregisterClass(ms_wndClassName, GetInstance());
+	UnregisterClass(ms_wndName, GetInstance());
 }

@@ -7,6 +7,7 @@
 #include <utility>
 #include <algorithm>
 
+#include <cassert>
 #include <string>
 #include <sstream>
 #include <ostream>
@@ -19,6 +20,7 @@
 #include <map>
 #include <chrono>
 
+#include <glm/glm.hpp>
 
 #ifdef VULKAN_USE
 #include <vulkan/vulkan.h>
@@ -45,4 +47,6 @@
 #include <d3dx12.h>
 
 #endif // PLATFORM_WINDOWS
+
+#include <optick.h>
 

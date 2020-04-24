@@ -20,6 +20,7 @@ namespace meduza
 			~ContextDx12() override;
 
 			void SwapBuffer() override;
+			void Resize(math::Vec2) override;
 
 			inline DeviceDx12* GetDevice() { return m_device; }
 			inline CommandQueueDx12* GetQueue() { return m_queue; }
@@ -37,6 +38,8 @@ namespace meduza
 			inline unsigned int GetCurrentFrameIndex() const { return m_currentframeBufferIndex; }
 
 		private:
+			math::Vec2 m_size;
+			bool m_resize = false;
 			void CreateSwapChain();
 
 			Microsoft::WRL::ComPtr<IDXGISwapChain4> m_swapChain;
@@ -44,6 +47,7 @@ namespace meduza
 
 			DeviceDx12* m_device;
 			CommandQueueDx12* m_queue;
+			DescriptorDx12* m_rtv;
 
 			DXGI_FORMAT m_backBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 

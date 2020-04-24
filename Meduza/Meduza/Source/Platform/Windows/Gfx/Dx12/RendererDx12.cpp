@@ -78,7 +78,7 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
 
 	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
-
+	m_cmdList->SetViewAndScissor(m_window->GetSize());
 }
 
 void meduza::renderer::RendererDx12::SwapBuffers()

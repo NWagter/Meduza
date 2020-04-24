@@ -5,6 +5,7 @@
 #pragma comment( lib, "d3dcompiler.lib")
 #pragma comment( lib, "dxguid.lib")
 
+#include "Math/MeduzaMath.h"
 #include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
@@ -58,6 +59,34 @@ void meduza::renderer::ContextDx12::SwapBuffer()
 	m_currentframeBufferIndex = (m_currentframeBufferIndex + 1) % GS_FRAMEBUFFERS;
 
 	m_queue->Flush();
+
+	if (m_resize)
+	{
+		Resize(m_size);
+	}
+}
+
+void meduza::renderer::ContextDx12::Resize(math::Vec2 a_size)
+{
+	if (!m_resize)
+	{
+		m_size = a_size;
+		m_resize = true;
+		return;
+	}
+
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
+	m_swapChain.Get()->GetDesc1(&swapChainDesc);
+
+	ClearRTV();
+
+	m_swapChain->ResizeBuffers(GS_FRAMEBUFFERS, int(a_size.m_x), int(a_size.m_y), m_backBufferFormat, swapChainDesc.Flags);
+
+
+	CreateRTV(*m_rtv);
+	m_currentframeBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+
+	m_resize = false;
 }
 
 void meduza::renderer::ContextDx12::ClearRTV()
@@ -72,9 +101,10 @@ void meduza::renderer::ContextDx12::ClearRTV()
 
 void meduza::renderer::ContextDx12::CreateRTV(DescriptorDx12& a_rtv)
 {
+	m_rtv = &a_rtv;
 	auto rtvDescriptorSize = m_device->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(a_rtv.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
 	int i = 0;
 	for (auto& buffer : m_frameBuffer)

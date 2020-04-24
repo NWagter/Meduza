@@ -81,6 +81,18 @@
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\FenceDx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Platform\General\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\MeshDx12.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\HelperDx12.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\MeshGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Meduza.cpp">
@@ -144,6 +156,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DescriptorDx12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\General\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\MeshDx12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\HelperDx12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\MeshGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

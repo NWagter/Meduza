@@ -1,24 +1,29 @@
 #include "mePch.h"
 
-#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
-
 #pragma comment( lib, "Opengl32.lib")
 #pragma comment( lib, "glu32.lib")
+
+#include "Math/MeduzaMath.h"
+#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
+
+
 
 #include <glad/glad.h>
 
 meduza::renderer::ContextGL::ContextGL(HWND a_hwnd)
 {
+
+	
 	m_pFormat = CreateFormat();
 
-	HDC ourWindowHandleToDeviceContext = GetDC(a_hwnd);
+	HDC dContext = GetDC(a_hwnd);
 
-	int  letWindowsChooseThisPixelFormat;
-	letWindowsChooseThisPixelFormat = ChoosePixelFormat(ourWindowHandleToDeviceContext, &m_pFormat);
-	SetPixelFormat(ourWindowHandleToDeviceContext, letWindowsChooseThisPixelFormat, &m_pFormat);
+	int  wPixFormat;
+	wPixFormat = ChoosePixelFormat(dContext, &m_pFormat);
+	SetPixelFormat(dContext, wPixFormat, &m_pFormat);
 
-	m_glContext = wglCreateContext(ourWindowHandleToDeviceContext);
-	wglMakeCurrent(ourWindowHandleToDeviceContext, m_glContext);
+	m_glContext = wglCreateContext(dContext);
+	wglMakeCurrent(dContext, m_glContext);
 }
 
 meduza::renderer::ContextGL::~ContextGL()
@@ -32,6 +37,11 @@ void meduza::renderer::ContextGL::SwapBuffer()
 	OPTICK_GPU_EVENT("Present");
 #endif
 	SwapBuffers(wglGetCurrentDC());
+}
+
+void meduza::renderer::ContextGL::Resize(math::Vec2 a_size)
+{
+	glViewport(0,0, int(a_size.m_x), int(a_size.m_y));
 }
 
 PIXELFORMATDESCRIPTOR meduza::renderer::ContextGL::CreateFormat()

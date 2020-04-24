@@ -13,6 +13,7 @@ namespace meduza
 			~ContextGL() override;
 
 			void SwapBuffer() override;
+			void Resize(math::Vec2) override;
 
 		private:
 

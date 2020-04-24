@@ -20,7 +20,7 @@ meduza::WinWindow::WinWindow(math::Vec2 a_size)
 	m_size = a_size;
 
 	m_hWnd = CreateWindow(WindowClass::GetName(), title.c_str(),
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
@@ -111,6 +111,16 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
+	case WM_SIZE:
+	{
+		m_size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
+
+		if (m_context != nullptr)
+		{
+			m_context->Resize(m_size);
+		}
+	}
+
 	}
 
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);

@@ -7,6 +7,8 @@ namespace meduza
 
 	namespace renderer
 	{
+		class MeshGL;
+
 		class RendererGL : public Renderer
 		{
 		public:
@@ -22,6 +24,11 @@ namespace meduza
 		private:
 			void PreRender();
 			void PopulateBuffers();
+
+			void Test();
+			MeshGL* m_quad = nullptr;
+			unsigned int m_shaderprogram = 0;
+
 		};
 	}
 

@@ -160,6 +160,7 @@
     <ClInclude Include="Include\Core\Resources\Texture.h" />
     <ClInclude Include="Include\mePch.h" />
     <ClInclude Include="Include\Platform\General\Context.h" />
+    <ClInclude Include="Include\Platform\General\Mesh.h" />
     <ClInclude Include="Include\Platform\General\Renderer.h" />
     <ClInclude Include="Include\Platform\General\Window.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\CommandListDx12.h" />
@@ -168,8 +169,11 @@
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DescriptorDx12.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\DeviceDx12.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\FenceDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\HelperDx12.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\MeshDx12.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\Dx12\RendererDx12.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\ContextGL.h" />
+    <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\MeshGL.h" />
     <ClInclude Include="Include\Platform\Windows\Gfx\OpenGL\RendererGL.h" />
     <ClInclude Include="Include\Platform\Windows\WinWindow.h" />
     <ClInclude Include="Include\Util\MeduzaHelper.h" />
@@ -192,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Developer|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Platform\General\Mesh.cpp" />
     <ClCompile Include="Source\Platform\General\Renderer.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandListDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\CommandQueueDx12.cpp" />
@@ -199,8 +204,11 @@
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DescriptorDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\DeviceDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\FenceDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\HelperDx12.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\MeshDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\Dx12\RendererDx12.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\ContextGL.cpp" />
+    <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\MeshGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\Gfx\OpenGL\RendererGL.cpp" />
     <ClCompile Include="Source\Platform\Windows\WinWindow.cpp" />
     <ClCompile Include="Source\Util\MeduzaHelper.cpp" />

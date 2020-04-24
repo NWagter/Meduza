@@ -4,6 +4,11 @@ namespace meduza
 {
 	static const int  GS_FRAMEBUFFERS = 3;
 
+	namespace renderer
+	{
+		class Mesh;
+	}
+
 	struct DrawData
 	{
 		DrawData()
@@ -20,6 +25,8 @@ namespace meduza
 		glm::vec3 m_position;
 		glm::vec3 m_rotation;
 		glm::vec3 m_size;
+
+		renderer::Mesh* m_mesh;
 
 		unsigned int m_materialId;
 	};
@@ -62,4 +69,6 @@ namespace meduza
 		glm::vec2 m_textureCoord;
 		glm::vec2 m_normals;
 	};
+
+
 }

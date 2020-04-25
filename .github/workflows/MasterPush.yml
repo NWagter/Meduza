@@ -12,13 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@master
       
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
+      
     - name: Create Project files
       shell: cmd
       working-directory: Meduza/
       run: CreateProject.bat
-      
-    - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1.0.0
 
     - name: Build Debug Meduza
       working-directory: Meduza/

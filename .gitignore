@@ -8,6 +8,8 @@ release/
 Intermediate/
 Executable/
 
+!Vendor/
+
 # Prerequisites
 *.d
 
@@ -33,3 +35,9 @@ Executable/
 
 # File Types
 *.html
+
+# Visual Studio
+*.sln
+*.vcxproj
+*.filters
+*.user

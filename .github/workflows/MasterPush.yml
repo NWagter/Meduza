@@ -12,7 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
       
-    - name: bat file
+    - name: Create Project files
+      shell: cmd
       working-directory: Meduza/
       run: CreateProject.bat
       

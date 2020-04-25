@@ -11,7 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
-
+      
+    - name: bat file
+      working-directory: Meduza/
+      run: CreateProject.bat
+      
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1.0.0
 

@@ -14,7 +14,8 @@ jobs:
 
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1.0.0
-    - name: bat file
+    - name: Create Project files
+      shell: cmd
       working-directory: Meduza/
       run: CreateProject.bat
     - name: Build Debug Meduza

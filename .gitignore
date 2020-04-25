@@ -33,3 +33,12 @@ Executable/
 
 # File Types
 *.html
+
+# Visual Studio
+*.sln
+*.vcxproj
+*.filters
+*.user
+
+!Meduza/Vendor/Premake/premake5.exe
+

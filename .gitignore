@@ -8,7 +8,7 @@ release/
 Intermediate/
 Executable/
 
-!Vendor/Premake/premake5.exe
+!Meduza/Vendor/Premake/premake5.exe
 
 # Prerequisites
 *.d

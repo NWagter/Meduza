@@ -8,8 +8,6 @@ release/
 Intermediate/
 Executable/
 
-!Meduza/Vendor/Premake/premake5.exe
-
 # Prerequisites
 *.d
 
@@ -41,3 +39,6 @@ Executable/
 *.vcxproj
 *.filters
 *.user
+
+!Meduza/Vendor/Premake/premake5.exe
+

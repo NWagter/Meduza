@@ -28,7 +28,7 @@
 
 #ifdef PLATFORM_WINDOWS
 
-#define WIN
+#define WINDOWS
 
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN
@@ -46,7 +46,14 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
+#include <optick.h>
+
 #endif // PLATFORM_WINDOWS
 
-#include <optick.h>
+#ifdef PLATFORM_LINUX
+
+#define LINUX 1
+
+
+#endif
 

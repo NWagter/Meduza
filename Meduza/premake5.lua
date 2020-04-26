@@ -1,21 +1,34 @@
 workspace "Meduza"
-	architecture "x64"
-	startproject "Sandbox"
 
+	startproject "Sandbox"
+	
 	configurations
 	{
 		"Debug",
 		"Developer",
 		"Release"
 	}
+	platforms { "ARM", "Win64"}
+	
+	filter "platforms:Win64*"
+		architecture "x64"
+		system "windows"
 
+	filter "platforms:ARM"
+		architecture "ARM"
+		system "linux"	
+		debugremotehost "host"
+	
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Meduza"
 	location "Meduza"
 	kind "StaticLib"
 	language "C++"
-
+	
+	warnings "Extra"
+	flags { "FatalWarnings" }
+	
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
 
@@ -42,18 +55,6 @@ project "Meduza"
 	filter {"files:**.c"}
 		flags { "NoPCH" }
 
-	filter "system:windows"
-		cppdialect "C++14"
-		staticruntime "On"
-		systemversion "10.0.18362.0"
-		characterset  "MBCS"
-
-	defines
-	{
-		"PLATFORM_WINDOWS",
-		"GLEW_STATIC"
-	}
-
 	filter "configurations:Debug"
 		defines
 		{
@@ -78,15 +79,41 @@ project "Meduza"
 		}
 		optimize "On"
 		buildoptions "/MT"
+		
+	filter "system:windows"
+		cppdialect "C++14"
+		staticruntime "On"
+		systemversion "10.0.18362.0"
+		characterset  "MBCS"
+		
+		defines
+		{
+			"PLATFORM_WINDOWS",
+			"GLEW_STATIC"
+		}
+		
+	filter "system:linux"
+		cppdialect "C++14"
+		characterset  "MBCS"
+		removefiles { "**/Windows/**" }
+		defines
+		{
+			"PLATFORM_LINUX"
+		}
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	
 
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
-
+	
+	
+	pchheader "pch.h"
+	pchsource "%{prj.name}/Source/pch.cpp"
+	
 	files
 	{
 		"%{prj.name}/Include/**.h",
@@ -100,53 +127,29 @@ project "Sandbox"
 		"$(SolutionDir)Meduza/External",
 		"$(SolutionDir)Meduza/External/Optick/Include"
 	}
-
-	filter "system:windows"
-		cppdialect "C++14"
-		staticruntime "On"
-		systemversion "10.0.18362.0"
-
-	defines
-	{
-		"PLATFORM_WINDOWS"
-	}
-
+	
 	links
 	{
 		"Meduza"
 	}
 
+	filter {"files:**/main.cpp"}
+		flags { "NoPCH" }		
 
 	filter "configurations:Debug"
 		symbols "On"	
-
-		libdirs { "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Debug" }
-
-		postbuildcommands
-		{
-			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Debug/OptickCore.dll $(outDir)")
-		}
-
-	filter "configurations:Developer"
-
-		optimize "On"		
-		
-		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Release" }
-		postbuildcommands
-		{
-			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Release/OptickCore.dll $(outDir)")
-		}
-
-	filter  { "configurations:Debug", "configurations:Developer"}
-
-		links
-		{
-			"OptickCore.lib"
-		}
 		defines
 		{
 			"DEV"
 		}
+
+	filter "configurations:Developer"
+		optimize "On"			
+		defines
+		{
+			"DEV"
+		}
+
 
 	filter "configurations:Release"
 		defines
@@ -155,3 +158,52 @@ project "Sandbox"
 		}
 		optimize "On"
 		buildoptions "/MT"
+		
+			
+	filter "system:windows"
+		cppdialect "C++14"
+		staticruntime "On"
+		systemversion "10.0.18362.0"
+
+		defines
+		{
+			"PLATFORM_WINDOWS",
+			"GLEW_STATIC"
+		}
+		
+	filter {"platforms:Win64", "configurations:Debug"}	
+		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Debug" }
+		postbuildcommands
+		{
+			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Debug/OptickCore.dll $(outDir)")
+		}
+		
+		links
+		{
+			"OptickCore.lib"
+		}
+	
+	filter {"platforms:Win64", "configurations:Developer"}	
+		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Release" }
+		postbuildcommands
+		{
+			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Release/OptickCore.dll $(outDir)")
+		}
+		
+		links
+		{
+			"OptickCore.lib"
+		}
+
+	filter "system:linux"
+		cppdialect "C++14"
+		characterset  "MBCS"
+		removefiles { "**/Windows/**" }
+		warnings "Off"
+		defines
+		{
+			"PLATFORM_LINUX"
+		}
+		includedirs { "/usr/include", "/usr/local/include", "/opt/include" }
+		
+		

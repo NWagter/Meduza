@@ -8,9 +8,13 @@ namespace meduza
 	enum class API
 	{
 		OpenGL = 0,
-#ifdef WIN
+#ifdef WINDOWS
 		DirectX12,
 #endif // WIN
+
+#ifdef LINUX
+		ES2,
+#endif
 
 	};
 

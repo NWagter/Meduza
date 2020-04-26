@@ -1,15 +1,22 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#define WIN
+#define LINUX 1
 
 #include <Meduza.h>
 #include <Drawable/Sprite.h>
 
 Sandbox::Sandbox()
 {
+#ifdef WINDOWS
 
 	m_meduza = new meduza::Meduza(meduza::API::DirectX12);
+
+#elif LINUX
+
+	m_meduza = new meduza::Meduza(meduza::API::ES2);
+
+#endif
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 
@@ -50,9 +57,14 @@ void Sandbox::Run()
 	while (m_meduza->IsWindowActive())
 	{
 #ifdef DEV
+#ifdef WINDOWS
+
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
+
+#endif // WINDOWS
 #endif // DEV
+
 		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
 		m_meduza->Submit(sprites);
 		//Game Update

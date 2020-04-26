@@ -17,7 +17,9 @@
 #include <map>
 
 
-#ifdef DEV
+#ifdef DEV 
+#ifdef WINDOWS
 #include "optick.h"
 #include "optick.config.h"
+#endif // WINDOWS
 #endif

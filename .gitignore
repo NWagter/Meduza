@@ -33,6 +33,7 @@ Executable/
 
 # File Types
 *.html
+*.log
 
 # Visual Studio
 *.sln

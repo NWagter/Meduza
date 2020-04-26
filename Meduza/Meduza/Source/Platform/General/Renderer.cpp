@@ -2,7 +2,7 @@
 
 #include "Platform/General/Renderer.h"
 
-#ifdef WIN
+#ifdef WINDOWS
 
 #include "Platform/Windows/WinWindow.h"
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
@@ -17,22 +17,30 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 	switch (a_api)
 	{
 	case meduza::API::OpenGL:
-#ifdef WIN
+#ifdef WINDOWS
 		m_window = new WinWindow(a_size);
 		m_window->CreateContext(a_api);
 		return new RendererGL();
-#else // WIN
-		break;
-#endif
-	case meduza::API::DirectX12:
 
-#ifdef WIN
+#elif LINUX // WIN
+
+#endif	
+		break;
+
+#ifdef WINDOWS
+	case meduza::API::DirectX12:
 		m_window = new WinWindow(a_size);
 		m_window->CreateContext(a_api);
 		return new RendererDx12();
-#else // WIN
-		break;
+	break;
 #endif
+	
+#ifdef LINUX
+	case meduza::API::ES2:
+		printf("No ES2 defined! windows would be %f - %f \n", a_size.m_x, a_size.m_y);
+	break;
+#endif
+
 	}
 
 	return nullptr;

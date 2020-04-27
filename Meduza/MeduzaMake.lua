@@ -17,7 +17,7 @@ workspace "Meduza"
 	filter "platforms:ARM"
 		architecture "ARM"
 		system "linux"
-		
+		buildoptions { "-std=c++14" }
 	
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -87,6 +87,7 @@ project "Meduza"
 		staticruntime "On"
 		systemversion "10.0.18362.0"
 		characterset  "MBCS"
+		excludes { "**/Linux/**" }	
 		
 		defines
 		{
@@ -171,6 +172,7 @@ project "Sandbox"
 		cppdialect "C++14"
 		staticruntime "On"
 		systemversion "10.0.18362.0"
+		excludes { "**/Linux/**" }	
 
 		defines
 		{
@@ -213,7 +215,7 @@ project "Sandbox"
 		clr "On"
 		editandcontinue  "Off"
 		
-		removefiles { "**/Windows/**" }
+		excludes { "**/Windows/**" }
 		targetextension ".out"
 		defines
 		{

@@ -45,10 +45,12 @@ meduza::renderer::RendererGL::~RendererGL()
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
 {
+#ifdef DEV
     if (MeduzaHelper::ms_optick)
     {
         OPTICK_GPU_EVENT("Clear");
     }
+#endif
 
 	glClearColor(a_colour.m_r, a_colour.m_g, a_colour.m_b, a_colour.m_a);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -81,10 +83,12 @@ void meduza::renderer::RendererGL::PreRender()
 void meduza::renderer::RendererGL::PopulateBuffers()
 {
     PreRender();
+#ifdef DEV
     if (MeduzaHelper::ms_optick)
     {
         OPTICK_GPU_EVENT("Render Frame");
     }
+#endif
 }
 
 void meduza::renderer::RendererGL::Test()

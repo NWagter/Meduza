@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#define LINUX
-#define OPTICK
+#define WINDOWS
 
 #include <Meduza.h>
 
@@ -57,7 +56,7 @@ void Sandbox::Run()
 
 	while (m_meduza->IsWindowActive())
 	{
-#if defined(WINDOWS) && defined(OPTICK)
+#if defined(WINDOWS) && defined(OPTICK) && defined(DEV)
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 #endif // 

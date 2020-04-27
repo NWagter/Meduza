@@ -25,11 +25,12 @@ meduza::renderer::CommandQueueDx12::~CommandQueueDx12()
 
 void meduza::renderer::CommandQueueDx12::ExecuteList(CommandListDx12* a_list)
 {
-
+#ifdef DEV
 	if (MeduzaHelper::ms_optick)
 	{
 		OPTICK_GPU_EVENT("ExecuteList");
 	}
+#endif
 	a_list->Close();
 
 	ID3D12CommandList* const commandLists[] =
@@ -42,10 +43,11 @@ void meduza::renderer::CommandQueueDx12::ExecuteList(CommandListDx12* a_list)
 
 void meduza::renderer::CommandQueueDx12::Flush()
 {
+#ifdef DEV
 	if (MeduzaHelper::ms_optick)
 	{
 		OPTICK_GPU_EVENT("Flush");
 	}
-
+#endif
 	m_fence->Flush(*this);
 }

@@ -50,10 +50,12 @@ meduza::renderer::ContextDx12::~ContextDx12()
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
+#ifdef DEV
 	if (MeduzaHelper::ms_optick)
 	{
 		OPTICK_GPU_EVENT("Present");
 	}
+#endif
 	m_swapChain->Present(0, 0);
 
 	//Fence with Queue

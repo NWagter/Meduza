@@ -63,6 +63,7 @@ project "Meduza"
 		}
 		targetname "Meduza_d"
 		symbols "On"
+		editandcontinue  "On"	
 
 	filter "configurations:Developer"
 		defines
@@ -79,7 +80,6 @@ project "Meduza"
 			"Meduza_Release"
 		}
 		optimize "On"
-		buildoptions "/MT"
 		targetname "Meduza"
 		
 	filter "system:windows"
@@ -94,20 +94,31 @@ project "Meduza"
 			"GLEW_STATIC"
 		}
 		
+	filter {"system:windows", "configurations:Release"}
+		buildoptions "/MT"
+		
 	filter "system:linux"
 		cppdialect "C++14"
 		characterset  "MBCS"
-		excludes { "**/Windows/**" }
+		editandcontinue  "Off"
+		excludes { "**/Windows/**" }		
 		defines
 		{
 			"PLATFORM_LINUX"
 		}
-		
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"	
+	
+	warnings "Extra"
+	flags { "FatalWarnings" }
+	
+	links
+	{
+		"Meduza"
+	}
 	
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
@@ -129,29 +140,24 @@ project "Sandbox"
 		"$(SolutionDir)Meduza/External",
 		"$(SolutionDir)Meduza/External/Optick/Include"
 	}
-	
-	links
-	{
-		"Meduza"
-	}
 
 	filter {"files:**/main.cpp"}
 		flags { "NoPCH" }		
 
 	filter "configurations:Debug"
-		symbols "On"	
+		symbols "On"
+		editandcontinue  "On"	
 		defines
 		{
 			"DEV"
-		}
+		}	
 
 	filter "configurations:Developer"
 		optimize "On"			
 		defines
 		{
 			"DEV"
-		}
-
+		}		
 
 	filter "configurations:Release"
 		defines
@@ -159,7 +165,6 @@ project "Sandbox"
 			"Meduza_Release"
 		}
 		optimize "On"
-		buildoptions "/MT"
 		
 			
 	filter "system:windows"
@@ -172,6 +177,9 @@ project "Sandbox"
 			"PLATFORM_WINDOWS",
 			"GLEW_STATIC"
 		}
+		
+	filter {"system:windows", "configurations:Release"}
+		buildoptions "/MT"
 		
 	filter {"platforms:x64", "configurations:Debug"}	
 		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Debug" }
@@ -200,9 +208,12 @@ project "Sandbox"
 	filter "system:linux"
 		cppdialect "C++14"
 		characterset  "MBCS"
+		systemversion "latest"
+		
 		clr "On"
+		editandcontinue  "Off"
+		
 		removefiles { "**/Windows/**" }
-		warnings "Off"
 		targetextension ".out"
 		defines
 		{

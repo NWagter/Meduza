@@ -16,8 +16,8 @@ workspace "Meduza"
 
 	filter "platforms:ARM"
 		architecture "ARM"
-		system "linux"	
-		debugremotehost "host"
+		system "linux"
+		
 	
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -97,18 +97,19 @@ project "Meduza"
 	filter "system:linux"
 		cppdialect "C++14"
 		characterset  "MBCS"
-		removefiles { "**/Windows/**" }
+		excludes { "**/Windows/**" }
 		defines
 		{
 			"PLATFORM_LINUX"
 		}
+		
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
-	language "C++"
+	language "C++"	
+	clr "On"
 	
-
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
 	
@@ -202,6 +203,7 @@ project "Sandbox"
 		characterset  "MBCS"
 		removefiles { "**/Windows/**" }
 		warnings "Off"
+		targetextension ".out"
 		defines
 		{
 			"PLATFORM_LINUX"

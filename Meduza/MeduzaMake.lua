@@ -8,18 +8,13 @@ workspace "Meduza"
 		"Developer",
 		"Release"
 	}
-	platforms { "ARM", "x64"}
+	platforms { "x64" }
 	
 	filter "platforms:x64*"
 		architecture "x64"
 		system "windows"
-
-	filter "platforms:ARM"
-		architecture "ARM"
-		system "linux"
-		buildoptions { "-std=c++14" }
 	
-outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+outputDir = "%{cfg.buildcfg}-%{cfg.platform}"
 
 project "Meduza"
 	location "Meduza"
@@ -97,16 +92,6 @@ project "Meduza"
 		
 	filter {"system:windows", "configurations:Release"}
 		buildoptions "/MT"
-		
-	filter "system:linux"
-		cppdialect "C++14"
-		characterset  "MBCS"
-		editandcontinue  "Off"
-		excludes { "**/Windows/**" }		
-		defines
-		{
-			"PLATFORM_LINUX"
-		}
 
 project "Sandbox"
 	location "Sandbox"
@@ -206,21 +191,5 @@ project "Sandbox"
 		{
 			"OptickCore.lib"
 		}
-
-	filter "system:linux"
-		cppdialect "C++14"
-		characterset  "MBCS"
-		systemversion "latest"
-		
-		clr "On"
-		editandcontinue  "Off"
-		
-		excludes { "**/Windows/**" }
-		targetextension ".out"
-		defines
-		{
-			"PLATFORM_LINUX"
-		}
-		includedirs { "/usr/include", "/usr/local/include", "/opt/include" }
 		
 		

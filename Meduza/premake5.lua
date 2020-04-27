@@ -108,7 +108,6 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"	
-	clr "On"
 	
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
@@ -201,6 +200,7 @@ project "Sandbox"
 	filter "system:linux"
 		cppdialect "C++14"
 		characterset  "MBCS"
+		clr "On"
 		removefiles { "**/Windows/**" }
 		warnings "Off"
 		targetextension ".out"

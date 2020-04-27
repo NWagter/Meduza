@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "MeduzaUtil.h"
 #include "Platform/Windows/WinWindow.h"
 
 #include "Platform/Windows/Gfx/OpenGL/ContextGL.h"

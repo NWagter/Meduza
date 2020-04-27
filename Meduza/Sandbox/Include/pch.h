@@ -18,7 +18,7 @@
 
 
 #ifdef DEV 
-#ifdef WINDOWS
+#ifdef PLATFORM_WINDOWS
 #include "optick.h"
 #include "optick.config.h"
 #endif // WINDOWS

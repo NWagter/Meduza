@@ -8,9 +8,9 @@ workspace "Meduza"
 		"Developer",
 		"Release"
 	}
-	platforms { "ARM", "Win64"}
+	platforms { "ARM", "x64"}
 	
-	filter "platforms:Win64*"
+	filter "platforms:x64*"
 		architecture "x64"
 		system "windows"
 
@@ -61,7 +61,7 @@ project "Meduza"
 			"DEV",
 			"Meduza_Debug"
 		}
-
+		targetname "Meduza_d"
 		symbols "On"
 
 	filter "configurations:Developer"
@@ -70,6 +70,7 @@ project "Meduza"
 			"DEV",
 			"Meduza_Developer"
 		}
+		targetname "Meduza_dev"
 		optimize "On"
 
 	filter "configurations:Release"
@@ -79,6 +80,7 @@ project "Meduza"
 		}
 		optimize "On"
 		buildoptions "/MT"
+		targetname "Meduza"
 		
 	filter "system:windows"
 		cppdialect "C++14"
@@ -171,7 +173,7 @@ project "Sandbox"
 			"GLEW_STATIC"
 		}
 		
-	filter {"platforms:Win64", "configurations:Debug"}	
+	filter {"platforms:x64", "configurations:Debug"}	
 		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Debug" }
 		postbuildcommands
 		{
@@ -183,7 +185,7 @@ project "Sandbox"
 			"OptickCore.lib"
 		}
 	
-	filter {"platforms:Win64", "configurations:Developer"}	
+	filter {"platforms:x64", "configurations:Developer"}	
 		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Release" }
 		postbuildcommands
 		{

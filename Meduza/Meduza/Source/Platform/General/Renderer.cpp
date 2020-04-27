@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "MeduzaUtil.h"
 #include "Platform/General/Renderer.h"
 
 #ifdef WINDOWS

@@ -5,8 +5,9 @@
 #include "Platform/General/Window.h"
 
 
-meduza::Meduza::Meduza(API a_api)
+meduza::Meduza::Meduza(API a_api, bool a_enableOptick)
 {
+	MeduzaHelper::EnableOptick(a_enableOptick);
 	m_renderer = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
 }
 

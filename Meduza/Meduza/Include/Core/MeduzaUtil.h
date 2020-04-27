@@ -1,5 +1,7 @@
-#pragma once
+#ifndef MEDUZA_UTIL_H
+#define MEDUZA_UTIL_H
 
+#pragma once
 // Use (void) to silent unused warnings.
 #define assertm(exp, msg) assert(((void)msg, exp))
 
@@ -73,6 +75,9 @@ namespace meduza
 	class MeduzaHelper
 	{
 	public:
+		static void EnableOptick(bool);
+		static bool ms_optick;
 
 	};
 }
+#endif

@@ -3,10 +3,9 @@
 #pragma comment( lib, "Opengl32.lib")
 #pragma comment( lib, "glu32.lib")
 
+#include "MeduzaUtil.h"
 #include "Math/MeduzaMath.h"
 #include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
-
-
 
 #include <glad/glad.h>
 
@@ -33,9 +32,11 @@ meduza::renderer::ContextGL::~ContextGL()
 
 void meduza::renderer::ContextGL::SwapBuffer()
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Present");
-#endif
+	if (MeduzaHelper::ms_optick)
+	{
+		OPTICK_GPU_EVENT("Present");
+	}
+
 	SwapBuffers(wglGetCurrentDC());
 }
 

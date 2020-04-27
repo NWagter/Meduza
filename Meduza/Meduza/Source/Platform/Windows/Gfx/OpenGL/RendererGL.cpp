@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "MeduzaUtil.h"
 #include <glad/glad.h>
 
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
@@ -44,9 +45,10 @@ meduza::renderer::RendererGL::~RendererGL()
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Clear");
-#endif
+    if (MeduzaHelper::ms_optick)
+    {
+        OPTICK_GPU_EVENT("Clear");
+    }
 
 	glClearColor(a_colour.m_r, a_colour.m_g, a_colour.m_b, a_colour.m_a);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -78,10 +80,11 @@ void meduza::renderer::RendererGL::PreRender()
 
 void meduza::renderer::RendererGL::PopulateBuffers()
 {
-	PreRender();
-#if OPTICK
-	OPTICK_GPU_EVENT("Render Frame");
-#endif // 
+    PreRender();
+    if (MeduzaHelper::ms_optick)
+    {
+        OPTICK_GPU_EVENT("Render Frame");
+    }
 }
 
 void meduza::renderer::RendererGL::Test()

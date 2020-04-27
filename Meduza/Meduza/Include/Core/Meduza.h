@@ -1,12 +1,12 @@
 #pragma once
 
-#include "MeduzaUtil.h"
-
 #include "Drawable/Sprite.h"
+#include "MeduzaUtil.h"
 
 namespace meduza
 {
 	class Window;
+	struct Colour;
 
 	namespace renderer
 	{
@@ -16,13 +16,13 @@ namespace meduza
 	class Meduza 
 	{
 	public:
-		Meduza(API);
+		Meduza(API, bool = false);
 		~Meduza();
 
 		void Submit(drawable::Drawable*);
 		void Submit(std::vector<drawable::Drawable*>);
 
-		inline void Clear(float a_colour[4])
+		void Clear(float a_colour[4])
 		{
 			Colour c = Colour(a_colour);
 			Clear(c);

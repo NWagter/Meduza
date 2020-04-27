@@ -57,3 +57,9 @@
 
 #endif
 
+#ifdef OPTICK
+
+#define ME_OPICK
+
+#endif
+

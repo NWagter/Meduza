@@ -5,6 +5,7 @@
 #pragma comment( lib, "d3dcompiler.lib")
 #pragma comment( lib, "dxguid.lib")
 
+#include "MeduzaUtil.h"
 #include "Math/MeduzaMath.h"
 #include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
 
@@ -49,9 +50,10 @@ meduza::renderer::ContextDx12::~ContextDx12()
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Present");
-#endif
+	if (MeduzaHelper::ms_optick)
+	{
+		OPTICK_GPU_EVENT("Present");
+	}
 	m_swapChain->Present(0, 0);
 
 	//Fence with Queue

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "MeduzaUtil.h"
-
 #include "Math/MeduzaMath.h"
 
 namespace meduza

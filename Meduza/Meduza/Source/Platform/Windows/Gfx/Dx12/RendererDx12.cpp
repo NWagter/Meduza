@@ -1,5 +1,7 @@
 #include "mePch.h"
 
+
+#include "MeduzaUtil.h"
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 
 #include "Platform/Windows/WinWindow.h"
@@ -32,10 +34,11 @@ meduza::renderer::RendererDx12::RendererDx12()
 
 	m_srv = new DescriptorDx12(srvDesc, *m_context->GetDevice());
 
-#if OPTICK
-	ID3D12CommandQueue* cmdQueues[] = { m_context->GetQueue()->GetQueue() };
-	OPTICK_GPU_INIT_D3D12(m_context->GetDevice()->GetDevice(), cmdQueues, 1);
-#endif
+	if (MeduzaHelper::ms_optick)
+	{
+		ID3D12CommandQueue* cmdQueues[] = { m_context->GetQueue()->GetQueue() };
+		OPTICK_GPU_INIT_D3D12(m_context->GetDevice()->GetDevice(), cmdQueues, 1);
+	}
 
 	m_context->GetQueue()->ExecuteList(m_cmdList);
 	m_context->GetQueue()->Flush();
@@ -55,9 +58,10 @@ meduza::renderer::RendererDx12::~RendererDx12()
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Clear");
-#endif
+	if (MeduzaHelper::ms_optick)
+	{
+		OPTICK_GPU_EVENT("Clear");
+	}
 
 	auto commandAllocator = m_cmdList->GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
@@ -105,9 +109,10 @@ void meduza::renderer::RendererDx12::PreRender()
 void meduza::renderer::RendererDx12::PopulateBuffers()
 {
 	PreRender();
-#if OPTICK
-	OPTICK_GPU_EVENT("Render Frame");
-#endif // 
+	if (MeduzaHelper::ms_optick)
+	{
+		OPTICK_GPU_EVENT("Render Frame");
+	}
 
 
 	m_cmdList->SetViewPort(1);

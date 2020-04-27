@@ -3,7 +3,6 @@
 #include <string>
 
 #include "Math/MeduzaMath.h"
-#include "MeduzaUtil.h"
 
 namespace meduza
 {

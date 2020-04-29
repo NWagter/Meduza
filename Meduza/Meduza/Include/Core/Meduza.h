@@ -5,6 +5,7 @@
 
 namespace meduza
 {
+	class ImGuiRenderer;
 	class Window;
 	struct Colour;
 
@@ -58,6 +59,7 @@ namespace meduza
 	private:
 
 		renderer::Renderer* m_renderer = nullptr;
+		ImGuiRenderer* m_imGuiRenderer = nullptr;
 		Window* m_window = nullptr;
 
 	};

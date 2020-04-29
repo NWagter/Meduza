@@ -25,11 +25,11 @@ namespace meduza
 				Window* window = nullptr;
 			};
 
-			static RendererData* CreateRenderer(API, math::Vec2);
+			static RendererData* CreateRenderer(math::Vec2);
 			virtual ~Renderer() = default;
 			
 			virtual void Clear(Colour) = 0;
-			virtual void SwapBuffers() = 0;
+			virtual void Render() = 0;
 
 			virtual void Draw(drawable::Drawable*) = 0;
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;

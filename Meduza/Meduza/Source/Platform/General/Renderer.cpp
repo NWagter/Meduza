@@ -2,7 +2,7 @@
 
 #include "Core.h"
 
-#include "MeduzaUtil.h"
+#include "Util/MeduzaHelper.h"
 #include "Platform/General/Renderer.h"
 
 #ifdef WINDOWS
@@ -13,16 +13,16 @@
 #include "Platform/General/Context.h"
 #endif
  
-meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(API a_api, math::Vec2 a_size)
+meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size)
 {
 	RendererData* returnData = new RendererData();
 
-	switch (a_api)
+	switch (MeduzaHelper::ms_activeAPI)
 	{
 	case meduza::API::OpenGL:
 #ifdef WINDOWS
 		returnData->window = new WinWindow(a_size);
-		returnData->window->CreateContext(a_api);
+		returnData->window->CreateContext();
 
 		returnData->renderer = new RendererGL(*returnData->window->GetContext());
 
@@ -35,7 +35,7 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 #ifdef WINDOWS
 	case meduza::API::DirectX12:
 		returnData->window = new WinWindow(a_size);
-		returnData->window->CreateContext(a_api);
+		returnData->window->CreateContext();
 		returnData->renderer = new RendererDx12(*returnData->window->GetContext());
 
 		return returnData;

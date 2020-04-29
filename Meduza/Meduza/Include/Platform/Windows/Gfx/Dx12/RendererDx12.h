@@ -19,7 +19,7 @@ namespace meduza
 			~RendererDx12() override;
 
 			void Clear(Colour) override;
-			void SwapBuffers() override;
+			void Render() override;
 
 			void Draw(drawable::Drawable*) override;
 			void Submit(std::vector<drawable::Drawable*>) override;

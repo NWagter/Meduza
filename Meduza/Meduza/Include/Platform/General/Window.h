@@ -21,7 +21,7 @@ namespace meduza
 		virtual void SwapBuffers() = 0;
 
 		virtual void SetTitle(std::string) = 0;
-		virtual void CreateContext(API) = 0;
+		virtual void CreateContext() = 0;
 
 		inline renderer::Context* GetContext() { return m_context; }
 

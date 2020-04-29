@@ -75,7 +75,7 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	m_cmdList->SetViewAndScissor(m_context->GetSize());
 }
 
-void meduza::renderer::RendererDx12::SwapBuffers()
+void meduza::renderer::RendererDx12::Render()
 {
 	PopulateBuffers();
 }

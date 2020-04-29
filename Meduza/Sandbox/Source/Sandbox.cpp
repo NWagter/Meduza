@@ -9,7 +9,7 @@
 #include <Drawable/Sprite.h>
 
 #ifdef WINDOWS
-	meduza::API const g_api = meduza::API::DirectX12;
+	meduza::API const g_api = meduza::API::OpenGL;
 #elif defined(LINUX)
 	meduza::API const g_api = meduza::API::ES2;
 #endif

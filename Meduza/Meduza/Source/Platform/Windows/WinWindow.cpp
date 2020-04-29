@@ -61,7 +61,7 @@ void meduza::WinWindow::SetTitle(std::string a_title)
 	SetWindowText(m_hWnd, m_title.c_str());
 }
 
-void meduza::WinWindow::CreateContext(API a_api)
+void meduza::WinWindow::CreateContext()
 {
 	std::string title = "Meduza | Renderer | Windows";
 
@@ -70,7 +70,7 @@ void meduza::WinWindow::CreateContext(API a_api)
 		delete m_context;
 	}
 
-	switch (a_api)
+	switch (MeduzaHelper::ms_activeAPI)
 	{
 	case meduza::API::OpenGL:
 		m_context = new renderer::ContextGL(m_hWnd);

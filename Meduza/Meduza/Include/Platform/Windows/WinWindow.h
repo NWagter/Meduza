@@ -33,7 +33,7 @@ namespace meduza
 		void SwapBuffers() override;
 
 		void SetTitle(std::string) override;
-		void CreateContext(API) override;
+		void CreateContext() override;
 
 	private:
 

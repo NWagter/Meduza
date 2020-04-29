@@ -8,14 +8,14 @@
 #include "Platform/General/Renderer.h"
 #include "Platform/General/Window.h"
 
+#include "Platform/General/ImGuiRenderer.h"
 
 meduza::Meduza::Meduza(API a_api)
 {
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
 
 	renderer::Renderer::RendererData* data = nullptr;
-
-	data = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
+	data = renderer::Renderer::CreateRenderer(math::Vec2(720,480));
 
 	if (data == nullptr)
 	{
@@ -39,8 +39,8 @@ void meduza::Meduza::EnableOptick()
 
 void meduza::Meduza::EnableImGui()
 {
-
 	MeduzaHelper::ms_imGui = true;
+	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
 void meduza::Meduza::Submit(drawable::Drawable*)
@@ -57,7 +57,9 @@ void meduza::Meduza::Clear(Colour a_colour)
 {
 	if (m_renderer != nullptr)
 	{
-		return m_renderer->Clear(a_colour);
+		m_renderer->Clear(a_colour);
+
+		//m_imGuiRenderer->Clear();
 	}
 }
 
@@ -65,7 +67,10 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr)
 	{
-		m_renderer->SwapBuffers();
+		m_renderer->Render();
+
+		//m_imGuiRenderer->Render();
+
 		m_window->SwapBuffers();
 	}
 }

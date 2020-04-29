@@ -56,7 +56,7 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void meduza::renderer::RendererGL::SwapBuffers()
+void meduza::renderer::RendererGL::Render()
 {
 	PopulateBuffers();
 }

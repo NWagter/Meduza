@@ -17,6 +17,7 @@ namespace meduza
 
 			virtual void SwapBuffer() = 0;
 			virtual void Resize(math::Vec2) = 0;
+			virtual math::Vec2 GetSize() = 0;
 		};
 	}
 }

@@ -33,6 +33,6 @@ namespace meduza
 		renderer::Context* m_context = nullptr;
 		math::Vec2 m_size;
 		std::string m_title;
-		bool m_windowActive;
+		bool m_windowActive = false;
 	};
 }

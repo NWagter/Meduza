@@ -23,6 +23,8 @@ namespace meduza
 			void SwapBuffer() override;
 			void Resize(math::Vec2) override;
 
+			math::Vec2 GetSize() override { return m_size; }
+
 			inline DeviceDx12* GetDevice() { return m_device; }
 			inline CommandQueueDx12* GetQueue() { return m_queue; }
 

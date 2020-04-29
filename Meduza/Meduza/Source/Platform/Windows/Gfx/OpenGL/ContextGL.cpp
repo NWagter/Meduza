@@ -43,6 +43,8 @@ void meduza::renderer::ContextGL::SwapBuffer()
 
 void meduza::renderer::ContextGL::Resize(math::Vec2 a_size)
 {
+	m_size = a_size;
+
 	glViewport(0,0, int(a_size.m_x), int(a_size.m_y));
 }
 

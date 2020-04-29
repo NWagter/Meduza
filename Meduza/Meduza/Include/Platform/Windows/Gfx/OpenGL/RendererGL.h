@@ -8,11 +8,13 @@ namespace meduza
 	namespace renderer
 	{
 		class MeshGL;
+		class Context;
+		class ContextGL;
 
 		class RendererGL : public Renderer
 		{
 		public:
-			RendererGL();
+			RendererGL(Context&);
 			~RendererGL() override;
 
 			void Clear(Colour) override;
@@ -27,6 +29,8 @@ namespace meduza
 			void Test();
 			MeshGL* m_quad = nullptr;
 			unsigned int m_shaderprogram = 0;
+
+			ContextGL* m_context;
 
 		};
 	}

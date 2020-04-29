@@ -12,11 +12,11 @@
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
 
-meduza::renderer::RendererDx12::RendererDx12()
+meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 {
-	m_context = dynamic_cast<ContextDx12*>(m_window->GetContext());
+	m_context = dynamic_cast<ContextDx12*>(&a_context);
 
-	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, *m_context->GetDevice(), m_window->GetSize());
+	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, *m_context->GetDevice(), m_context->GetSize());
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
@@ -45,8 +45,6 @@ meduza::renderer::RendererDx12::~RendererDx12()
 	delete m_cmdList;
 	delete m_rtv;
 	delete m_srv;
-
-	delete m_window;
 }
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
@@ -55,7 +53,6 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	{
 		OPTICK_GPU_EVENT("Clear");
 	}
-
 	auto commandAllocator = m_cmdList->GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
 
@@ -75,14 +72,12 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
 
 	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
-	m_cmdList->SetViewAndScissor(m_window->GetSize());
+	m_cmdList->SetViewAndScissor(m_context->GetSize());
 }
 
 void meduza::renderer::RendererDx12::SwapBuffers()
 {
 	PopulateBuffers();
-
-	Renderer::GetWindow().SwapBuffers();
 }
 
 void meduza::renderer::RendererDx12::Draw(drawable::Drawable*)

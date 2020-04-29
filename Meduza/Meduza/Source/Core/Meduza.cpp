@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "Core.h"
 #include "Util/MeduzaHelper.h"
 
 #include "Meduza.h"
@@ -10,7 +11,19 @@
 
 meduza::Meduza::Meduza(API a_api)
 {
-	m_renderer = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
+	meduza::MeduzaHelper::ms_activeAPI = a_api;
+
+	renderer::Renderer::RendererData* data = nullptr;
+
+	data = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
+
+	if (data == nullptr)
+	{
+		ME_CORE_ASSERT_M(1, "Failed to generate Renderer!");
+	}
+
+	m_renderer = data->renderer;
+	m_window = data->window;
 }
 
 meduza::Meduza::~Meduza()
@@ -52,7 +65,8 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr)
 	{
-		return m_renderer->SwapBuffers();
+		m_renderer->SwapBuffers();
+		m_window->SwapBuffers();
 	}
 }
 
@@ -60,7 +74,7 @@ void meduza::Meduza::Peek()
 {
 	if (m_renderer != nullptr)
 	{
-		return m_renderer->GetWindow().Peek();
+		m_window->Peek();
 	}
 }
 
@@ -68,7 +82,7 @@ bool meduza::Meduza::IsWindowActive() const
 {
 	if (m_renderer != nullptr)
 	{
-		return m_renderer->GetWindow().GetActive();
+		return m_window->GetActive();
 	}
 
 	return false;
@@ -78,7 +92,7 @@ std::string meduza::Meduza::GetWindowName()
 { 
 	if (m_renderer != nullptr)
 	{
-		return m_renderer->GetWindow().GetTitle();
+		return m_window->GetTitle();
 	}
 
 	return "Unknown";

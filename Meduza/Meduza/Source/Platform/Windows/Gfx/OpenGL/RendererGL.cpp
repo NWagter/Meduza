@@ -6,7 +6,7 @@
 #include <glad/glad.h>
 
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
-#include "Platform/General/Window.h"
+#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
 
 #include "Platform/Windows/Gfx/OpenGL/MeshGL.h"
 
@@ -26,21 +26,23 @@ const char* g_fragShader =
 "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
 
-meduza::renderer::RendererGL::RendererGL()
+meduza::renderer::RendererGL::RendererGL(Context& a_context)
 {
+    m_context = dynamic_cast<ContextGL*>(&a_context);
+
 	int status = gladLoadGL(); 
     ME_GFX_ASSERT_M(status, "Glad not loaded");
 	std::string version = (char*)(glGetString(GL_VERSION));
 	printf("OpenGl version : %s \n", version.c_str());
 
-	glViewport(0, 0, int(Renderer::GetWindow().GetSize().m_x), int(Renderer::GetWindow().GetSize().m_y));
+	glViewport(0, 0, int(m_context->GetSize().m_x), int(m_context->GetSize().m_y));
 
 	Test();
 }
 
 meduza::renderer::RendererGL::~RendererGL()
 {
-	delete Renderer::m_window;
+
 }
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
@@ -57,8 +59,6 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 void meduza::renderer::RendererGL::SwapBuffers()
 {
 	PopulateBuffers();
-
-	Renderer::GetWindow().SwapBuffers();
 }
 
 void meduza::renderer::RendererGL::Draw(drawable::Drawable*)

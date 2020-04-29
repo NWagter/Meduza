@@ -7,6 +7,7 @@ namespace meduza
 {
 	namespace renderer
 	{
+		class Context;
 		class ContextDx12;
 		class CommandListDx12;
 		class DescriptorDx12;
@@ -14,7 +15,7 @@ namespace meduza
 		class RendererDx12 : public Renderer
 		{
 		public:
-			RendererDx12();
+			RendererDx12(Context&);
 			~RendererDx12() override;
 
 			void Clear(Colour) override;
@@ -29,7 +30,7 @@ namespace meduza
 			void PopulateBuffers();
 
 			ContextDx12* m_context;
-			
+
 			CommandListDx12* m_cmdList;
 			DescriptorDx12* m_rtv;
 			DescriptorDx12* m_srv;

@@ -13,10 +13,19 @@ namespace meduza
 
 	namespace renderer
 	{
+		class Context;
+
 		class Renderer
 		{
 		public:
-			static Renderer* CreateRenderer(API, math::Vec2);
+
+			struct RendererData
+			{
+				renderer::Renderer* renderer = nullptr;
+				Window* window = nullptr;
+			};
+
+			static RendererData* CreateRenderer(API, math::Vec2);
 			virtual ~Renderer() = default;
 			
 			virtual void Clear(Colour) = 0;
@@ -26,11 +35,6 @@ namespace meduza
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
 
 			virtual void EnableOptick() {};
-
-			Window& GetWindow() const;
-
-		protected:
-			static Window* m_window;
 		};
 	}
 }

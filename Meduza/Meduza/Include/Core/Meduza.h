@@ -58,6 +58,7 @@ namespace meduza
 	private:
 
 		renderer::Renderer* m_renderer = nullptr;
+		Window* m_window = nullptr;
 
 	};
 }

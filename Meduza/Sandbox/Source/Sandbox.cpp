@@ -2,13 +2,14 @@
 #include "Sandbox.h"
 
 #define WINDOWS
+#define OPTICK
 
 #include <Meduza.h>
 
 #include <Drawable/Sprite.h>
 
 #ifdef WINDOWS
-	meduza::API const g_api = meduza::API::OpenGL;
+	meduza::API const g_api = meduza::API::DirectX12;
 #elif defined(LINUX)
 	meduza::API const g_api = meduza::API::ES2;
 #endif
@@ -17,6 +18,7 @@
 Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
+	m_meduza->EnableOptick();
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 
@@ -56,7 +58,7 @@ void Sandbox::Run()
 
 	while (m_meduza->IsWindowActive())
 	{
-#if defined(WINDOWS) && defined(OPTICK) && defined(DEV)
+#if defined(WINDOWS) && defined(OPTICK)
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 #endif // 

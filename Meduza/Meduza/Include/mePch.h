@@ -46,9 +46,7 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
-#ifdef DEV
-	#include <optick.h>
-#endif // DEV
+#include <optick.h>
 
 #endif // PLATFORM_WINDOWS
 

@@ -16,8 +16,10 @@ namespace meduza
 	class Meduza 
 	{
 	public:
-		Meduza(API, bool = false);
+		Meduza(API);
 		~Meduza();
+
+		void EnableOptick();
 
 		void Submit(drawable::Drawable*);
 		void Submit(std::vector<drawable::Drawable*>);

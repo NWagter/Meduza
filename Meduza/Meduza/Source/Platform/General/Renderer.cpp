@@ -1,5 +1,7 @@
 #include "mePch.h"
 
+#include "Core.h"
+
 #include "MeduzaUtil.h"
 #include "Platform/General/Renderer.h"
 
@@ -49,7 +51,7 @@ meduza::renderer::Renderer* meduza::renderer::Renderer::CreateRenderer(API a_api
 
 meduza::Window& meduza::renderer::Renderer::GetWindow() const
 {
-	assertm(m_window != nullptr, "There is no Window!");
+	ME_GFX_ASSERT_M(m_window != nullptr, "There is no Window!");
 
 	return *this->m_window;
 }

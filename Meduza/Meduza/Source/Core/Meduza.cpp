@@ -5,15 +5,20 @@
 #include "Platform/General/Window.h"
 
 
-meduza::Meduza::Meduza(API a_api, bool a_enableOptick)
+meduza::Meduza::Meduza(API a_api)
 {
-	MeduzaHelper::EnableOptick(a_enableOptick);
 	m_renderer = renderer::Renderer::CreateRenderer(a_api, math::Vec2(720,480));
 }
 
 meduza::Meduza::~Meduza()
 {
 	delete m_renderer;
+}
+
+void meduza::Meduza::EnableOptick()
+{
+	m_renderer->EnableOptick();
+	MeduzaHelper::EnableOptick(true);
 }
 
 void meduza::Meduza::Submit(drawable::Drawable*)

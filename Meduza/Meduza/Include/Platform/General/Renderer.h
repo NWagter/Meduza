@@ -25,6 +25,8 @@ namespace meduza
 			virtual void Draw(drawable::Drawable*) = 0;
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
 
+			virtual void EnableOptick() {};
+
 			Window& GetWindow() const;
 
 		protected:

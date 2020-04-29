@@ -16,7 +16,7 @@
 meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 {
 
-#if defined(DEV)
+#if defined(MEDUZA_DEBUG)
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
@@ -50,12 +50,10 @@ meduza::renderer::ContextDx12::~ContextDx12()
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
-#ifdef DEV
 	if (MeduzaHelper::ms_optick)
 	{
 		OPTICK_GPU_EVENT("Present");
 	}
-#endif
 	m_swapChain->Present(0, 0);
 
 	//Fence with Queue

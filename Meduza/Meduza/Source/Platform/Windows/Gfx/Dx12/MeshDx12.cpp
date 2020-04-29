@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "MeduzaUtil.h"
+#include "Core.h"
 
 #include "Platform/Windows/Gfx/Dx12/HelperDx12.h"
 
@@ -32,7 +32,7 @@ void meduza::renderer::MeshDx12::GenerateBuffers()
 {
 	if (m_device == nullptr || m_cmd == nullptr)
 	{
-		assertm(1, "Can't Generate Buffers no context or device available!");
+		ME_GFX_ASSERT_M(1, "Can't Generate Buffers no context or device available!");
 	}
 
 	m_vertexBufferByteSize = sizeof(Vertex) * static_cast<int>(m_vertices.size());
@@ -59,7 +59,7 @@ D3D12_VERTEX_BUFFER_VIEW meduza::renderer::MeshDx12::VertexBufferView() const
 {
 	if (m_device == nullptr || m_cmd == nullptr)
 	{
-		assertm(1, "No Buffers available!");
+		ME_GFX_ASSERT_M(1, "No Buffers available!");
 	}
 
 	D3D12_VERTEX_BUFFER_VIEW vBufferView;
@@ -74,7 +74,7 @@ D3D12_INDEX_BUFFER_VIEW meduza::renderer::MeshDx12::IndexBufferView() const
 {	
 	if (m_device == nullptr || m_cmd == nullptr)
 	{
-		assertm(1, "No Buffers available!");
+		ME_GFX_ASSERT_M(1, "No Buffers available!");
 	}
 
 	D3D12_INDEX_BUFFER_VIEW indexBufferView;

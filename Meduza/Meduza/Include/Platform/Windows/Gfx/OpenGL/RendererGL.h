@@ -20,7 +20,6 @@ namespace meduza
 
 			void Draw(drawable::Drawable*) override;
 			void Submit(std::vector<drawable::Drawable*>) override;
-
 		private:
 			void PreRender();
 			void PopulateBuffers();

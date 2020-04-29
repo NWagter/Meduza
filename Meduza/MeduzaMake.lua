@@ -5,7 +5,6 @@ workspace "Meduza"
 	configurations
 	{
 		"Debug",
-		"Developer",
 		"Release"
 	}
 	platforms { "x64" }
@@ -53,26 +52,16 @@ project "Meduza"
 	filter "configurations:Debug"
 		defines
 		{
-			"DEV",
-			"Meduza_Debug"
+			"MEDUZA_DEBUG"
 		}
 		targetname "Meduza_d"
 		symbols "On"
 		editandcontinue  "On"	
 
-	filter "configurations:Developer"
-		defines
-		{
-			"DEV",
-			"Meduza_Developer"
-		}
-		targetname "Meduza_dev"
-		optimize "On"
-
 	filter "configurations:Release"
 		defines
 		{
-			"Meduza_Release"
+			"MEDUZA_RELEASE"
 		}
 		optimize "On"
 		targetname "Meduza"
@@ -90,7 +79,7 @@ project "Meduza"
 			"GLEW_STATIC"
 		}
 		
-	filter {"system:windows", "configurations:Release"}
+	filter {"platforms:x64", "configurations:Release"}
 		buildoptions "/MT"
 
 project "Sandbox"
@@ -135,20 +124,13 @@ project "Sandbox"
 		editandcontinue  "On"	
 		defines
 		{
-			"DEV"
-		}	
-
-	filter "configurations:Developer"
-		optimize "On"			
-		defines
-		{
-			"DEV"
+			"MEDUZA_DEBUG"
 		}		
 
 	filter "configurations:Release"
 		defines
 		{
-			"Meduza_Release"
+			"MEDUZA_RELEASE"
 		}
 		optimize "On"
 		
@@ -165,26 +147,14 @@ project "Sandbox"
 			"GLEW_STATIC"
 		}
 		
-	filter {"system:windows", "configurations:Release"}
+	filter {"platforms:windows", "configurations:Release"}
 		buildoptions "/MT"
 		
-	filter {"platforms:x64", "configurations:Debug"}	
-		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Debug" }
+	filter {"platforms:x64"}	
+		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/%{cfg.buildcfg}" }
 		postbuildcommands
 		{
-			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Debug/OptickCore.dll $(outDir)")
-		}
-		
-		links
-		{
-			"OptickCore.lib"
-		}
-	
-	filter {"platforms:x64", "configurations:Developer"}	
-		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/Release" }
-		postbuildcommands
-		{
-			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/Release/OptickCore.dll $(outDir)")
+			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/%{cfg.buildcfg}/OptickCore.dll $(outDir)")
 		}
 		
 		links

@@ -22,10 +22,6 @@ jobs:
     - name: Build Debug Meduza
       working-directory: Meduza/
       run: msbuild Meduza.sln -p:Configuration=Debug
-      
-    - name: Build Developer Meduza
-      working-directory: Meduza/
-      run: msbuild Meduza.sln -p:Configuration=Developer
 
     - name: Build Release Meduza
       working-directory: Meduza/

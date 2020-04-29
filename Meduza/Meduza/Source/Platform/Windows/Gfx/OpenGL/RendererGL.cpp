@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "MeduzaUtil.h"
+#include "Util/MeduzaHelper.h"
 
 #include <glad/glad.h>
 

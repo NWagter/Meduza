@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MeduzaUtil.h"
+
 namespace meduza
 {
 	static const int  GS_FRAMEBUFFERS = 3;
@@ -8,6 +10,15 @@ namespace meduza
 	{
 		class Mesh;
 	}
+
+	class MeduzaHelper
+	{
+	public:
+		static API ms_activeAPI;
+		static bool ms_optick;
+		static bool ms_imGui;
+
+	};
 
 	struct DrawData
 	{

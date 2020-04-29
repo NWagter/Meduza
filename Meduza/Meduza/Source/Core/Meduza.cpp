@@ -1,5 +1,8 @@
 #include "mePch.h"
-#include "Core/Meduza.h"
+
+#include "Util/MeduzaHelper.h"
+
+#include "Meduza.h"
 
 #include "Platform/General/Renderer.h"
 #include "Platform/General/Window.h"
@@ -18,7 +21,13 @@ meduza::Meduza::~Meduza()
 void meduza::Meduza::EnableOptick()
 {
 	m_renderer->EnableOptick();
-	MeduzaHelper::EnableOptick(true);
+	MeduzaHelper::ms_optick = true;
+}
+
+void meduza::Meduza::EnableImGui()
+{
+
+	MeduzaHelper::ms_imGui = true;
 }
 
 void meduza::Meduza::Submit(drawable::Drawable*)

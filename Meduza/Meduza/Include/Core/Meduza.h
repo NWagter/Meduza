@@ -19,7 +19,12 @@ namespace meduza
 		Meduza(API);
 		~Meduza();
 
+// ============ Profiling and Tools
+
 		void EnableOptick();
+		void EnableImGui();
+
+// ============  Renderer
 
 		void Submit(drawable::Drawable*);
 		void Submit(std::vector<drawable::Drawable*>);
@@ -29,8 +34,8 @@ namespace meduza
 			Colour c = Colour(a_colour);
 			Clear(c);
 		}
-
 		void Clear(Colour);
+
 		void SwapBuffers();
 
 

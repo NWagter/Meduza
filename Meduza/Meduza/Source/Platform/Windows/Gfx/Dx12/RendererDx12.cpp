@@ -1,7 +1,7 @@
 #include "mePch.h"
 
+#include "Util/MeduzaHelper.h"
 
-#include "MeduzaUtil.h"
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 
 #include "Platform/Windows/WinWindow.h"

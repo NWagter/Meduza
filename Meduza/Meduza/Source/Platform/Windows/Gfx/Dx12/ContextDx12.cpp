@@ -5,8 +5,9 @@
 #pragma comment( lib, "d3dcompiler.lib")
 #pragma comment( lib, "dxguid.lib")
 
-#include "MeduzaUtil.h"
 #include "Math/MeduzaMath.h"
+#include "Util/MeduzaHelper.h"
+
 #include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"

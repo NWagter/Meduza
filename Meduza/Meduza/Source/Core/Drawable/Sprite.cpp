@@ -1,7 +1,8 @@
 #include "mePch.h"
 
-#include "Core/Drawable/Sprite.h"
 #include "Util/MeduzaHelper.h"
+
+#include "Drawable/Sprite.h"
 
 meduza::drawable::Sprite::Sprite()
 {

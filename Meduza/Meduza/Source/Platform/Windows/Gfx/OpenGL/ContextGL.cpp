@@ -3,8 +3,9 @@
 #pragma comment( lib, "Opengl32.lib")
 #pragma comment( lib, "glu32.lib")
 
-#include "MeduzaUtil.h"
 #include "Math/MeduzaMath.h"
+#include "Util/MeduzaHelper.h"
+
 #include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
 
 #include <glad/glad.h>

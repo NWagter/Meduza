@@ -69,13 +69,5 @@ namespace meduza
 		float m_albedo[4] = { 1,1,1,1 };
 
 	};
-
-	class MeduzaHelper
-	{
-	public:
-		static void EnableOptick(bool);
-		static bool ms_optick;
-
-	};
 }
 #endif

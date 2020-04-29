@@ -1,6 +1,7 @@
 #include "mePch.h"
 
-#include "MeduzaUtil.h"
+#include "Util/MeduzaHelper.h"
+
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"

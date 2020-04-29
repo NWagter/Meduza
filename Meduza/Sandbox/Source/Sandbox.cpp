@@ -18,7 +18,10 @@
 Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
+
 	m_meduza->EnableOptick();
+	m_meduza->EnableImGui();
+
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 

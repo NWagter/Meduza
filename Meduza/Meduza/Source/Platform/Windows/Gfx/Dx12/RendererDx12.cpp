@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "Core.h"
 #include "Util/MeduzaHelper.h"
 
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
@@ -117,4 +118,26 @@ void meduza::renderer::RendererDx12::EnableOptick()
 {
 	ID3D12CommandQueue* cmdQueues[] = { m_context->GetQueue()->GetQueue() };
 	OPTICK_GPU_INIT_D3D12(m_context->GetDevice()->GetDevice(), cmdQueues, 1);
+}
+
+meduza::renderer::ContextDx12& meduza::renderer::RendererDx12::GetContext() const
+{
+	if (m_context == nullptr)
+	{
+		ME_GFX_ASSERT_M(1, "No Context Available!");
+		return *m_context;
+	}
+		
+	return *m_context; 
+}
+
+meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() const
+{
+	if (m_cmdList == nullptr)
+	{
+		ME_GFX_ASSERT_M(1, "No Command List Available!");
+		return*m_cmdList;
+	}
+
+	return *m_cmdList;
 }

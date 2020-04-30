@@ -40,6 +40,7 @@ void meduza::Meduza::EnableOptick()
 void meduza::Meduza::EnableImGui()
 {
 	MeduzaHelper::ms_imGui = true;
+	m_window->EnableImGui();
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
@@ -59,7 +60,10 @@ void meduza::Meduza::Clear(Colour a_colour)
 	{
 		m_renderer->Clear(a_colour);
 
-		//m_imGuiRenderer->Clear();
+		if (MeduzaHelper::ms_imGui)
+		{
+			m_imGuiRenderer->Clear();
+		}
 	}
 }
 
@@ -67,9 +71,12 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr)
 	{
-		m_renderer->Render();
+		if (MeduzaHelper::ms_imGui)
+		{
+			m_imGuiRenderer->Render();
+		}
 
-		//m_imGuiRenderer->Render();
+		m_renderer->Render();
 
 		m_window->SwapBuffers();
 	}

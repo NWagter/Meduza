@@ -29,6 +29,8 @@ namespace meduza
 		WinWindow(math::Vec2);
 		~WinWindow() override;
 
+		void EnableImGui() override;
+
 		void Peek() override;
 		void SwapBuffers() override;
 
@@ -36,6 +38,9 @@ namespace meduza
 		void CreateContext() override;
 
 	private:
+
+		ImGuiContext* m_imGuiContext;
+		ImGuiIO* m_imGuiIO;
 
 		static LRESULT WINAPI HandleMsgSetup(HWND, UINT, WPARAM, LPARAM);
 		static LRESULT WINAPI HandleMsgThunk(HWND, UINT, WPARAM, LPARAM);

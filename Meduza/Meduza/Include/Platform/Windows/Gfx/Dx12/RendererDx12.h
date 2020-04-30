@@ -25,6 +25,9 @@ namespace meduza
 			void Submit(std::vector<drawable::Drawable*>) override;
 
 			void EnableOptick() override;
+
+			ContextDx12& GetContext() const;
+			CommandListDx12& GetCmd() const;
 		private:
 			void PreRender();
 			void PopulateBuffers();

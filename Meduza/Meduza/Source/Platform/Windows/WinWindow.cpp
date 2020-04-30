@@ -34,6 +34,23 @@ meduza::WinWindow::~WinWindow()
 	DestroyWindow(m_hWnd);
 }
 
+void meduza::WinWindow::EnableImGui()
+{
+	IMGUI_CHECKVERSION();
+	m_imGuiContext = ImGui::CreateContext();
+	m_imGuiIO = &ImGui::GetIO();
+
+	// Enable Docking
+	m_imGuiIO->DisplaySize = ImVec2(m_size.m_x, m_size.m_y);
+	m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+	// Set font
+	m_imGuiIO->Fonts->AddFontDefault();
+
+	// Setup Platform/Renderer bindings
+	ImGui_ImplWin32_Init(m_hWnd);
+}
+
 void meduza::WinWindow::Peek()
 {
 	MSG msg;
@@ -105,8 +122,14 @@ LRESULT __stdcall meduza::WinWindow::HandleMsgThunk(HWND a_hwnd, UINT a_msg, WPA
 	return pWnd->HandleMsg(a_hwnd, a_msg, a_wParam, a_lParam);
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam); // NOLINT
 LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
+	if (MeduzaHelper::ms_imGui && ImGui_ImplWin32_WndProcHandler(a_hwnd, a_msg, a_wParam, a_lParam) != 0)
+	{
+		return 1;
+	}
+
 	switch (a_msg)
 	{
 	case WM_CLOSE:

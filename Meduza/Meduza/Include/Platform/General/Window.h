@@ -17,6 +17,8 @@ namespace meduza
 		Window() = default;
 		virtual ~Window() = default;
 
+		virtual void EnableImGui() = 0;
+
 		virtual void Peek() = 0;
 		virtual void SwapBuffers() = 0;
 

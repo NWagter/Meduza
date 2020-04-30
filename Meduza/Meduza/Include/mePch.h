@@ -33,6 +33,9 @@
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <ImGui/imgui.h>
+
+#include <ImGui/imgui_impl_win32.h>
 
 #pragma warning(disable:4265)
 #include <wrl.h>
@@ -45,6 +48,10 @@
 #include <DirectXMath.h>
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
+
+#include <ImGui/imgui_impl_dx12.h>
+
+#include <ImGui/imgui_impl_opengl3.h>
 
 #include <optick.h>
 

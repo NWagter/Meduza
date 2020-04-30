@@ -32,7 +32,8 @@ project "Meduza"
 	files
 	{
 		"%{prj.name}/Include/**.h",
-		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/Source/**.cpp",		
+		"%{prj.name}/External/ImGui/**.cpp",
 		"%{prj.name}/External/Glad/**.c"
 	}
 
@@ -47,10 +48,10 @@ project "Meduza"
 		"$(SolutionDir)%{prj.name}/External/Glad/include"
 	}
 	
-	filter {"files:**.c"}
+	filter {"files:**/Glad/**.c"}
 		flags { "NoPCH" }
 		
-	filter { "files: **/External/**.cpp "}
+	filter { "files:**/ImGui/**.cpp"}
 		flags { "NoPCH" }
 
 	filter "configurations:Debug"

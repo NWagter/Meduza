@@ -42,11 +42,15 @@ project "Meduza"
 		"$(SolutionDir)%{prj.name}/Include/Core",
 		"$(SolutionDir)%{prj.name}/External",
 		"$(SolutionDir)%{prj.name}/External/Dx12",
-		"$(SolutionDir)%{prj.name}/External/Optick/Include",
+		"$(SolutionDir)%{prj.name}/External/Optick/Include",		
+		"$(SolutionDir)%{prj.name}/External/ImGui",
 		"$(SolutionDir)%{prj.name}/External/Glad/include"
 	}
 	
 	filter {"files:**.c"}
+		flags { "NoPCH" }
+		
+	filter { "files: **/External/**.cpp "}
 		flags { "NoPCH" }
 
 	filter "configurations:Debug"
@@ -97,7 +101,6 @@ project "Sandbox"
 	
 	targetdir ("Executable/" .. outputDir .. "/%{prj.name}")
 	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
-	
 	
 	pchheader "pch.h"
 	pchsource "%{prj.name}/Source/pch.cpp"

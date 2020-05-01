@@ -41,5 +41,4 @@ Executable/
 *.filters
 *.user
 
-!Meduza/Vendor/Premake/premake5.exe
-
+!Vendor/

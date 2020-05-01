@@ -12,8 +12,6 @@
 
 meduza::renderer::ContextGL::ContextGL(HWND a_hwnd)
 {
-
-	
 	m_pFormat = CreateFormat();
 
 	HDC dContext = GetDC(a_hwnd);
@@ -24,6 +22,11 @@ meduza::renderer::ContextGL::ContextGL(HWND a_hwnd)
 
 	m_glContext = wglCreateContext(dContext);
 	wglMakeCurrent(dContext, m_glContext);
+
+	RECT rect;
+	::GetClientRect(a_hwnd, &rect);
+
+	m_size = math::Vec2(float(rect.right - rect.left), float(rect.bottom - rect.top));
 }
 
 meduza::renderer::ContextGL::~ContextGL()
@@ -33,18 +36,12 @@ meduza::renderer::ContextGL::~ContextGL()
 
 void meduza::renderer::ContextGL::SwapBuffer()
 {
-	if (MeduzaHelper::ms_optick)
-	{
-		OPTICK_GPU_EVENT("Present");
-	}
-
 	SwapBuffers(wglGetCurrentDC());
 }
 
 void meduza::renderer::ContextGL::Resize(math::Vec2 a_size)
 {
 	m_size = a_size;
-
 	glViewport(0,0, int(a_size.m_x), int(a_size.m_y));
 }
 

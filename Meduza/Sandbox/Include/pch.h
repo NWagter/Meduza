@@ -16,5 +16,5 @@
 #include <set>
 #include <map>
 
-#include "optick.h"
-#include "optick.config.h"
+#include <optick.h>
+#include <optick.config.h>

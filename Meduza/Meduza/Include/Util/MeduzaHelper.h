@@ -15,7 +15,6 @@ namespace meduza
 	{
 	public:
 		static API ms_activeAPI;
-		static bool ms_optick;
 		static bool ms_imGui;
 
 	};

@@ -53,8 +53,6 @@
 
 #include <ImGui/imgui_impl_opengl3.h>
 
-#include <optick.h>
-
 #endif // PLATFORM_WINDOWS
 
 #ifdef PLATFORM_LINUX

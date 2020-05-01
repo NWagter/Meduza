@@ -19,8 +19,7 @@ Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
 
-	m_meduza->EnableOptick();
-	m_meduza->EnableImGui();
+	//m_meduza->EnableImGui();
 
 	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
@@ -43,11 +42,11 @@ void Sandbox::Run()
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Drawable());
+	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0, 0);
+	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0.5f, 0);
 
 	meduza::math::Vec2 pos(1, 1);
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPostion(pos);
@@ -65,10 +64,8 @@ void Sandbox::Run()
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 #endif // 
-
-
 		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
-		m_meduza->Submit(sprites);
+		m_meduza->Submit(sprites[0]);
 		//Game Update
 		Update(0);
 

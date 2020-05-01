@@ -42,8 +42,7 @@ project "Meduza"
 		"$(SolutionDir)%{prj.name}/Include",
 		"$(SolutionDir)%{prj.name}/Include/Core",
 		"$(SolutionDir)%{prj.name}/External",
-		"$(SolutionDir)%{prj.name}/External/Dx12",
-		"$(SolutionDir)%{prj.name}/External/Optick/Include",		
+		"$(SolutionDir)%{prj.name}/External/Dx12",		
 		"$(SolutionDir)%{prj.name}/External/ImGui",
 		"$(SolutionDir)%{prj.name}/External/Glad/include"
 	}
@@ -117,7 +116,7 @@ project "Sandbox"
 		"$(SolutionDir)%{prj.name}/Include",
 		"$(SolutionDir)Meduza/Include/Core",
 		"$(SolutionDir)Meduza/External",
-		"$(SolutionDir)Meduza/External/Optick/Include"
+		"$(SolutionDir)Vendor/Optick/Include"
 	}
 
 	filter {"files:**/main.cpp"}
@@ -155,10 +154,10 @@ project "Sandbox"
 		buildoptions "/MT"
 		
 	filter {"platforms:x64"}	
-		libdirs { "OptickCore.lib", "$(SolutionDir)Meduza/External/Optick/lib/$(Platform)/%{cfg.buildcfg}" }
+		libdirs { "OptickCore.lib", "$(SolutionDir)Vendor/Optick/lib/$(Platform)/%{cfg.buildcfg}" }
 		postbuildcommands
 		{
-			("{COPY} $(SolutionDir)/Meduza/External/Optick/lib/x64/%{cfg.buildcfg}/OptickCore.dll $(outDir)")
+			("{COPY} $(SolutionDir)Vendor/Optick/lib/x64/%{cfg.buildcfg}/OptickCore.dll $(outDir)")
 		}
 		
 		links

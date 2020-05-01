@@ -31,6 +31,11 @@ meduza::WinWindow::WinWindow(math::Vec2 a_size)
 meduza::WinWindow::~WinWindow()
 {
 	delete m_context;
+	if (MeduzaHelper::ms_imGui)
+	{
+		ImGui_ImplWin32_Shutdown();
+		ImGui::DestroyContext();
+	}
 	DestroyWindow(m_hWnd);
 }
 

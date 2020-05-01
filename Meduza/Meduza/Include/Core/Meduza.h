@@ -3,6 +3,8 @@
 #include "Drawable/Sprite.h"
 #include "MeduzaUtil.h"
 
+#include<vector>
+
 namespace meduza
 {
 	class ImGuiRenderer;
@@ -20,9 +22,8 @@ namespace meduza
 		Meduza(API);
 		~Meduza();
 
-// ============ Profiling and Tools
+// ============ Tools
 
-		void EnableOptick();
 		void EnableImGui();
 
 // ============  Renderer
@@ -57,7 +58,6 @@ namespace meduza
 		}
 
 	private:
-
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
 		Window* m_window = nullptr;

@@ -26,7 +26,7 @@ meduza::drawable::Sprite::~Sprite()
 
 void meduza::drawable::Sprite::SetPosition(float a_x, float a_y)
 {
-	m_drawData->m_size = glm::vec3(a_x, a_y, 0);
+	m_drawData->m_position = glm::vec3(a_x, a_y, 0);
 }
 
 void meduza::drawable::Sprite::SetPostion(float a_pos[2])
@@ -57,6 +57,21 @@ void meduza::drawable::Sprite::SetSize(math::Vec2 a_size)
 void meduza::drawable::Sprite::SetRotation(float a_z)
 {
 	m_drawData->m_rotation = glm::vec3(0, 0, a_z);
+}
+
+meduza::math::Vec3 meduza::drawable::Sprite::GetPos() const
+{
+	return math::Vec3(m_drawData->m_position.x, m_drawData->m_position.y, m_drawData->m_position.z);
+}
+
+meduza::math::Vec3 meduza::drawable::Sprite::GetSize() const
+{
+	return math::Vec3(m_drawData->m_size.x, m_drawData->m_size.y, m_drawData->m_size.z);
+}
+
+meduza::math::Vec3 meduza::drawable::Sprite::GetRotation() const
+{
+	return math::Vec3(m_drawData->m_rotation.x, m_drawData->m_rotation.y, m_drawData->m_rotation.z);
 }
 
 void meduza::drawable::Sprite::Submit(renderer::Renderer& a_renderer)

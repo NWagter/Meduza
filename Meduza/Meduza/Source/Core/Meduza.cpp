@@ -21,20 +21,25 @@ meduza::Meduza::Meduza(API a_api)
 	{
 		ME_CORE_ASSERT_M(1, "Failed to generate Renderer!");
 	}
+	else
+	{
+		m_renderer = data->renderer;
+		m_window = data->window;
+	}
 
-	m_renderer = data->renderer;
-	m_window = data->window;
+
+	delete data;
 }
 
 meduza::Meduza::~Meduza()
 {
-	delete m_renderer;
-}
+	if (m_imGuiRenderer != nullptr)
+	{
+		delete m_imGuiRenderer;
+	}
 
-void meduza::Meduza::EnableOptick()
-{
-	m_renderer->EnableOptick();
-	MeduzaHelper::ms_optick = true;
+	delete m_renderer;
+	delete m_window;
 }
 
 void meduza::Meduza::EnableImGui()
@@ -44,14 +49,20 @@ void meduza::Meduza::EnableImGui()
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
-void meduza::Meduza::Submit(drawable::Drawable*)
+void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
 {
-
+	if (m_renderer != nullptr)
+	{
+		m_renderer->Draw(a_drawable);
+	}
 }
 
-void meduza::Meduza::Submit(std::vector<drawable::Drawable*>)
+void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
 {
-
+	if (m_renderer != nullptr)
+	{
+		m_renderer->Submit(a_drawables);
+	}
 }
 
 void meduza::Meduza::Clear(Colour a_colour)
@@ -71,13 +82,12 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr)
 	{
+		m_renderer->Render();
+
 		if (MeduzaHelper::ms_imGui)
 		{
 			m_imGuiRenderer->Render();
 		}
-
-		m_renderer->Render();
-
 		m_window->SwapBuffers();
 	}
 }

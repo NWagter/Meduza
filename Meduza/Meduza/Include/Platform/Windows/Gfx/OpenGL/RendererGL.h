@@ -26,7 +26,7 @@ namespace meduza
 			void PreRender();
 			void PopulateBuffers();
 
-			void Test();
+			void GenShaders();
 			MeshGL* m_quad = nullptr;
 			unsigned int m_shaderprogram = 0;
 

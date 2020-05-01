@@ -37,6 +37,11 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 
 	m_currentframeBufferIndex = 0;
 
+	RECT rect;
+	::GetClientRect(a_hwnd, &rect);
+
+	m_size = math::Vec2(float(rect.right - rect.left), float(rect.bottom - rect.top));
+
 	CreateSwapChain();
 }
 
@@ -51,10 +56,6 @@ meduza::renderer::ContextDx12::~ContextDx12()
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
-	if (MeduzaHelper::ms_optick)
-	{
-		OPTICK_GPU_EVENT("Present");
-	}
 	m_swapChain->Present(0, 0);
 
 	//Fence with Queue
@@ -151,12 +152,9 @@ void meduza::renderer::ContextDx12::CreateSwapChain()
 {
 	m_swapChain.Reset();
 
-	RECT rect;
-	::GetClientRect(m_hwnd, &rect);
-
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-	swapChainDesc.Width = static_cast<int>(rect.right - rect.left);
-	swapChainDesc.Height = static_cast<int>(rect.bottom - rect.top);
+	swapChainDesc.Width = int(m_size.m_x);
+	swapChainDesc.Height = int(m_size.m_y);
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.Stereo = FALSE;
 	swapChainDesc.SampleDesc = { 1, 0 };

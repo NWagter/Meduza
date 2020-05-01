@@ -49,6 +49,5 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 #endif
 
 	}
-
 	return nullptr;
 }

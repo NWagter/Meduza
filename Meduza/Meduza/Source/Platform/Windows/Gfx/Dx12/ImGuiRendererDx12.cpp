@@ -38,6 +38,8 @@ meduza::ImGuiRendererDx12::ImGuiRendererDx12(renderer::Renderer& a_renderer)
 
 meduza::ImGuiRendererDx12::~ImGuiRendererDx12()
 {
+	ImGui_ImplDX12_Shutdown();
+	delete m_GuiHeap;
 }
 
 void meduza::ImGuiRendererDx12::Clear()

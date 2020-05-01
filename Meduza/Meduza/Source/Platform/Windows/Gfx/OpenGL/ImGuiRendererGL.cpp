@@ -9,6 +9,7 @@ meduza::ImGuiRendererGL::ImGuiRendererGL(renderer::Renderer&)
 
 meduza::ImGuiRendererGL::~ImGuiRendererGL()
 {
+	ImGui_ImplOpenGL3_Shutdown();
 }
 
 void meduza::ImGuiRendererGL::Clear()

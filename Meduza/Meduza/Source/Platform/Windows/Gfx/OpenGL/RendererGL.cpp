@@ -1,6 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
+#include "Drawable/Drawable.h"
 #include "Util/MeduzaHelper.h"
 
 #include <glad/glad.h>
@@ -35,23 +36,17 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
 	std::string version = (char*)(glGetString(GL_VERSION));
 	printf("OpenGl version : %s \n", version.c_str());
 
-	glViewport(0, 0, int(m_context->GetSize().m_x), int(m_context->GetSize().m_y));
+    glViewport(0, 0, int(a_context.GetSize().m_x), int(a_context.GetSize().m_y));
 
-	Test();
+	GenShaders();
 }
 
 meduza::renderer::RendererGL::~RendererGL()
 {
-
 }
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
 {
-    if (MeduzaHelper::ms_optick)
-    {
-        OPTICK_GPU_EVENT("Clear");
-    }
-
 	glClearColor(a_colour.m_r, a_colour.m_g, a_colour.m_b, a_colour.m_a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -59,35 +54,53 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 void meduza::renderer::RendererGL::Render()
 {
 	PopulateBuffers();
+
+    if (m_quad != nullptr)
+    {
+        delete m_quad;
+    }
 }
 
-void meduza::renderer::RendererGL::Draw(drawable::Drawable*)
+void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
 {
+    auto d = a_drawable->GetDrawData();
+
+    std::vector<Vertex> vertices = {
+        Vertex(0.5f + d->m_position.x ,  0.5f + d->m_position.y, 0.0f),  // top right
+        Vertex(0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f),  // bottom right
+        Vertex(-0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f),  // bottom left
+        Vertex(-0.5f + d->m_position.x,  0.5f + +d->m_position.y, 0.0f),   // top left 
+    };
+    std::vector<int> indices = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3,   // second Triangle
+    };
+
+    m_quad = new MeshGL(0, vertices, indices, GL_LINE);
 }
 
 void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*>)
 {
+ 
 }
 
 void meduza::renderer::RendererGL::PreRender()
 {
-    glUseProgram(m_shaderprogram);
-    m_quad->EnableMode();
-    glBindVertexArray(m_quad->GetVAO()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-    //glDrawArrays(GL_TRIANGLES, 0, 6);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    if (m_quad != nullptr)
+    {
+        glUseProgram(m_shaderprogram);
+        glBindVertexArray(m_quad->GetVAO());
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
 }
 
 void meduza::renderer::RendererGL::PopulateBuffers()
 {
     PreRender();
-    if (MeduzaHelper::ms_optick)
-    {
-        OPTICK_GPU_EVENT("Render Frame");
-    }
 }
 
-void meduza::renderer::RendererGL::Test()
+void meduza::renderer::RendererGL::GenShaders()
 {
     int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &g_vertShader, NULL);
@@ -125,17 +138,4 @@ void meduza::renderer::RendererGL::Test()
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
-    std::vector<Vertex> vertices = {
-        Vertex(0.5f,  0.5f, 0.0f),  // top right
-        Vertex(0.5f, -0.5f, 0.0f),  // bottom right
-        Vertex(-0.5f, -0.5f, 0.0f),  // bottom left
-        Vertex(-0.5f,  0.5f, 0.0f),   // top left 
-    };
-    std::vector<int> indices = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3,   // second Triangle
-    };
-
-    m_quad = new MeshGL(0, vertices, indices, GL_LINE);
 }

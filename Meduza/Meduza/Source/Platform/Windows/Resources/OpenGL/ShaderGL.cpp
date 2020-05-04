@@ -25,6 +25,13 @@ void meduza::ShaderGL::UnBind()
     glUseProgram(0);
 }
 
+void meduza::ShaderGL::UploadUniformInt(std::string a_uniform, int a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform1i(location, a_value);
+}
+
 bool ShaderDebug(unsigned int a_shader)
 {
     int success;

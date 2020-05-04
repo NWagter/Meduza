@@ -25,6 +25,17 @@ meduza::ShaderLibrary::ShaderLibrary()
 	m_instance = this;
 }
 
+meduza::ShaderLibrary::~ShaderLibrary()
+{
+	for (auto s : m_instance->m_shaders)
+	{
+		auto shader = s.second;
+		delete shader;
+	}
+
+	m_instance->m_shaders.clear();
+}
+
 meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::string a_fragPath)
 {
 	switch (MeduzaHelper::ms_activeAPI)

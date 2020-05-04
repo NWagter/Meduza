@@ -68,6 +68,5 @@ namespace meduza
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
 		ShaderLibrary* m_shaderLibrary = nullptr;
 		Window* m_window = nullptr;
-
 	};
 }

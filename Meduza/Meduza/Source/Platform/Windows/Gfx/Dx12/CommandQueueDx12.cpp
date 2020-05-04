@@ -1,5 +1,7 @@
 #include "mePch.h"
 
+#include "Util/MeduzaHelper.h"
+
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
@@ -24,9 +26,6 @@ meduza::renderer::CommandQueueDx12::~CommandQueueDx12()
 
 void meduza::renderer::CommandQueueDx12::ExecuteList(CommandListDx12* a_list)
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("ExecuteList");
-#endif
 	a_list->Close();
 
 	ID3D12CommandList* const commandLists[] =
@@ -39,8 +38,5 @@ void meduza::renderer::CommandQueueDx12::ExecuteList(CommandListDx12* a_list)
 
 void meduza::renderer::CommandQueueDx12::Flush()
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Flush");
-#endif
 	m_fence->Flush(*this);
 }

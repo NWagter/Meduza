@@ -159,7 +159,9 @@ namespace meduza
 				if (a_index == 0 || a_index == 1 || a_index == 2)
 					return m_xyz[a_index];
 				else {
-					printf("Can't acces index %i in a vec 2!\n", a_index);
+					
+					
+					("Can't acces index %i in a vec 2!\n", a_index);
 					return 0;
 				}
 			}

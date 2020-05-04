@@ -1,20 +1,23 @@
 #include "mePch.h"
 
+#include "Core.h"
+#include "Util/MeduzaHelper.h"
+
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 
-#include "Platform/Windows/WinWindow.h"
-#include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
+#include "Platform/Windows/Window/WinWindow.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
 
-meduza::renderer::RendererDx12::RendererDx12()
+meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 {
-	m_context = dynamic_cast<ContextDx12*>(m_window->GetContext());
+	m_context = dynamic_cast<ContextDx12*>(&a_context);
 
-	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, *m_context->GetDevice(), m_window->GetSize());
+	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, *m_context->GetDevice(), m_context->GetSize());
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
@@ -32,14 +35,8 @@ meduza::renderer::RendererDx12::RendererDx12()
 
 	m_srv = new DescriptorDx12(srvDesc, *m_context->GetDevice());
 
-#if OPTICK
-	ID3D12CommandQueue* cmdQueues[] = { m_context->GetQueue()->GetQueue() };
-	OPTICK_GPU_INIT_D3D12(m_context->GetDevice()->GetDevice(), cmdQueues, 1);
-#endif
-
 	m_context->GetQueue()->ExecuteList(m_cmdList);
 	m_context->GetQueue()->Flush();
-
 }
 
 meduza::renderer::RendererDx12::~RendererDx12()
@@ -49,16 +46,10 @@ meduza::renderer::RendererDx12::~RendererDx12()
 	delete m_cmdList;
 	delete m_rtv;
 	delete m_srv;
-
-	delete m_window;
 }
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 {
-#if OPTICK
-	OPTICK_GPU_EVENT("Clear");
-#endif
-
 	auto commandAllocator = m_cmdList->GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
 
@@ -78,14 +69,12 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
 
 	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
-	m_cmdList->SetViewAndScissor(m_window->GetSize());
+	m_cmdList->SetViewAndScissor(m_context->GetSize());
 }
 
-void meduza::renderer::RendererDx12::SwapBuffers()
+void meduza::renderer::RendererDx12::Render()
 {
 	PopulateBuffers();
-
-	Renderer::GetWindow().SwapBuffers();
 }
 
 void meduza::renderer::RendererDx12::Draw(drawable::Drawable*)
@@ -105,9 +94,6 @@ void meduza::renderer::RendererDx12::PreRender()
 void meduza::renderer::RendererDx12::PopulateBuffers()
 {
 	PreRender();
-#if OPTICK
-	OPTICK_GPU_EVENT("Render Frame");
-#endif // 
 
 
 	m_cmdList->SetViewPort(1);
@@ -118,4 +104,26 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
 	m_context->GetQueue()->ExecuteList(m_cmdList);
+}
+
+meduza::renderer::ContextDx12& meduza::renderer::RendererDx12::GetContext() const
+{
+	if (m_context == nullptr)
+	{
+		ME_GFX_ASSERT_M(1, "No Context Available!");
+		return *m_context;
+	}
+		
+	return *m_context; 
+}
+
+meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() const
+{
+	if (m_cmdList == nullptr)
+	{
+		ME_GFX_ASSERT_M(1, "No Command List Available!");
+		return*m_cmdList;
+	}
+
+	return *m_cmdList;
 }

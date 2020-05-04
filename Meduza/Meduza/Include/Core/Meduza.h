@@ -1,12 +1,17 @@
 #pragma once
 
+#include "Drawable/Sprite.h"
 #include "MeduzaUtil.h"
 
-#include "Drawable/Sprite.h"
+#include<vector>
+#include <string>
 
 namespace meduza
 {
+	class ImGuiRenderer;
 	class Window;
+	class ShaderLibrary;
+	struct Colour;
 
 	namespace renderer
 	{
@@ -19,16 +24,26 @@ namespace meduza
 		Meduza(API);
 		~Meduza();
 
+// ============ Tools
+
+		void EnableImGui();
+
+// ============ Load Resource
+
+		std::string LoadShader(std::string);
+
+// ============  Renderer
+
 		void Submit(drawable::Drawable*);
 		void Submit(std::vector<drawable::Drawable*>);
 
-		inline void Clear(float a_colour[4])
+		void Clear(float a_colour[4])
 		{
 			Colour c = Colour(a_colour);
 			Clear(c);
 		}
-
 		void Clear(Colour);
+
 		void SwapBuffers();
 
 
@@ -49,8 +64,10 @@ namespace meduza
 		}
 
 	private:
-
 		renderer::Renderer* m_renderer = nullptr;
+		ImGuiRenderer* m_imGuiRenderer = nullptr;
+		ShaderLibrary* m_shaderLibrary = nullptr;
+		Window* m_window = nullptr;
 
 	};
 }

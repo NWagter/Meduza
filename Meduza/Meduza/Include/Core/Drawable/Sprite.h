@@ -23,7 +23,14 @@ namespace meduza
 			void SetSize(math::Vec2);
 			void SetRotation(float);
 
-			void Submit(renderer::Renderer&);
+			void UseShader(const char*) override;
+			void UseShader(std::string) override;
+
+			math::Vec3 GetPos() const override;
+			math::Vec3 GetSize() const override;
+			math::Vec3 GetRotation() const override;
+
+			void Submit(renderer::Renderer&) override;
 		};
 	}
 }

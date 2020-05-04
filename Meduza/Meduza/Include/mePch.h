@@ -28,11 +28,16 @@
 
 #ifdef PLATFORM_WINDOWS
 
-#define WIN
+#include <fstream>
+
+#define WINDOWS
 
 //includes for rendering
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <ImGui/imgui.h>
+
+#include <ImGui/imgui_impl_win32.h>
 
 #pragma warning(disable:4265)
 #include <wrl.h>
@@ -46,7 +51,15 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
+#include <ImGui/imgui_impl_dx12.h>
+
+#include <ImGui/imgui_impl_opengl3.h>
+
 #endif // PLATFORM_WINDOWS
 
-#include <optick.h>
+#ifdef PLATFORM_LINUX
 
+#define LINUX 1
+
+
+#endif

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MeduzaUtil.h"
+
 namespace meduza
 {
 	static const int  GS_FRAMEBUFFERS = 3;
@@ -9,6 +11,14 @@ namespace meduza
 		class Mesh;
 	}
 
+	class MeduzaHelper
+	{
+	public:
+		static API ms_activeAPI;
+		static bool ms_imGui;
+
+	};
+
 	struct DrawData
 	{
 		DrawData()
@@ -17,7 +27,7 @@ namespace meduza
 			m_size = glm::vec3(1);
 			m_rotation = glm::vec3(0);
 
-			m_materialId = 0;
+			m_shaderId = 0;
 		}
 
 		~DrawData() = default;
@@ -28,7 +38,7 @@ namespace meduza
 
 		renderer::Mesh* m_mesh;
 
-		unsigned int m_materialId;
+		unsigned int m_shaderId;
 	};
 
 	struct Vertex

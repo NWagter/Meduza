@@ -1,16 +1,25 @@
 #include "pch.h"
 #include "Sandbox.h"
 
-#define WIN
+#define WINDOWS
+#define OPTICK
 
 #include <Meduza.h>
+
 #include <Drawable/Sprite.h>
+
+#ifdef WINDOWS
+	meduza::API const g_api = meduza::API::OpenGL;
+#elif defined(LINUX)
+	meduza::API const g_api = meduza::API::ES2;
+#endif
+
 
 Sandbox::Sandbox()
 {
+	m_meduza = new meduza::Meduza(g_api);
 
-	m_meduza = new meduza::Meduza(meduza::API::OpenGL);
-	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
+	//m_meduza->EnableImGui();
 }
 
 Sandbox::~Sandbox()
@@ -31,11 +40,11 @@ void Sandbox::Run()
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Drawable());
+	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
 
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0, 0);
+	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0.5f, 0);
 
 	meduza::math::Vec2 pos(1, 1);
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPostion(pos);
@@ -47,14 +56,18 @@ void Sandbox::Run()
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[5])->SetPostion(pos);
 
 
+	std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
+
+	sprites[0]->UseShader(name);
+
 	while (m_meduza->IsWindowActive())
 	{
-#ifdef DEV
+#if defined(WINDOWS) && defined(OPTICK)
 		OPTICK_FRAME("MainThread");
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
-#endif // DEV
+#endif // 
 		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
-		m_meduza->Submit(sprites);
+		m_meduza->Submit(sprites[0]);
 		//Game Update
 		Update(0);
 

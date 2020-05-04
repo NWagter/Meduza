@@ -1,16 +1,20 @@
-#pragma once
+#ifndef MEDUZA_UTIL_H
+#define MEDUZA_UTIL_H
 
-// Use (void) to silent unused warnings.
-#define assertm(exp, msg) assert(((void)msg, exp))
+#pragma once
 
 namespace meduza
 {
 	enum class API
 	{
 		OpenGL = 0,
-#ifdef WIN
+#ifdef WINDOWS
 		DirectX12,
 #endif // WIN
+
+#ifdef LINUX
+		ES2,
+#endif
 
 	};
 
@@ -65,10 +69,5 @@ namespace meduza
 		float m_albedo[4] = { 1,1,1,1 };
 
 	};
-
-	class MeduzaHelper
-	{
-	public:
-
-	};
 }
+#endif

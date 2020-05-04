@@ -11,6 +11,9 @@
 #include "Platform/General/Gfx/ImGuiRenderer.h"
 #include "Platform/General/Gfx/ShaderLibrary.h"
 
+#include "Platform/General/Resources/Texture.h"
+#include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
+
 #ifdef WINDOWS
 #include "Platform/Windows/Utils/FileSystem.h"
 #endif // WINDOWS
@@ -48,6 +51,7 @@ meduza::Meduza::~Meduza()
 		delete m_imGuiRenderer;
 	}
 
+	delete m_shaderLibrary;
 	delete m_renderer;
 	delete m_window;
 }

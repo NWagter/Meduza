@@ -56,9 +56,10 @@ void Sandbox::Run()
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[5])->SetPostion(pos);
 
 
-	std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
+	//Add Shader to Sprite
 
-	sprites[0]->UseShader(name);
+	//std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
+	//sprites[0]->UseShader(name);
 
 	while (m_meduza->IsWindowActive())
 	{

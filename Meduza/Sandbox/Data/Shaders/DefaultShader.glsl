@@ -1,20 +1,28 @@
 #type Vertex
 #version 330 core
 
-layout (location = 0) in vec3 aPos;
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec2 a_textureCoords;
+
+out vec2 v_textureCoords;
 
 void main()
 {
-   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    v_textureCoords = a_textureCoords;
+    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }
 
 
 #type Pixel
 #version 330 core
 
-out vec4 FragColor;
+out vec4 colour;
+
+in vec2 v_textureCoords;
+
+uniform sampler2D u_texture;
 
 void main()
 {
-   FragColor = vec4(1.0f, 0.f, 1.0f, 1.0f);
+    colour = texture(u_texture, v_textureCoords);
 }

@@ -34,6 +34,7 @@ project "Meduza"
 		"%{prj.name}/Include/**.h",
 		"%{prj.name}/Source/**.cpp",		
 		"%{prj.name}/External/ImGui/**.cpp",
+		"%{prj.name}/External/stb_image/**.cpp",
 		"%{prj.name}/External/Glad/**.c"
 	}
 
@@ -42,6 +43,7 @@ project "Meduza"
 		"$(SolutionDir)%{prj.name}/Include",
 		"$(SolutionDir)%{prj.name}/Include/Core",
 		"$(SolutionDir)%{prj.name}/External",
+		"$(SolutionDir)%{prj.name}/External/stb_image",
 		"$(SolutionDir)%{prj.name}/External/Dx12",		
 		"$(SolutionDir)%{prj.name}/External/ImGui",
 		"$(SolutionDir)%{prj.name}/External/Glad/include"

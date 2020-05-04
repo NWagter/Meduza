@@ -9,6 +9,7 @@ namespace meduza
 	{
 	public:
 		ShaderLibrary();
+		~ShaderLibrary();
 
 		static Shader* LoadShader(std::string, std::string);
 		static Shader* LoadShader(std::string);

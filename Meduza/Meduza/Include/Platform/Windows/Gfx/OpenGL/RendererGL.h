@@ -4,12 +4,14 @@
 
 namespace meduza
 {
+	class Texture2D;
 
 	namespace renderer
 	{
 		class MeshGL;
 		class Context;
 		class ContextGL;
+
 
 		class RendererGL : public Renderer
 		{
@@ -29,9 +31,11 @@ namespace meduza
 			std::vector<DrawData> m_drawData;
 
 			MeshGL* m_quad = nullptr;
+			Texture2D* m_checkerBoard = nullptr;
 			unsigned int m_shaderprogram = 0;
 
 			ContextGL* m_context;
+
 
 		};
 	}

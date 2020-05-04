@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/General/Renderer.h"
+#include "Platform/General/Gfx/Renderer.h"
 
 namespace meduza
 {
@@ -25,8 +25,9 @@ namespace meduza
 		private:
 			void PreRender();
 			void PopulateBuffers();
+			
+			std::vector<DrawData> m_drawData;
 
-			void GenShaders();
 			MeshGL* m_quad = nullptr;
 			unsigned int m_shaderprogram = 0;
 

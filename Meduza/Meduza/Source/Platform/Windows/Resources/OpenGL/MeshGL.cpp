@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "Platform/Windows/Gfx/OpenGL/MeshGL.h"
+#include "Platform/Windows/Resources/OpenGL/MeshGL.h"
 
 meduza::renderer::MeshGL::MeshGL(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, GLenum a_mode) : meduza::renderer::Mesh(a_id, a_vert, a_ind)
 {

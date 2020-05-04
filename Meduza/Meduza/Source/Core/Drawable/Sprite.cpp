@@ -4,10 +4,13 @@
 
 #include "Drawable/Sprite.h"
 
+#include "Platform/General/Gfx/ShaderLibrary.h"
+
 meduza::drawable::Sprite::Sprite()
 {
 	m_drawType = Type::Sprite;
 	m_drawData = new DrawData();
+	m_drawData->m_shaderId = ShaderLibrary::GetShader("DefaultShader")->GetId();
 }
 
 meduza::drawable::Sprite::Sprite(float a_pos[2], float a_size[2], float a_z, Texture&)
@@ -57,6 +60,16 @@ void meduza::drawable::Sprite::SetSize(math::Vec2 a_size)
 void meduza::drawable::Sprite::SetRotation(float a_z)
 {
 	m_drawData->m_rotation = glm::vec3(0, 0, a_z);
+}
+
+void meduza::drawable::Sprite::UseShader(const char* a_name)
+{
+	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
+}
+
+void meduza::drawable::Sprite::UseShader(std::string a_name)
+{
+	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
 }
 
 meduza::math::Vec3 meduza::drawable::Sprite::GetPos() const

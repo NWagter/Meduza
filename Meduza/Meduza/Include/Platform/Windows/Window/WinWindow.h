@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/General/Window.h"
+#include "Platform/General/Window/Window.h"
 
 namespace meduza
 {

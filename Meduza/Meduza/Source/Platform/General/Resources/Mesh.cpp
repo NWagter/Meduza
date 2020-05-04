@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "Platform/General/Mesh.h"
+#include "Platform/General/Resources/Mesh.h"
 
 meduza::renderer::Mesh::Mesh(unsigned int a_id, std::vector<Vertex> a_vertices, std::vector<int> a_indices)
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/General/Mesh.h"
+#include "Platform/General/Resources/Mesh.h"
 
 #include <glad/glad.h>
 

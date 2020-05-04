@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/General/ImGuiRenderer.h"
+#include "Platform/General/Gfx/ImGuiRenderer.h"
 
 namespace meduza
 {

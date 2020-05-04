@@ -23,6 +23,9 @@ namespace meduza
 			void SetSize(math::Vec2);
 			void SetRotation(float);
 
+			void UseShader(const char*) override;
+			void UseShader(std::string) override;
+
 			math::Vec3 GetPos() const override;
 			math::Vec3 GetSize() const override;
 			math::Vec3 GetRotation() const override;

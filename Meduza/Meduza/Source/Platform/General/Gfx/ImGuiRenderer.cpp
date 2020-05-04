@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Util/MeduzaHelper.h"
-#include "Platform/General/ImGuiRenderer.h"
+#include "Platform/General/Gfx/ImGuiRenderer.h"
 
 #ifdef WINDOWS
 #include "Platform/Windows/Gfx/Dx12/ImGuiRendererDx12.h"

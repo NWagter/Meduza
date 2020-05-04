@@ -28,6 +28,8 @@
 
 #ifdef PLATFORM_WINDOWS
 
+#include <fstream>
+
 #define WINDOWS
 
 //includes for rendering

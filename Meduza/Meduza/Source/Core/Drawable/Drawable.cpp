@@ -2,7 +2,7 @@
 
 #include "Core/Drawable/Drawable.h"
 
-#include "Platform/General/Renderer.h"
+#include "Platform/General/Gfx/Renderer.h"
 
 void meduza::drawable::Drawable::Submit(renderer::Renderer& a_renderer)
 {

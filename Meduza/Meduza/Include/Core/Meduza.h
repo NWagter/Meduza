@@ -4,11 +4,13 @@
 #include "MeduzaUtil.h"
 
 #include<vector>
+#include <string>
 
 namespace meduza
 {
 	class ImGuiRenderer;
 	class Window;
+	class ShaderLibrary;
 	struct Colour;
 
 	namespace renderer
@@ -25,6 +27,10 @@ namespace meduza
 // ============ Tools
 
 		void EnableImGui();
+
+// ============ Load Resource
+
+		std::string LoadShader(std::string);
 
 // ============  Renderer
 
@@ -60,6 +66,7 @@ namespace meduza
 	private:
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
+		ShaderLibrary* m_shaderLibrary = nullptr;
 		Window* m_window = nullptr;
 
 	};

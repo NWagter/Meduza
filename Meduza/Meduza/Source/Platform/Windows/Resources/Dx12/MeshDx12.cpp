@@ -2,9 +2,9 @@
 
 #include "Core.h"
 
-#include "Platform/Windows/Gfx/Dx12/HelperDx12.h"
+#include "Platform/Windows/Utils/Dx12/HelperDx12.h"
 
-#include "Platform/Windows/Gfx/Dx12/MeshDx12.h"
+#include "Platform/Windows/Resources/Dx12/MeshDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 

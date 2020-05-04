@@ -3,14 +3,14 @@
 #include "Core.h"
 
 #include "Util/MeduzaHelper.h"
-#include "Platform/General/Renderer.h"
+#include "Platform/General/Gfx/Renderer.h"
 
 #ifdef WINDOWS
 
-#include "Platform/Windows/WinWindow.h"
+#include "Platform/Windows/Window/WinWindow.h"
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
-#include "Platform/General/Context.h"
+#include "Platform/General/Window/Context.h"
 #endif
  
 meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size)
@@ -44,7 +44,9 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 	
 #ifdef LINUX
 	case meduza::API::ES2:
-		printf("No ES2 defined! windows would be %f - %f \n", a_size.m_x, a_size.m_y);
+		
+		
+		ME_GFX_LOG("No ES2 defined! windows would be %f - %f \n", a_size.m_x, a_size.m_y);
 	break;
 #endif
 

@@ -6,7 +6,7 @@
 #include "Math/MeduzaMath.h"
 #include "Util/MeduzaHelper.h"
 
-#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
+#include "Platform/Windows/Window/OpenGL/ContextGL.h"
 
 #include <glad/glad.h>
 

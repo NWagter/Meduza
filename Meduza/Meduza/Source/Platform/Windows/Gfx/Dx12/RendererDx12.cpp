@@ -5,8 +5,8 @@
 
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 
-#include "Platform/Windows/WinWindow.h"
-#include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
+#include "Platform/Windows/Window/WinWindow.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"

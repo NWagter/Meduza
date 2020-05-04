@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/General/Renderer.h"
+#include "Platform/General/Gfx/Renderer.h"
 #include "Math/MeduzaMath.h"
 
 namespace meduza

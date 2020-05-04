@@ -5,10 +5,16 @@
 
 #include "Meduza.h"
 
-#include "Platform/General/Renderer.h"
-#include "Platform/General/Window.h"
+#include "Platform/General/Gfx/Renderer.h"
+#include "Platform/General/Window/Window.h"
 
-#include "Platform/General/ImGuiRenderer.h"
+#include "Platform/General/Gfx/ImGuiRenderer.h"
+#include "Platform/General/Gfx/ShaderLibrary.h"
+
+#ifdef WINDOWS
+#include "Platform/Windows/Utils/FileSystem.h"
+#endif // WINDOWS
+
 
 meduza::Meduza::Meduza(API a_api)
 {
@@ -27,6 +33,10 @@ meduza::Meduza::Meduza(API a_api)
 		m_window = data->window;
 	}
 
+	ME_LOG("Window title = %s \n", GetWindowName().c_str());
+
+	m_shaderLibrary = new ShaderLibrary();
+	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
 
 	delete data;
 }
@@ -47,6 +57,12 @@ void meduza::Meduza::EnableImGui()
 	MeduzaHelper::ms_imGui = true;
 	m_window->EnableImGui();
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+}
+
+std::string meduza::Meduza::LoadShader(std::string a_path)
+{
+	m_shaderLibrary->LoadShader(a_path);
+	return utils::FileSystem::GetFileName(a_path);
 }
 
 void meduza::Meduza::Submit(drawable::Drawable* a_drawable)

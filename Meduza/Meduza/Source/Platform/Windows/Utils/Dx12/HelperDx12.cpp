@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "Platform/Windows/Gfx/Dx12/HelperDx12.h"
+#include "Platform/Windows/Utils/Dx12/HelperDx12.h"
 
 Microsoft::WRL::ComPtr<ID3D12Resource> meduza::renderer::helper::HelperDx12::CreateBuffer(
 	ID3D12Device* a_device,

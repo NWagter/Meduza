@@ -1,10 +1,10 @@
 #include "mePch.h"
 
 #include "MeduzaUtil.h"
-#include "Platform/Windows/WinWindow.h"
+#include "Platform/Windows/Window/WinWindow.h"
 
-#include "Platform/Windows/Gfx/OpenGL/ContextGL.h"
-#include "Platform/Windows/Gfx/Dx12/ContextDx12.h"
+#include "Platform/Windows/Window/OpenGL/ContextGL.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
 meduza::WinWindow::WinWindow(math::Vec2 a_size)
 {

@@ -20,8 +20,6 @@ Sandbox::Sandbox()
 	m_meduza = new meduza::Meduza(g_api);
 
 	//m_meduza->EnableImGui();
-
-	printf("Window title = %s \n", m_meduza->GetWindowName().c_str());
 }
 
 Sandbox::~Sandbox()
@@ -57,6 +55,10 @@ void Sandbox::Run()
 	pos = meduza::math::Vec2(14, 5);
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[5])->SetPostion(pos);
 
+
+	std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
+
+	sprites[0]->UseShader(name);
 
 	while (m_meduza->IsWindowActive())
 	{

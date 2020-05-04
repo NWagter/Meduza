@@ -2,7 +2,7 @@ name: C/C++ on push Windows
 
 on:
   push:
-    branches: [ development ]
+    branches: [ Development ]
 
 jobs:
   build:

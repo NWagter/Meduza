@@ -61,6 +61,7 @@ meduza::Meduza::~Meduza()
 	delete m_textureLibrary;
 	delete m_renderer;
 	delete m_window;
+	delete m_camera;
 }
 
 void meduza::Meduza::EnableImGui()

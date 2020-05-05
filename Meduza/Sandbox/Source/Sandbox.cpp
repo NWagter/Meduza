@@ -59,7 +59,7 @@ void Sandbox::Run()
 
 	meduza::math::Vec2 wSize = m_meduza->GetWindowSize();
 
-	wSize *= 0.025f;
+	wSize *= 0.01f;
 
 	meduza::math::Vec4 frustrum = { -wSize.m_x,wSize.m_x, -wSize.m_y, wSize.m_y };
 

@@ -16,6 +16,10 @@ namespace meduza
 		void UnBind() override;
 
 		void UploadUniformInt(std::string, int);
+		void UploadUniformFloat(std::string, float);
+
+		void UploadUniformVec2(std::string, float[2]);
+		void UploadUniformVec3(std::string, float[3]);
 		void UploadUniformVec4(std::string, float[4]);
 
 	private:

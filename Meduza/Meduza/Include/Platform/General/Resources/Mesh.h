@@ -9,7 +9,7 @@ namespace meduza
 		class Mesh
 		{
 		public:
-			Mesh(unsigned int, std::vector<Vertex>, std::vector<int>);
+			Mesh(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes);
 			virtual ~Mesh() = default;
 
 			virtual void GenerateBuffers() = 0;
@@ -22,6 +22,7 @@ namespace meduza
 			unsigned int m_vertexByteStride = 0;
 			unsigned int m_vertexBufferByteSize = 0;
 			unsigned int m_indexBufferByteSize = 0;
+			VertexAttributes m_attributes;
 		};
 	}
 }

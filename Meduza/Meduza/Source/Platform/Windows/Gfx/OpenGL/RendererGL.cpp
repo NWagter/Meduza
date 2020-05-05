@@ -73,7 +73,12 @@ void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
     m_rect = utils::TextureUtils::GetTextureCoords(uv, size);
 
     m_drawData.push_back(*d);
-    m_quad = new MeshGL(0, vertices, indices, GL_LINE);
+    VertexAttributes att;
+    att.AddAttribute(Attributes::vec3Attribute);
+    att.AddAttribute(Attributes::vec2Attribute);
+    att.AddAttribute(Attributes::vec2Attribute);
+
+    m_quad = new MeshGL(0, vertices, indices, att, GL_LINE);
 }
 
 void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*>)

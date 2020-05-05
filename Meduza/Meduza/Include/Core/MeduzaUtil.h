@@ -61,6 +61,47 @@ namespace meduza
 		static const Colour CELESTIAL_BLUE = Colour(0.29f, 0.59f, 0.82f, 1.0f);
 	}
 
+	enum class Attributes
+	{
+		floatAttribute,
+		vec2Attribute,
+		vec3Attribute,
+		vec4Attribute
+	};
+
+	struct VertexAttributes
+	{
+		void AddAttribute(Attributes a_att)
+		{
+			unsigned int offset = 0;;
+
+			switch (a_att)
+			{
+			case Attributes::floatAttribute:
+				offset = 1;
+					break;
+			case Attributes::vec2Attribute:
+				offset = 2;
+				break;
+			case Attributes::vec3Attribute:
+				offset = 3;
+				break;
+			case Attributes::vec4Attribute:
+				offset = 4;
+				break;
+			}
+
+			m_stride += offset * sizeof(float);
+			m_layout.push_back(std::pair<Attributes,int>(a_att, offset));
+		}
+
+		unsigned int GetStride() const { return m_stride; }
+		std::vector<std::pair<Attributes, int>> GetAttributes() const { return m_layout; }
+	private:
+		unsigned int m_stride = 0;
+		std::vector<std::pair<Attributes, int>> m_layout;
+	};
+
 	struct Material
 	{
 		unsigned int m_shaderId = 0;

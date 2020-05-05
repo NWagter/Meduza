@@ -15,7 +15,7 @@ meduza::TextureGL2D::TextureGL2D(std::string a_path)
 	int width;
 	int height;
 	int channels;
-	stbi_set_flip_vertically_on_load(1);
+	stbi_set_flip_vertically_on_load(0);
 	stbi_uc* data = stbi_load(a_path.c_str(), &width, &height, &channels, 0);
 	ME_GFX_ASSERT_M(data, "Failed to load Texture");
 	ME_GFX_LOG("Load texture : %s \n", utils::FileSystem::GetFileName(a_path).c_str());

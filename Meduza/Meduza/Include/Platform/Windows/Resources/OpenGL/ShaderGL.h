@@ -16,6 +16,7 @@ namespace meduza
 		void UnBind() override;
 
 		void UploadUniformInt(std::string, int);
+		void UploadUniformVec4(std::string, float[4]);
 
 	private:
 		utils::ShaderSources m_source;

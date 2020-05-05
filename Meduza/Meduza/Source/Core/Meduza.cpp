@@ -24,7 +24,7 @@ meduza::Meduza::Meduza(API a_api)
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
 
 	renderer::Renderer::RendererData* data = nullptr;
-	data = renderer::Renderer::CreateRenderer(math::Vec2(720,480));
+	data = renderer::Renderer::CreateRenderer(math::Vec2(720,720));
 
 	if (data == nullptr)
 	{

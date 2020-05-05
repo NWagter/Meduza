@@ -26,7 +26,7 @@ namespace meduza
 			m_position = glm::vec3(0);
 			m_size = glm::vec3(1);
 			m_rotation = glm::vec3(0);
-
+			m_textCoords = glm::vec4(0, 0, 1, 1);
 			m_shaderId = 0;
 		}
 
@@ -35,6 +35,7 @@ namespace meduza
 		glm::vec3 m_position;
 		glm::vec3 m_rotation;
 		glm::vec3 m_size;
+		glm::vec4 m_textCoords;
 
 		renderer::Mesh* m_mesh;
 

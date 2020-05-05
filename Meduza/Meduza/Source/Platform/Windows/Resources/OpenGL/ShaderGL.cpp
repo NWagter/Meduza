@@ -32,6 +32,13 @@ void meduza::ShaderGL::UploadUniformInt(std::string a_uniform, int a_value)
     glUniform1i(location, a_value);
 }
 
+void meduza::ShaderGL::UploadUniformVec4(std::string a_uniform, float a_value[4])
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform4f(location, a_value[0], a_value[1], a_value[2], a_value[3]);
+}
+
 bool ShaderDebug(unsigned int a_shader)
 {
     int success;

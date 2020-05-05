@@ -26,6 +26,10 @@ namespace meduza
 			void UseShader(const char*) override;
 			void UseShader(std::string) override;
 
+			void SetUV(float, float, float, float);
+			void SetUV(float[4]);
+			void SetUV(math::Vec4);
+
 			math::Vec3 GetPos() const override;
 			math::Vec3 GetSize() const override;
 			math::Vec3 GetRotation() const override;

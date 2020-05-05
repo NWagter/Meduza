@@ -72,6 +72,21 @@ void meduza::drawable::Sprite::UseShader(std::string a_name)
 	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
 }
 
+void meduza::drawable::Sprite::SetUV(float a_x, float a_y, float a_xOffset, float a_yOffset)
+{
+	m_drawData->m_textCoords = glm::vec4(a_x, a_y, a_xOffset, a_yOffset);
+}
+
+void meduza::drawable::Sprite::SetUV(float a_uv[4])
+{
+	m_drawData->m_textCoords = glm::vec4(*a_uv);
+}
+
+void meduza::drawable::Sprite::SetUV(math::Vec4 a_uv)
+{
+	m_drawData->m_textCoords = glm::vec4(*a_uv.m_xyzw);
+}
+
 meduza::math::Vec3 meduza::drawable::Sprite::GetPos() const
 {
 	return math::Vec3(m_drawData->m_position.x, m_drawData->m_position.y, m_drawData->m_position.z);

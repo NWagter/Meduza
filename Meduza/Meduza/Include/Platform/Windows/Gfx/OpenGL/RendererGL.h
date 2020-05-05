@@ -35,6 +35,7 @@ namespace meduza
 			unsigned int m_shaderprogram = 0;
 
 			ContextGL* m_context;
+			math::Vec4 m_rect;
 
 
 		};

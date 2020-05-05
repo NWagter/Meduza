@@ -14,6 +14,7 @@
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
 
+#include "Platform/General/Utils/TextureUtils.h"
 #include "Platform/General/Resources/Texture.h"
 
 meduza::renderer::RendererGL::RendererGL(Context& a_context)
@@ -57,15 +58,19 @@ void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
     auto d = a_drawable->GetDrawData();
 
     std::vector<Vertex> vertices = {
-        Vertex(0.5f + d->m_position.x ,  0.5f + d->m_position.y, 0.0f, 1.f, 1.f),  // top right
-        Vertex(0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f, 1.f, 0.f),  // bottom right
-        Vertex(-0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f, 0.f, 0.f),  // bottom left
         Vertex(-0.5f + d->m_position.x,  0.5f + +d->m_position.y, 0.0f, 0.f, 1.f),   // top left 
+        Vertex(0.5f + d->m_position.x ,  0.5f + d->m_position.y, 0.0f, 1.f, 1.f),  // top right
+        Vertex(-0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f, 0.f, 0.f),  // bottom left
+        Vertex(0.5f + d->m_position.x, -0.5f + d->m_position.y, 0.0f, 1.f, 0.f),  // bottom right
     };
     std::vector<int> indices = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3,   // second Triangle
+       3, 1, 0,  // first Triangle
+       3, 0, 2,   // second Triangle
     };
+    math::Vec4 uv = { d->m_textCoords.x,d->m_textCoords.y, d->m_textCoords.z,d->m_textCoords.w };
+    math::Vec2 size = { float(m_checkerBoard->GetWidth()), float(m_checkerBoard->GetHeight()) };
+
+    m_rect = utils::TextureUtils::GetTextureCoords(uv, size);
 
     m_drawData.push_back(*d);
     m_quad = new MeshGL(0, vertices, indices, GL_LINE);
@@ -85,8 +90,11 @@ void meduza::renderer::RendererGL::PreRender()
         
         m_checkerBoard->Bind(0);
         dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(m_drawData[0].m_shaderId))->UploadUniformInt("u_texture", 0);
+        dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(m_drawData[0].m_shaderId))->UploadUniformVec4("u_textureSpace", m_rect.m_xyzw);
 
         glBindVertexArray(m_quad->GetVAO());
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         ShaderLibrary::GetShader(m_drawData[0].m_shaderId)->UnBind();
     }

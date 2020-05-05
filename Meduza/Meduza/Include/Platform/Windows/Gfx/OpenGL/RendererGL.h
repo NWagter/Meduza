@@ -31,13 +31,9 @@ namespace meduza
 			std::vector<DrawData> m_drawData;
 
 			MeshGL* m_quad = nullptr;
-			Texture2D* m_checkerBoard = nullptr;
 			unsigned int m_shaderprogram = 0;
 
 			ContextGL* m_context;
-			math::Vec4 m_rect;
-
-
 		};
 	}
 

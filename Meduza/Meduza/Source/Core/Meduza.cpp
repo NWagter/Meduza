@@ -10,9 +10,7 @@
 
 #include "Platform/General/Gfx/ImGuiRenderer.h"
 #include "Platform/General/Gfx/ShaderLibrary.h"
-
-#include "Platform/General/Resources/Texture.h"
-#include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
+#include "Platform/General/Gfx/TextureLibrary.h"
 
 #ifdef WINDOWS
 #include "Platform/Windows/Utils/FileSystem.h"
@@ -24,7 +22,7 @@ meduza::Meduza::Meduza(API a_api)
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
 
 	renderer::Renderer::RendererData* data = nullptr;
-	data = renderer::Renderer::CreateRenderer(math::Vec2(720,720));
+	data = renderer::Renderer::CreateRenderer(math::Vec2(720,480));
 
 	if (data == nullptr)
 	{
@@ -40,6 +38,7 @@ meduza::Meduza::Meduza(API a_api)
 
 	m_shaderLibrary = new ShaderLibrary();
 	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
+	m_textureLibrary = new TextureLibrary();
 
 	delete data;
 }
@@ -52,6 +51,7 @@ meduza::Meduza::~Meduza()
 	}
 
 	delete m_shaderLibrary;
+	delete m_textureLibrary;
 	delete m_renderer;
 	delete m_window;
 }
@@ -66,6 +66,12 @@ void meduza::Meduza::EnableImGui()
 std::string meduza::Meduza::LoadShader(std::string a_path)
 {
 	m_shaderLibrary->LoadShader(a_path);
+	return utils::FileSystem::GetFileName(a_path);
+}
+
+std::string meduza::Meduza::LoadTexture(std::string a_path)
+{
+	m_textureLibrary->LoadTexture(a_path);
 	return utils::FileSystem::GetFileName(a_path);
 }
 

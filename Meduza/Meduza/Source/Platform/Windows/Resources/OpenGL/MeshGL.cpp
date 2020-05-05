@@ -31,12 +31,14 @@ void meduza::renderer::MeshGL::GenerateBuffers()
 
     glBindVertexArray(m_vao);
 
+    int vertBytes = sizeof(m_vertices);
+    int indBytes = sizeof(m_indices);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, int(sizeof(m_vertices) * sizeof(Vertex)), m_vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, int(vertBytes * sizeof(Vertex)), m_vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, int(sizeof(m_indices) * sizeof(int)), m_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, int(indBytes * sizeof(int)), m_indices.data(), GL_STATIC_DRAW);
 
     GenerateAttributes();
 

@@ -39,31 +39,25 @@ void Sandbox::Run()
 
 	sprites.emplace_back(new meduza::drawable::Sprite());
 	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
 
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0.5f, 0);
 
-	meduza::math::Vec2 pos(1, 1);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPostion(pos);
-	pos = meduza::math::Vec2(4, 6);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[2])->SetPostion(pos);
-	pos = meduza::math::Vec2(1, 9);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[4])->SetPostion(pos);
-	pos = meduza::math::Vec2(14, 5);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[5])->SetPostion(pos);
+	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPosition(-0.5f, 0);
 
+	sprites[0]->SetColour(meduza::math::Vec4(1, 1, 1, 1));
 
+	std::string texture = m_meduza->LoadTexture("Data/Textures/sprites.png");
+	sprites[0]->UseTexture(texture);
 
 	//Add Shader to Sprite
 	
-	//std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
-	//sprites[0]->UseShader(name);
+	std::string name = m_meduza->LoadShader("Data/Shaders/TextureShader.glsl");
+	sprites[0]->UseShader(name);
 
 	//Set Sprite UV
-	//dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32, 0, 32, 32);
+	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32, 0, 32, 32);
+
+	sprites[1]->SetColour(meduza::math::Vec4(1,0,1,1));
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -72,7 +66,7 @@ void Sandbox::Run()
 		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
 #endif // 
 		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
-		m_meduza->Submit(sprites[0]);
+		m_meduza->Submit(sprites);
 		//Game Update
 		Update(0);
 

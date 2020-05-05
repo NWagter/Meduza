@@ -55,8 +55,3 @@ meduza::utils::ShaderSources meduza::utils::ShaderUtils::GetSources(std::string 
 
 	return source;
 }
-
-unsigned int meduza::utils::ShaderUtils::GetHashedID(std::string a_strToHash)
-{
-	return unsigned int(std::hash<std::string>{}(a_strToHash));
-}

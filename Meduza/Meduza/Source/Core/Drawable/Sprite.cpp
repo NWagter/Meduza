@@ -5,6 +5,7 @@
 #include "Drawable/Sprite.h"
 
 #include "Platform/General/Gfx/ShaderLibrary.h"
+#include "Platform/General/Gfx/TextureLibrary.h"
 
 meduza::drawable::Sprite::Sprite()
 {
@@ -32,12 +33,12 @@ void meduza::drawable::Sprite::SetPosition(float a_x, float a_y)
 	m_drawData->m_position = glm::vec3(a_x, a_y, 0);
 }
 
-void meduza::drawable::Sprite::SetPostion(float a_pos[2])
+void meduza::drawable::Sprite::SetPosition(float a_pos[2])
 {
 	m_drawData->m_position = glm::vec3(a_pos[0], a_pos[1], 0);
 }
 
-void meduza::drawable::Sprite::SetPostion(math::Vec2 a_pos)
+void meduza::drawable::Sprite::SetPosition(math::Vec2 a_pos)
 {
 	m_drawData->m_position = glm::vec3(a_pos.m_x, a_pos.m_y, 0);
 }
@@ -62,6 +63,16 @@ void meduza::drawable::Sprite::SetRotation(float a_z)
 	m_drawData->m_rotation = glm::vec3(0, 0, a_z);
 }
 
+void meduza::drawable::Sprite::SetColour(math::Vec3 a_colour)
+{
+	m_drawData->m_colour = glm::vec4(a_colour.m_x, a_colour.m_y, a_colour.m_z, 1);
+}
+
+void meduza::drawable::Sprite::SetColour(math::Vec4 a_colour)
+{
+	m_drawData->m_colour = glm::vec4(a_colour.m_x, a_colour.m_y, a_colour.m_z, a_colour.m_w);
+}
+
 void meduza::drawable::Sprite::UseShader(const char* a_name)
 {
 	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
@@ -70,6 +81,16 @@ void meduza::drawable::Sprite::UseShader(const char* a_name)
 void meduza::drawable::Sprite::UseShader(std::string a_name)
 {
 	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
+}
+
+void meduza::drawable::Sprite::UseTexture(const char* a_name)
+{
+	m_drawData->m_textureId = TextureLibrary::GetTexture(a_name)->GetId();
+}
+
+void meduza::drawable::Sprite::UseTexture(std::string a_name)
+{
+	m_drawData->m_textureId = TextureLibrary::GetTexture(a_name)->GetId();
 }
 
 void meduza::drawable::Sprite::SetUV(float a_x, float a_y, float a_xOffset, float a_yOffset)

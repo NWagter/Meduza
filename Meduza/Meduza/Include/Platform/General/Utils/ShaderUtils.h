@@ -18,7 +18,6 @@ namespace meduza
 		public:
 			static ShaderSources GetSources(std::string, std::string);
 			static ShaderSources GetSources(std::string);
-			static unsigned int GetHashedID(std::string);
 		};
 		
 		class ShaderData

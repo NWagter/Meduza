@@ -27,7 +27,10 @@ namespace meduza
 			m_size = glm::vec3(1);
 			m_rotation = glm::vec3(0);
 			m_textCoords = glm::vec4(0, 0, 1, 1);
+			m_colour = glm::vec4(1, 1, 1, 1);
 			m_shaderId = 0;
+			m_textureId = 0;
+
 		}
 
 		~DrawData() = default;
@@ -37,9 +40,12 @@ namespace meduza
 		glm::vec3 m_size;
 		glm::vec4 m_textCoords;
 
+		glm::vec4 m_colour;
+
 		renderer::Mesh* m_mesh;
 
 		unsigned int m_shaderId;
+		unsigned int m_textureId;
 	};
 
 	struct Vertex
@@ -81,5 +87,11 @@ namespace meduza
 		glm::vec2 m_normals;
 	};
 
-
+	namespace utils
+	{
+		inline static unsigned int GetHashedID(std::string a_strToHash)
+		{
+			return unsigned int(std::hash<std::string>{}(a_strToHash));
+		}
+	}
 }

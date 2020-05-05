@@ -11,6 +11,7 @@ namespace meduza
 	class ImGuiRenderer;
 	class Window;
 	class ShaderLibrary;
+	class TextureLibrary;
 	struct Colour;
 
 	namespace renderer
@@ -31,6 +32,7 @@ namespace meduza
 // ============ Load Resource
 
 		std::string LoadShader(std::string);
+		std::string LoadTexture(std::string);
 
 // ============  Renderer
 
@@ -67,6 +69,7 @@ namespace meduza
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
 		ShaderLibrary* m_shaderLibrary = nullptr;
+		TextureLibrary* m_textureLibrary = nullptr;
 		Window* m_window = nullptr;
 	};
 }

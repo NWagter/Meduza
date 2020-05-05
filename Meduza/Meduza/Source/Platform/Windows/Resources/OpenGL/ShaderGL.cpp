@@ -5,6 +5,11 @@
 #include <glad/glad.h>
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
 
+#pragma warning(push)
+#pragma warning(disable : 4201)
+#include <glm/gtc/type_ptr.hpp>
+#pragma warning(pop)
+
 meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::GetHashedID(a_source.m_shaderName))
 {
     m_source = a_source;
@@ -81,6 +86,13 @@ void meduza::ShaderGL::UploadUniformVec4(std::string a_uniform, glm::vec4 a_valu
     unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
 
     glUniform4f(location, a_value[0], a_value[1], a_value[2], a_value[3]);
+}
+
+void meduza::ShaderGL::UploadUniformMat4(std::string a_uniform, glm::mat4 a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(a_value));
 }
 
 bool ShaderDebug(unsigned int a_shader)

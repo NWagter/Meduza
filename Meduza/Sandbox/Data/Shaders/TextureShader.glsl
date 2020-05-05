@@ -3,6 +3,7 @@
 
 layout(location = 0) in vec3 a_pos;
 
+uniform mat4 u_viewProjection;
 uniform vec4 u_textureSpace;
 uniform vec4 u_colour;
 uniform vec3 u_position;
@@ -20,7 +21,7 @@ void main()
         vec2(u_textureSpace.x + (u_textureSpace.z * uv.x),
             u_textureSpace.y + (u_textureSpace.w * uv.y));
 
-    gl_Position = vec4(a_pos.x + u_position.x, a_pos.y + u_position.y, a_pos.z + u_position.z, 1.0);
+    gl_Position = u_viewProjection * vec4(a_pos.x + u_position.x, a_pos.y + u_position.y, a_pos.z + u_position.z, 1.0);
 }
 
 

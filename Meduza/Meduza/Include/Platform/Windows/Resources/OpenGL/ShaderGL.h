@@ -26,6 +26,8 @@ namespace meduza
 		void UploadUniformVec3(std::string, glm::vec3);
 		void UploadUniformVec4(std::string, glm::vec4);
 
+		void UploadUniformMat4(std::string, glm::mat4);
+
 	private:
 		utils::ShaderSources m_source;
 

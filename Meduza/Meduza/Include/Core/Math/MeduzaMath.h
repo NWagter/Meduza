@@ -63,7 +63,7 @@ namespace meduza
 			{
 				m_x = m_x / a_rhs;
 				m_y = m_y / a_rhs;
-
+				return *this;
 			}
 			float operator[](int a_index) const
 			{

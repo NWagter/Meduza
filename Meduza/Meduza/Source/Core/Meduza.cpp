@@ -12,6 +12,8 @@
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/General/Gfx/TextureLibrary.h"
 
+#include "Camera/Camera.h"
+
 #ifdef WINDOWS
 #include "Platform/Windows/Utils/FileSystem.h"
 #endif // WINDOWS
@@ -40,6 +42,11 @@ meduza::Meduza::Meduza(API a_api)
 	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
 	m_textureLibrary = new TextureLibrary();
 
+	float width = m_window->GetSize().m_x / 2;
+	float height = m_window->GetSize().m_y / 2;
+
+	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, math::Vec4(-width, width,-height, height), math::Vec2(-1,1));
+
 	delete data;
 }
 
@@ -63,16 +70,32 @@ void meduza::Meduza::EnableImGui()
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
-std::string meduza::Meduza::LoadShader(std::string a_path)
+std::string meduza::Meduza::LoadShader(std::string a_path) const
 {
 	m_shaderLibrary->LoadShader(a_path);
 	return utils::FileSystem::GetFileName(a_path);
 }
 
-std::string meduza::Meduza::LoadTexture(std::string a_path)
+std::string meduza::Meduza::LoadTexture(std::string a_path) const
 {
 	m_textureLibrary->LoadTexture(a_path);
 	return utils::FileSystem::GetFileName(a_path);
+}
+
+void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_frustrum, math::Vec2 a_distance)
+{
+	delete m_camera;
+	m_camera = Camera::CreateCamera(a_perspective, a_frustrum, a_distance);
+}
+
+void meduza::Meduza::SetView(math::Vec4 a_frustrum, math::Vec2 a_distance)
+{
+	m_camera->SetProjection(a_frustrum, a_distance);
+}
+
+void meduza::Meduza::SetCamEye(math::Vec3 a_pos)
+{
+	m_camera->SetEye(a_pos);
 }
 
 void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
@@ -108,7 +131,7 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr)
 	{
-		m_renderer->Render();
+		m_renderer->Render(*m_camera);
 
 		if (MeduzaHelper::ms_imGui)
 		{
@@ -136,7 +159,7 @@ bool meduza::Meduza::IsWindowActive() const
 	return false;
 }
 
-std::string meduza::Meduza::GetWindowName()
+std::string meduza::Meduza::GetWindowName() const
 { 
 	if (m_renderer != nullptr)
 	{
@@ -144,6 +167,11 @@ std::string meduza::Meduza::GetWindowName()
 	}
 
 	return "Unknown";
+}
+
+meduza::math::Vec2 meduza::Meduza::GetWindowSize() const
+{
+	return m_window->GetSize();
 }
 
 

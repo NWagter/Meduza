@@ -18,6 +18,12 @@ namespace meduza
 
 	};
 
+	enum class CameraPerspective
+	{
+		Orthographic = 0,
+		Perspective
+	};
+
 	struct Colour
 	{
 		Colour() = default;

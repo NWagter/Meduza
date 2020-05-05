@@ -19,7 +19,7 @@ namespace meduza
 			~RendererDx12() override;
 
 			void Clear(Colour) override;
-			void Render() override;
+			void Render(const Camera&) override;
 
 			void Draw(drawable::Drawable*) override;
 			void Submit(std::vector<drawable::Drawable*>) override;

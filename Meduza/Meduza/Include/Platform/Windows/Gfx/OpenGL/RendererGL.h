@@ -20,7 +20,7 @@ namespace meduza
 			~RendererGL() override;
 
 			void Clear(Colour) override;
-			void Render() override;
+			void Render(const Camera&) override;
 
 			void Draw(drawable::Drawable*) override;
 			void Submit(std::vector<drawable::Drawable*>) override;
@@ -34,6 +34,8 @@ namespace meduza
 			unsigned int m_shaderprogram = 0;
 
 			ContextGL* m_context;
+
+			glm::mat4 m_viewProjection;
 		};
 	}
 

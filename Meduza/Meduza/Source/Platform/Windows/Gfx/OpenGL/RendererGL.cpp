@@ -17,6 +17,8 @@
 #include "Platform/General/Gfx/TextureLibrary.h"
 #include "Platform/General/Utils/TextureUtils.h"
 
+#include "Camera/OrthographicCamera.h"
+
 meduza::renderer::RendererGL::RendererGL(Context& a_context)
 {
     m_context = dynamic_cast<ContextGL*>(&a_context);
@@ -61,8 +63,10 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void meduza::renderer::RendererGL::Render()
+void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 {
+    m_viewProjection = a_camera.GetViewProjection();
+
 	PopulateBuffers();
 
     m_drawData.clear();
@@ -90,6 +94,7 @@ void meduza::renderer::RendererGL::PreRender()
         {
             auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(d.m_shaderId));
             s->Bind();
+            s->UploadUniformMat4("u_viewProjection", m_viewProjection);
             s->UploadUniformVec3("u_position", d.m_position);
             s->UploadUniformVec4("u_colour", d.m_colour);
             if (d.m_textureId != 0)

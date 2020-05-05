@@ -5,7 +5,6 @@
 #define OPTICK
 
 #include <Meduza.h>
-
 #include <Drawable/Sprite.h>
 
 #ifdef WINDOWS
@@ -50,7 +49,6 @@ void Sandbox::Run()
 	sprites[0]->UseTexture(texture);
 
 	//Add Shader to Sprite
-	
 	std::string name = m_meduza->LoadShader("Data/Shaders/TextureShader.glsl");
 	sprites[0]->UseShader(name);
 
@@ -58,6 +56,17 @@ void Sandbox::Run()
 	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32, 0, 32, 32);
 
 	sprites[1]->SetColour(meduza::math::Vec4(1,0,1,1));
+
+	meduza::math::Vec2 wSize = m_meduza->GetWindowSize();
+
+	wSize *= 0.025f;
+
+	meduza::math::Vec4 frustrum = { -wSize.m_x,wSize.m_x, -wSize.m_y, wSize.m_y };
+
+	m_meduza->SetNewCamera(meduza::CameraPerspective::Orthographic, frustrum);
+
+	meduza::math::Vec2 pos = { sprites[0]->GetPos().m_x, sprites[0]->GetPos().m_y };
+	bool moveLeft = true;
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -67,6 +76,26 @@ void Sandbox::Run()
 #endif // 
 		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
 		m_meduza->Submit(sprites);
+
+		if (moveLeft)
+		{
+			if (pos.m_x < -5)
+				moveLeft = false;
+
+			dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32 * 38, 0, 32, 32);
+			pos.m_x -= 0.05f;
+		}
+		else if (!moveLeft)
+		{
+			if (pos.m_x > 5)
+				moveLeft = true;
+
+			dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32 * 35, 0, 32, 32);
+			pos.m_x += 0.05f;
+		}
+		m_meduza->SetCamEye(meduza::math::Vec3(pos.m_x, pos.m_y, 0));
+		dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(pos);
+		
 		//Game Update
 		Update(0);
 

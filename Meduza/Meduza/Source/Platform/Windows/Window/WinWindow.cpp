@@ -141,14 +141,13 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		PostQuitMessage(0);
 		break;
 	case WM_SIZE:
-	{
 		m_size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
 
 		if (m_context != nullptr)
 		{
 			m_context->Resize(m_size);
 		}
-	}
+	break;
 
 	}
 

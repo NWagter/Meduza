@@ -37,8 +37,11 @@ void Sandbox::Run()
 	meduza::Colour c = meduza::Colours::CELESTIAL_BLUE;
 	meduza::drawable::Sprite s;
 
-	meduza::math::Vec2 wSize = m_meduza->GetWindowSize();
-	m_meduza->SetView(wSize);
+	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+	s.UseTexture(m_meduza->LoadTexture("Data/Textures/sprites.png"));
+
+	s.SetSize(100, 100);
+	s.SetUV(32 * 2, 0, 32, 32);
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -46,6 +49,16 @@ void Sandbox::Run()
 
 		s.Submit(m_meduza->GetGfx());
 		m_meduza->Peek();
+
+		meduza::events::Event e;
+		while (m_meduza->ReadEvent(e))
+		{
+			if (e.m_type == meduza::events::EventType::WindowResize)
+			{
+				meduza::math::Vec2 size(float(e.GetValueA()), float(e.GetValueB()));
+				m_meduza->SetView(size);
+			}
+		}
 
 		m_meduza->SwapBuffers();
 

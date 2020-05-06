@@ -96,6 +96,7 @@ void meduza::renderer::RendererGL::PreRender()
             s->Bind();
             s->UploadUniformMat4("u_viewProjection", m_viewProjection);
             s->UploadUniformVec3("u_position", d.m_position);
+            s->UploadUniformVec3("u_size", d.m_size);
             s->UploadUniformVec4("u_colour", d.m_colour);
             if (d.m_textureId != 0)
             {

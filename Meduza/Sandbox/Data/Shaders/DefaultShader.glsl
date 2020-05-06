@@ -7,6 +7,7 @@ uniform mat4 u_viewProjection;
 
 uniform vec4 u_colour;
 uniform vec3 u_position;
+uniform vec3 u_size;
 
 out vec4 v_colour;
 
@@ -14,7 +15,10 @@ void main()
 {
     v_colour = u_colour;
 
-    gl_Position = u_viewProjection * vec4(a_pos.x + u_position.x, a_pos.y + u_position.y, a_pos.z + u_position.z, 1.0);
+    vec3 pos = a_pos + u_position;
+    pos = pos * u_size;
+
+    gl_Position = u_viewProjection * vec4(pos.x, pos.y, pos.z, 1.0);
 }
 
 

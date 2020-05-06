@@ -8,7 +8,7 @@
 #include "Platform/General/Utils/ShaderUtils.h"
 
 #ifdef WINDOWS
-
+#include "Platform/Windows/Utils/FileSystem.h"
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
 
 #endif // WINDOWS
@@ -42,10 +42,14 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 	{
 	case meduza::API::OpenGL:
 	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_vertPath));
+
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
 
 		utils::ShaderSources source = utils::ShaderUtils::GetSources(a_vertPath, a_fragPath);
-
-		unsigned int hashedId = utils::GetHashedID(source.m_shaderName);
 
 		//Check if already exists
 		if (m_instance->m_shaders[hashedId] != nullptr)
@@ -74,8 +78,14 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 	{
 	case meduza::API::OpenGL:
 	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_path));
+
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
+
 		utils::ShaderSources source = utils::ShaderUtils::GetSources(a_path);
-		unsigned int hashedId = utils::GetHashedID(source.m_shaderName);
 
 		//Check if already exists
 		if (m_instance->m_shaders[hashedId] != nullptr)

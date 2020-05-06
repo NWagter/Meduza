@@ -25,11 +25,11 @@ namespace meduza
 		bool GetEvent(events::Event);
 
 		bool OnKeyChange(char, bool);
-
 		bool m_autoRepeat = true;
-	private:
-		std::bitset<256> m_keyStates;
 
+	private:
+
+		std::bitset<256> m_keyStates;
 		std::unordered_map<events::Event, bool> m_events;
 
 		static EventSystem* ms_instance;

@@ -16,7 +16,7 @@ namespace meduza
 	public:
 		static API ms_activeAPI;
 		static bool ms_imGui;
-
+		static bool ms_minimized;
 	};
 
 	struct DrawData

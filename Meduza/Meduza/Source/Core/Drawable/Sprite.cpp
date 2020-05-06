@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "Core.h"
 #include "Util/MeduzaHelper.h"
 
 #include "Drawable/Sprite.h"
@@ -125,5 +126,9 @@ meduza::math::Vec3 meduza::drawable::Sprite::GetRotation() const
 
 void meduza::drawable::Sprite::Submit(renderer::Renderer& a_renderer)
 {
-	Drawable::Submit(a_renderer);
+	if (!MeduzaHelper::ms_minimized)
+	{
+		Drawable::Submit(a_renderer);
+		return;
+	}
 }

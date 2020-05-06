@@ -19,7 +19,6 @@
 #include "Platform/Windows/Utils/FileSystem.h"
 #endif // WINDOWS
 
-
 meduza::Meduza::Meduza(API a_api)
 {
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
@@ -94,19 +93,38 @@ void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_
 }
 
 void meduza::Meduza::SetView(math::Vec2 a_size, math::Vec2 a_distance)
-{
-	math::Vec4 frustrum(-a_size.m_x / 2, a_size.m_x / 2, -a_size.m_y / 2, a_size.m_y / 2);
-	m_camera->SetProjection(frustrum, a_distance);
+{	
+	if (m_camera == nullptr)
+	{
+		return;
+	}
+
+	if (a_size.m_x > 0 || a_size.m_y > 0)
+	{
+		math::Vec4 frustrum(-a_size.m_x / 2, a_size.m_x / 2, -a_size.m_y / 2, a_size.m_y / 2);
+		m_camera->SetProjection(frustrum, a_distance);
+
+		if (MeduzaHelper::ms_minimized)
+		{
+			MeduzaHelper::ms_minimized = false;
+		}
+		return;
+	}
+
+	MeduzaHelper::ms_minimized = true;
 }
 
 void meduza::Meduza::SetCamEye(math::Vec3 a_pos)
 {
-	m_camera->SetEye(a_pos);
+	if (m_camera != nullptr && !MeduzaHelper::ms_minimized)
+	{
+		m_camera->SetEye(a_pos);
+	}
 }
 
 void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
 {
-	if (m_renderer != nullptr)
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Draw(a_drawable);
 	}
@@ -114,7 +132,7 @@ void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
 
 void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
 {
-	if (m_renderer != nullptr)
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Submit(a_drawables);
 	}
@@ -122,7 +140,7 @@ void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
 
 void meduza::Meduza::Clear(Colour a_colour)
 {
-	if (m_renderer != nullptr)
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Clear(a_colour);
 
@@ -135,7 +153,7 @@ void meduza::Meduza::Clear(Colour a_colour)
 
 void meduza::Meduza::SwapBuffers()
 {
-	if (m_renderer != nullptr)
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Render(*m_camera);
 

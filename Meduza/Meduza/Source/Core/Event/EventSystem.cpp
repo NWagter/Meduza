@@ -1,6 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
+#include "Util/MeduzaHelper.h"
 #include "Event/EventSystem.h"
 
 meduza::EventSystem* meduza::EventSystem::ms_instance = nullptr;
@@ -58,6 +59,9 @@ bool meduza::EventSystem::GetEvent(events::Event a_type)
 
 bool meduza::EventSystem::OnKeyChange(char a_keyCode, bool a_isPressed)
 {
+	if (MeduzaHelper::ms_minimized)
+		return;
+
 	if (IsKeyDown(a_keyCode) == a_isPressed && !m_autoRepeat)
 	{
 		return false;

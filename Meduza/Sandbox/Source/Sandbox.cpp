@@ -49,14 +49,10 @@ void Sandbox::Run()
 
 	while (m_meduza->IsWindowActive())
 	{
-		OPTICK_FRAME("MainThread");
-
 		m_meduza->Clear(c);
-
 		m_meduza->Peek();
 
 		m_meduza->SetCamEye(camPos);
-
 		s.Submit(m_meduza->GetGfx());
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))

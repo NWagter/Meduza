@@ -77,6 +77,11 @@ void meduza::WinWindow::Peek()
 void meduza::WinWindow::SwapBuffers()
 {
 	m_context->SwapBuffer();
+
+	if (m_eventSystem != nullptr)
+	{
+		m_eventSystem->Flush();
+	}
 }
 
 void meduza::WinWindow::SetTitle(std::string a_title)

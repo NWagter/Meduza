@@ -9,6 +9,7 @@ but what is currently planned is the following :
 - Rendering
   - 2D Rendering
     - Textured Quads
+    - Sprite Animator
   - 3D Rendering
     - Geometry
       - Cubes
@@ -21,10 +22,6 @@ but what is currently planned is the following :
       - Point Lights
       - Directional Lights
     - Skeletal animations
-- Engine
-  - ImGui Menus
-    - Object hierarchy
-    - Object Spawning
 
 # Graphics APIs :
 - OpenGL

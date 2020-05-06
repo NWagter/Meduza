@@ -3,6 +3,10 @@
 
 #pragma once
 
+
+#include<vector>
+#include <string>
+
 namespace meduza
 {
 	enum class API
@@ -127,7 +131,6 @@ namespace meduza
 			MouseEvent,
 			JoystickEvent
 		};
-		
 		enum class EventType
 		{
 			Unkown = 0,
@@ -147,7 +150,6 @@ namespace meduza
 			// == Window
 			WindowResize,
 		};
-
 		struct Event
 		{
 			Events m_event = Events::Unkown;

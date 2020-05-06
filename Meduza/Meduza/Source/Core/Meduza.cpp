@@ -105,9 +105,10 @@ void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_
 	m_camera = Camera::CreateCamera(a_perspective, a_frustrum, a_distance);
 }
 
-void meduza::Meduza::SetView(math::Vec4 a_frustrum, math::Vec2 a_distance)
+void meduza::Meduza::SetView(math::Vec2 a_size, math::Vec2 a_distance)
 {
-	m_camera->SetProjection(a_frustrum, a_distance);
+	math::Vec4 frustrum(-a_size.m_x / 2, a_size.m_x / 2, -a_size.m_y / 2, a_size.m_y / 2);
+	m_camera->SetProjection(frustrum, a_distance);
 }
 
 void meduza::Meduza::SetCamEye(math::Vec3 a_pos)

@@ -84,9 +84,6 @@ project "Meduza"
 			"PLATFORM_WINDOWS",
 			"GLEW_STATIC"
 		}
-		
-	filter {"platforms:x64", "configurations:Release"}
-		buildoptions "/MT"
 
 project "Sandbox"
 	location "Sandbox"

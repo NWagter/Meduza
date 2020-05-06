@@ -3,8 +3,6 @@
 #include "Drawable/Sprite.h"
 #include "MeduzaUtil.h"
 
-#include<vector>
-#include <string>
 
 namespace meduza
 {
@@ -45,7 +43,7 @@ namespace meduza
 // ============ Camera
 
 		void SetNewCamera(CameraPerspective, math::Vec4, math::Vec2 = {-1,1});
-		void SetView(math::Vec4, math::Vec2 = { -1,1 });
+		void SetView(math::Vec2, math::Vec2 = { -1,1 });
 		void SetCamEye(math::Vec3);
 
 // ============  Renderer

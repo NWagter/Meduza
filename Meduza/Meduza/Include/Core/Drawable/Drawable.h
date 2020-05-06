@@ -27,8 +27,14 @@ namespace meduza
 		public:
 			virtual ~Drawable() = default;
 
+			virtual void SetColour(math::Vec3) = 0;
+			virtual void SetColour(math::Vec4) = 0;
+
 			virtual void UseShader(const char*) = 0;
 			virtual void UseShader(std::string) = 0;
+
+			virtual void UseTexture(const char*) = 0;
+			virtual void UseTexture(std::string) = 0;
 
 			virtual math::Vec3 GetPos() const = 0;
 			virtual math::Vec3 GetSize() const = 0;

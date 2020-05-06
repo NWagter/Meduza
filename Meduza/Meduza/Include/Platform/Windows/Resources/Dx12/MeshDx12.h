@@ -12,7 +12,7 @@ namespace meduza
 		class MeshDx12 : public Mesh
 		{
 		public:
-			MeshDx12(unsigned int, std::vector<Vertex>, std::vector<int>, DeviceDx12&, CommandListDx12*);
+			MeshDx12(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes, DeviceDx12&, CommandListDx12*);
 			~MeshDx12() override;
 
 			void GenerateBuffers() override;

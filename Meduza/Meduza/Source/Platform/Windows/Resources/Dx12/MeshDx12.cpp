@@ -8,7 +8,7 @@
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 
-meduza::renderer::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, DeviceDx12& a_device, CommandListDx12* a_cmdList) : meduza::renderer::Mesh(a_id, a_vert, a_ind)
+meduza::renderer::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, VertexAttributes a_atts, DeviceDx12& a_device, CommandListDx12* a_cmdList) : meduza::renderer::Mesh(a_id, a_vert, a_ind, a_atts)
 {
 	m_device = &a_device;
 	m_cmd = a_cmdList;

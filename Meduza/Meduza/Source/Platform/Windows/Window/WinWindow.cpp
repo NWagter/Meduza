@@ -6,6 +6,8 @@
 #include "Platform/Windows/Window/OpenGL/ContextGL.h"
 #include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
+#include "Event/EventSystem.h"
+
 meduza::WinWindow::WinWindow(math::Vec2 a_size)
 {
 	m_windowActive = true;
@@ -59,7 +61,7 @@ void meduza::WinWindow::EnableImGui()
 void meduza::WinWindow::Peek()
 {
 	MSG msg;
-	while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
 	{
 		if (msg.message == WM_QUIT)
 		{
@@ -75,6 +77,11 @@ void meduza::WinWindow::Peek()
 void meduza::WinWindow::SwapBuffers()
 {
 	m_context->SwapBuffer();
+
+	if (m_eventSystem != nullptr)
+	{
+		m_eventSystem->Flush();
+	}
 }
 
 void meduza::WinWindow::SetTitle(std::string a_title)
@@ -141,18 +148,39 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		PostQuitMessage(0);
 		break;
 	case WM_SIZE:
-	{
 		m_size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
 
 		if (m_context != nullptr)
 		{
 			m_context->Resize(m_size);
 		}
-	}
+
+		PushEvent(events::Event::WindowResize);
+
+	break;
+	case WM_KEYDOWN:
+		if ((a_lParam & 0x40000000) == 0 || m_eventSystem->m_autoRepeat)
+		{
+			m_eventSystem->OnKeyChange(char(a_wParam), true);
+		}
+		break;
+	case WM_KEYUP:
+		if ((a_lParam & 0x40000000) == 0 || m_eventSystem->m_autoRepeat)
+		{
+			m_eventSystem->OnKeyChange(char(a_wParam), false);
+		}
+		break;
 
 	}
-
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
+}
+
+void meduza::WinWindow::PushEvent(events::Event a_event)
+{
+	if (m_eventSystem == nullptr)
+		return;
+
+	m_eventSystem->AddEvent(a_event);
 }
 
 meduza::WinWindow::WindowClass meduza::WinWindow::WindowClass::ms_wndClass;

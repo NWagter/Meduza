@@ -16,6 +16,17 @@ namespace meduza
 		void UnBind() override;
 
 		void UploadUniformInt(std::string, int);
+		void UploadUniformFloat(std::string, float);
+
+		void UploadUniformVec2(std::string, float[2]);
+		void UploadUniformVec3(std::string, float[3]);
+		void UploadUniformVec4(std::string, float[4]);
+
+		void UploadUniformVec2(std::string, glm::vec2);
+		void UploadUniformVec3(std::string, glm::vec3);
+		void UploadUniformVec4(std::string, glm::vec4);
+
+		void UploadUniformMat4(std::string, glm::mat4);
 
 	private:
 		utils::ShaderSources m_source;

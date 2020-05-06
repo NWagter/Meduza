@@ -8,7 +8,7 @@
 #include "Platform/General/Utils/ShaderUtils.h"
 
 #ifdef WINDOWS
-
+#include "Platform/Windows/Utils/FileSystem.h"
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
 
 #endif // WINDOWS
@@ -42,10 +42,14 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 	{
 	case meduza::API::OpenGL:
 	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_vertPath));
+
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
 
 		utils::ShaderSources source = utils::ShaderUtils::GetSources(a_vertPath, a_fragPath);
-
-		unsigned int hashedId = utils::ShaderUtils::GetHashedID(source.m_shaderName);
 
 		//Check if already exists
 		if (m_instance->m_shaders[hashedId] != nullptr)
@@ -74,8 +78,14 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 	{
 	case meduza::API::OpenGL:
 	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_path));
+
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
+
 		utils::ShaderSources source = utils::ShaderUtils::GetSources(a_path);
-		unsigned int hashedId = utils::ShaderUtils::GetHashedID(source.m_shaderName);
 
 		//Check if already exists
 		if (m_instance->m_shaders[hashedId] != nullptr)
@@ -85,7 +95,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 
 		m_instance->m_shaders[hashedId] = new ShaderGL(source);
 
-		ME_CORE_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 		return GetShader(hashedId);
 	}
 #ifdef WINDOWS
@@ -103,7 +113,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 
 meduza::Shader* meduza::ShaderLibrary::GetShader(std::string a_name)
 {
-	return GetShader(utils::ShaderUtils::GetHashedID(a_name));
+	return GetShader(utils::GetHashedID(a_name));
 }
 
 meduza::Shader* meduza::ShaderLibrary::GetShader(unsigned int a_id)
@@ -121,23 +131,23 @@ meduza::Shader* meduza::ShaderLibrary::GetShader(unsigned int a_id)
 bool meduza::ShaderLibrary::UnLoadShader(std::string a_name)
 {
 	//Check if already exists
-	if (!UnLoadShader(utils::ShaderUtils::GetHashedID(a_name), false))
+	if (!UnLoadShader(utils::GetHashedID(a_name), false))
 	{
-		ME_CORE_LOG("Shader : %s doesn't exist", a_name.c_str());
+		ME_GFX_LOG("Shader : %s doesn't exist", a_name.c_str());
 		return false;
 	}
 
 	return true;
 }
 
-bool meduza::ShaderLibrary::UnLoadShader(unsigned int a_id, bool message)
+bool meduza::ShaderLibrary::UnLoadShader(unsigned int a_id, bool a_message)
 {
 	//Check if already exists
 	if (m_instance->m_shaders[a_id] == nullptr)
 	{
-		if (message)
+		if (a_message)
 		{
-			ME_CORE_LOG("Shader with ID : %i doesn't exist", a_id);
+			ME_GFX_LOG("Shader with ID : %i doesn't exist", a_id);
 		}
 
 		return false;

@@ -5,8 +5,8 @@
 #define OPTICK
 
 #include <Meduza.h>
-
 #include <Drawable/Sprite.h>
+#include <Event/EventSystem.h>
 
 #ifdef WINDOWS
 	meduza::API const g_api = meduza::API::OpenGL;
@@ -35,48 +35,48 @@ void Sandbox::Update(float)
 
 void Sandbox::Run()
 {
-	std::vector<meduza::drawable::Drawable*> sprites;
+	meduza::Colour c = meduza::Colours::CELESTIAL_BLUE;
+	meduza::drawable::Sprite s;
 
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
-	sprites.emplace_back(new meduza::drawable::Sprite());
+	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+	s.UseTexture(m_meduza->LoadTexture("Data/Textures/sprites.png"));
 
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(0.5f, 0);
+	s.SetSize(100, 100);
+	s.SetUV(32 * 2, 0, 32, 32);
 
-	meduza::math::Vec2 pos(1, 1);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[1])->SetPostion(pos);
-	pos = meduza::math::Vec2(4, 6);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[2])->SetPostion(pos);
-	pos = meduza::math::Vec2(1, 9);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[4])->SetPostion(pos);
-	pos = meduza::math::Vec2(14, 5);
-	dynamic_cast<meduza::drawable::Sprite*>(sprites[5])->SetPostion(pos);
-
-
-	//Add Shader to Sprite
-
-	//std::string name = m_meduza->LoadShader("Data/Shaders/RedShader.glsl");
-	//sprites[0]->UseShader(name);
+	meduza::math::Vec3 camPos(0, 0, 0);
+	float camSpeed = 15.f;
 
 	while (m_meduza->IsWindowActive())
 	{
-#if defined(WINDOWS) && defined(OPTICK)
-		OPTICK_FRAME("MainThread");
-		OPTICK_CATEGORY(OPTICK_FUNC, Optick::Category::Debug);
-#endif // 
-		m_meduza->Clear(meduza::Colours::CELESTIAL_BLUE);
-		m_meduza->Submit(sprites[0]);
-		//Game Update
-		Update(0);
+		m_meduza->Clear(c);
+		m_meduza->Peek();
+
+		m_meduza->SetCamEye(camPos);
+		s.Submit(m_meduza->GetGfx());
+
+		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
+		{
+			m_meduza->SetView(m_meduza->GetWindowSize());
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
+		{
+			camPos.m_y += camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
+		{
+			camPos.m_y -= camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
+		{
+			camPos.m_x += camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
+		{
+			camPos.m_x -= camSpeed;
+		}
 
 		m_meduza->SwapBuffers();
-	}
 
-	for (auto d : sprites)
-	{
-		delete d;
 	}
 }

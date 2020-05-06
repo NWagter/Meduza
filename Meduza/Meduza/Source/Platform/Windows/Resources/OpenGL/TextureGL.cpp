@@ -8,14 +8,12 @@
 #include <stb_image/stb_image.h>
 #include "Platform/Windows/Utils/FileSystem.h"
 
-meduza::TextureGL2D::TextureGL2D(std::string a_path)
+meduza::Texture2DGL::Texture2DGL(std::string a_path, unsigned int a_id) : m_textureId(a_id)
 {
-
-
 	int width;
 	int height;
 	int channels;
-	stbi_set_flip_vertically_on_load(1);
+	stbi_set_flip_vertically_on_load(0);
 	stbi_uc* data = stbi_load(a_path.c_str(), &width, &height, &channels, 0);
 	ME_GFX_ASSERT_M(data, "Failed to load Texture");
 	ME_GFX_LOG("Load texture : %s \n", utils::FileSystem::GetFileName(a_path).c_str());
@@ -51,12 +49,12 @@ meduza::TextureGL2D::TextureGL2D(std::string a_path)
 	stbi_image_free(data);
 }
 
-meduza::TextureGL2D::~TextureGL2D()
+meduza::Texture2DGL::~Texture2DGL()
 {
 	glDeleteTextures(1, &m_texture);
 }
 
-void meduza::TextureGL2D::Bind(unsigned int a_slot)
+void meduza::Texture2DGL::Bind(unsigned int a_slot)
 {
 	glBindTextureUnit(a_slot, m_texture);
 }

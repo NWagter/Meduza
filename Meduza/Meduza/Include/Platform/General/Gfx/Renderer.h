@@ -4,6 +4,7 @@
 
 namespace meduza
 {
+	class Camera;
 	class Window;
 
 	namespace drawable
@@ -31,7 +32,7 @@ namespace meduza
 			virtual ~Renderer() = default;
 			
 			virtual void Clear(Colour) = 0;
-			virtual void Render() = 0;
+			virtual void Render(const Camera&) = 0;
 
 			virtual void Draw(drawable::Drawable*) = 0;
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;

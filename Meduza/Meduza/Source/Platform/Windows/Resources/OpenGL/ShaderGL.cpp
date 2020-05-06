@@ -1,9 +1,16 @@
 #include "mePch.h"
 
+#include "Util/MeduzaHelper.h"
+
 #include <glad/glad.h>
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
 
-meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::ShaderUtils::GetHashedID(a_source.m_shaderName))
+#pragma warning(push)
+#pragma warning(disable : 4201)
+#include <glm/gtc/type_ptr.hpp>
+#pragma warning(pop)
+
+meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::GetHashedID(a_source.m_shaderName))
 {
     m_source = a_source;
 
@@ -30,6 +37,62 @@ void meduza::ShaderGL::UploadUniformInt(std::string a_uniform, int a_value)
     unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
 
     glUniform1i(location, a_value);
+}
+
+void meduza::ShaderGL::UploadUniformFloat(std::string a_uniform, float a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform1f(location, a_value);
+}
+
+void meduza::ShaderGL::UploadUniformVec2(std::string a_uniform, float a_value[2])
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform2f(location, a_value[0], a_value[1]);
+}
+
+void meduza::ShaderGL::UploadUniformVec3(std::string a_uniform, float a_value[3])
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform3f(location, a_value[0], a_value[1], a_value[2]);
+}
+
+void meduza::ShaderGL::UploadUniformVec4(std::string a_uniform, float a_value[4])
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform4f(location, a_value[0], a_value[1], a_value[2], a_value[3]);
+}
+
+void meduza::ShaderGL::UploadUniformVec2(std::string a_uniform, glm::vec2 a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform2f(location, a_value[0], a_value[1]);
+}
+
+void meduza::ShaderGL::UploadUniformVec3(std::string a_uniform, glm::vec3 a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform3f(location, a_value[0], a_value[1], a_value[2]);
+}
+
+void meduza::ShaderGL::UploadUniformVec4(std::string a_uniform, glm::vec4 a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniform4f(location, a_value[0], a_value[1], a_value[2], a_value[3]);
+}
+
+void meduza::ShaderGL::UploadUniformMat4(std::string a_uniform, glm::mat4 a_value)
+{
+    unsigned int location = glGetUniformLocation(m_program, a_uniform.c_str());
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(a_value));
 }
 
 bool ShaderDebug(unsigned int a_shader)

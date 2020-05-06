@@ -3,14 +3,17 @@
 #include "Drawable/Sprite.h"
 #include "MeduzaUtil.h"
 
-#include<vector>
-#include <string>
 
 namespace meduza
 {
 	class ImGuiRenderer;
 	class Window;
 	class ShaderLibrary;
+	class TextureLibrary;
+	class EventSystem;
+
+	class Camera;
+
 	struct Colour;
 
 	namespace renderer
@@ -30,7 +33,13 @@ namespace meduza
 
 // ============ Load Resource
 
-		std::string LoadShader(std::string);
+		std::string LoadShader(std::string) const;
+		std::string LoadTexture(std::string) const;
+// ============ Camera
+
+		void SetNewCamera(CameraPerspective, math::Vec4, math::Vec2 = {-1,1});
+		void SetView(math::Vec2, math::Vec2 = { -1,1 });
+		void SetCamEye(math::Vec3);
 
 // ============  Renderer
 
@@ -46,12 +55,11 @@ namespace meduza
 
 		void SwapBuffers();
 
-
 		void Peek();
 		bool IsWindowActive() const;
-		std::string GetWindowName();
+		std::string GetWindowName() const;
 
-		inline renderer::Renderer& GetGfx()
+		inline renderer::Renderer& GetGfx() const
 		{
 			if (m_renderer != nullptr)
 			{
@@ -62,11 +70,14 @@ namespace meduza
 
 			return *m_renderer;
 		}
-
+		math::Vec2 GetWindowSize() const;
 	private:
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
 		ShaderLibrary* m_shaderLibrary = nullptr;
+		TextureLibrary* m_textureLibrary = nullptr;
 		Window* m_window = nullptr;
+		EventSystem* m_eventSystem = nullptr;
+		Camera* m_camera = nullptr;
 	};
 }

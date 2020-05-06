@@ -12,11 +12,12 @@ namespace meduza
 		class MeshGL : public Mesh
 		{
 		public:
-			MeshGL(unsigned int, std::vector<Vertex>, std::vector<int>, GLenum);
+			MeshGL(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes, GLenum);
 			~MeshGL() override;
 
 			void EnableMode();
 			void GenerateBuffers() override;
+			void GenerateAttributes();
 
 			unsigned int GetVBO() const { return m_vbo; }
 			unsigned int GetVAO() const { return m_vao; }

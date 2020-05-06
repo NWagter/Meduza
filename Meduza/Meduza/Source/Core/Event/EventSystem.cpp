@@ -60,7 +60,7 @@ bool meduza::EventSystem::GetEvent(events::Event a_type)
 bool meduza::EventSystem::OnKeyChange(char a_keyCode, bool a_isPressed)
 {
 	if (MeduzaHelper::ms_minimized)
-		return;
+		return false;
 
 	if (IsKeyDown(a_keyCode) == a_isPressed && !m_autoRepeat)
 	{

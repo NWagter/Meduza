@@ -36,9 +36,8 @@ namespace meduza
 
 		void SetTitle(std::string) override;
 		void CreateContext() override;
-
-		void PushEvent(events::Event) override;
 	private:
+		void PushEvent(events::Event) override;
 
 		ImGuiContext* m_imGuiContext;
 		ImGuiIO* m_imGuiIO;

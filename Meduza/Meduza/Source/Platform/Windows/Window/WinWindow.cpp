@@ -61,7 +61,7 @@ void meduza::WinWindow::EnableImGui()
 void meduza::WinWindow::Peek()
 {
 	MSG msg;
-	while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
 	{
 		if (msg.message == WM_QUIT)
 		{
@@ -107,14 +107,6 @@ void meduza::WinWindow::CreateContext()
 	}
 }
 
-void meduza::WinWindow::PushEvent(events::Event a_event)
-{
-	if (m_eventSystem != nullptr)
-	{
-		m_eventSystem->AddEvent(a_event);
-	}
-}
-
 LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
 
@@ -145,8 +137,6 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		return 1;
 	}
 
-	events::Event e;
-
 	switch (a_msg)
 	{
 	case WM_CLOSE:
@@ -160,18 +150,32 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 			m_context->Resize(m_size);
 		}
 
-		e.m_event = events::Events::WindowEvent;
-		e.m_type = events::EventType::WindowResize;
+		PushEvent(events::Event::WindowResize);
 
-		e.SetValues(m_size.m_x, m_size.m_y);
-
-		PushEvent(e);
-		
 	break;
+	case WM_KEYDOWN:
+		if ((a_lParam & 0x40000000) == 0 || m_eventSystem->m_autoRepeat)
+		{
+			m_eventSystem->OnKeyChange(char(a_wParam), true);
+		}
+		break;
+	case WM_KEYUP:
+		if ((a_lParam & 0x40000000) == 0 || m_eventSystem->m_autoRepeat)
+		{
+			m_eventSystem->OnKeyChange(char(a_wParam), false);
+		}
+		break;
 
 	}
-
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
+}
+
+void meduza::WinWindow::PushEvent(events::Event a_event)
+{
+	if (m_eventSystem == nullptr)
+		return;
+
+	m_eventSystem->AddEvent(a_event);
 }
 
 meduza::WinWindow::WindowClass meduza::WinWindow::WindowClass::ms_wndClass;

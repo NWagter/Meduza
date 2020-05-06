@@ -35,11 +35,6 @@ namespace meduza
 
 		std::string LoadShader(std::string) const;
 		std::string LoadTexture(std::string) const;
-
-// ============ Events
-
-		bool ReadEvent(events::Event&);
-
 // ============ Camera
 
 		void SetNewCamera(CameraPerspective, math::Vec4, math::Vec2 = {-1,1});

@@ -19,6 +19,7 @@
 #include <set>
 #include <map>
 #include <chrono>
+#include <bitset>
 
 #include <glm/glm.hpp>
 

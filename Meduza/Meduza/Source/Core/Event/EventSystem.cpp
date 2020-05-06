@@ -1,5 +1,6 @@
 #include "mePch.h"
 
+#include "Core.h"
 #include "Event/EventSystem.h"
 
 meduza::EventSystem* meduza::EventSystem::ms_instance = nullptr;
@@ -12,7 +13,6 @@ meduza::EventSystem::EventSystem()
 	}
 
 	ms_instance = this;
-	Flush();
 }
 
 meduza::EventSystem::~EventSystem()
@@ -20,25 +20,48 @@ meduza::EventSystem::~EventSystem()
 	Flush();
 }
 
+bool meduza::EventSystem::Empty()
+{
+	if (m_events.size() > 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void meduza::EventSystem::AddEvent(events::Event a_event)
 {
-	m_eventQueue.push(a_event);
+	m_events[a_event] = true;
 }
 
 void meduza::EventSystem::Flush()
 {
-	m_eventQueue = std::queue<events::Event>();
+	m_events.clear();
 }
 
-meduza::events::Event meduza::EventSystem::GetEvent()
+bool meduza::EventSystem::IsKeyDown(unsigned char a_keyCode)
+{
+	return m_keyStates[a_keyCode];
+}
+
+bool meduza::EventSystem::GetEvent(events::Event a_type)
 {	
-	if (m_eventQueue.size() > 0u) {
-		auto e = m_eventQueue.front();
-		m_eventQueue.pop();
-		return e;
-	}
-	else {
-		return events::Event();
+	if (m_events[a_type])
+	{
+		m_events.erase(a_type);
+		return true;
 	}
 
+	return false;
+}
+
+bool meduza::EventSystem::OnKeyChange(char a_keyCode, bool a_isPressed)
+{
+	if (IsKeyDown(a_keyCode) == a_isPressed && !m_autoRepeat)
+	{
+		return false;
+	}
+	m_keyStates[a_keyCode] = a_isPressed;
+	return true;
 }

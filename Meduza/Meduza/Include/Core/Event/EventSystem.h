@@ -1,10 +1,12 @@
 #pragma once
 
-#include "MeduzaUtil.h"
 #include "Event/Events.h"
+
+#include <bitset>
 
 namespace meduza
 {
+	class Keyboard;
 
 	class EventSystem
 	{
@@ -12,17 +14,25 @@ namespace meduza
 		EventSystem();
 		~EventSystem();
 
-		static EventSystem* GetInstance() { return ms_instance; }
+		static EventSystem* GetEventSystem() { return ms_instance; }
+
+		bool Empty();
 
 		void AddEvent(events::Event);
 		void Flush();
 
-		events::Event GetEvent();
-		EventSystem* GetEventSystem() { return ms_instance; }
+		bool IsKeyDown(unsigned char);
+		bool GetEvent(events::Event);
 
+		bool OnKeyChange(char, bool);
+
+		bool m_autoRepeat = true;
 	private:
+		std::bitset<256> m_keyStates;
+
+		std::unordered_map<events::Event, bool> m_events;
 
 		static EventSystem* ms_instance;
-		std::queue<events::Event> m_eventQueue;
+
 	};
 }

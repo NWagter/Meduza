@@ -6,6 +6,7 @@
 
 #include <Meduza.h>
 #include <Drawable/Sprite.h>
+#include <Event/EventSystem.h>
 
 #ifdef WINDOWS
 	meduza::API const g_api = meduza::API::OpenGL;
@@ -43,21 +44,40 @@ void Sandbox::Run()
 	s.SetSize(100, 100);
 	s.SetUV(32 * 2, 0, 32, 32);
 
+	meduza::math::Vec3 camPos(0, 0, 0);
+	float camSpeed = 15.f;
+
 	while (m_meduza->IsWindowActive())
 	{
+		OPTICK_FRAME("MainThread");
+
 		m_meduza->Clear(c);
 
-		s.Submit(m_meduza->GetGfx());
 		m_meduza->Peek();
 
-		meduza::events::Event e;
-		while (m_meduza->ReadEvent(e))
+		m_meduza->SetCamEye(camPos);
+
+		s.Submit(m_meduza->GetGfx());
+
+		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
-			if (e.m_type == meduza::events::EventType::WindowResize)
-			{
-				meduza::math::Vec2 size(float(e.GetValueA()), float(e.GetValueB()));
-				m_meduza->SetView(size);
-			}
+			m_meduza->SetView(m_meduza->GetWindowSize());
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
+		{
+			camPos.m_y += camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
+		{
+			camPos.m_y -= camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
+		{
+			camPos.m_x += camSpeed;
+		}
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
+		{
+			camPos.m_x -= camSpeed;
 		}
 
 		m_meduza->SwapBuffers();

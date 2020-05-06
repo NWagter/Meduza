@@ -87,18 +87,6 @@ std::string meduza::Meduza::LoadTexture(std::string a_path) const
 	return utils::FileSystem::GetFileName(a_path);
 }
 
-bool meduza::Meduza::ReadEvent(events::Event& a_event)
-{
-	if (m_eventSystem == nullptr)
-	{
-		return false;
-	}
-
-	a_event = m_eventSystem->GetEvent();
-
-	return a_event.IsSet();
-}
-
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_frustrum, math::Vec2 a_distance)
 {
 	delete m_camera;

@@ -59,9 +59,8 @@ void Sandbox::Run()
 
 	meduza::math::Vec2 wSize = m_meduza->GetWindowSize();
 
-	wSize *= 0.01f;
-
-	meduza::math::Vec4 frustrum = { -wSize.m_x,wSize.m_x, -wSize.m_y, wSize.m_y };
+	meduza::math::Vec2 nWSize = wSize * 0.01f;
+	meduza::math::Vec4 frustrum = { -nWSize.m_x,nWSize.m_x, -nWSize.m_y, nWSize.m_y };
 
 	m_meduza->SetNewCamera(meduza::CameraPerspective::Orthographic, frustrum);
 
@@ -93,6 +92,27 @@ void Sandbox::Run()
 			dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetUV(32 * 35, 0, 32, 32);
 			pos.m_x += 0.05f;
 		}
+
+		meduza::events::Event e;
+		while (m_meduza->ReadEvent(e))
+		{
+
+
+			if (e.m_event == meduza::events::Events::WindowEvent)
+			{
+				switch (e.m_type)
+				{
+				case meduza::events::EventType::WindowResize:
+					wSize = meduza::math::Vec2(float(e.GetValueA()), float(e.GetValueB()));
+					nWSize = wSize * 0.01f;
+					frustrum = { -nWSize.m_x,nWSize.m_x, -nWSize.m_y, nWSize.m_y };
+
+					m_meduza->SetView(frustrum);
+					break;
+				}
+			}
+		}
+
 		m_meduza->SetCamEye(meduza::math::Vec3(pos.m_x, pos.m_y, 0));
 		dynamic_cast<meduza::drawable::Sprite*>(sprites[0])->SetPosition(pos);
 		

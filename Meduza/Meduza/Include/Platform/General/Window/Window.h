@@ -6,6 +6,8 @@
 
 namespace meduza
 {
+	class EventSystem;
+
 	namespace renderer
 	{
 		class Context;
@@ -31,8 +33,12 @@ namespace meduza
 		inline std::string GetTitle() { return m_title; }
 		inline bool GetActive() { return m_windowActive; }
 
+		virtual void PushEvent(events::Event) = 0;
+		inline void SetEventSystem(EventSystem& a_eventSystem) { m_eventSystem = &a_eventSystem; }
 	protected:
+
 		renderer::Context* m_context = nullptr;
+		EventSystem* m_eventSystem = nullptr;
 		math::Vec2 m_size;
 		std::string m_title;
 		bool m_windowActive = false;

@@ -4,6 +4,7 @@
 #include "Util/MeduzaHelper.h"
 
 #include "Meduza.h"
+#include "Event/EventSystem.h"
 
 #include "Platform/General/Gfx/Renderer.h"
 #include "Platform/General/Window/Window.h"
@@ -25,6 +26,7 @@ meduza::Meduza::Meduza(API a_api)
 
 	renderer::Renderer::RendererData* data = nullptr;
 	data = renderer::Renderer::CreateRenderer(math::Vec2(720,480));
+	m_eventSystem = new EventSystem();
 
 	if (data == nullptr)
 	{
@@ -34,6 +36,7 @@ meduza::Meduza::Meduza(API a_api)
 	{
 		m_renderer = data->renderer;
 		m_window = data->window;
+		m_window->SetEventSystem(*m_eventSystem);
 	}
 
 	ME_LOG("Window title = %s \n", GetWindowName().c_str());
@@ -62,6 +65,7 @@ meduza::Meduza::~Meduza()
 	delete m_renderer;
 	delete m_window;
 	delete m_camera;
+	delete m_eventSystem;
 }
 
 void meduza::Meduza::EnableImGui()
@@ -81,6 +85,18 @@ std::string meduza::Meduza::LoadTexture(std::string a_path) const
 {
 	m_textureLibrary->LoadTexture(a_path);
 	return utils::FileSystem::GetFileName(a_path);
+}
+
+bool meduza::Meduza::ReadEvent(events::Event& a_event)
+{
+	if (m_eventSystem == nullptr)
+	{
+		return false;
+	}
+
+	a_event = m_eventSystem->GetEvent();
+
+	return a_event.IsSet();
 }
 
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_frustrum, math::Vec2 a_distance)

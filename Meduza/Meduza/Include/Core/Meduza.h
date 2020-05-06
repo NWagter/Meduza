@@ -12,6 +12,7 @@ namespace meduza
 	class Window;
 	class ShaderLibrary;
 	class TextureLibrary;
+	class EventSystem;
 
 	class Camera;
 
@@ -36,6 +37,10 @@ namespace meduza
 
 		std::string LoadShader(std::string) const;
 		std::string LoadTexture(std::string) const;
+
+// ============ Events
+
+		bool ReadEvent(events::Event&);
 
 // ============ Camera
 
@@ -79,6 +84,7 @@ namespace meduza
 		ShaderLibrary* m_shaderLibrary = nullptr;
 		TextureLibrary* m_textureLibrary = nullptr;
 		Window* m_window = nullptr;
+		EventSystem* m_eventSystem = nullptr;
 		Camera* m_camera = nullptr;
 	};
 }

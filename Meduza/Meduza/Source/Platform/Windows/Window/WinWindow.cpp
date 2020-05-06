@@ -6,6 +6,8 @@
 #include "Platform/Windows/Window/OpenGL/ContextGL.h"
 #include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
+#include "Event/EventSystem.h"
+
 meduza::WinWindow::WinWindow(math::Vec2 a_size)
 {
 	m_windowActive = true;
@@ -105,6 +107,14 @@ void meduza::WinWindow::CreateContext()
 	}
 }
 
+void meduza::WinWindow::PushEvent(events::Event a_event)
+{
+	if (m_eventSystem != nullptr)
+	{
+		m_eventSystem->AddEvent(a_event);
+	}
+}
+
 LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
 
@@ -135,6 +145,8 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		return 1;
 	}
 
+	events::Event e;
+
 	switch (a_msg)
 	{
 	case WM_CLOSE:
@@ -147,6 +159,14 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		{
 			m_context->Resize(m_size);
 		}
+
+		e.m_event = events::Events::WindowEvent;
+		e.m_type = events::EventType::WindowResize;
+
+		e.SetValues(m_size.m_x, m_size.m_y);
+
+		PushEvent(e);
+		
 	break;
 
 	}

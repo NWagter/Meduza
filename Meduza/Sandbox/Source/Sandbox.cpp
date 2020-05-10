@@ -46,7 +46,7 @@ void Sandbox::Run()
 	s.SetUV(32 * 17, 0, 32, 32);
 
 
-	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D(s);
+	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
 
 	animator.CreateAnimation2D("UP", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
 	meduza::math::Vec4 rect{ 32 * 17, 0, 32, 32 };
@@ -55,7 +55,6 @@ void Sandbox::Run()
 	animator.GetAnimation("UP").AddFrame(rect);
 	rect = { (32 * 17) + (32 * 16), 0, 32, 32 };
 	animator.GetAnimation("UP").AddFrame(rect);
-	animator.SetAnimation("UP");
 
 	animator.CreateAnimation2D("RIGHT", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
 	rect = { 32 * 19, 0, 32, 32 };
@@ -82,6 +81,9 @@ void Sandbox::Run()
 	animator.GetAnimation("LEFT").AddFrame(rect);
 
 	meduza::math::Vec3 camPos(0, 0, 0);
+
+	animator.SetSprite(s);
+	animator.SetAnimation("DOWN");
 
 	while (m_meduza->IsWindowActive())
 	{

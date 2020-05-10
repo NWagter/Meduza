@@ -101,12 +101,12 @@ void meduza::drawable::Sprite::SetUV(float a_x, float a_y, float a_xOffset, floa
 
 void meduza::drawable::Sprite::SetUV(float a_uv[4])
 {
-	m_drawData->m_textCoords = glm::vec4(*a_uv);
+	m_drawData->m_textCoords = glm::vec4(a_uv[0], a_uv[1], a_uv[2], a_uv[3]);
 }
 
 void meduza::drawable::Sprite::SetUV(math::Vec4 a_uv)
 {
-	m_drawData->m_textCoords = glm::vec4(*a_uv.m_xyzw);
+	m_drawData->m_textCoords = glm::vec4(a_uv.m_x, a_uv.m_y, a_uv.m_z, a_uv.m_w);
 }
 
 meduza::math::Vec3 meduza::drawable::Sprite::GetPos() const

@@ -22,6 +22,8 @@ namespace meduza
 		void Flush();
 
 		bool IsKeyDown(unsigned char);
+		bool IsKeyUp(unsigned char);
+
 		bool GetEvent(events::Event);
 
 		bool OnKeyChange(char, bool);

@@ -46,6 +46,16 @@ bool meduza::EventSystem::IsKeyDown(unsigned char a_keyCode)
 	return m_keyStates[a_keyCode];
 }
 
+bool meduza::EventSystem::IsKeyUp(unsigned char a_keyCode)
+{
+	if (m_keyStates[a_keyCode])
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool meduza::EventSystem::GetEvent(events::Event a_type)
 {	
 	if (m_events[a_type])

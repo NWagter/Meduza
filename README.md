@@ -39,5 +39,4 @@ Meduza will be a static library that will be as user friendly as possible.
 The executable will be a seperate project containing examples on how to use the renderer and some tools using ImGui to show what is possible to do with the engine.
 
 The reason for this project is to learn more about graphics programming and provide a useable library for others not interested in graphics programming but in need of an library that can do it for them.
-
-<b> This project is not a game tool like SFML it is just a renderer how you use it is up to you!<b>
+And to learn more about render abstractions with the use of mutliple Graphics APIs

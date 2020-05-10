@@ -2,7 +2,7 @@
 
 #include "Core.h"
 
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/General/Utils/ShaderUtils.h"

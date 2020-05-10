@@ -16,7 +16,7 @@ namespace meduza
 		inline math::Vec3 GetEyePos() const override { return math::Vec3(m_position.x, m_position.y, m_position.z); }
 		inline math::Vec3 GetRotation() const override { return math::Vec3(0, 0, m_rotationZ); };
 
-		void SetProjection(math::Vec4, math::Vec2 = math::Vec2(-1, 1)) override;
+		void SetProjection(math::Vec2, math::Vec2 = math::Vec2(-1, 1)) override;
 
 		CameraPerspective GetActive() const override { return CameraPerspective::Orthographic; }
 

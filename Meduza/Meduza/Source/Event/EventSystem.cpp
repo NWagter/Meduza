@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 #include "Event/EventSystem.h"
 
 meduza::EventSystem* meduza::EventSystem::ms_instance = nullptr;

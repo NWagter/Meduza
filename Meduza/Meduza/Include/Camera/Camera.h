@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MeduzaUtil.h"
+#include "Util/MeduzaUtil.h"
 #include "Math/MeduzaMath.h"
 
 namespace meduza
@@ -8,7 +8,7 @@ namespace meduza
 	class Camera
 	{
 	public:
-		static Camera* CreateCamera(CameraPerspective, math::Vec4, math::Vec2);
+		static Camera* CreateCamera(CameraPerspective, math::Vec2, math::Vec2);
 
 		virtual ~Camera() = default;
 
@@ -17,7 +17,7 @@ namespace meduza
 		virtual math::Vec3 GetEyePos() const = 0;
 		virtual math::Vec3 GetRotation() const = 0;
 
-		virtual void SetProjection(math::Vec4, math::Vec2 = math::Vec2(-1, 1)) = 0;
+		virtual void SetProjection(math::Vec2, math::Vec2 = math::Vec2(-1, 1)) = 0;
 
 		virtual CameraPerspective GetActive() const = 0;
 

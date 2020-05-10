@@ -4,7 +4,7 @@
 #pragma comment( lib, "glu32.lib")
 
 #include "Math/MeduzaMath.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include "Platform/Windows/Window/OpenGL/ContextGL.h"
 

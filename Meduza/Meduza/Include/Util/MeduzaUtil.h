@@ -3,8 +3,7 @@
 
 #pragma once
 
-
-#include<vector>
+#include <vector>
 #include <string>
 
 namespace meduza

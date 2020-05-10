@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MeduzaUtil.h"
+#include "Util/MeduzaUtil.h"
 
 namespace meduza
 {

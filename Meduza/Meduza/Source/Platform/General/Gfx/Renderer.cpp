@@ -2,11 +2,10 @@
 
 #include "Core.h"
 
-#include "Util/MeduzaHelper.h"
 #include "Platform/General/Gfx/Renderer.h"
 
 #ifdef WINDOWS
-
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 #include "Platform/Windows/Window/WinWindow.h"
 #include "Platform/Windows/Gfx/OpenGL/RendererGL.h"
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"

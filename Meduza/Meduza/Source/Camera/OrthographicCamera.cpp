@@ -15,9 +15,12 @@ meduza::OrthographicCamera::~OrthographicCamera()
 {
 }
 
-void meduza::OrthographicCamera::SetProjection(math::Vec4 a_frustrum, math::Vec2 a_distance)
+void meduza::OrthographicCamera::SetProjection(math::Vec2 a_size, math::Vec2 a_distance)
 {
-	m_projectionMatrix = m_projectionMatrix = glm::ortho(a_frustrum.m_x, a_frustrum.m_y, a_frustrum.m_z, a_frustrum.m_w, a_distance.m_x, a_distance.m_y);
+
+	math::Vec4 frustrum(-a_size.m_x / 2, a_size.m_x / 2, -a_size.m_y / 2, a_size.m_y / 2);
+
+	m_projectionMatrix = m_projectionMatrix = glm::ortho(frustrum.m_x, frustrum.m_y, frustrum.m_z, frustrum.m_w, a_distance.m_x, a_distance.m_y);
 	RecalculateViewMatrix();
 }
 

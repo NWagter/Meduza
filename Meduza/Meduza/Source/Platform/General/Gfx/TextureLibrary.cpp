@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include "Platform/General/Gfx/TextureLibrary.h"
 
@@ -35,11 +35,17 @@ meduza::Texture* meduza::TextureLibrary::LoadTexture(std::string a_path)
 	std::string name = utils::FileSystem::GetFileName(a_path);
 	unsigned int hashedId = utils::GetHashedID(name);
 
+	if (m_instance->m_textures[hashedId] != nullptr)
+	{
+		ME_GFX_LOG("Use Texture %s \n", name.c_str());
+		return m_instance->m_textures[hashedId];
+	}
+
 	Texture* texture = Texture2D::Create(a_path, hashedId);
 
 	if (texture == nullptr)
 	{
-		ME_CORE_LOG("Could not Load Texture!");
+		ME_GFX_LOG("Could not Load Texture!");
 		return nullptr;
 	}
 
@@ -58,7 +64,7 @@ meduza::Texture* meduza::TextureLibrary::GetTexture(unsigned int a_id)
 {
 	if (m_instance->m_textures[a_id] == nullptr)
 	{
-		ME_CORE_LOG("Texture with ID : %i doesn't exist", a_id);
+		ME_GFX_LOG("Texture with ID : %i doesn't exist", a_id);
 		return nullptr;
 	}
 
@@ -78,7 +84,7 @@ bool meduza::TextureLibrary::UnLoadTexture(unsigned int a_id, bool a_message)
 	{
 		if (a_message)
 		{
-			ME_CORE_LOG("Shader with ID : %i doesn't exist", a_id);
+			ME_GFX_LOG("Shader with ID : %i doesn't exist", a_id);
 		}
 	}
 

@@ -1,8 +1,8 @@
 #include "mePch.h"
 
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
-#include "Core/Drawable/Drawable.h"
+#include "Drawable/Drawable.h"
 #include "Platform/General/Gfx/Renderer.h"
 
 void meduza::drawable::Drawable::Submit(renderer::Renderer& a_renderer)

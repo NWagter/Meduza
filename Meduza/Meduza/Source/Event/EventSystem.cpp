@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 #include "Event/EventSystem.h"
 
 meduza::EventSystem* meduza::EventSystem::ms_instance = nullptr;
@@ -44,6 +44,16 @@ void meduza::EventSystem::Flush()
 bool meduza::EventSystem::IsKeyDown(unsigned char a_keyCode)
 {
 	return m_keyStates[a_keyCode];
+}
+
+bool meduza::EventSystem::IsKeyUp(unsigned char a_keyCode)
+{
+	if (m_keyStates[a_keyCode])
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool meduza::EventSystem::GetEvent(events::Event a_type)

@@ -7,6 +7,7 @@
 #include <Meduza.h>
 #include <Drawable/Sprite.h>
 #include <Event/EventSystem.h>
+#include <Gfx/Animator2D.h>
 
 #ifdef WINDOWS
 	meduza::API const g_api = meduza::API::OpenGL;
@@ -41,11 +42,46 @@ void Sandbox::Run()
 	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
 	s.UseTexture(m_meduza->LoadTexture("Data/Textures/sprites.png"));
 
-	s.SetSize(100, 100);
-	s.SetUV(32 * 2, 0, 32, 32);
+	s.SetSize(32, 32);
+	s.SetUV(32 * 17, 0, 32, 32);
+
+
+	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D(s);
+
+	animator.CreateAnimation2D("UP", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
+	meduza::math::Vec4 rect{ 32 * 17, 0, 32, 32 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	rect = { (32 * 17) + (32 * 8), 0, 32, 32 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	rect = { (32 * 17) + (32 * 16), 0, 32, 32 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	animator.SetAnimation("UP");
+
+	animator.CreateAnimation2D("RIGHT", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
+	rect = { 32 * 19, 0, 32, 32 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+	rect = { (32 * 19) + (32 * 8), 0, 32, 32 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+	rect = { (32 * 19) + (32 * 16), 0, 32, 32 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+
+	animator.CreateAnimation2D("DOWN", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
+	rect = { 32 * 21, 0, 32, 32 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+	rect = { (32 * 21) + (32 * 8), 0, 32, 32 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+	rect = { (32 * 21) + (32 * 16), 0, 32, 32 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+
+	animator.CreateAnimation2D("LEFT", 0.2f, m_meduza->LoadTexture("Data/Textures/sprites.png"));
+	rect = { 32 * 23, 0, 32, 32 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+	rect = { (32 * 23) + (32 * 8), 0, 32, 32 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+	rect = { (32 * 23) + (32 * 16), 0, 32, 32 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
 
 	meduza::math::Vec3 camPos(0, 0, 0);
-	float camSpeed = 15.f;
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -53,6 +89,7 @@ void Sandbox::Run()
 		m_meduza->Peek();
 
 		m_meduza->SetCamEye(camPos);
+		animator.Play();
 		s.Submit(m_meduza->GetGfx());
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
@@ -61,19 +98,19 @@ void Sandbox::Run()
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
 		{
-			camPos.m_y += camSpeed;
+			animator.SetAnimation("UP");
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
 		{
-			camPos.m_y -= camSpeed;
+			animator.SetAnimation("DOWN");
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
 		{
-			camPos.m_x += camSpeed;
+			animator.SetAnimation("RIGHT");
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
 		{
-			camPos.m_x -= camSpeed;
+			animator.SetAnimation("LEFT");
 		}
 
 		m_meduza->SwapBuffers();

@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Drawable/Drawable.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include <glad/glad.h>
 

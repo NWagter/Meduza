@@ -16,14 +16,14 @@ namespace meduza
                 if (a_rect.m_x != 0 || a_rect.m_z != 1)
                 {
                     returnValue.m_x = (1 / a_size.m_x) * (a_rect.m_x + 0.5f);
-                    returnValue.m_z = (1 / a_size.m_x) * (a_rect.m_z - 0.5f);
+                    returnValue.m_z = (1 / a_size.m_x) * (a_rect.m_z - 1.f);
                 }
                 if (a_rect.m_y != 0 || a_rect.m_w != 1)
                 {
                     returnValue.m_y = (1 / a_size.m_y) * (a_rect.m_y + 0.5f);
-                    returnValue.m_w = (1 / a_size.m_y) * (a_rect.m_w - 0.5f);
+                    returnValue.m_w = (1 / a_size.m_y) * (a_rect.m_w - 1.f);
                 }
-                
+
                 return returnValue;
 			}
 		};

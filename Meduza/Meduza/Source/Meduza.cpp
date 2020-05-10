@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Util/MeduzaHelper.h"
+#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include "Meduza.h"
 #include "Event/EventSystem.h"
@@ -13,6 +13,7 @@
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/General/Gfx/TextureLibrary.h"
 
+#include "Drawable/Drawable.h"
 #include "Camera/Camera.h"
 
 #ifdef WINDOWS
@@ -24,7 +25,7 @@ meduza::Meduza::Meduza(API a_api)
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
 
 	renderer::Renderer::RendererData* data = nullptr;
-	data = renderer::Renderer::CreateRenderer(math::Vec2(720,480));
+	data = renderer::Renderer::CreateRenderer(math::Vec2(1080,720));
 	m_eventSystem = new EventSystem();
 
 	if (data == nullptr)
@@ -44,10 +45,7 @@ meduza::Meduza::Meduza(API a_api)
 	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
 	m_textureLibrary = new TextureLibrary();
 
-	float width = m_window->GetSize().m_x / 2;
-	float height = m_window->GetSize().m_y / 2;
-
-	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, math::Vec4(-width, width,-height, height), math::Vec2(-1,1));
+	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, m_window->GetSize(), math::Vec2(-1,1));
 
 	delete data;
 }
@@ -86,10 +84,10 @@ std::string meduza::Meduza::LoadTexture(std::string a_path) const
 	return utils::FileSystem::GetFileName(a_path);
 }
 
-void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec4 a_frustrum, math::Vec2 a_distance)
+void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec2 a_size, math::Vec2 a_distance)
 {
 	delete m_camera;
-	m_camera = Camera::CreateCamera(a_perspective, a_frustrum, a_distance);
+	m_camera = Camera::CreateCamera(a_perspective, a_size, a_distance);
 }
 
 void meduza::Meduza::SetView(math::Vec2 a_size, math::Vec2 a_distance)
@@ -101,8 +99,7 @@ void meduza::Meduza::SetView(math::Vec2 a_size, math::Vec2 a_distance)
 
 	if (a_size.m_x > 0 || a_size.m_y > 0)
 	{
-		math::Vec4 frustrum(-a_size.m_x / 2, a_size.m_x / 2, -a_size.m_y / 2, a_size.m_y / 2);
-		m_camera->SetProjection(frustrum, a_distance);
+		m_camera->SetProjection(a_size, a_distance);
 
 		if (MeduzaHelper::ms_minimized)
 		{

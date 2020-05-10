@@ -19,8 +19,8 @@ void main()
     vec2 uv = vec2(gl_VertexID & 1, (gl_VertexID >> 1) & 1);
 
     v_textureCoords =
-        vec2(u_textureSpace.x + (u_textureSpace.z * uv.x),
-            u_textureSpace.y + (u_textureSpace.w * uv.y));
+        vec2(   u_textureSpace.x + (u_textureSpace.z * uv.x),
+                u_textureSpace.y + (u_textureSpace.w * uv.y));
 
     vec3 pos = a_pos + u_position;
     pos = pos * u_size;

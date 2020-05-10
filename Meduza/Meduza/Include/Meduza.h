@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Drawable/Sprite.h"
-#include "MeduzaUtil.h"
-
+#include "Math/MeduzaMath.h"
+#include "Util/MeduzaUtil.h"
 
 namespace meduza
 {
@@ -15,6 +14,11 @@ namespace meduza
 	class Camera;
 
 	struct Colour;
+
+	namespace drawable
+	{
+		class Drawable;
+	}
 
 	namespace renderer
 	{
@@ -37,7 +41,7 @@ namespace meduza
 		std::string LoadTexture(std::string) const;
 // ============ Camera
 
-		void SetNewCamera(CameraPerspective, math::Vec4, math::Vec2 = {-1,1});
+		void SetNewCamera(CameraPerspective, math::Vec2, math::Vec2 = {-1,1});
 		void SetView(math::Vec2, math::Vec2 = { -1,1 });
 		void SetCamEye(math::Vec3);
 

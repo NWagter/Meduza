@@ -113,7 +113,7 @@ project "Sandbox"
 	includedirs
 	{
 		"$(SolutionDir)%{prj.name}/Include",
-		"$(SolutionDir)Meduza/Include/Core",
+		"$(SolutionDir)Meduza/Include/",
 		"$(SolutionDir)Meduza/External",
 		"$(SolutionDir)%{prj.name}/External/Optick/Include"
 	}

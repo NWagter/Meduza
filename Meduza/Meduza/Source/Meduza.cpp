@@ -30,7 +30,7 @@ meduza::Meduza::Meduza(API a_api)
 
 	if (data == nullptr)
 	{
-		ME_CORE_ASSERT_M(1, "Failed to generate Renderer!");
+		ME_CORE_ASSERT_M(0, "Failed to generate Renderer!");
 	}
 	else
 	{

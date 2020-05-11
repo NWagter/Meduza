@@ -82,6 +82,6 @@ meduza::gfx::Animation2D& meduza::gfx::Animator2D::GetAnimation(std::string a_na
 		}
 	}
 
-	ME_GFX_ASSERT_M(1, "Animation doesn't exits %s", a_name.c_str())
+	ME_GFX_ASSERT_M(0, "Animation doesn't exits %s", a_name.c_str())
 		return dynamic_cast<Animation2D&>(*m_animations[0]);
 }

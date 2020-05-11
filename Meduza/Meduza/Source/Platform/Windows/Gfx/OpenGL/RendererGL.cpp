@@ -27,12 +27,13 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     ME_GFX_ASSERT_M(status, "Glad not loaded");
 	std::string version = (char*)(glGetString(GL_VERSION));
 
-    if (GL_VERSION != GLAD_GL_VERSION_4_5)
+    ME_GFX_LOG("OpenGl version : %s \n", version.c_str());
+
+    if (glGetString(GL_VERSION) != glGetString(GL_VERSION_4_5) && glGetString(GL_VERSION) != glGetString(GL_VERSION_4_6))
     {
-        ME_GFX_ASSERT_M(0, "Only support GL 4.5!");
+        ME_GFX_ASSERT_M(0, "Only Support for GL version 4_5 +");
     }
 
-    ME_GFX_LOG("OpenGl version : %s \n", version.c_str());
 
     glViewport(0, 0, int(a_context.GetSize().m_x), int(a_context.GetSize().m_y));
 

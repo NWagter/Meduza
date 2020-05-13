@@ -19,6 +19,9 @@
 
 #include "Camera/OrthographicCamera.h"
 
+#define MINIMAL_MAJOR_VERSION 4
+#define MINIMAL_MINOR_VERSION 5
+
 meduza::renderer::RendererGL::RendererGL(Context& a_context)
 {
     m_context = dynamic_cast<ContextGL*>(&a_context);
@@ -26,6 +29,18 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
 	int status = gladLoadGL(); 
     ME_GFX_ASSERT_M(status, "Glad not loaded");
 	std::string version = (char*)(glGetString(GL_VERSION));
+
+    int versionMajor;
+    int versionMinor;
+    glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+    glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+
+    if (versionMajor == MINIMAL_MAJOR_VERSION && versionMinor < MINIMAL_MINOR_VERSION)
+    {
+        ME_GFX_LOG("GL version not compadible only 4.5+ available, Your version is %i.%i \n", versionMajor, versionMinor);
+        ME_GFX_ASSERT_M(0, "GL version not compadible only 4.5+ available, Your version is %f \n");
+    }
+
     ME_GFX_LOG("OpenGl version : %s \n", version.c_str());
 
     glViewport(0, 0, int(a_context.GetSize().m_x), int(a_context.GetSize().m_y));
@@ -103,7 +118,7 @@ void meduza::renderer::RendererGL::PreRender()
                 auto t = TextureLibrary::GetTexture(d.m_textureId);
                 int slot = 0;
                 t->Bind(slot);
-                auto tC = m_drawData[0].m_textCoords;
+                auto tC = d.m_textCoords;
 
                 math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
                 math::Vec2 size = { float(t->GetWidth()), float(t->GetHeight()) };

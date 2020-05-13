@@ -110,7 +110,7 @@ meduza::renderer::ContextDx12& meduza::renderer::RendererDx12::GetContext() cons
 {
 	if (m_context == nullptr)
 	{
-		ME_GFX_ASSERT_M(1, "No Context Available!");
+		ME_GFX_ASSERT_M(0, "No Context Available!");
 		return *m_context;
 	}
 		
@@ -121,7 +121,7 @@ meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() cons
 {
 	if (m_cmdList == nullptr)
 	{
-		ME_GFX_ASSERT_M(1, "No Command List Available!");
+		ME_GFX_ASSERT_M(0, "No Command List Available!");
 		return*m_cmdList;
 	}
 

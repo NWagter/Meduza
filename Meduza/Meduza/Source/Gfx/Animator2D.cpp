@@ -26,7 +26,10 @@ void meduza::gfx::Animator2D::Play()
 	if (m_isPlaying && m_timer.IsFinished())
 	{
 		auto anim = dynamic_cast<Animation2D*>(&GetAnimation(m_currentAnimation));
-		anim->UpdateFrame(*m_sprite);
+		if (m_sprite != nullptr) 
+		{
+			anim->UpdateFrame(*m_sprite);
+		}
 		m_timer.Start(anim->GetCycleTime());
 	}
 }
@@ -47,10 +50,15 @@ void meduza::gfx::Animator2D::SetAnimation(std::string a_anim)
 	}
 
 	anim->OnStart();
+	m_currentAnimation = a_anim;
+
 	m_timer.Start(anim->GetCycleTime());
 	m_isPlaying = true;
 
-	anim->UpdateFrame(*m_sprite);
+	if (m_sprite != nullptr)
+	{
+		anim->UpdateFrame(*m_sprite);
+	}
 }
 
 void meduza::gfx::Animator2D::CreateAnimation2D(std::string a_name, float a_speed, std::string a_texture)
@@ -74,6 +82,6 @@ meduza::gfx::Animation2D& meduza::gfx::Animator2D::GetAnimation(std::string a_na
 		}
 	}
 
-	ME_GFX_ASSERT_M(1, "Animation doesn't exits %s", a_name.c_str())
+	ME_GFX_ASSERT_M(0, "Animation doesn't exits %s", a_name.c_str())
 		return dynamic_cast<Animation2D&>(*m_animations[0]);
 }

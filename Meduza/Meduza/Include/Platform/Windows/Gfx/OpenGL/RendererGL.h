@@ -35,7 +35,7 @@ namespace meduza
 
 			ContextGL* m_context;
 
-			glm::mat4 m_viewProjection;
+			glm::mat4 m_viewProjection = glm::mat4(1);
 		};
 	}
 

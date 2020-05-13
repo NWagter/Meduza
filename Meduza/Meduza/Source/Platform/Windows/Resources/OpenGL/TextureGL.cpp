@@ -35,7 +35,7 @@ meduza::Texture2DGL::Texture2DGL(std::string a_path, unsigned int a_id) : m_text
 	}
 	else
 	{
-		ME_GFX_ASSERT_M(1, "Channel : %i not supported!", channels);
+		ME_GFX_ASSERT_M(0, "Channel : %i not supported!", channels);
 	}
 
 	glCreateTextures(GL_TEXTURE_2D, 1, &m_texture);

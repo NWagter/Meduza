@@ -19,7 +19,8 @@
 
 #include "Camera/OrthographicCamera.h"
 
-#define MINIMAL_VERSION 4.5f
+#define MINIMAL_MAJOR_VERSION 4
+#define MINIMAL_MINOR_VERSION 5
 
 meduza::renderer::RendererGL::RendererGL(Context& a_context)
 {
@@ -29,14 +30,14 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     ME_GFX_ASSERT_M(status, "Glad not loaded");
 	std::string version = (char*)(glGetString(GL_VERSION));
 
-    std::string versionNumber = version.substr(0, version.find(" "));
+    int versionMajor;
+    int versionMinor;
+    glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+    glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
 
-    double value = std::atof(versionNumber.c_str());
-    float number = (float)(value * 100 + .5) / 100;
-
-    if (number < MINIMAL_VERSION)
+    if (versionMajor == MINIMAL_MAJOR_VERSION && versionMinor < MINIMAL_MINOR_VERSION)
     {
-        ME_GFX_LOG("GL version not compadible only 4.5+ available, Your version is %f \n", number);
+        ME_GFX_LOG("GL version not compadible only 4.5+ available, Your version is %i.%i \n", versionMajor, versionMinor);
         ME_GFX_ASSERT_M(0, "GL version not compadible only 4.5+ available, Your version is %f \n");
     }
 

@@ -38,12 +38,19 @@ void Sandbox::Run()
 {
 	meduza::Colour c = meduza::Colours::CELESTIAL_BLUE;
 	meduza::drawable::Sprite s;
+	meduza::drawable::Sprite s2;
 
 	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
 	s.UseTexture(m_meduza->LoadTexture("Data/Textures/sprites.png"));
-
-	s.SetSize(32, 32);
 	s.SetUV(32 * 17, 0, 32, 32);
+	s.SetSize(32, 32);
+
+
+	s2.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+	s2.UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
+	s2.SetPosition(5, 0);
+	s2.SetSize(32, 32);
+	s2.SetUV(16 * 1, 0, 16, 16);
 
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
@@ -92,7 +99,9 @@ void Sandbox::Run()
 
 		m_meduza->SetCamEye(camPos);
 		animator.Play();
+
 		s.Submit(m_meduza->GetGfx());
+		s2.Submit(m_meduza->GetGfx());
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{

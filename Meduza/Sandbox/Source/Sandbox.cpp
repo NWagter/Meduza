@@ -8,6 +8,7 @@
 #include <Drawable/Sprite.h>
 #include <Event/EventSystem.h>
 #include <Gfx/Animator2D.h>
+#include <Util/Timer.h>
 
 #ifdef WINDOWS
 	meduza::API const g_api = meduza::API::OpenGL;
@@ -38,7 +39,6 @@ void Sandbox::Run()
 {
 	meduza::Colour c = meduza::Colours::CELESTIAL_BLUE;
 	meduza::drawable::Sprite s;
-	meduza::drawable::Sprite s2;
 
 	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
 	s.UseTexture(m_meduza->LoadTexture("Data/Textures/sprites.png"));
@@ -46,11 +46,25 @@ void Sandbox::Run()
 	s.SetSize(32, 32);
 
 
-	s2.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-	s2.UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
-	s2.SetPosition(5, 0);
-	s2.SetSize(32, 32);
-	s2.SetUV(16 * 1, 0, 16, 16);
+	int w = 320 / 16;
+	int h = 384 / 16;
+
+	std::vector<meduza::drawable::Sprite*> tiles;
+
+
+	for (int x = w; x > 0; x--)
+	{
+		for (int y = h; y > 0; y--)
+		{
+			meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
+			sprite->UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+			sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
+			sprite->SetSize(32, 32);
+			sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
+			sprite->SetPosition(float(x), float(y));
+			tiles.push_back(sprite);
+		}
+	}
 
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
@@ -92,16 +106,26 @@ void Sandbox::Run()
 	animator.SetSprite(s);
 	animator.SetAnimation("DOWN");
 
+	meduza::utils::Timer<float> deltaTimer;
+	float totalTime = 0.f;
+	float fps = 0;
+	unsigned frameCount = 0;
+
 	while (m_meduza->IsWindowActive())
 	{
+		const float deltaSeconds = deltaTimer.GetElapsedTime();
 		m_meduza->Clear(c);
 		m_meduza->Peek();
 
 		m_meduza->SetCamEye(camPos);
 		animator.Play();
 
+		for (auto t : tiles)
+		{
+			t->Submit(m_meduza->GetGfx());
+		}
+
 		s.Submit(m_meduza->GetGfx());
-		s2.Submit(m_meduza->GetGfx());
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
@@ -125,6 +149,17 @@ void Sandbox::Run()
 		}
 
 		m_meduza->SwapBuffers();
+
+		//Calculate the fps
+		totalTime += deltaSeconds;
+		frameCount++;
+		if (totalTime >= 1.f)
+		{
+			fps = float(frameCount) / totalTime;
+			frameCount = 0;
+			totalTime = 0.f;
+			printf("[FPS COUNTER] : fps %f \n", fps);
+		}
 
 	}
 }

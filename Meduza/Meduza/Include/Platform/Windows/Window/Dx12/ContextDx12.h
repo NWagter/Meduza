@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Platform/General/Utils/MeduzaHelper.h"
-
 #include "Platform/General/Window/Context.h"
 
 

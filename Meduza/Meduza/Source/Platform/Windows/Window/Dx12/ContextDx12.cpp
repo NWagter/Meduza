@@ -6,7 +6,6 @@
 #pragma comment( lib, "dxguid.lib")
 
 #include "Math/MeduzaMath.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
 
 #include "Platform/Windows/Window/Dx12/ContextDx12.h"
 

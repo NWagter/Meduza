@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 
@@ -126,4 +126,9 @@ meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() cons
 	}
 
 	return *m_cmdList;
+}
+
+meduza::renderer::DrawStatistics meduza::renderer::RendererDx12::GetDrawStatistics() const
+{
+	return m_stats;
 }

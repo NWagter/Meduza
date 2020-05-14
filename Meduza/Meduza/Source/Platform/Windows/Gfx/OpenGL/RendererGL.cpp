@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Drawable/Drawable.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include <glad/glad.h>
 
@@ -81,9 +81,7 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 {
     m_viewProjection = a_camera.GetViewProjection();
-
 	PopulateBuffers();
-
     m_drawData.clear();
 }
 
@@ -91,6 +89,8 @@ void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
 {
     auto d = a_drawable->GetDrawData();
     m_drawData.push_back(*d);
+
+    m_stats.m_drawables++;
 }
 
 void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_drawables)
@@ -98,15 +98,24 @@ void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_dra
     for (auto d : a_drawables)
     {
         m_drawData.push_back(*d->GetDrawData());
+        m_stats.m_drawables++;
     }
+}
+
+meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics() const
+{
+    return m_stats;
 }
 
 void meduza::renderer::RendererGL::PreRender()
 {
     if (m_quad != nullptr)
     {
+        m_stats.m_vertices = int(m_quad->GetIndicesSize() * m_drawData.size());
         for (meduza::DrawData d : m_drawData)
         {
+            m_stats.m_drawCalls++;
+
             auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(d.m_shaderId));
             s->Bind();
             s->UploadUniformMat4("u_viewProjection", m_viewProjection);
@@ -130,7 +139,7 @@ void meduza::renderer::RendererGL::PreRender()
             glBindVertexArray(m_quad->GetVAO());
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, m_quad->GetIndicesSize(), GL_UNSIGNED_INT, 0);
             ShaderLibrary::GetShader(d.m_shaderId)->UnBind();
         }
     }
@@ -138,5 +147,6 @@ void meduza::renderer::RendererGL::PreRender()
 
 void meduza::renderer::RendererGL::PopulateBuffers()
 {
+    m_stats.Reset();
     PreRender();
 }

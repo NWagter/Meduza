@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include "Platform/General/Gfx/TextureLibrary.h"
 

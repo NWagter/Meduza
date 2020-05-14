@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include "Meduza.h"
 #include "Event/EventSystem.h"
@@ -70,6 +70,25 @@ void meduza::Meduza::EnableImGui()
 	MeduzaHelper::ms_imGui = true;
 	m_window->EnableImGui();
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+}
+
+void meduza::Meduza::DebugDrawStats(bool a_log)
+{
+	renderer::DrawStatistics stats = m_renderer->GetDrawStatistics();
+	if (!MeduzaHelper::ms_imGui && a_log)
+	{
+		ME_LOG("[Draw Stats] Drawcalls : %i \n", stats.m_drawCalls);
+		ME_LOG("[Draw Stats] Drawables : %i \n", stats.m_drawables);
+		ME_LOG("[Draw Stats] Vertices : %i \n", stats.m_vertices);
+
+		return;
+	}
+
+	ImGui::Begin("Stats");
+	ImGui::Text("DrawCalls : %i", stats.m_drawCalls);
+	ImGui::Text("Drawables : %i", stats.m_drawables);
+	ImGui::Text("Vertices : %i", stats.m_vertices);
+	ImGui::End();
 }
 
 std::string meduza::Meduza::LoadShader(std::string a_path) const

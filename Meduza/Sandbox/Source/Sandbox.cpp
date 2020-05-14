@@ -21,7 +21,7 @@ Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
 
-	//m_meduza->EnableImGui();
+	m_meduza->EnableImGui();
 }
 
 Sandbox::~Sandbox()
@@ -156,6 +156,7 @@ void Sandbox::Run()
 			animator.SetAnimation("LEFT");
 		}
 
+		m_meduza->DebugDrawStats();
 		m_meduza->SwapBuffers();
 
 		//Calculate the fps

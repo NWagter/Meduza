@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include "Drawable/Drawable.h"
 #include "Platform/General/Gfx/Renderer.h"

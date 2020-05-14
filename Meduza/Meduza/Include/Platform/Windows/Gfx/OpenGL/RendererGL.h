@@ -24,6 +24,7 @@ namespace meduza
 
 			void Draw(drawable::Drawable*) override;
 			void Submit(std::vector<drawable::Drawable*>) override;
+			DrawStatistics GetDrawStatistics() const override;
 		private:
 			void PreRender();
 			void PopulateBuffers();
@@ -36,6 +37,7 @@ namespace meduza
 			ContextGL* m_context;
 
 			glm::mat4 m_viewProjection = glm::mat4(1);
+			DrawStatistics m_stats;
 		};
 	}
 

@@ -35,6 +35,9 @@ namespace meduza
 
 		void EnableImGui();
 
+// ============ Profile
+		void DebugDrawStats(bool = false);
+
 // ============ Load Resource
 
 		std::string LoadShader(std::string) const;

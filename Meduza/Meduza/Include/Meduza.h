@@ -36,7 +36,7 @@ namespace meduza
 		void EnableImGui();
 
 // ============ Profile
-		void DebugDrawStats(bool = false);
+		void DebugDrawStats(const float, bool = false);
 
 // ============ Load Resource
 

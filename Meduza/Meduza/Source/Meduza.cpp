@@ -72,11 +72,12 @@ void meduza::Meduza::EnableImGui()
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
-void meduza::Meduza::DebugDrawStats(bool a_log)
+void meduza::Meduza::DebugDrawStats(float a_fps, bool a_log)
 {
 	renderer::DrawStatistics stats = m_renderer->GetDrawStatistics();
 	if (!MeduzaHelper::ms_imGui && a_log)
 	{
+		ME_LOG("[Draw Stats] FPS : %f \n", a_fps);
 		ME_LOG("[Draw Stats] Drawcalls : %i \n", stats.m_drawCalls);
 		ME_LOG("[Draw Stats] Drawables : %i \n", stats.m_drawables);
 		ME_LOG("[Draw Stats] Vertices : %i \n", stats.m_vertices);
@@ -85,6 +86,7 @@ void meduza::Meduza::DebugDrawStats(bool a_log)
 	}
 
 	ImGui::Begin("Stats");
+	ImGui::Text("FPS : %f", a_fps);
 	ImGui::Text("DrawCalls : %i", stats.m_drawCalls);
 	ImGui::Text("Drawables : %i", stats.m_drawables);
 	ImGui::Text("Vertices : %i", stats.m_vertices);

@@ -43,16 +43,14 @@ void Sandbox::Run()
 	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
 	s.UseTexture(m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
 	s.SetUV(48 * 0, 48 * 3, 48, 48);
-	s.SetSize(64, 64);
-
+	s.SetSize(96, 96);
 
 	int w = 320 / 16;
 	int h = 384 / 16;
 
 	std::vector<meduza::drawable::Sprite*> tiles;
 
-
-	for (int x = w; x > 0; x--)
+	for (int x = --w; x >= 0; x--)
 	{
 		for (int y = h; y > 0; y--)
 		{
@@ -61,11 +59,10 @@ void Sandbox::Run()
 			sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
 			sprite->SetSize(32, 32);
 			sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
-			sprite->SetPosition(float(x), float(y));
+			sprite->SetPosition(float(x * 32), float(y * 32));
 			tiles.push_back(sprite);
 		}
 	}
-
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
 
@@ -110,6 +107,9 @@ void Sandbox::Run()
 	animator.GetAnimation("LEFT").AddFrame(rect);
 
 	meduza::math::Vec3 camPos(0, 0, 0);
+	meduza::math::Vec3 spritePos(0, 0, 0);
+
+	float camMoveSpeed = 50;
 
 	animator.SetSprite(s);
 	animator.SetAnimation("DOWN");
@@ -118,6 +118,7 @@ void Sandbox::Run()
 	float totalTime = 0.f;
 	float fps = 0;
 	unsigned frameCount = 0;
+
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -135,6 +136,8 @@ void Sandbox::Run()
 
 		s.Submit(m_meduza->GetGfx());
 
+		spritePos = s.GetPos();
+
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
 			m_meduza->SetView(m_meduza->GetWindowSize());
@@ -142,21 +145,27 @@ void Sandbox::Run()
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
 		{
 			animator.SetAnimation("UP");
+			camPos.m_y = spritePos.m_y += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
 		{
 			animator.SetAnimation("DOWN");
+			camPos.m_y = spritePos.m_y -= (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
 		{
 			animator.SetAnimation("RIGHT");
+			camPos.m_x = spritePos.m_x += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
 		{
 			animator.SetAnimation("LEFT");
+			camPos.m_x = spritePos.m_x -= (camMoveSpeed * deltaSeconds);
 		}
 
-		m_meduza->DebugDrawStats();
+		s.SetPosition(spritePos.m_x, spritePos.m_y);
+
+		m_meduza->DebugDrawStats(fps);
 		m_meduza->SwapBuffers();
 
 		//Calculate the fps
@@ -169,6 +178,10 @@ void Sandbox::Run()
 			totalTime = 0.f;
 			printf("[FPS COUNTER] : fps %f \n", fps);
 		}
+	}
 
+	for (auto t : tiles)
+	{
+		delete t;
 	}
 }

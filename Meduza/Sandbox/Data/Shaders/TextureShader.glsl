@@ -22,10 +22,9 @@ void main()
         vec2(   u_textureSpace.x + (u_textureSpace.z * uv.x),
                 u_textureSpace.y + (u_textureSpace.w * uv.y));
 
-    vec3 pos = a_pos + u_position;
-    pos = pos * u_size;
+    vec3 pos = a_pos * u_size;
 
-    gl_Position = u_viewProjection * vec4(pos.x, pos.y, pos.z, 1.0);
+    gl_Position = u_viewProjection * vec4(pos.x + u_position.x, pos.y + u_position.y, pos.z + u_position.z, 1.0);
 }
 
 

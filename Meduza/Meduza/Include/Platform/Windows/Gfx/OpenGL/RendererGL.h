@@ -4,7 +4,7 @@
 
 namespace meduza
 {
-	class Texture2D;
+	class Texture;
 
 	namespace renderer
 	{
@@ -12,6 +12,17 @@ namespace meduza
 		class Context;
 		class ContextGL;
 
+		struct Instance
+		{
+			Instance()
+			{
+				m_data.resize(MAX_INSTANCES);
+			}
+			std::vector<InstanceData2D> m_data;
+			unsigned int m_count = 0;
+			unsigned int m_vbo;
+			unsigned int m_shaderId = 0;
+		};
 
 		class RendererGL : public Renderer
 		{
@@ -29,7 +40,11 @@ namespace meduza
 			void PreRender();
 			void PopulateBuffers();
 			
-			std::vector<DrawData> m_drawData;
+
+			unsigned int m_textureId = 0;
+			meduza::Texture* m_cachedTexture = nullptr;
+			unsigned int m_instanceID = 0;
+			std::vector<Instance> m_instances;
 
 			MeshGL* m_quad = nullptr;
 			unsigned int m_shaderprogram = 0;

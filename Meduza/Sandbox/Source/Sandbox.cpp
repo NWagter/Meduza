@@ -49,19 +49,27 @@ void Sandbox::Run()
 	int h = 384 / 16;
 
 	std::vector<meduza::drawable::Sprite*> tiles;
-
-	for (int x = --w; x >= 0; x--)
+	int counter = 50;
+	int i = 0;
+	while(counter > 0)
 	{
-		for (int y = h; y > 0; y--)
+		float offset = float(i * w) * 32;
+		i++;
+		
+		for (int x = (w - 1); x >= 0; x--)
 		{
-			meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
-			sprite->UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-			sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
-			sprite->SetSize(32, 32);
-			sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
-			sprite->SetPosition(float(x * 32), float(y * 32));
-			tiles.push_back(sprite);
+			for (int y = h; y > 0; y--)
+			{
+				meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
+				sprite->UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+				sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
+				sprite->SetSize(32, 32);
+				sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
+				sprite->SetPosition(float(x * 32) + offset, float(y * 32));
+				tiles.push_back(sprite);
+			}
 		}
+		counter--;
 	}
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
@@ -134,7 +142,7 @@ void Sandbox::Run()
 			t->Submit(m_meduza->GetGfx());
 		}
 
-		s.Submit(m_meduza->GetGfx());
+		//s.Submit(m_meduza->GetGfx());
 
 		spritePos = s.GetPos();
 

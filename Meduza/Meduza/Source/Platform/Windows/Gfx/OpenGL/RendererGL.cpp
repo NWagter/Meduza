@@ -58,8 +58,6 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
 
     VertexAttributes att;
     att.AddAttribute(Attributes::vec3Attribute);
-    att.AddAttribute(Attributes::vec2Attribute);
-    att.AddAttribute(Attributes::vec2Attribute);
 
     m_quad = new MeshGL(0, vertices, indices, att, GL_LINE);
 }
@@ -111,7 +109,7 @@ void meduza::renderer::RendererGL::PreRender()
 {
     if (m_quad != nullptr)
     {
-        m_stats.m_vertices = int(m_quad->GetIndicesSize() * m_drawData.size());
+        m_stats.m_vertices = int(m_quad->GetVerticesSize() * m_drawData.size());
         for (meduza::DrawData d : m_drawData)
         {
             m_stats.m_drawCalls++;
@@ -139,7 +137,7 @@ void meduza::renderer::RendererGL::PreRender()
             glBindVertexArray(m_quad->GetVAO());
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDrawElements(GL_TRIANGLES, m_quad->GetIndicesSize(), GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, m_quad->GetVerticesSize());
             ShaderLibrary::GetShader(d.m_shaderId)->UnBind();
         }
     }

@@ -13,7 +13,8 @@ namespace meduza
 			virtual ~Mesh() = default;
 
 			virtual void GenerateBuffers() = 0;
-
+			
+			inline unsigned int GetVerticesSize() const { return unsigned int(m_vertices.size()); }
 			inline unsigned int GetIndicesSize() const { return unsigned int(m_indices.size()); }
 		protected:
 			unsigned int m_meshId;

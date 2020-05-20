@@ -188,11 +188,12 @@ void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_dra
         auto drawData = d->GetDrawData();
         m_stats.m_drawables++;
 
-        if ((m_instances[m_instanceID].m_count + 1) >= MAX_INSTANCES)
+        if (m_instances[m_instanceID].m_count >= MAX_INSTANCES)
         {
             Instance instance;
             instance.m_vbo = helper::HelperGL::CreateEmptyVbo(14, &instance.m_data[0]);
             m_instances.push_back(instance);
+            m_instanceID++;
         }
 
         if (m_instances[m_instanceID].m_shaderId <= 0)
@@ -206,11 +207,18 @@ void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_dra
         data.m_size = drawData->m_size;
 
         auto tC = drawData->m_textCoords;
-        auto t = TextureLibrary::GetTexture(drawData->m_textureId);
-        math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
-        math::Vec2 size = { float(t->GetWidth()), float(t->GetHeight()) };
 
-        data.m_textureCoords = glm::vec4(*utils::TextureUtils::GetTextureCoords(rect, size).m_xyzw);
+        if (m_textureId != drawData->m_textureId)
+        {
+            m_textureId = drawData->m_textureId;
+            m_cachedTexture = TextureLibrary::GetTexture(drawData->m_textureId);
+        }
+
+        math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
+        math::Vec2 size = { float(m_cachedTexture->GetWidth()), float(m_cachedTexture->GetHeight()) };
+        math::Vec4 textCoord = utils::TextureUtils::GetTextureCoords(rect, size);
+
+        data.m_textureCoords = glm::vec4(textCoord.m_x, textCoord.m_y, textCoord.m_z, textCoord.m_w);
         data.m_colour = drawData->m_colour;
 
 
@@ -238,7 +246,7 @@ void meduza::renderer::RendererGL::PreRender()
 
             unsigned int instances = i.m_count;
             m_stats.m_drawCalls++;
-            m_stats.m_vertices = int(m_quad->GetVerticesSize() * instances);
+            m_stats.m_vertices += int(m_quad->GetVerticesSize() * instances);
 
             auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(i.m_shaderId));
             s->Bind();

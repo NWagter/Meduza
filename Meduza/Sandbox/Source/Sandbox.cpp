@@ -48,7 +48,7 @@ void Sandbox::Run()
 	int w = 320 / 16;
 	int h = 384 / 16;
 
-	std::vector<meduza::drawable::Sprite*> tiles;
+	std::vector<meduza::drawable::Drawable*> tiles;
 	int counter = 50;
 	int i = 0;
 	while(counter > 0)
@@ -137,10 +137,7 @@ void Sandbox::Run()
 		m_meduza->SetCamEye(camPos);
 		animator.Play();
 
-		for (auto t : tiles)
-		{
-			t->Submit(m_meduza->GetGfx());
-		}
+		m_meduza->Submit(tiles);
 
 		//s.Submit(m_meduza->GetGfx());
 

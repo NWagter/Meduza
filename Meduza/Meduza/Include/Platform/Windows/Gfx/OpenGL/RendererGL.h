@@ -20,7 +20,7 @@ namespace meduza
 			}
 			std::vector<InstanceData2D> m_data;
 			unsigned int m_count = 0;
-			unsigned int m_vbo;
+			unsigned int m_vbo = 0;
 			unsigned int m_shaderId = 0;
 		};
 

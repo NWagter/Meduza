@@ -62,14 +62,11 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
 
     m_quad = new MeshGL(0, vertices, indices, att, GL_LINE);
 
-    Instance instance;
-    instance.m_vbo = helper::HelperGL::CreateEmptyVbo(14, &instance.m_data[0]);
-    m_instances.push_back(instance);
-
+    m_vbo = helper::HelperGL::CreateEmptyVbo(14, &m_instances[0]);
 
 // Instanced
     glBindVertexArray(m_quad->GetVAO());
-    glBindBuffer(GL_ARRAY_BUFFER, m_instances[0].m_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 0));
     glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 4));
     glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 8));
@@ -89,7 +86,7 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
 
     glBindVertexArray(0);
 
-    glBindBuffer(GL_UNIFORM_BUFFER, m_instances[0].m_vbo);
+    glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
     glBufferData(GL_UNIFORM_BUFFER, sizeof(InstanceData2D) * MAX_INSTANCES, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
@@ -112,93 +109,104 @@ void meduza::renderer::RendererGL::Clear(Colour a_colour)
 void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 {
     m_viewProjection = a_camera.GetViewProjection();
+    m_camPos = a_camera.GetEyePos();
 	PopulateBuffers();
 
 // Reset the Instance buffers
 
-    for (auto i : m_instances)
-    {
-        i.m_data.clear();
-    }
+    m_drawData.clear();
     m_instances.clear();
-    m_instanceID = 0;
+    m_instances.resize(MAX_INSTANCES);
 
-    Instance instance;
-    instance.m_vbo = helper::HelperGL::CreateEmptyVbo(14, &instance.m_data[0]);
-    m_instances.push_back(instance);
+    m_count = 0;
 }
 
 void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
 {
-    if (m_instances.empty())
-    {
-        return;
-    }
-
     auto drawData = a_drawable->GetDrawData();
-
-    if (m_instances[m_instanceID].m_count >=  MAX_INSTANCES)
-    {
-        Instance instance;
-        instance.m_vbo = helper::HelperGL::CreateEmptyVbo(14, &instance.m_data[0]);
-        m_instances.push_back(instance);
-        m_instanceID++;
-    }
-
-    if (m_instances[m_instanceID].m_shaderId <= 0)
-    {
-        m_instances[m_instanceID].m_shaderId = drawData->m_shaderId;
-    }
-
-    InstanceData2D data;
-
-    data.m_position = drawData->m_position;
-    data.m_size = drawData->m_size;
-
-    auto tC = drawData->m_textCoords;
-
-    if (m_textureId != drawData->m_textureId)
-    {
-        m_textureId = drawData->m_textureId;
-        m_cachedTexture = TextureLibrary::GetTexture(drawData->m_textureId);
-    }
-
-    math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
-    math::Vec2 size = { float(m_cachedTexture->GetWidth()), float(m_cachedTexture->GetHeight()) };
-    math::Vec4 textCoord = utils::TextureUtils::GetTextureCoords(rect, size);
-
-    data.m_textureCoords = glm::vec4(textCoord.m_x, textCoord.m_y, textCoord.m_z, textCoord.m_w);
-    data.m_colour = drawData->m_colour;
-
-    m_instances[m_instanceID].m_data[m_instances[m_instanceID].m_count] = data;
-    m_instances[m_instanceID].m_count++;
-
     m_stats.m_drawables++;
+
+    if (Cull(math::Vec2(drawData->m_position.x, drawData->m_position.y), math::Vec2(drawData->m_size.x, drawData->m_size.y)))
+    {
+        m_drawData.push_back(drawData);
+    }
+
 }
 
 void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_drawables)
 {
-    if (m_instances.empty())
-    {
-        return;
-    }
-
     for (auto d : a_drawables)
     {
         auto drawData = d->GetDrawData();
         m_stats.m_drawables++;
 
-        if (m_instances[m_instanceID].m_count >= MAX_INSTANCES)
+        if (Cull(math::Vec2(drawData->m_position.x, drawData->m_position.y), math::Vec2(drawData->m_size.x, drawData->m_size.y)))
         {
-            Instance instance;
-            instance.m_vbo = helper::HelperGL::CreateEmptyVbo(14, &instance.m_data[0]);
-            m_instances.push_back(instance);
-            m_instanceID++;
+            m_drawData.push_back(drawData);
+        }
+    }
+}
+
+meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics() const
+{
+    return m_stats;
+}
+
+void meduza::renderer::RendererGL::PreRender()
+{
+    if (m_quad != nullptr)
+    {
+        
+
+        unsigned int instances = m_count;
+        m_stats.m_drawCalls++;
+        m_stats.m_vertices += int(m_quad->GetVerticesSize() * instances);
+
+        auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(m_shaderID));
+        s->Bind();
+        s->UploadUniformMat4("u_viewProjection", m_viewProjection);
+
+        int slot = 0;
+        m_cachedTexture->Bind(slot);
+        dynamic_cast<ShaderGL*>(s)->UploadUniformInt("u_texture", slot);
+
+        // upload instance buffer data:
+        glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstanceData2D) * instances, m_instances.data());
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+        glBindVertexArray(m_quad->GetVAO());
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // render objects in scene
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, m_quad->GetVerticesSize(), instances);
+
+        s->UnBind();
+        glBindVertexArray(0);
+    }
+}
+
+void meduza::renderer::RendererGL::PopulateBuffers()
+{
+    m_stats.Reset();
+    CreateInstances();
+    PreRender();
+}
+
+void meduza::renderer::RendererGL::CreateInstances()
+{
+    for (auto drawData : m_drawData)
+    {
+
+        if (m_count >= MAX_INSTANCES)
+        {
+            break;
         }
 
-        if (m_instances[m_instanceID].m_shaderId <= 0)
+        if (m_shaderID <= 0)
         {
-            m_instances[m_instanceID].m_shaderId = drawData->m_shaderId;
+            m_shaderID = drawData->m_shaderId;
         }
 
         InstanceData2D data;
@@ -222,60 +230,26 @@ void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_dra
         data.m_colour = drawData->m_colour;
 
 
-        m_instances[m_instanceID].m_data[m_instances[m_instanceID].m_count] = data;
-        m_instances[m_instanceID].m_count++;
+        m_instances[m_count] = data;
+        m_count++;
     }
+    m_stats.m_instances = m_count;
 }
 
-meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics() const
+bool meduza::renderer::RendererGL::Cull(math::Vec2 a_pos, math::Vec2 a_size)
 {
-    return m_stats;
-}
+    math::Vec2 size = m_context->GetSize() / 2;
 
-void meduza::renderer::RendererGL::PreRender()
-{
-
-    if (m_quad != nullptr)
+    if ((a_pos.m_x + a_size.m_x) < m_camPos.m_x - size.m_x || (a_pos.m_x - a_size.m_x) > m_camPos.m_x + size.m_x)
     {
-        for (auto i : m_instances)
-        {
-            if (i.m_count <= 0)
-            {
-                continue;
-            }
-
-            unsigned int instances = i.m_count;
-            m_stats.m_drawCalls++;
-            m_stats.m_vertices += int(m_quad->GetVerticesSize() * instances);
-
-            auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(i.m_shaderId));
-            s->Bind();
-            s->UploadUniformMat4("u_viewProjection", m_viewProjection);
-
-            int slot = 0;
-            m_cachedTexture->Bind(slot);
-            dynamic_cast<ShaderGL*>(s)->UploadUniformInt("u_texture", slot);
-
-            // upload instance buffer data:
-            glBindBuffer(GL_UNIFORM_BUFFER, i.m_vbo);
-            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstanceData2D) * instances, i.m_data.data());
-            glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-            glBindVertexArray(m_quad->GetVAO());
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-            // render objects in scene
-            glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, m_quad->GetVerticesSize(), instances);
-
-            s->UnBind();
-            glBindVertexArray(0);
-        }
+        return false;
     }
-}
 
-void meduza::renderer::RendererGL::PopulateBuffers()
-{
-    m_stats.Reset();
-    PreRender();
+    if ((a_pos.m_y + a_size.m_y) < m_camPos.m_y - size.m_y || (a_pos.m_y - a_size.m_y) > m_camPos.m_y + size.m_y)
+    {
+        return false;
+    }
+
+
+    return true;
 }

@@ -58,10 +58,11 @@ namespace meduza
 		glm::vec3 m_vertexPos;
 	};
 
-#define MAX_INSTANCES 4048
+#define MAX_INSTANCES 1000000
 
 	struct InstanceData2D
 	{
+		~InstanceData2D() = default;
 		glm::vec4 m_textureCoords = glm::vec4(0);
 		glm::vec4 m_colour = glm::vec4(0);
 		glm::vec3 m_position = glm::vec3(0);

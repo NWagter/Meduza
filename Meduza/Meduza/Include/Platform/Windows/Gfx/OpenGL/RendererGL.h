@@ -12,18 +12,6 @@ namespace meduza
 		class Context;
 		class ContextGL;
 
-		struct Instance
-		{
-			Instance()
-			{
-				m_data.resize(MAX_INSTANCES);
-			}
-			std::vector<InstanceData2D> m_data;
-			unsigned int m_count = 0;
-			unsigned int m_vbo = 0;
-			unsigned int m_shaderId = 0;
-		};
-
 		class RendererGL : public Renderer
 		{
 		public:
@@ -39,18 +27,27 @@ namespace meduza
 		private:
 			void PreRender();
 			void PopulateBuffers();
+			void CreateInstances();
+			bool Cull(math::Vec2, math::Vec2);
 			
 
 			unsigned int m_textureId = 0;
 			meduza::Texture* m_cachedTexture = nullptr;
-			unsigned int m_instanceID = 0;
-			std::vector<Instance> m_instances;
+
+			std::vector<DrawData*> m_drawData;
+
+			std::vector<InstanceData2D> m_instances = std::vector<InstanceData2D>(MAX_INSTANCES);
+
+			unsigned int m_count = 0;
+			unsigned int m_vbo = 0;
+			unsigned int m_shaderID = 0;
 
 			MeshGL* m_quad = nullptr;
 			unsigned int m_shaderprogram = 0;
 
 			ContextGL* m_context;
 
+			math::Vec3 m_camPos = math::Vec3();
 			glm::mat4 m_viewProjection = glm::mat4(1);
 			DrawStatistics m_stats;
 		};

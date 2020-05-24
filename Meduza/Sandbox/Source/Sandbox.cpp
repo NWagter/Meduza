@@ -6,6 +6,7 @@
 
 #include <Meduza.h>
 #include <Drawable/Sprite.h>
+#include <Gfx/Animator2D.h>
 #include <Event/EventSystem.h>
 #include <Util/Timer.h>
 
@@ -69,7 +70,60 @@ void Sandbox::Run()
 			}
 		}
 	}
-	meduza::math::Vec3 camPos(0, 0, 0);
+
+	meduza::drawable::Sprite player;
+	player.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
+	player.UseTexture(m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	player.SetSize(64, 64);
+	player.SetUV(0, 0, 48, 48);
+	player.SetPosition(0, 0);
+
+	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
+
+	animator.CreateAnimation2D("UP", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	meduza::math::Vec4 rect{ 48 * 0, 48 * 4, 48, 48 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	rect = { 48 * 1, 48 * 4, 48, 48 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	rect = { 48 * 2, 48 * 4, 48, 48 };
+	animator.GetAnimation("UP").AddFrame(rect);
+	rect = { 48 * 3, 48 * 4, 48, 48 };
+	animator.GetAnimation("UP").AddFrame(rect);
+
+	animator.CreateAnimation2D("RIGHT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	rect = { 48 * 0, 48 * 3, 48, 48 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+	rect = { 48 * 1, 48 * 3, 48, 48 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+	rect = { 48 * 2, 48 * 3, 48, 48 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+	rect = { 48 * 3, 48 * 3, 48, 48 };
+	animator.GetAnimation("RIGHT").AddFrame(rect);
+
+	animator.CreateAnimation2D("DOWN", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	rect = { 48 * 0, 48 * 2, 48, 48 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+	rect = { 48 * 1, 48 * 2, 48, 48 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+	rect = { 48 * 2, 48 * 2, 48, 48 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+	rect = { 48 * 3, 48 * 2, 48, 48 };
+	animator.GetAnimation("DOWN").AddFrame(rect);
+
+	animator.CreateAnimation2D("LEFT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	rect = { 48 * 1, 48 * 3, -48, 48 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+	rect = { 48 * 2, 48 * 3, -48, 48 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+	rect = { 48 * 3, 48 * 3, -48, 48 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+	rect = { 48 * 4, 48 * 3, -48,48 };
+	animator.GetAnimation("LEFT").AddFrame(rect);
+
+	meduza::math::Vec3 playerPos(0, 0, 0);
+
+	animator.SetSprite(player);
+	animator.SetAnimation("DOWN");
 
 	float camMoveSpeed = 50;
 
@@ -85,8 +139,15 @@ void Sandbox::Run()
 		m_meduza->Clear(c);
 		m_meduza->Peek();
 
-		m_meduza->SetCamEye(camPos);
+
+		animator.Play();
+
+		m_meduza->SetCamEye(playerPos);
 		m_meduza->Submit(tiles);
+
+		player.SetPosition(playerPos.m_x, playerPos.m_y);
+		player.Submit(m_meduza->GetGfx());
+
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
@@ -94,19 +155,23 @@ void Sandbox::Run()
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
 		{
-			camPos.m_y += (camMoveSpeed * deltaSeconds);
+			animator.SetAnimation("UP");
+			playerPos.m_y += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
 		{
-			camPos.m_y -= (camMoveSpeed * deltaSeconds);
+			animator.SetAnimation("DOWN");
+			playerPos.m_y -= (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
 		{
-			camPos.m_x += (camMoveSpeed * deltaSeconds);
+			animator.SetAnimation("RIGHT");
+			playerPos.m_x += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
 		{
-			camPos.m_x -= (camMoveSpeed * deltaSeconds);
+			animator.SetAnimation("LEFT");
+			playerPos.m_x -= (camMoveSpeed * deltaSeconds);
 		}
 
 		m_meduza->DebugDrawStats(fps);

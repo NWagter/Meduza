@@ -59,6 +59,7 @@ namespace meduza
 	};
 
 #define MAX_INSTANCES 4800
+#define MAX_TEXTURES 16
 
 	struct InstanceData2D
 	{
@@ -67,6 +68,7 @@ namespace meduza
 		glm::vec4 m_colour = glm::vec4(0);
 		glm::vec3 m_position = glm::vec3(0);
 		glm::vec3 m_size = glm::vec3(0);
+		float m_textureId = 0;
 	};
 
 	namespace utils

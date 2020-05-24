@@ -36,6 +36,7 @@ namespace meduza
 
 			std::vector<DrawData*> m_drawData;
 
+			std::vector<meduza::Texture*> m_textures;
 			std::vector<InstanceData2D> m_instances = std::vector<InstanceData2D>(MAX_INSTANCES);
 
 			unsigned int m_count = 0;

@@ -69,20 +69,23 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 0));
     glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 4));
-    glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 8));
-    glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 11));
+    glVertexAttribPointer(3, 3, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 8));
+    glVertexAttribPointer(4, 3, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 11));
+    glVertexAttribPointer(5, 1, GL_FLOAT, false , sizeof(InstanceData2D), (void*)(sizeof(float) * 14));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     glEnableVertexAttribArray(3);
     glEnableVertexAttribArray(4);
+    glEnableVertexAttribArray(5);
 
     // sent these attributes only once per instance to the program:
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
     glVertexAttribDivisor(4, 1);
+    glVertexAttribDivisor(5, 1);
 
     glBindVertexArray(0);
 
@@ -116,6 +119,7 @@ void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 
     m_drawData.clear();
     m_instances.clear();
+    m_textures.clear();
     m_instances.resize(MAX_INSTANCES);
 
     m_count = 0;
@@ -155,9 +159,7 @@ meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics
 void meduza::renderer::RendererGL::PreRender()
 {
     if (m_quad != nullptr)
-    {
-        
-
+    {      
         unsigned int instances = m_count;
         m_stats.m_drawCalls++;
         m_stats.m_vertices += int(m_quad->GetVerticesSize() * instances);
@@ -167,8 +169,13 @@ void meduza::renderer::RendererGL::PreRender()
         s->UploadUniformMat4("u_viewProjection", m_viewProjection);
 
         int slot = 0;
-        m_cachedTexture->Bind(slot);
-        dynamic_cast<ShaderGL*>(s)->UploadUniformInt("u_texture", slot);
+        for (auto t : m_textures)
+        {
+            t->Bind(slot);
+            std::string location = "u_texture[" + std::to_string(slot) + "]";
+            s->UploadUniformInt(location, slot);
+            slot++;
+        }
 
         // upload instance buffer data:
         glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
@@ -219,7 +226,31 @@ void meduza::renderer::RendererGL::CreateInstances()
         if (m_textureId != drawData->m_textureId)
         {
             m_textureId = drawData->m_textureId;
-            m_cachedTexture = TextureLibrary::GetTexture(drawData->m_textureId);
+            m_cachedTexture = TextureLibrary::GetTexture(drawData->m_textureId);      
+        }
+
+        float textureID = 0;
+        bool exists = false;
+        for (auto t : m_textures)
+        {
+            if (textureID >= MAX_TEXTURES)
+            {
+                ME_GFX_LOG("Can only use 16 differt textures currently!");
+                textureID = 0;
+                exists = true;
+                break;
+            }
+
+            if (t == m_cachedTexture)
+            {
+                exists = true;
+                break;
+            }
+            textureID++;
+        }
+        if (!exists)
+        {
+            m_textures.push_back(m_cachedTexture);
         }
 
         math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
@@ -228,7 +259,7 @@ void meduza::renderer::RendererGL::CreateInstances()
 
         data.m_textureCoords = glm::vec4(textCoord.m_x, textCoord.m_y, textCoord.m_z, textCoord.m_w);
         data.m_colour = drawData->m_colour;
-
+        data.m_textureId = textureID;
 
         m_instances[m_count] = data;
         m_count++;

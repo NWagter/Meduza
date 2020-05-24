@@ -42,7 +42,7 @@ void Sandbox::Run()
 	int h = 384 / 16;
 
 	std::vector<meduza::drawable::Drawable*> tiles;
-	int counter = 1000000;
+	int counter = 24000;
 	int i = 0;
 	while(counter > 0)
 	{

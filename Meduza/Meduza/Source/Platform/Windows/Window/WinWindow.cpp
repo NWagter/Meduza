@@ -8,6 +8,8 @@
 
 #include "Event/EventSystem.h"
 
+#define IDI_ICON1                       101
+
 meduza::WinWindow::WinWindow(math::Vec2 a_size)
 {
 	m_windowActive = true;
@@ -196,13 +198,13 @@ meduza::WinWindow::WindowClass::WindowClass():
 	wc.cbWndExtra = 0;
 	wc.hInstance = GetInstance();
 	//Load image from resources
-	wc.hIcon = nullptr;
+	wc.hIcon = static_cast<HICON>(LoadImage(m_hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0));
 	wc.hCursor = nullptr;
 	wc.hbrBackground = nullptr;
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = GetName();
 	//Load image from resources
-	wc.hIconSm = nullptr;
+	wc.hIconSm = static_cast<HICON>(LoadImage(m_hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, 0));
 
 	RegisterClassEx(&wc);
 }

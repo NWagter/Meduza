@@ -58,7 +58,7 @@ namespace meduza
 		glm::vec3 m_vertexPos;
 	};
 
-#define MAX_INSTANCES 1000000
+#define MAX_INSTANCES 4800
 
 	struct InstanceData2D
 	{

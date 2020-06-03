@@ -12,7 +12,13 @@ meduza::drawable::Sprite::Sprite()
 {
 	m_drawType = Type::Sprite;
 	m_drawData = new DrawData();
-	m_drawData->m_shaderId = ShaderLibrary::GetShader("DefaultShader")->GetId();
+
+	Shader* default = ShaderLibrary::GetShader("DefaultShader");
+
+	if (default != nullptr)
+	{
+		m_drawData->m_shaderId = default->GetId();
+	}
 }
 
 meduza::drawable::Sprite::Sprite(float a_pos[2], float a_size[2], float a_z, Texture&)
@@ -76,22 +82,62 @@ void meduza::drawable::Sprite::SetColour(math::Vec4 a_colour)
 
 void meduza::drawable::Sprite::UseShader(const char* a_name)
 {
-	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
+	Shader* shader = ShaderLibrary::GetShader(a_name);
+	if (shader == nullptr)
+	{
+		return;
+	}
+	m_drawData->m_shaderId = shader->GetId();
 }
 
 void meduza::drawable::Sprite::UseShader(std::string a_name)
 {
-	m_drawData->m_shaderId = ShaderLibrary::GetShader(a_name)->GetId();
+	Shader* shader = ShaderLibrary::GetShader(a_name);
+	if (shader == nullptr)
+	{
+		return;
+	}
+	m_drawData->m_shaderId = shader->GetId();
+}
+
+void meduza::drawable::Sprite::UseShader(meduza::Shader& a_shader)
+{
+	if (&a_shader == nullptr)
+	{
+		return;
+	}
+
+	m_drawData->m_shaderId = a_shader.GetId();
 }
 
 void meduza::drawable::Sprite::UseTexture(const char* a_name)
 {
-	m_drawData->m_textureId = TextureLibrary::GetTexture(a_name)->GetId();
+	Texture* texture = TextureLibrary::GetTexture(a_name);
+	if (texture == nullptr)
+	{
+		return;
+	}
+	m_drawData->m_textureId = texture->GetId();
 }
 
 void meduza::drawable::Sprite::UseTexture(std::string a_name)
 {
-	m_drawData->m_textureId = TextureLibrary::GetTexture(a_name)->GetId();
+	Texture* texture = TextureLibrary::GetTexture(a_name);
+	if (texture == nullptr)
+	{
+		return;
+	}
+	m_drawData->m_textureId = texture->GetId();
+}
+
+void meduza::drawable::Sprite::UseTexture(meduza::Texture& a_texture)
+{
+	if (&a_texture == nullptr)
+	{
+		return;
+	}
+
+	m_drawData->m_textureId = a_texture.GetId();
 }
 
 void meduza::drawable::Sprite::SetUV(float a_x, float a_y, float a_xOffset, float a_yOffset)

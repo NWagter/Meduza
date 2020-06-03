@@ -43,8 +43,13 @@ void Sandbox::Run()
 	int h = 384 / 16;
 
 	std::vector<meduza::drawable::Drawable*> tiles;
-	int counter = 24000;
+	int counter = 50000;
 	int i = 0;
+
+	meduza::Shader& textureShader = m_meduza->GetShader("Data/Shaders/TextureShader.glsl");
+	meduza::Texture& tileTexture = m_meduza->GetTexture("Data/Textures/tiles_dungeon_v1.1.png");
+	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
+
 	while(counter > 0)
 	{
 		float offset = float(i * w) * 32;
@@ -61,8 +66,8 @@ void Sandbox::Run()
 				if (counter < 0)
 					break;
 				meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
-				sprite->UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-				sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
+				sprite->UseShader(textureShader);
+				sprite->UseTexture(tileTexture);
 				sprite->SetSize(32, 32);
 				sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
 				sprite->SetPosition(float(x * 32) + offset, float(y * 32));
@@ -72,15 +77,15 @@ void Sandbox::Run()
 	}
 
 	meduza::drawable::Sprite player;
-	player.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-	player.UseTexture(m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	player.UseShader(textureShader);
+	player.UseTexture(charTexture);
 	player.SetSize(64, 64);
 	player.SetUV(0, 0, 48, 48);
 	player.SetPosition(0, 0);
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
 
-	animator.CreateAnimation2D("UP", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("UP", 0.2f, charTexture);
 	meduza::math::Vec4 rect{ 48 * 0, 48 * 4, 48, 48 };
 	animator.GetAnimation("UP").AddFrame(rect);
 	rect = { 48 * 1, 48 * 4, 48, 48 };
@@ -90,7 +95,7 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 4, 48, 48 };
 	animator.GetAnimation("UP").AddFrame(rect);
 
-	animator.CreateAnimation2D("RIGHT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("RIGHT", 0.2f, charTexture);
 	rect = { 48 * 0, 48 * 3, 48, 48 };
 	animator.GetAnimation("RIGHT").AddFrame(rect);
 	rect = { 48 * 1, 48 * 3, 48, 48 };
@@ -100,7 +105,7 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 3, 48, 48 };
 	animator.GetAnimation("RIGHT").AddFrame(rect);
 
-	animator.CreateAnimation2D("DOWN", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("DOWN", 0.2f, charTexture);
 	rect = { 48 * 0, 48 * 2, 48, 48 };
 	animator.GetAnimation("DOWN").AddFrame(rect);
 	rect = { 48 * 1, 48 * 2, 48, 48 };
@@ -110,7 +115,9 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 2, 48, 48 };
 	animator.GetAnimation("DOWN").AddFrame(rect);
 
-	animator.CreateAnimation2D("LEFT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	//Option to use the name of the texture can be done by the LoadTexture(path) function in meduza, 
+	//as this returns the name of the texture if texture unknown
+	animator.CreateAnimation2D("LEFT", 0.2f, "chara_hero");
 	rect = { 48 * 1, 48 * 3, -48, 48 };
 	animator.GetAnimation("LEFT").AddFrame(rect);
 	rect = { 48 * 2, 48 * 3, -48, 48 };

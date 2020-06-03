@@ -28,9 +28,11 @@ namespace meduza
 
 			void UseShader(const char*) override;
 			void UseShader(std::string) override;
+			void UseShader(meduza::Shader&) override;
 
 			void UseTexture(const char*) override;
 			void UseTexture(std::string) override;
+			void UseTexture(meduza::Texture&) override;
 
 			void SetUV(float, float, float, float);
 			void SetUV(float[4]);

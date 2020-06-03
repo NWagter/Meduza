@@ -6,7 +6,15 @@
 #include "Platform/General/Gfx/TextureLibrary.h"
 #include "Drawable/Sprite.h"
 
-meduza::gfx::Animation2D::Animation2D(std::string a_name, float a_speed,std::string a_textureName): Animation(a_name,a_speed)
+meduza::gfx::Animation2D::Animation2D(std::string a_name, float a_speed, Texture& a_texture): Animation(a_name,a_speed)
+{
+	m_texture = &a_texture;
+
+	m_currentFrame = 0;
+	m_frameCount = 0;
+}
+
+meduza::gfx::Animation2D::Animation2D(std::string a_name, float a_speed, std::string a_textureName) : Animation(a_name, a_speed)
 {
 	m_textureName = a_textureName;
 	m_texture = meduza::TextureLibrary::GetTexture(a_textureName);

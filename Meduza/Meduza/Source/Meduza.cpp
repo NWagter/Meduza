@@ -101,12 +101,20 @@ std::string meduza::Meduza::LoadShader(std::string a_path) const
 	return utils::FileSystem::GetFileName(a_path);
 }
 
+meduza::Shader& meduza::Meduza::GetShader(std::string a_path) const
+{
+	return *m_shaderLibrary->LoadShader(a_path);
+}
+
 std::string meduza::Meduza::LoadTexture(std::string a_path) const
 {
 	m_textureLibrary->LoadTexture(a_path);
 	return utils::FileSystem::GetFileName(a_path);
 }
-
+meduza::Texture& meduza::Meduza::GetTexture(std::string a_path) const
+{	
+	return *m_textureLibrary->LoadTexture(a_path);
+}
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec2 a_size, math::Vec2 a_distance)
 {
 	delete m_camera;

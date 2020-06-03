@@ -61,7 +61,7 @@ void meduza::gfx::Animator2D::SetAnimation(std::string a_anim)
 	}
 }
 
-void meduza::gfx::Animator2D::CreateAnimation2D(std::string a_name, float a_speed, std::string a_texture)
+void meduza::gfx::Animator2D::CreateAnimation2D(std::string a_name, float a_speed, meduza::Texture& a_texture)
 {
 	if (Exists(a_name))
 	{
@@ -70,6 +70,17 @@ void meduza::gfx::Animator2D::CreateAnimation2D(std::string a_name, float a_spee
 	}
 
 	m_animations.push_back(new Animation2D(a_name, a_speed, a_texture));
+}
+
+void meduza::gfx::Animator2D::CreateAnimation2D(std::string a_name, float a_speed, std::string a_textureName)
+{
+	if (Exists(a_name))
+	{
+		ME_GFX_LOG("Animation : %s exists already!", a_name.c_str());
+		return;
+	}
+
+	m_animations.push_back(new Animation2D(a_name, a_speed, a_textureName));
 }
 
 meduza::gfx::Animation2D& meduza::gfx::Animator2D::GetAnimation(std::string a_name)

@@ -3,7 +3,7 @@
 #include "Platform/General/Gfx/ImGuiRenderer.h"
 
 #ifdef WINDOWS
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 #include "Platform/Windows/Gfx/Dx12/ImGuiRendererDx12.h"
 #include "Platform/Windows/Gfx/OpenGL/ImGuiRendererGL.h"
 #endif

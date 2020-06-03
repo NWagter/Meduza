@@ -1,5 +1,7 @@
 #pragma once
 
+#define DOUBLE_BUFFER 1
+
 namespace meduza
 {
 	namespace math

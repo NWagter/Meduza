@@ -13,6 +13,9 @@ namespace meduza
 
 	class Camera;
 
+	class Shader;
+	class Texture;
+
 	struct Colour;
 
 	namespace drawable
@@ -35,10 +38,17 @@ namespace meduza
 
 		void EnableImGui();
 
+// ============ Profile
+		void DebugDrawStats(const float, bool = false);
+
 // ============ Load Resource
 
 		std::string LoadShader(std::string) const;
+		Shader& GetShader(std::string) const;
+
 		std::string LoadTexture(std::string) const;
+		Texture& GetTexture(std::string) const;
+
 // ============ Camera
 
 		void SetNewCamera(CameraPerspective, math::Vec2, math::Vec2 = {-1,1});

@@ -53,38 +53,22 @@ namespace meduza
 		Vertex(float a_x, float a_y, float a_z)
 		{
 			m_vertexPos = glm::vec3(a_x, a_y, a_z);
-			m_textureCoord = glm::vec2(0);
-			m_normals = glm::vec2(0);
-		}
-		Vertex(float a_x, float a_y, float a_z, float a_u, float a_v)
-		{
-			m_vertexPos = glm::vec3(a_x, a_y, a_z);
-			m_textureCoord = glm::vec2(a_u, a_v);
-			m_normals = glm::vec2(0);
-		}
-		Vertex(float a_x, float a_y, float a_z, float a_u, float a_v, float a_nX, float a_nY)
-		{
-			m_vertexPos = glm::vec3(a_x, a_y, a_z);
-			m_textureCoord = glm::vec2(a_u, a_v);
-			m_normals = glm::vec2(a_nX, a_nY);
-		}
-
-		void SetVertex(float a_x, float a_y, float a_z)
-		{
-			m_vertexPos = glm::vec3(a_x, a_y, a_z);
-		}
-		void SetUV(float a_u, float a_v)
-		{
-			m_textureCoord = glm::vec2(a_u, a_v);
-		}
-		void SetNormals(float a_x, float a_y)
-		{
-			m_normals = glm::vec2(a_x, a_y);
 		}
 
 		glm::vec3 m_vertexPos;
-		glm::vec2 m_textureCoord;
-		glm::vec2 m_normals;
+	};
+
+#define MAX_INSTANCES 4800
+#define MAX_TEXTURES 16
+
+	struct InstanceData2D
+	{
+		~InstanceData2D() = default;
+		glm::vec4 m_textureCoords = glm::vec4(0);
+		glm::vec4 m_colour = glm::vec4(0);
+		glm::vec3 m_position = glm::vec3(0);
+		glm::vec3 m_size = glm::vec3(0);
+		float m_textureId = 0;
 	};
 
 	namespace utils

@@ -18,6 +18,22 @@ namespace meduza
 	{
 		class Context;
 
+		struct DrawStatistics
+		{
+			void Reset()
+			{
+				m_vertices = 0;
+				m_drawables = 0;
+				m_instances = 0;
+				m_drawCalls = 0;
+			}
+
+			int m_vertices = 0;
+			int m_drawables = 0;
+			int m_instances = 0;
+			int m_drawCalls = 0;
+		};
+
 		class Renderer
 		{
 		public:
@@ -36,6 +52,7 @@ namespace meduza
 
 			virtual void Draw(drawable::Drawable*) = 0;
 			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
+			virtual DrawStatistics GetDrawStatistics() const = 0;
 		};
 	}
 }

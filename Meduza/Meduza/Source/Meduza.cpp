@@ -1,7 +1,7 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include "Meduza.h"
 #include "Event/EventSystem.h"
@@ -72,10 +72,38 @@ void meduza::Meduza::EnableImGui()
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 }
 
+void meduza::Meduza::DebugDrawStats(float a_fps, bool a_log)
+{
+	renderer::DrawStatistics stats = m_renderer->GetDrawStatistics();
+	if (!MeduzaHelper::ms_imGui && a_log)
+	{
+		ME_LOG("[Draw Stats] FPS : %f \n", a_fps);
+		ME_LOG("[Draw Stats] Drawcalls : %i \n", stats.m_drawCalls);
+		ME_LOG("[Draw Stats] Instances : %i \n", stats.m_instances);
+		ME_LOG("[Draw Stats] Drawables : %i \n", stats.m_drawables);
+		ME_LOG("[Draw Stats] Vertices : %i \n", stats.m_vertices);
+
+		return;
+	}
+
+	ImGui::Begin("Stats");
+	ImGui::Text("FPS : %f", a_fps);
+	ImGui::Text("DrawCalls : %i", stats.m_drawCalls);
+	ImGui::Text("Instances : %i", stats.m_instances);
+	ImGui::Text("Drawables : %i", stats.m_drawables);
+	ImGui::Text("Vertices : %i", stats.m_vertices);
+	ImGui::End();
+}
+
 std::string meduza::Meduza::LoadShader(std::string a_path) const
 {
 	m_shaderLibrary->LoadShader(a_path);
 	return utils::FileSystem::GetFileName(a_path);
+}
+
+meduza::Shader& meduza::Meduza::GetShader(std::string a_path) const
+{
+	return *m_shaderLibrary->LoadShader(a_path);
 }
 
 std::string meduza::Meduza::LoadTexture(std::string a_path) const
@@ -83,7 +111,10 @@ std::string meduza::Meduza::LoadTexture(std::string a_path) const
 	m_textureLibrary->LoadTexture(a_path);
 	return utils::FileSystem::GetFileName(a_path);
 }
-
+meduza::Texture& meduza::Meduza::GetTexture(std::string a_path) const
+{	
+	return *m_textureLibrary->LoadTexture(a_path);
+}
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec2 a_size, math::Vec2 a_distance)
 {
 	delete m_camera;

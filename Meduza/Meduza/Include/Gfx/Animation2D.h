@@ -24,6 +24,7 @@ namespace meduza
 		class Animation2D : public Animation
 		{
 		public:
+			Animation2D(std::string, float, Texture&);
 			Animation2D(std::string, float, std::string);
 			~Animation2D() override;
 

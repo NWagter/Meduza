@@ -1,6 +1,6 @@
 #include "mePch.h"
 
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 #include <glad/glad.h>
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"

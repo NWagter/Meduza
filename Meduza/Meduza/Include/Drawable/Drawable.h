@@ -5,6 +5,7 @@
 namespace meduza
 {
 	class Shader;
+	class Texture;
 	struct DrawData;
 
 	enum class Type
@@ -32,9 +33,11 @@ namespace meduza
 
 			virtual void UseShader(const char*) = 0;
 			virtual void UseShader(std::string) = 0;
+			virtual void UseShader(meduza::Shader&) = 0;
 
 			virtual void UseTexture(const char*) = 0;
 			virtual void UseTexture(std::string) = 0;
+			virtual void UseTexture(meduza::Texture&) = 0;
 
 			virtual math::Vec3 GetPos() const = 0;
 			virtual math::Vec3 GetSize() const = 0;

@@ -6,8 +6,8 @@
 
 #include <Meduza.h>
 #include <Drawable/Sprite.h>
-#include <Event/EventSystem.h>
 #include <Gfx/Animator2D.h>
+#include <Event/EventSystem.h>
 #include <Util/Timer.h>
 
 #ifdef WINDOWS
@@ -21,7 +21,7 @@ Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
 
-	//m_meduza->EnableImGui();
+	m_meduza->EnableImGui();
 }
 
 Sandbox::~Sandbox()
@@ -38,38 +38,54 @@ void Sandbox::Update(float)
 void Sandbox::Run()
 {
 	meduza::Colour c = meduza::Colours::CELESTIAL_BLUE;
-	meduza::drawable::Sprite s;
-
-	s.UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-	s.UseTexture(m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
-	s.SetUV(48 * 0, 48 * 3, 48, 48);
-	s.SetSize(64, 64);
-
 
 	int w = 320 / 16;
 	int h = 384 / 16;
 
-	std::vector<meduza::drawable::Sprite*> tiles;
+	std::vector<meduza::drawable::Drawable*> tiles;
+	int counter = 50000;
+	int i = 0;
 
+	meduza::Shader& textureShader = m_meduza->GetShader("Data/Shaders/TextureShader.glsl");
+	meduza::Texture& tileTexture = m_meduza->GetTexture("Data/Textures/tiles_dungeon_v1.1.png");
+	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
 
-	for (int x = w; x > 0; x--)
+	while(counter > 0)
 	{
-		for (int y = h; y > 0; y--)
+		float offset = float(i * w) * 32;
+		i++;
+		
+		for (int x = (w - 1); x >= 0; x--)
 		{
-			meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
-			sprite->UseShader(m_meduza->LoadShader("Data/Shaders/TextureShader.glsl"));
-			sprite->UseTexture(m_meduza->LoadTexture("Data/Textures/tiles_dungeon_v1.1.png"));
-			sprite->SetSize(32, 32);
-			sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
-			sprite->SetPosition(float(x), float(y));
-			tiles.push_back(sprite);
+			if (counter < 0)
+				break;
+			for (int y = h; y > 0; y--)
+			{
+				counter--;
+
+				if (counter < 0)
+					break;
+				meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
+				sprite->UseShader(textureShader);
+				sprite->UseTexture(tileTexture);
+				sprite->SetSize(32, 32);
+				sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
+				sprite->SetPosition(float(x * 32) + offset, float(y * 32));
+				tiles.push_back(sprite);
+			}
 		}
 	}
 
+	meduza::drawable::Sprite player;
+	player.UseShader(textureShader);
+	player.UseTexture(charTexture);
+	player.SetSize(64, 64);
+	player.SetUV(0, 0, 48, 48);
+	player.SetPosition(0, 0);
 
 	meduza::gfx::Animator2D animator = meduza::gfx::Animator2D();
 
-	animator.CreateAnimation2D("UP", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("UP", 0.2f, charTexture);
 	meduza::math::Vec4 rect{ 48 * 0, 48 * 4, 48, 48 };
 	animator.GetAnimation("UP").AddFrame(rect);
 	rect = { 48 * 1, 48 * 4, 48, 48 };
@@ -79,7 +95,7 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 4, 48, 48 };
 	animator.GetAnimation("UP").AddFrame(rect);
 
-	animator.CreateAnimation2D("RIGHT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("RIGHT", 0.2f, charTexture);
 	rect = { 48 * 0, 48 * 3, 48, 48 };
 	animator.GetAnimation("RIGHT").AddFrame(rect);
 	rect = { 48 * 1, 48 * 3, 48, 48 };
@@ -89,7 +105,7 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 3, 48, 48 };
 	animator.GetAnimation("RIGHT").AddFrame(rect);
 
-	animator.CreateAnimation2D("DOWN", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	animator.CreateAnimation2D("DOWN", 0.2f, charTexture);
 	rect = { 48 * 0, 48 * 2, 48, 48 };
 	animator.GetAnimation("DOWN").AddFrame(rect);
 	rect = { 48 * 1, 48 * 2, 48, 48 };
@@ -99,7 +115,9 @@ void Sandbox::Run()
 	rect = { 48 * 3, 48 * 2, 48, 48 };
 	animator.GetAnimation("DOWN").AddFrame(rect);
 
-	animator.CreateAnimation2D("LEFT", 0.2f, m_meduza->LoadTexture("Data/Textures/chara_hero.png"));
+	//Option to use the name of the texture can be done by the LoadTexture(path) function in meduza, 
+	//as this returns the name of the texture if texture unknown
+	animator.CreateAnimation2D("LEFT", 0.2f, "chara_hero");
 	rect = { 48 * 1, 48 * 3, -48, 48 };
 	animator.GetAnimation("LEFT").AddFrame(rect);
 	rect = { 48 * 2, 48 * 3, -48, 48 };
@@ -109,15 +127,18 @@ void Sandbox::Run()
 	rect = { 48 * 4, 48 * 3, -48,48 };
 	animator.GetAnimation("LEFT").AddFrame(rect);
 
-	meduza::math::Vec3 camPos(0, 0, 0);
+	meduza::math::Vec3 playerPos(0, 0, 0);
 
-	animator.SetSprite(s);
+	animator.SetSprite(player);
 	animator.SetAnimation("DOWN");
+
+	float camMoveSpeed = 50;
 
 	meduza::utils::Timer<float> deltaTimer;
 	float totalTime = 0.f;
 	float fps = 0;
 	unsigned frameCount = 0;
+
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -125,15 +146,15 @@ void Sandbox::Run()
 		m_meduza->Clear(c);
 		m_meduza->Peek();
 
-		m_meduza->SetCamEye(camPos);
+
 		animator.Play();
 
-		for (auto t : tiles)
-		{
-			t->Submit(m_meduza->GetGfx());
-		}
+		m_meduza->SetCamEye(playerPos);
+		m_meduza->Submit(tiles);
 
-		s.Submit(m_meduza->GetGfx());
+		player.SetPosition(playerPos.m_x, playerPos.m_y);
+		player.Submit(m_meduza->GetGfx());
+
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
@@ -142,20 +163,25 @@ void Sandbox::Run()
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_W))
 		{
 			animator.SetAnimation("UP");
+			playerPos.m_y += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_S))
 		{
 			animator.SetAnimation("DOWN");
+			playerPos.m_y -= (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_D))
 		{
 			animator.SetAnimation("RIGHT");
+			playerPos.m_x += (camMoveSpeed * deltaSeconds);
 		}
 		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_A))
 		{
 			animator.SetAnimation("LEFT");
+			playerPos.m_x -= (camMoveSpeed * deltaSeconds);
 		}
 
+		m_meduza->DebugDrawStats(fps);
 		m_meduza->SwapBuffers();
 
 		//Calculate the fps
@@ -168,6 +194,10 @@ void Sandbox::Run()
 			totalTime = 0.f;
 			printf("[FPS COUNTER] : fps %f \n", fps);
 		}
+	}
 
+	for (auto t : tiles)
+	{
+		delete t;
 	}
 }

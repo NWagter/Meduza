@@ -23,7 +23,8 @@ namespace meduza
 			// Animation Name
 			virtual void SetAnimation(std::string) override;
 
-			// Name of Animation, Animation Speed (seconds), Texture Name
+			// Name of Animation, Animation Speed (seconds), Texture
+			void CreateAnimation2D(std::string, float, Texture&);
 			void CreateAnimation2D(std::string, float, std::string);
 			Animation2D& GetAnimation(std::string);
 			

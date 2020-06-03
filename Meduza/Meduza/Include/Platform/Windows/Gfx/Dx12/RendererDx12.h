@@ -26,6 +26,8 @@ namespace meduza
 
 			ContextDx12& GetContext() const;
 			CommandListDx12& GetCmd() const;
+
+			DrawStatistics GetDrawStatistics() const override;
 		private:
 			void PreRender();
 			void PopulateBuffers();
@@ -35,6 +37,7 @@ namespace meduza
 			CommandListDx12* m_cmdList;
 			DescriptorDx12* m_rtv;
 			DescriptorDx12* m_srv;
+			DrawStatistics m_stats;
 		};
 	}
 }

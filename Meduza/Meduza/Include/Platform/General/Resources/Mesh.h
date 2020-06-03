@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/Windows/Utils/MeduzaHelper.h"
+#include "Platform/General/Utils/MeduzaHelper.h"
 
 namespace meduza
 {
@@ -13,7 +13,9 @@ namespace meduza
 			virtual ~Mesh() = default;
 
 			virtual void GenerateBuffers() = 0;
-
+			
+			inline unsigned int GetVerticesSize() const { return unsigned int(m_vertices.size()); }
+			inline unsigned int GetIndicesSize() const { return unsigned int(m_indices.size()); }
 		protected:
 			unsigned int m_meshId;
 			std::vector<Vertex> m_vertices;

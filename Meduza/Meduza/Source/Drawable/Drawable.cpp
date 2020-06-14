@@ -7,7 +7,7 @@
 
 void meduza::drawable::Drawable::Submit(renderer::Renderer& a_renderer)
 {
-	if (!MeduzaHelper::ms_minimized)
+	if (!MeduzaHelper::ms_minimized && m_drawData->m_material != nullptr)
 	{
 		a_renderer.Draw(this);
 		return;

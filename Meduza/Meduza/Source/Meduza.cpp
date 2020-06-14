@@ -12,6 +12,7 @@
 #include "Platform/General/Gfx/ImGuiRenderer.h"
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/General/Gfx/TextureLibrary.h"
+#include "Platform/General/Gfx/MaterialLibrary.h"
 
 #include "Drawable/Drawable.h"
 #include "Camera/Camera.h"
@@ -42,6 +43,7 @@ meduza::Meduza::Meduza(API a_api)
 	ME_LOG("Window title = %s \n", GetWindowName().c_str());
 
 	m_shaderLibrary = new ShaderLibrary();
+	m_materialLibrary = new MaterialLibrary();
 	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
 	m_textureLibrary = new TextureLibrary();
 
@@ -57,6 +59,7 @@ meduza::Meduza::~Meduza()
 		delete m_imGuiRenderer;
 	}
 
+	delete m_materialLibrary;
 	delete m_shaderLibrary;
 	delete m_textureLibrary;
 	delete m_renderer;
@@ -115,6 +118,35 @@ meduza::Texture& meduza::Meduza::GetTexture(std::string a_path) const
 {	
 	return *m_textureLibrary->LoadTexture(a_path);
 }
+
+meduza::Material& meduza::Meduza::CreateMaterial(Shader* a_shader, std::string a_name)
+{
+	return *m_materialLibrary->CreateMaterial(*a_shader, a_name);
+}
+
+meduza::Material& meduza::Meduza::GetMaterial(std::string a_name)
+{
+	return *m_materialLibrary->GetMaterial(utils::GetHashedID(a_name));
+}
+
+meduza::Material& meduza::Meduza::GetMaterial(unsigned int a_id)
+{
+	return *m_materialLibrary->GetMaterial(a_id);
+}
+
+
+void meduza::Meduza::SetMaterialParameter(meduza::Material& a_material, std::string a_name, float a_data[])
+{
+	a_material.SetData(a_name, a_data);
+}
+
+void meduza::Meduza::SetMaterialParameter(meduza::Material& a_material, std::string a_name, meduza::Texture& a_texture)
+{
+	unsigned int data[] = { unsigned int(a_texture.GetId()) };
+
+	a_material.SetData(a_name, data);
+}
+
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec2 a_size, math::Vec2 a_distance)
 {
 	delete m_camera;

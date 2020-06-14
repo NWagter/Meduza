@@ -74,6 +74,11 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 
 meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 {
+	ShaderLayout layout;
+
+	layout.AddItem(ShaderLayoutItem::itemFloat4, "a_colour");
+	layout.AddItem(ShaderLayoutItem::itemFloat, "a_textureId");
+
 	switch (MeduzaHelper::ms_activeAPI)
 	{
 	case meduza::API::OpenGL:
@@ -93,7 +98,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderGL(source);
+		m_instance->m_shaders[hashedId] = new ShaderGL(source, layout);
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 		return GetShader(hashedId);

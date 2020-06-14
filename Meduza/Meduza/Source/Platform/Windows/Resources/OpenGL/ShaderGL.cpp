@@ -14,6 +14,14 @@ meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::GetHas
 {
     m_source = a_source;
 
+    m_program = GenerateShader();
+}
+
+meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source, ShaderLayout a_layout) : Shader(utils::GetHashedID(a_source.m_shaderName))
+{
+    m_source = a_source;
+    m_shaderLayout = a_layout;
+    
 	m_program = GenerateShader();
 }
 

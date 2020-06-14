@@ -10,6 +10,7 @@ namespace meduza
 	{
 	public:
 		ShaderGL(utils::ShaderSources);
+		ShaderGL(utils::ShaderSources, ShaderLayout);
 		~ShaderGL() override;
 
 		void Bind() override;

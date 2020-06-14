@@ -4,6 +4,7 @@
 
 namespace meduza
 {
+	class Material;
 	class Shader;
 	class Texture;
 	struct DrawData;
@@ -31,6 +32,8 @@ namespace meduza
 			virtual void SetColour(math::Vec3) = 0;
 			virtual void SetColour(math::Vec4) = 0;
 
+			virtual void SetMaterial(meduza::Material&) = 0;
+			virtual Material& GetMaterial() = 0;
 			virtual void UseShader(const char*) = 0;
 			virtual void UseShader(std::string) = 0;
 			virtual void UseShader(meduza::Shader&) = 0;
@@ -48,7 +51,6 @@ namespace meduza
 
 			virtual void Submit(renderer::Renderer&);
 		protected:
-
 			DrawData* m_drawData = nullptr;
 			Type m_drawType = Type::None;
 		};

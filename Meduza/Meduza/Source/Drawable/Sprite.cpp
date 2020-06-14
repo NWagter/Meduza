@@ -80,6 +80,16 @@ void meduza::drawable::Sprite::SetColour(math::Vec4 a_colour)
 	m_drawData->m_colour = glm::vec4(a_colour.m_x, a_colour.m_y, a_colour.m_z, a_colour.m_w);
 }
 
+void meduza::drawable::Sprite::SetMaterial(meduza::Material& a_material)
+{
+	m_drawData->m_material = &a_material;
+}
+
+meduza::Material& meduza::drawable::Sprite::GetMaterial()
+{
+	return *m_drawData->m_material;
+}
+
 void meduza::drawable::Sprite::UseShader(const char* a_name)
 {
 	Shader* shader = ShaderLibrary::GetShader(a_name);

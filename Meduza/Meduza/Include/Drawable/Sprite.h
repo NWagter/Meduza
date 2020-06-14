@@ -26,6 +26,8 @@ namespace meduza
 			void SetColour(math::Vec3) override;
 			void SetColour(math::Vec4) override;
 
+			void SetMaterial(meduza::Material&);
+			Material& GetMaterial();
 			void UseShader(const char*) override;
 			void UseShader(std::string) override;
 			void UseShader(meduza::Shader&) override;

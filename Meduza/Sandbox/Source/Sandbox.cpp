@@ -50,6 +50,11 @@ void Sandbox::Run()
 	meduza::Texture& tileTexture = m_meduza->GetTexture("Data/Textures/tiles_dungeon_v1.1.png");
 	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
 
+	meduza::Material& textureMaterial = m_meduza->CreateMaterial(&textureShader, "TextureMaterial");
+	
+	float colour[] = { 1,1,0,1 };
+	m_meduza->SetMaterialParameter(textureMaterial, "a_colour", colour);
+
 	while(counter > 0)
 	{
 		float offset = float(i * w) * 32;
@@ -68,6 +73,7 @@ void Sandbox::Run()
 				meduza::drawable::Sprite* sprite = new meduza::drawable::Sprite();
 				sprite->UseShader(textureShader);
 				sprite->UseTexture(tileTexture);
+				sprite->SetMaterial(textureMaterial);
 				sprite->SetSize(32, 32);
 				sprite->SetUV(float(16 * x), float(16 * (h - y)), 16, 16);
 				sprite->SetPosition(float(x * 32) + offset, float(y * 32));
@@ -79,6 +85,7 @@ void Sandbox::Run()
 	meduza::drawable::Sprite player;
 	player.UseShader(textureShader);
 	player.UseTexture(charTexture);
+	player.SetMaterial(textureMaterial);
 	player.SetSize(64, 64);
 	player.SetUV(0, 0, 48, 48);
 	player.SetPosition(0, 0);

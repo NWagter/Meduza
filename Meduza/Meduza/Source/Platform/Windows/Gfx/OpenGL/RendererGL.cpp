@@ -260,18 +260,8 @@ void meduza::renderer::RendererGL::CreateInstances()
         math::Vec4 textCoord = utils::TextureUtils::GetTextureCoords(rect, size);
 
         data.m_textureCoords = glm::vec4(textCoord.m_x, textCoord.m_y, textCoord.m_z, textCoord.m_w);
-
-        std::vector<float> materialData;
-
-        materialData = drawData->m_material->GetData("a_colour");
-
-        glm::vec4 col = glm::vec4(1,1,1,1);
-        if (materialData.size() > 3)
-        {
-            col = glm::vec4(materialData[0], materialData[1], materialData[2], materialData[3]);
-        }
-        data.m_colour = col;
-        materialData = drawData->m_material->GetData("a_textureId");
+    
+        data.m_colour = drawData->m_colour;
 
         data.m_textureId = textureID;
 

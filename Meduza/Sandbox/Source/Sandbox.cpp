@@ -51,9 +51,12 @@ void Sandbox::Run()
 	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
 
 	meduza::Material& textureMaterial = m_meduza->CreateMaterial(&textureShader, "TextureMaterial");
+	meduza::Material& playerMaterial = m_meduza->CreateMaterial(&textureShader, "PlayerMaterial");
 	
 	float colour[] = { 1,1,0,1 };
 	m_meduza->SetMaterialParameter(textureMaterial, "a_colour", colour);
+	float pcolour[] = { 1,1,1,1 };
+	m_meduza->SetMaterialParameter(playerMaterial, "a_colour", pcolour);
 
 	while(counter > 0)
 	{
@@ -85,7 +88,7 @@ void Sandbox::Run()
 	meduza::drawable::Sprite player;
 	player.UseShader(textureShader);
 	player.UseTexture(charTexture);
-	player.SetMaterial(textureMaterial);
+	player.SetMaterial(playerMaterial);
 	player.SetSize(64, 64);
 	player.SetUV(0, 0, 48, 48);
 	player.SetPosition(0, 0);

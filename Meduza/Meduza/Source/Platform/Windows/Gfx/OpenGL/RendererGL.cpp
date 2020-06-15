@@ -160,7 +160,7 @@ meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics
 
 void meduza::renderer::RendererGL::PreRender()
 {
-    if (m_quad != nullptr)
+    if (m_quad != nullptr && !m_drawData.empty())
     {      
         unsigned int instances = m_count;
         m_stats.m_drawCalls++;

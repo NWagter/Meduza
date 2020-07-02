@@ -27,6 +27,7 @@ namespace meduza
 
 		virtual void SetTitle(std::string) = 0;
 		virtual void CreateContext() = 0;
+		virtual void Close() = 0;
 
 		inline renderer::Context* GetContext() { return m_context; }
 

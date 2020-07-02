@@ -114,6 +114,12 @@ void meduza::WinWindow::CreateContext()
 	}
 }
 
+void meduza::WinWindow::Close()
+{
+	CloseWindow(m_hWnd);
+	m_windowActive = false;
+}
+
 LRESULT __stdcall meduza::WinWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
 

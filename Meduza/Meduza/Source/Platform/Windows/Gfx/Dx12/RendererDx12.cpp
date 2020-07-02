@@ -95,14 +95,16 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 {
 	PreRender();
 
-
 	m_cmdList->SetViewPort(1);
 	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
 	m_cmdList->GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
+
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		m_context->GetCurrentBuffer(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
 	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
+
 	m_context->GetQueue()->ExecuteList(m_cmdList);
 }
 

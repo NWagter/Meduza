@@ -9,7 +9,7 @@ namespace meduza
 	{
 		OpenGL = 0,
 #ifdef WINDOWS
-		DirectX12,
+		DirectX12 = 1,
 #endif // WIN
 
 #ifdef LINUX

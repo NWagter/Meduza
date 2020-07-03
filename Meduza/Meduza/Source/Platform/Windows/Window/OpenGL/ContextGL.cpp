@@ -26,6 +26,7 @@ meduza::renderer::ContextGL::ContextGL(HWND a_hwnd)
 	::GetClientRect(a_hwnd, &rect);
 
 	m_size = math::Vec2(float(rect.right - rect.left), float(rect.bottom - rect.top));
+
 }
 
 meduza::renderer::ContextGL::~ContextGL()
@@ -52,18 +53,47 @@ void meduza::renderer::ContextGL::Resize(math::Vec2 a_size)
 
 PIXELFORMATDESCRIPTOR meduza::renderer::ContextGL::CreateFormat()
 {
-
-	PIXELFORMATDESCRIPTOR pfd;
 #if DOUBLE_BUFFER == 0
-	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
+	PIXELFORMATDESCRIPTOR pfd =
+	{
+	sizeof(PIXELFORMATDESCRIPTOR),
+	1,
+	PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL,    // Flags
+	PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+	32,                   // Colordepth of the framebuffer.
+	0, 0, 0, 0, 0, 0,
+	0,
+	0,
+	0,
+	0, 0, 0, 0,
+	24,                   // Number of bits for the depthbuffer
+	8,                    // Number of bits for the stencilbuffer
+	0,                    // Number of Aux buffers in the framebuffer.
+	PFD_MAIN_PLANE,
+	0,
+	0, 0, 0
+	};
 #elif DOUBLE_BUFFER == 1
-	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+	PIXELFORMATDESCRIPTOR pfd =
+	{
+	sizeof(PIXELFORMATDESCRIPTOR),
+	1,
+	PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
+	PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+	32,                   // Colordepth of the framebuffer.
+	0, 0, 0, 0, 0, 0,
+	0,
+	0,
+	0,
+	0, 0, 0, 0,
+	24,                   // Number of bits for the depthbuffer
+	8,                    // Number of bits for the stencilbuffer
+	0,                    // Number of Aux buffers in the framebuffer.
+	PFD_MAIN_PLANE,
+	0,
+	0, 0, 0
+	};
 #endif
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.cColorBits = 32;
-	pfd.cDepthBits = 24;
-	pfd.cStencilBits = 8;
-	pfd.iLayerType = PFD_MAIN_PLANE;
 
 	return pfd;
 }

@@ -42,6 +42,8 @@ namespace meduza
 		Meduza(API, std::string);
 		~Meduza();
 
+		API GetCurrentAPI() const;
+
 // ============ Tools
 
 		void EnableImGui();

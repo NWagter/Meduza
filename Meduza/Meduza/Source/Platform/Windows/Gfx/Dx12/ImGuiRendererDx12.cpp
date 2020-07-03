@@ -38,6 +38,7 @@ meduza::ImGuiRendererDx12::ImGuiRendererDx12(renderer::Renderer& a_renderer)
 
 meduza::ImGuiRendererDx12::~ImGuiRendererDx12()
 {
+	ImGui::Render();
 	ImGui_ImplDX12_Shutdown();
 	delete m_GuiHeap;
 }
@@ -51,8 +52,6 @@ void meduza::ImGuiRendererDx12::Clear()
 
 void meduza::ImGuiRendererDx12::Render()
 {
-	ImGui::EndFrame();
-
 	auto cmd = m_renderer->GetCmd().GetList();
 
 	ID3D12DescriptorHeap* imGuiHeap[] = { m_GuiHeap->GetHeap().Get() };

@@ -45,6 +45,7 @@ namespace meduza
 			};
 
 			static RendererData* CreateRenderer(math::Vec2);
+			static Renderer* SwitchAPI(Window&);
 			virtual ~Renderer() = default;
 			
 			virtual void Clear(Colour) = 0;

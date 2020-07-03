@@ -34,7 +34,10 @@ meduza::WinWindow::WinWindow(math::Vec2 a_size)
 
 meduza::WinWindow::~WinWindow()
 {
-	delete m_context;
+	if (m_context != nullptr)
+	{
+		delete m_context;
+	}
 	if (MeduzaHelper::ms_imGui)
 	{
 		ImGui_ImplWin32_Shutdown();

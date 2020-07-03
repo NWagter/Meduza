@@ -43,7 +43,6 @@ namespace meduza
 			math::Vec2 m_size;
 			bool m_resize = false;
 			void CreateSwapChain();
-
 			Microsoft::WRL::ComPtr<IDXGISwapChain4> m_swapChain;
 			Microsoft::WRL::ComPtr<ID3D12Resource> m_frameBuffer[GS_FRAMEBUFFERS];
 

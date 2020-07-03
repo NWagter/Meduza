@@ -52,6 +52,10 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
+#ifdef MEDUZA_DEBUG
+#include <dxgidebug.h>
+#endif
+
 #include <ImGui/imgui_impl_dx12.h>
 
 #include <ImGui/imgui_impl_opengl3.h>

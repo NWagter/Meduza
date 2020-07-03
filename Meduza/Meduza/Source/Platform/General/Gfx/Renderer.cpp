@@ -52,3 +52,42 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 	}
 	return nullptr;
 }
+
+meduza::renderer::Renderer* meduza::renderer::Renderer::SwitchAPI(Window& a_window)
+{
+	Renderer* newRenderer = nullptr;
+	auto window = &a_window;
+
+	window->CreateContext();
+
+	switch (MeduzaHelper::ms_activeAPI)
+	{
+	case meduza::API::OpenGL:
+#ifdef WINDOWS
+		newRenderer = new RendererGL(*a_window.GetContext());
+
+		return newRenderer;
+#elif LINUX // WIN
+
+#endif	
+		break;
+
+#ifdef WINDOWS
+	case meduza::API::DirectX12:
+		newRenderer = new RendererDx12(*a_window.GetContext());
+
+		return newRenderer;
+		break;
+#endif
+
+#ifdef LINUX
+	case meduza::API::ES2:
+
+
+		ME_GFX_LOG("No ES2 defined! windows would be %f - %f \n", a_size.m_x, a_size.m_y);
+		break;
+#endif
+
+	}
+	return newRenderer;
+}

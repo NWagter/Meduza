@@ -11,7 +11,7 @@
 #include <Util/Timer.h>
 
 #ifdef WINDOWS
-	meduza::API const g_api = meduza::API::DirectX12;
+	meduza::API const g_api = meduza::API::OpenGL;
 #elif defined(LINUX)
 	meduza::API const g_api = meduza::API::ES2;
 #endif
@@ -40,6 +40,26 @@ void Sandbox::Run()
 	meduza::math::Vec3 playerPos(0, 0, 0);
 	float camMoveSpeed = 50;
 	
+	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
+	meduza::Shader& textureShader = m_meduza->GetShader("Data/Shaders/TextureShader.glsl");
+	meduza::Material& playerMaterial = m_meduza->CreateMaterial(&textureShader, "PlayerMaterial");
+
+	meduza::drawable::Sprite player;
+
+	player.UseShader(textureShader);
+	player.UseTexture(charTexture);
+
+	if (&playerMaterial != nullptr)
+	{
+		float colour[] = { 1,1,0,1 };
+		m_meduza->SetMaterialParameter(playerMaterial, "a_colour", colour);
+		player.SetMaterial(playerMaterial);
+
+	}
+
+	player.SetSize(64, 64);
+	player.SetUV(0, 0, 48, 48);
+	player.SetPosition(0, 0);
 
 	meduza::utils::Timer<float> deltaTimer;
 
@@ -49,8 +69,15 @@ void Sandbox::Run()
 
 		m_meduza->Clear();
 		m_meduza->Peek();
-
 		m_meduza->Update(deltaSeconds);
+
+		m_meduza->SetCamEye(playerPos);
+
+		if (m_meduza->GetCurrentAPI() == meduza::API::OpenGL)
+		{
+			player.SetPosition(playerPos.m_x, playerPos.m_y);
+			player.Submit(m_meduza->GetGfx());
+		}
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
@@ -72,6 +99,7 @@ void Sandbox::Run()
 		{
 			playerPos.m_x -= (camMoveSpeed * deltaSeconds);
 		}
+
 
 		m_meduza->SwapBuffers();
 	}

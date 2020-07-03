@@ -53,6 +53,11 @@ meduza::Meduza::~Meduza()
 	delete m_eventSystem;
 }
 
+meduza::API meduza::Meduza::GetCurrentAPI() const
+{
+	return meduza::MeduzaHelper::ms_activeAPI;
+}
+
 void meduza::Meduza::SetupRenderer(meduza::API a_api)
 {
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
@@ -210,6 +215,7 @@ void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
 
 void meduza::Meduza::Clear()
 {
+
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Clear(m_camera->GetSolidColour());
@@ -218,6 +224,23 @@ void meduza::Meduza::Clear()
 		{
 			m_imGuiRenderer->Clear();
 		}
+	}
+
+	if (static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
+	{
+		delete m_editorMenu;
+		m_editorMenu = nullptr;
+		delete m_imGuiRenderer;
+		m_imGuiRenderer = nullptr;
+
+		delete m_renderer;
+		m_renderer = nullptr;
+
+		m_renderer = renderer::Renderer::SwitchAPI(*m_window);
+		m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+		m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
+
+		Clear();
 	}
 }
 

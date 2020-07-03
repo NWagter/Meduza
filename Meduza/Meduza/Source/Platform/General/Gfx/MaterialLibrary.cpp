@@ -31,6 +31,11 @@ meduza::MaterialLibrary::~MaterialLibrary()
 
 meduza::Material* meduza::MaterialLibrary::CreateMaterial(Shader& a_shader, std::string a_name)
 {
+	if (&a_shader == nullptr)
+	{
+		return nullptr;
+	}
+
 	unsigned int hashedId = utils::GetHashedID(a_name);
 
 	if (m_instance->m_materials[hashedId] != nullptr)

@@ -17,9 +17,14 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 {
 
 #if defined(MEDUZA_DEBUG)
+
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
+
+	Microsoft::WRL::ComPtr<IDXGIDebug> dxgiControler;
+	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiControler));
+	dxgiControler->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_SUMMARY));
 #endif
 
 	m_device = new DeviceDx12();
@@ -46,16 +51,19 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 
 meduza::renderer::ContextDx12::~ContextDx12()
 {
-	delete m_device;
+
+	m_frameBuffer->ReleaseAndGetAddressOf();
+	m_swapChain.ReleaseAndGetAddressOf();
+
+	m_queue->Flush();
 	delete m_queue;
 
-	m_swapChain.ReleaseAndGetAddressOf();
-	m_frameBuffer->ReleaseAndGetAddressOf();
+	delete m_device;
 }
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
-	m_swapChain->Present(0, 0);
+	m_swapChain->Present(1, 0);
 
 	//Fence with Queue
 
@@ -67,6 +75,12 @@ void meduza::renderer::ContextDx12::SwapBuffer()
 	{
 		Resize(m_size);
 	}
+
+#if defined(MEDUZA_DEBUG)
+	Microsoft::WRL::ComPtr<IDXGIDebug> dxgiControler;
+	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiControler));
+	dxgiControler->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_SUMMARY));
+#endif
 }
 
 void meduza::renderer::ContextDx12::Resize(math::Vec2 a_size)

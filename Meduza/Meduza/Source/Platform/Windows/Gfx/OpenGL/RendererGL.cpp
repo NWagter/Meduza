@@ -94,7 +94,6 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
     glBufferData(GL_UNIFORM_BUFFER, sizeof(InstanceData2D) * MAX_INSTANCES, NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    
 }
 
 meduza::renderer::RendererGL::~RendererGL()

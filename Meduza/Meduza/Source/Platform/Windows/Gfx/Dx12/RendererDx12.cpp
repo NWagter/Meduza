@@ -37,12 +37,12 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 	m_context->GetQueue()->ExecuteList(m_cmdList);
 	m_context->GetQueue()->Flush();
+
+	ME_GFX_LOG("DirectX 12 Succesfully loaded!\n");
 }
 
 meduza::renderer::RendererDx12::~RendererDx12()
-{
-	m_context->GetQueue()->Flush();
-
+{	
 	delete m_cmdList;
 	delete m_rtv;
 	delete m_srv;
@@ -61,15 +61,12 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
-
+	
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_context->GetCurrentFrameIndex(), m_rtv->GetSize());
-
+	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
 
 	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
-
-	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
-	m_cmdList->SetViewAndScissor(m_context->GetSize());
 }
 
 void meduza::renderer::RendererDx12::Render(const Camera&)

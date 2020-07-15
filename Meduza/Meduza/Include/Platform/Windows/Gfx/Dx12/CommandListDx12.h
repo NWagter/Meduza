@@ -11,7 +11,7 @@ namespace meduza
 		class CommandListDx12
 		{
 		public:
-			CommandListDx12(D3D12_COMMAND_LIST_TYPE, DeviceDx12&, math::Vec2);
+			CommandListDx12(D3D12_COMMAND_LIST_TYPE,math::Vec2);
 			~CommandListDx12();
 
 			void Close();
@@ -23,7 +23,7 @@ namespace meduza
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(unsigned int);
 
 		private:
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CreateAlloc(DeviceDx12&, D3D12_COMMAND_LIST_TYPE);
+			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CreateAlloc(D3D12_COMMAND_LIST_TYPE);
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_cmdList;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_cmdAllocator[3];
 

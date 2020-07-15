@@ -1,17 +1,20 @@
 #include "mePch.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 
-meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_type, DeviceDx12& a_device, math::Vec2 a_size)
+meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_type, math::Vec2 a_size)
 {
+	auto device = RendererDx12::GetRenderer()->GetContext().GetDevice();
 	for (auto& i : m_cmdAllocator)
 	{
-		i = CreateAlloc(a_device, a_type);
+		i = CreateAlloc(a_type);
 	}
 
 
-	a_device.GetDevice()->CreateCommandList(
+	device->GetDevice()->CreateCommandList(
 		0,
 		a_type,
 		m_cmdAllocator->Get(),
@@ -63,10 +66,11 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12
 	return m_cmdAllocator[a_id];
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(DeviceDx12& a_device, D3D12_COMMAND_LIST_TYPE a_type)
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(D3D12_COMMAND_LIST_TYPE a_type)
 {
+	auto device = RendererDx12::GetRenderer()->GetContext().GetDevice();
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator;
-	a_device.GetDevice()->CreateCommandAllocator(a_type, IID_PPV_ARGS(&commandAllocator));
+	device->GetDevice()->CreateCommandAllocator(a_type, IID_PPV_ARGS(&commandAllocator));
 
 	return commandAllocator;
 }

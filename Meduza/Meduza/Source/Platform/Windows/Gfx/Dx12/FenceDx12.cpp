@@ -2,16 +2,25 @@
 
 #include "Platform/Windows/Gfx/Dx12/FenceDx12.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 
-meduza::renderer::FenceDx12::FenceDx12(DeviceDx12& a_device)
+meduza::renderer::FenceDx12::FenceDx12(DeviceDx12* a_device)
 {
-	a_device.GetDevice()->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence));
+	auto device = a_device;
+	if (device == nullptr)
+	{
+		device = RendererDx12::GetRenderer()->GetContext().GetDevice();
+	}
+
+	device->GetDevice()->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence));
 }
 
 meduza::renderer::FenceDx12::~FenceDx12()
 {
+	WaitForFence(m_currentFence);
 	m_fence.ReleaseAndGetAddressOf();
 }
 

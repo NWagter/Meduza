@@ -5,11 +5,6 @@
 
 namespace meduza
 {
-	namespace drawable
-	{
-		class Sprite;
-	}
-
 	namespace gfx
 	{
 		class Animator2D : public Animator
@@ -17,7 +12,7 @@ namespace meduza
 		public:
 			// Sprite to Animate
 			Animator2D() = default;
-			Animator2D(drawable::Sprite&);
+			Animator2D(Renderable2D&);
 			~Animator2D() override;
 			virtual void Play() override;
 			// Animation Name
@@ -29,9 +24,9 @@ namespace meduza
 			Animation2D& GetAnimation(std::string);
 			
 			// Sprite to Animate
-			inline void SetSprite(drawable::Sprite& a_sprite) { m_sprite = &a_sprite; }
+			inline void SetSprite(Renderable2D& a_renderable) { m_renderable = &a_renderable; }
 		private:
-			drawable::Sprite* m_sprite = nullptr;
+			Renderable2D* m_renderable = nullptr;
 		};
 	}
 }

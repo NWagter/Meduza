@@ -14,6 +14,9 @@ namespace meduza
 
 	class Camera;
 
+	class Scene;
+	class Renderable;
+
 	class Shader;
 	class Material;
 	class Texture;
@@ -73,8 +76,8 @@ namespace meduza
 
 // ============  Renderer
 
-		void Submit(drawable::Drawable*);
-		void Submit(std::vector<drawable::Drawable*>);
+		void Submit(Renderable&);
+		void Submit(Scene&);
 
 		void Clear();
 

@@ -14,7 +14,6 @@
 #include "Platform/General/Gfx/TextureLibrary.h"
 #include "Platform/General/Gfx/MaterialLibrary.h"
 
-#include "Drawable/Drawable.h"
 #include "Camera/Camera.h"
 
 #ifdef WINDOWS
@@ -197,19 +196,19 @@ void meduza::Meduza::SetSolidColour(float a_colour[4])
 	}
 }
 
-void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
+void meduza::Meduza::Submit(Renderable& a_renderable)
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
-		m_renderer->Draw(a_drawable);
+		m_renderer->Submit(a_renderable);
 	}
 }
 
-void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
+void meduza::Meduza::Submit(Scene& a_scene)
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
-		m_renderer->Submit(a_drawables);
+		m_renderer->Submit(a_scene);
 	}
 }
 

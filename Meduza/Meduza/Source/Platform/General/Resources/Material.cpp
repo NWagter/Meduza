@@ -5,10 +5,17 @@
 meduza::Material::Material(Shader& a_shader)
 {
 	SetShader(a_shader);
+	float c[] = { 1,0,1,1 };
+	SetData("a_colour", c);
 }
 
 meduza::Material::~Material()
 {
+}
+
+unsigned int meduza::Material::GetShaderID()
+{
+	return m_shader->GetId();
 }
 
 void meduza::Material::SetShader(Shader& a_shader)

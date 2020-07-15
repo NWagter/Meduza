@@ -1,7 +1,10 @@
 #include "mePch.h"
 
 #include "Core.h"
-#include "Drawable/Drawable.h"
+
+#include "Scene/Scene.h"
+#include "Renderable/Renderable.h"
+
 #include "Platform/General/Resources/Material.h"
 
 #include "Platform/General/Utils/MeduzaHelper.h"
@@ -126,29 +129,35 @@ void meduza::renderer::RendererGL::Render(const Camera& a_camera)
     m_count = 0;
 }
 
-void meduza::renderer::RendererGL::Draw(drawable::Drawable* a_drawable)
+void meduza::renderer::RendererGL::Submit(Renderable& a_renderable)
 {
-    auto drawData = a_drawable->GetDrawData();
+    meduza::DrawData* drawData = new meduza::DrawData();
+
+    drawData->m_material = &a_renderable.GetMaterial();
+
+    math::Vec3 pos = a_renderable.GetTransform().Position();
+    math::Vec3 scale = a_renderable.GetTransform().GetPixelScale();
+
+    drawData->m_position = glm::vec3(pos.m_x, pos.m_y, pos.m_z);
+    drawData->m_size = glm::vec3(scale.m_x, scale.m_y, scale.m_z);
+
+    drawData->m_shaderId = a_renderable.GetMaterial().GetShaderID();
+    auto c = a_renderable.GetMaterial().GetData("a_colour");
+    drawData->m_colour = glm::vec4(c.at(0), c.at(1), c.at(2), c.at(3));
+
     m_stats.m_drawables++;
 
     if (Cull(math::Vec2(drawData->m_position.x, drawData->m_position.y), math::Vec2(drawData->m_size.x, drawData->m_size.y)))
     {
         m_drawData.push_back(drawData);
     }
-
 }
 
-void meduza::renderer::RendererGL::Submit(std::vector<drawable::Drawable*> a_drawables)
+void meduza::renderer::RendererGL::Submit(Scene& a_scene)
 {
-    for (auto d : a_drawables)
+    for (auto r : a_scene.GetRenderables())
     {
-        auto drawData = d->GetDrawData();
-        m_stats.m_drawables++;
-
-        if (Cull(math::Vec2(drawData->m_position.x, drawData->m_position.y), math::Vec2(drawData->m_size.x, drawData->m_size.y)))
-        {
-            m_drawData.push_back(drawData);
-        }
+        Submit(*r);
     }
 }
 
@@ -168,15 +177,6 @@ void meduza::renderer::RendererGL::PreRender()
         auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(m_shaderID));
         s->Bind();
         s->UploadUniformMat4("u_viewProjection", m_viewProjection);
-
-        int slot = 0;
-        for (auto t : m_textures)
-        {
-            t->Bind(slot);
-            std::string location = "u_texture[" + std::to_string(slot) + "]";
-            s->UploadUniformInt(location, slot);
-            slot++;
-        }
 
         // upload instance buffer data:
         glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
@@ -222,48 +222,7 @@ void meduza::renderer::RendererGL::CreateInstances()
         data.m_position = drawData->m_position;
         data.m_size = drawData->m_size;
 
-        auto tC = drawData->m_textCoords;
-
-        if (m_textureId != drawData->m_textureId)
-        {
-            m_textureId = drawData->m_textureId;
-            m_cachedTexture = TextureLibrary::GetTexture(drawData->m_textureId);      
-        }
-
-        float textureID = 0;
-        bool exists = false;
-        for (auto t : m_textures)
-        {
-            if (textureID >= MAX_TEXTURES)
-            {
-                ME_GFX_LOG("Can only use 16 differt textures currently!");
-                textureID = 0;
-                exists = true;
-                break;
-            }
-
-            if (t == m_cachedTexture)
-            {
-                exists = true;
-                break;
-            }
-            textureID++;
-        }
-        if (!exists)
-        {
-            m_textures.push_back(m_cachedTexture);
-        }
-
-        math::Vec4 rect = { tC.x, tC.y, tC.z, tC.w };
-        math::Vec2 size = { float(m_cachedTexture->GetWidth()), float(m_cachedTexture->GetHeight()) };
-        math::Vec4 textCoord = utils::TextureUtils::GetTextureCoords(rect, size);
-
-        data.m_textureCoords = glm::vec4(textCoord.m_x, textCoord.m_y, textCoord.m_z, textCoord.m_w);
-    
         data.m_colour = drawData->m_colour;
-
-        data.m_textureId = textureID;
-
         m_instances[m_count] = data;
         m_count++;
     }
@@ -283,7 +242,6 @@ bool meduza::renderer::RendererGL::Cull(math::Vec2 a_pos, math::Vec2 a_size)
     {
         return false;
     }
-
 
     return true;
 }

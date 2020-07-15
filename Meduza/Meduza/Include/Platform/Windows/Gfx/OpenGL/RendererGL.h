@@ -5,10 +5,10 @@
 namespace meduza
 {
 	class Texture;
+	class MeshGL;
 
 	namespace renderer
 	{
-		class MeshGL;
 		class Context;
 		class ContextGL;
 
@@ -21,8 +21,9 @@ namespace meduza
 			void Clear(Colour) override;
 			void Render(const Camera&) override;
 
-			void Draw(drawable::Drawable*) override;
-			void Submit(std::vector<drawable::Drawable*>) override;
+			void Submit(Renderable&) override;
+			void Submit(Scene&) override;
+
 			DrawStatistics GetDrawStatistics() const override;
 		private:
 			void PreRender();

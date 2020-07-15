@@ -3,21 +3,22 @@
 
 layout(location = 0) in vec3 a_pos;
 
-uniform mat4 u_viewProjection;
+layout(location = 1) in vec4 a_texture;
+layout(location = 2) in vec4 a_colour;
+layout(location = 3) in vec3 a_postion;
+layout(location = 4) in vec3 a_size;
 
-uniform vec4 u_colour;
-uniform vec3 u_position;
-uniform vec3 u_size;
+uniform mat4 u_viewProjection;
 
 out vec4 v_colour;
 
 void main()
 {
-    v_colour = u_colour;
+    v_colour = a_colour;
 
-    vec3 pos = a_pos * u_size;
+    vec3 pos = a_pos * a_size;
 
-    gl_Position = u_viewProjection * vec4(pos.x + u_position.x, pos.y + u_position.y, pos.z + u_position.z, 1.0);
+    gl_Position = u_viewProjection * vec4(pos.x + a_postion.x, pos.y + a_postion.y, pos.z + a_postion.z, 1.0);
 }
 
 

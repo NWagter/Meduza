@@ -35,7 +35,7 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 	queueDesc.NodeMask = 0;
 
-	m_queue = new CommandQueueDx12(queueDesc, *m_device);
+	m_queue = new CommandQueueDx12(queueDesc, m_device);
 
 	m_hwnd = a_hwnd;
 

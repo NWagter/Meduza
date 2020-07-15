@@ -5,7 +5,10 @@
 #define OPTICK
 
 #include <Meduza.h>
-#include <Drawable/Sprite.h>
+
+#include <Renderable/Renderable2D.h>
+#include <Scene/Scene.h>
+
 #include <Gfx/Animator2D.h>
 #include <Event/EventSystem.h>
 #include <Util/Timer.h>
@@ -39,29 +42,27 @@ void Sandbox::Run()
 {
 	meduza::math::Vec3 playerPos(0, 0, 0);
 	float camMoveSpeed = 50;
-	
-	meduza::Texture& charTexture = m_meduza->GetTexture("Data/Textures/chara_hero.png");
-	meduza::Shader& textureShader = m_meduza->GetShader("Data/Shaders/TextureShader.glsl");
-	meduza::Material& playerMaterial = m_meduza->CreateMaterial(&textureShader, "PlayerMaterial");
 
-	meduza::drawable::Sprite player;
+	meduza::Shader& colourShader = m_meduza->GetShader("Data/Shaders/DefaultShader.glsl");
+	meduza::Material& testMaterial = m_meduza->CreateMaterial(&colourShader, "testMaterial");
 
-	player.UseShader(textureShader);
-	player.UseTexture(charTexture);
+	float c[] = { 1, 0, 0, 1 };
+	m_meduza->SetMaterialParameter(testMaterial, "a_colour", c);
 
-	if (&playerMaterial != nullptr)
-	{
-		float colour[] = { 1,1,0,1 };
-		m_meduza->SetMaterialParameter(playerMaterial, "a_colour", colour);
-		player.SetMaterial(playerMaterial);
+	meduza::Renderable2D renderable;
+	renderable.SetMaterial(testMaterial);
+	renderable.SetUnitsPerPixel(128);
 
-	}
-
-	player.SetSize(64, 64);
-	player.SetUV(0, 0, 48, 48);
-	player.SetPosition(0, 0);
+	meduza::Renderable2D renderable2;
+	renderable2.SetMaterial(testMaterial);
+	renderable2.GetTransform().SetPosition(meduza::math::Vec2(-128, -64));
+	renderable2.GetTransform().SetScale(meduza::math::Vec2(0.5f, 0.5f));
 
 	meduza::utils::Timer<float> deltaTimer;
+
+	meduza::Scene scene;
+	scene.Submit(renderable);
+	scene.Submit(renderable2);
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -73,11 +74,7 @@ void Sandbox::Run()
 
 		m_meduza->SetCamEye(playerPos);
 
-		if (m_meduza->GetCurrentAPI() == meduza::API::OpenGL)
-		{
-			player.SetPosition(playerPos.m_x, playerPos.m_y);
-			player.Submit(m_meduza->GetGfx());
-		}
+		m_meduza->Submit(scene);
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{

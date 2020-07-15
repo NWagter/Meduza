@@ -13,18 +13,25 @@
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
 
+meduza::renderer::RendererDx12* meduza::renderer::RendererDx12::ms_renderer = nullptr;
+
 meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 {
+	if (ms_renderer == nullptr)
+	{
+		ms_renderer = this;
+	}
+
 	m_context = dynamic_cast<ContextDx12*>(&a_context);
 
-	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, *m_context->GetDevice(), m_context->GetSize());
+	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, m_context->GetSize());
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-	m_rtv = new DescriptorDx12(desc, *m_context->GetDevice());
+	m_rtv = new DescriptorDx12(desc);
 	m_context->CreateRTV(*m_rtv);
 
 	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
@@ -33,7 +40,7 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvDesc.NodeMask = 0;
 
-	m_srv = new DescriptorDx12(srvDesc, *m_context->GetDevice());
+	m_srv = new DescriptorDx12(srvDesc);
 
 	m_context->GetQueue()->ExecuteList(m_cmdList);
 	m_context->GetQueue()->Flush();
@@ -46,6 +53,7 @@ meduza::renderer::RendererDx12::~RendererDx12()
 	delete m_cmdList;
 	delete m_rtv;
 	delete m_srv;
+	ms_renderer = nullptr;
 }
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
@@ -74,14 +82,12 @@ void meduza::renderer::RendererDx12::Render(const Camera&)
 	PopulateBuffers();
 }
 
-void meduza::renderer::RendererDx12::Draw(drawable::Drawable*)
+void meduza::renderer::RendererDx12::Submit(Renderable&)
 {
-
 }
 
-void meduza::renderer::RendererDx12::Submit(std::vector<drawable::Drawable*>)
+void meduza::renderer::RendererDx12::Submit(Scene&)
 {
-
 }
 
 void meduza::renderer::RendererDx12::PreRender()
@@ -130,4 +136,14 @@ meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() cons
 meduza::renderer::DrawStatistics meduza::renderer::RendererDx12::GetDrawStatistics() const
 {
 	return m_stats;
+}
+
+meduza::renderer::RendererDx12* meduza::renderer::RendererDx12::GetRenderer()
+{
+	if (ms_renderer == nullptr)
+	{
+		ME_CORE_ASSERT_M(true, "There is no Renderer!");
+		return nullptr;
+	}
+	return ms_renderer;
 }

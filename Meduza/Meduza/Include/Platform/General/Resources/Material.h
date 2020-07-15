@@ -12,6 +12,7 @@ namespace meduza
 		Material(Shader&);
 		~Material();
 
+		unsigned int GetShaderID();
 		void SetShader(Shader&);
 		void SetData(std::string, float[]);
 		void SetData(std::string, unsigned int[]);

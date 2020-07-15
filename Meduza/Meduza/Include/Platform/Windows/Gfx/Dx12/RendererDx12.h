@@ -21,14 +21,18 @@ namespace meduza
 			void Clear(Colour) override;
 			void Render(const Camera&) override;
 
-			void Draw(drawable::Drawable*) override;
-			void Submit(std::vector<drawable::Drawable*>) override;
+			void Submit(Renderable&) override;
+			void Submit(Scene&) override;
 
 			ContextDx12& GetContext() const;
 			CommandListDx12& GetCmd() const;
 
 			DrawStatistics GetDrawStatistics() const override;
+
+			static RendererDx12* GetRenderer();
+
 		private:
+			static RendererDx12* ms_renderer;
 			void PreRender();
 			void PopulateBuffers();
 

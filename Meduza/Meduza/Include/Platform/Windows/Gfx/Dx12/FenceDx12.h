@@ -10,7 +10,7 @@ namespace meduza
 		class FenceDx12
 		{
 		public:
-			FenceDx12(DeviceDx12&);
+			FenceDx12(DeviceDx12* = nullptr);
 			~FenceDx12();
 
 			void WaitForFence(UINT);

@@ -4,12 +4,10 @@ namespace meduza
 {
 	namespace renderer
 	{
-		class DeviceDx12;
-
 		class DescriptorDx12
 		{
 		public:
-			DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC, DeviceDx12&);
+			DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC);
 			~DescriptorDx12();
 
 			inline unsigned int GetSize() const { return m_heapSize; }

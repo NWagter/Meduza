@@ -11,7 +11,7 @@ namespace meduza
 		class CommandQueueDx12
 		{
 		public:
-			CommandQueueDx12(D3D12_COMMAND_QUEUE_DESC, DeviceDx12&);
+			CommandQueueDx12(D3D12_COMMAND_QUEUE_DESC, DeviceDx12* = nullptr);
 			~CommandQueueDx12();
 
 			inline D3D12_COMMAND_QUEUE_DESC GetDesc() { return m_description; }

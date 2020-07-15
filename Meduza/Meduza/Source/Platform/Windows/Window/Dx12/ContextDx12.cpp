@@ -7,11 +7,13 @@
 
 #include "Math/MeduzaMath.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 #include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
+#include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 
 meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 {
@@ -51,11 +53,15 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 
 meduza::renderer::ContextDx12::~ContextDx12()
 {
+	m_queue->Flush();
+	if (RendererDx12::GetRenderer() != nullptr)
+	{
+		SwapBuffer();
+	}
 
 	m_frameBuffer->ReleaseAndGetAddressOf();
 	m_swapChain.ReleaseAndGetAddressOf();
 
-	m_queue->Flush();
 	delete m_queue;
 
 	delete m_device;
@@ -63,6 +69,16 @@ meduza::renderer::ContextDx12::~ContextDx12()
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
+	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		GetCurrentBuffer(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
+	auto cmd = RendererDx12::GetRenderer()->GetCmd();
+
+	cmd.GetList()->ResourceBarrier(1, &barrier);
+
+	GetQueue()->ExecuteList(&cmd);
+
 	m_swapChain->Present(1, 0);
 
 	//Fence with Queue

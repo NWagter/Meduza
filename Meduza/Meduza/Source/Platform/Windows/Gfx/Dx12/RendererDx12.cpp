@@ -24,7 +24,7 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 	m_context = dynamic_cast<ContextDx12*>(&a_context);
 
-	m_cmdList = new CommandListDx12(m_context->GetQueue()->GetDesc().Type, m_context->GetSize());
+	m_cmdList.push_back(new CommandListDx12(m_context->GetQueue()->GetDesc().Type, m_context->GetSize()));
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
@@ -42,7 +42,7 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 	m_srv = new DescriptorDx12(srvDesc);
 
-	m_context->GetQueue()->ExecuteList(m_cmdList);
+	m_context->GetQueue()->ExecuteList(&GetCmd());
 	m_context->GetQueue()->Flush();
 
 	ME_GFX_LOG("DirectX 12 Succesfully loaded!\n");
@@ -50,7 +50,10 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 meduza::renderer::RendererDx12::~RendererDx12()
 {	
-	delete m_cmdList;
+	for (auto c : m_cmdList)
+	{
+		delete c;
+	}
 	delete m_rtv;
 	delete m_srv;
 	ms_renderer = nullptr;
@@ -58,23 +61,24 @@ meduza::renderer::RendererDx12::~RendererDx12()
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 {
-	auto commandAllocator = m_cmdList->GetCurrentAllocator(m_context->GetCurrentFrameIndex());
+	auto cmd = GetCmd();
+	auto commandAllocator = cmd.GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
 
 	commandAllocator->Reset();
-	m_cmdList->Reset(m_context->GetCurrentFrameIndex());
+	cmd.Reset(m_context->GetCurrentFrameIndex());
 
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		backBuffer,
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
+	cmd.GetList()->ResourceBarrier(1, &barrier);
 	
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_context->GetCurrentFrameIndex(), m_rtv->GetSize());
-	m_cmdList->GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
+	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
 
-	m_cmdList->GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
+	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
 }
 
 void meduza::renderer::RendererDx12::Render(const Camera&)
@@ -98,17 +102,11 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 {
 	PreRender();
 
-	m_cmdList->SetViewPort(1);
+	GetCmd().SetViewPort(1);
 	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
-	m_cmdList->GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
+	GetCmd().GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
 
-	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		m_context->GetCurrentBuffer(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
-	m_cmdList->GetList()->ResourceBarrier(1, &barrier);
-
-	m_context->GetQueue()->ExecuteList(m_cmdList);
 }
 
 meduza::renderer::ContextDx12& meduza::renderer::RendererDx12::GetContext() const
@@ -122,15 +120,16 @@ meduza::renderer::ContextDx12& meduza::renderer::RendererDx12::GetContext() cons
 	return *m_context; 
 }
 
-meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd() const
+meduza::renderer::CommandListDx12& meduza::renderer::RendererDx12::GetCmd(int a_id) const
 {
-	if (m_cmdList == nullptr)
+	auto cmd = m_cmdList.at(a_id);
+	if (cmd == nullptr)
 	{
 		ME_GFX_ASSERT_M(0, "No Command List Available!");
-		return*m_cmdList;
+		return*cmd;
 	}
 
-	return *m_cmdList;
+	return *cmd;
 }
 
 meduza::renderer::DrawStatistics meduza::renderer::RendererDx12::GetDrawStatistics() const

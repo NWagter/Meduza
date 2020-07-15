@@ -14,13 +14,13 @@
 
 meduza::Renderable2D::Renderable2D()
 {
-    CreateQuad();
+   // CreateQuad();
     m_transform.SetUnitsPerPixel(m_pixelsPerUnit);
 }
 
 meduza::Renderable2D::Renderable2D(float a_pPU)
 {
-    CreateQuad();
+    //CreateQuad();
     m_pixelsPerUnit = a_pPU;
     m_transform.SetUnitsPerPixel(m_pixelsPerUnit);
 }
@@ -56,7 +56,7 @@ void meduza::Renderable2D::CreateQuad()
 
 meduza::Renderable2D::~Renderable2D()
 {
-    delete m_mesh;
+
 }
 
 void meduza::Renderable2D::SetMesh(Mesh&)
@@ -68,4 +68,9 @@ void meduza::Renderable2D::SetMesh(Mesh&)
 void meduza::Renderable2D::SetUnitsPerPixel(float a_uPP)
 {
     m_transform.SetUnitsPerPixel(a_uPP);
+}
+
+void meduza::Renderable2D::Reload()
+{
+    //Base Reload
 }

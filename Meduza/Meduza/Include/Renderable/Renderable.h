@@ -20,9 +20,10 @@ namespace meduza
 		virtual void SetMesh(Mesh&);
 		void SetMaterial(Material&);
 
+		virtual void Reload();
 	protected:
 		Transform m_transform;
-		Mesh* m_mesh;
-		Material* m_material;
+		Mesh* m_mesh = nullptr;
+		Material* m_material = nullptr;
 	};
 }

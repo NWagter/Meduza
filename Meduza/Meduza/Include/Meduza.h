@@ -104,6 +104,7 @@ namespace meduza
 		math::Vec2 GetWindowSize() const;
 	private:
 		void SetupRenderer(meduza::API);
+		void SetupRenderer();
 
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;
@@ -115,6 +116,7 @@ namespace meduza
 		Camera* m_camera = nullptr;
 		editor::IEditor* m_editorMenu = nullptr;
 
+		bool m_reload = false;
 
 	};
 }

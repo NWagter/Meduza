@@ -22,6 +22,9 @@
 
 #include "Editor/EditorMenu.h"
 
+#include "Renderable/Renderable.h"
+#include "Scene/Scene.h"
+
 meduza::Meduza::Meduza(API a_api)
 {
 	SetupRenderer(a_api);
@@ -63,6 +66,7 @@ void meduza::Meduza::SetupRenderer(meduza::API a_api)
 
 	renderer::Renderer::RendererData* data = nullptr;
 	data = renderer::Renderer::CreateRenderer(math::Vec2(1080, 720));
+
 	m_eventSystem = new EventSystem();
 
 	if (data == nullptr)
@@ -80,10 +84,44 @@ void meduza::Meduza::SetupRenderer(meduza::API a_api)
 
 	m_shaderLibrary = new ShaderLibrary();
 	m_materialLibrary = new MaterialLibrary();
-	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
 	m_textureLibrary = new TextureLibrary();
 
 	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, m_window->GetSize(), math::Vec2(-1, 1));
+
+	delete data;
+
+}
+
+void meduza::Meduza::SetupRenderer()
+{
+	renderer::Renderer::RendererData* data = nullptr;
+	data = renderer::Renderer::CreateRenderer(math::Vec2(1080, 720));
+
+	if (m_eventSystem == nullptr)
+	{
+		m_eventSystem = new EventSystem();
+	}
+
+	if (data == nullptr)
+	{
+		ME_CORE_ASSERT_M(0, "Failed to generate Renderer!");
+	}
+	else
+	{
+		m_renderer = data->renderer;
+		m_window = data->window;
+		m_window->SetEventSystem(*m_eventSystem);
+	}
+
+	ME_LOG("Window title = %s \n", GetWindowName().c_str());
+
+	if (MeduzaHelper::ms_imGui)
+	{
+		m_window->EnableImGui();
+		m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+		m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
+	}
+	m_reload = true;
 
 	delete data;
 }
@@ -200,6 +238,11 @@ void meduza::Meduza::Submit(Renderable& a_renderable)
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
+		if (m_reload)
+		{
+			a_renderable.Reload();
+		}
+
 		m_renderer->Submit(a_renderable);
 	}
 }
@@ -208,12 +251,30 @@ void meduza::Meduza::Submit(Scene& a_scene)
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
+		if (m_reload)
+		{
+			a_scene.Reload();
+		}
+
 		m_renderer->Submit(a_scene);
 	}
 }
 
 void meduza::Meduza::Clear()
 {
+	if (static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
+	{
+		delete m_editorMenu;
+		m_editorMenu = nullptr;
+		delete m_imGuiRenderer;
+		m_imGuiRenderer = nullptr;
+		delete m_renderer;
+		m_renderer = nullptr;
+		delete m_window;
+		m_window = nullptr;
+		SetupRenderer();
+	}
+
 
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
@@ -223,23 +284,6 @@ void meduza::Meduza::Clear()
 		{
 			m_imGuiRenderer->Clear();
 		}
-	}
-
-	if (static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
-	{
-		delete m_editorMenu;
-		m_editorMenu = nullptr;
-		delete m_imGuiRenderer;
-		m_imGuiRenderer = nullptr;
-
-		delete m_renderer;
-		m_renderer = nullptr;
-
-		m_renderer = renderer::Renderer::SwitchAPI(*m_window);
-		m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
-		m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
-
-		Clear();
 	}
 }
 
@@ -255,6 +299,10 @@ void meduza::Meduza::SwapBuffers()
 		}
 
 		m_window->SwapBuffers();
+		if (m_reload)
+		{
+			m_reload = false;
+		}
 	}
 }
 

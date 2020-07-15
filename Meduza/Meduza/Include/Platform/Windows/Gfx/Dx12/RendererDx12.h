@@ -25,7 +25,7 @@ namespace meduza
 			void Submit(Scene&) override;
 
 			ContextDx12& GetContext() const;
-			CommandListDx12& GetCmd() const;
+			CommandListDx12& GetCmd(int = 0) const;
 
 			DrawStatistics GetDrawStatistics() const override;
 
@@ -38,7 +38,7 @@ namespace meduza
 
 			ContextDx12* m_context;
 
-			CommandListDx12* m_cmdList;
+			std::vector<CommandListDx12*> m_cmdList;
 			DescriptorDx12* m_rtv;
 			DescriptorDx12* m_srv;
 			DrawStatistics m_stats;

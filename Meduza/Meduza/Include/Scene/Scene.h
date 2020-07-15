@@ -15,6 +15,7 @@ namespace meduza
 
 		inline std::vector<Renderable*> GetRenderables() const { return m_renderables; }
 
+		void Reload();
 		void Destroy();
 
 	private:

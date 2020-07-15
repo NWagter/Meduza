@@ -14,6 +14,7 @@ namespace meduza
 		void SetMesh(Mesh&) override;
 		void SetUnitsPerPixel(float);
 
+		void Reload() override;
 	private:
 		void CreateQuad();
 

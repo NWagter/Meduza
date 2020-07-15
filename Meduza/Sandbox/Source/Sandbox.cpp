@@ -44,25 +44,59 @@ void Sandbox::Run()
 	float camMoveSpeed = 50;
 
 	meduza::Shader& colourShader = m_meduza->GetShader("Data/Shaders/DefaultShader.glsl");
+
 	meduza::Material& testMaterial = m_meduza->CreateMaterial(&colourShader, "testMaterial");
+	meduza::Material& testMaterial2 = m_meduza->CreateMaterial(&colourShader, "testMaterial2");
 
-	float c[] = { 1, 0, 0, 1 };
+	float c[] = { 0, 0, 0, 1 };
 	m_meduza->SetMaterialParameter(testMaterial, "a_colour", c);
+	float c2[] = { 1, 1, 1, 1 };
+	m_meduza->SetMaterialParameter(testMaterial2, "a_colour", c2);
 
-	meduza::Renderable2D renderable;
-	renderable.SetMaterial(testMaterial);
-	renderable.SetUnitsPerPixel(128);
+	meduza::Scene scene;
 
-	meduza::Renderable2D renderable2;
-	renderable2.SetMaterial(testMaterial);
-	renderable2.GetTransform().SetPosition(meduza::math::Vec2(-128, -64));
-	renderable2.GetTransform().SetScale(meduza::math::Vec2(0.5f, 0.5f));
+	//Dirty checkboard generator..
+	bool checker = false;
+	for (int x = 0; x < 32; x++)
+	{
+		for (int y = 0; y < 32; y++)
+		{
+			meduza::Renderable2D* renderable = new meduza::Renderable2D();
+			
+			if (checker)
+			{
+				if (y % 2)
+				{
+					renderable->SetMaterial(testMaterial);
+				}
+				else
+				{
+					renderable->SetMaterial(testMaterial2);
+				}
+			}
+			else
+			{
+				if (y % 2)
+				{
+					renderable->SetMaterial(testMaterial2);
+				}
+				else
+				{
+					renderable->SetMaterial(testMaterial);
+				}
+			}
+
+			renderable->SetUnitsPerPixel(16);
+
+			renderable->GetTransform().SetPosition(meduza::math::Vec2(float(x * 16), float(y * 16)));
+
+			scene.Submit(*renderable);
+		}
+		checker = !checker;
+	}
 
 	meduza::utils::Timer<float> deltaTimer;
 
-	meduza::Scene scene;
-	scene.Submit(renderable);
-	scene.Submit(renderable2);
 
 	while (m_meduza->IsWindowActive())
 	{
@@ -100,4 +134,6 @@ void Sandbox::Run()
 
 		m_meduza->SwapBuffers();
 	}
+
+	scene.Destroy();
 }

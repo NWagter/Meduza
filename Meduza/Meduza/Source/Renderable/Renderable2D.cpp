@@ -56,7 +56,7 @@ void meduza::Renderable2D::CreateQuad()
 
 meduza::Renderable2D::~Renderable2D()
 {
-
+    delete m_mesh;
 }
 
 void meduza::Renderable2D::SetMesh(Mesh&)

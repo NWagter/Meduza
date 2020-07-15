@@ -34,8 +34,10 @@ namespace meduza
 
 			unsigned int m_textureId = 0;
 			meduza::Texture* m_cachedTexture = nullptr;
+			meduza::Material* m_cachedMaterial = nullptr;
+			std::vector<float> m_c;
 
-			std::vector<DrawData*> m_drawData;
+			std::vector<DrawData> m_drawData;
 
 			std::vector<meduza::Texture*> m_textures;
 			std::vector<InstanceData2D> m_instances = std::vector<InstanceData2D>(MAX_INSTANCES);

@@ -131,23 +131,28 @@ void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 
 void meduza::renderer::RendererGL::Submit(Renderable& a_renderable)
 {
-    meduza::DrawData* drawData = new meduza::DrawData();
+    meduza::DrawData drawData = meduza::DrawData();
 
-    drawData->m_material = &a_renderable.GetMaterial();
+    drawData.m_material = &a_renderable.GetMaterial();
+
+    if (m_cachedMaterial == nullptr || m_cachedMaterial != &a_renderable.GetMaterial())
+    {
+        m_cachedMaterial = &a_renderable.GetMaterial();
+        m_c = m_cachedMaterial->GetData("a_colour");
+    }
 
     math::Vec3 pos = a_renderable.GetTransform().Position();
     math::Vec3 scale = a_renderable.GetTransform().GetPixelScale();
 
-    drawData->m_position = glm::vec3(pos.m_x, pos.m_y, pos.m_z);
-    drawData->m_size = glm::vec3(scale.m_x, scale.m_y, scale.m_z);
+    drawData.m_position = glm::vec3(pos.m_x, pos.m_y, pos.m_z);
+    drawData.m_size = glm::vec3(scale.m_x, scale.m_y, scale.m_z);
 
-    drawData->m_shaderId = a_renderable.GetMaterial().GetShaderID();
-    auto c = a_renderable.GetMaterial().GetData("a_colour");
-    drawData->m_colour = glm::vec4(c.at(0), c.at(1), c.at(2), c.at(3));
+    drawData.m_shaderId = m_cachedMaterial->GetShaderID();    
+    drawData.m_colour = glm::vec4(m_c[0], m_c[1], m_c[2], m_c[3]);
 
     m_stats.m_drawables++;
 
-    if (Cull(math::Vec2(drawData->m_position.x, drawData->m_position.y), math::Vec2(drawData->m_size.x, drawData->m_size.y)))
+    if (Cull(math::Vec2(drawData.m_position.x, drawData.m_position.y), math::Vec2(drawData.m_size.x, drawData.m_size.y)))
     {
         m_drawData.push_back(drawData);
     }
@@ -214,15 +219,15 @@ void meduza::renderer::RendererGL::CreateInstances()
 
         if (m_shaderID <= 0)
         {
-            m_shaderID = drawData->m_shaderId;
+            m_shaderID = drawData.m_shaderId;
         }
 
         InstanceData2D data;
 
-        data.m_position = drawData->m_position;
-        data.m_size = drawData->m_size;
+        data.m_position = drawData.m_position;
+        data.m_size = drawData.m_size;
 
-        data.m_colour = drawData->m_colour;
+        data.m_colour = drawData.m_colour;
         m_instances[m_count] = data;
         m_count++;
     }

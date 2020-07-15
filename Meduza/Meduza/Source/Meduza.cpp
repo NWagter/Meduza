@@ -247,12 +247,12 @@ void meduza::Meduza::SwapBuffers()
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
+		m_renderer->Render(*m_camera);
+
 		if (MeduzaHelper::ms_imGui)
 		{
 			m_imGuiRenderer->Render();
 		}
-
-		m_renderer->Render(*m_camera);
 
 		m_window->SwapBuffers();
 	}

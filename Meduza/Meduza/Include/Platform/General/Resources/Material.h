@@ -18,6 +18,7 @@ namespace meduza
 		void SetData(std::string, unsigned int[]);
 		std::vector<float> GetData(std::string);
 
+		void Reload();
 	private:
 		void ScaleBuffer();
 

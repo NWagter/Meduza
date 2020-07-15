@@ -18,6 +18,7 @@ namespace meduza
 		static bool UnLoadTexture(std::string);
 		static bool UnLoadTexture(unsigned int, bool = true);
 
+		void Reload();
 	private:
 		static TextureLibrary* m_instance;
 		std::unordered_map<unsigned int, Texture*> m_textures;

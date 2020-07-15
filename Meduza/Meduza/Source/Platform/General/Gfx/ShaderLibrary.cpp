@@ -164,3 +164,11 @@ bool meduza::ShaderLibrary::UnLoadShader(unsigned int a_id, bool a_message)
 
 	return true;
 }
+
+void meduza::ShaderLibrary::Reload()
+{
+	for (auto s : m_shaders)
+	{
+		s.second->Reload();
+	}
+}

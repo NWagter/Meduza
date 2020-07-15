@@ -15,6 +15,7 @@ namespace meduza
 		static meduza::Material* CreateMaterial(Shader&, std::string);
 		static meduza::Material* GetMaterial(unsigned int);
 
+		void Reload();
 	private:
 		static MaterialLibrary* m_instance;
 		std::unordered_map<unsigned int, Material*> m_materials;

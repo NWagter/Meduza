@@ -13,6 +13,8 @@ namespace meduza
 		ShaderGL(utils::ShaderSources, ShaderLayout);
 		~ShaderGL() override;
 
+		void Reload() override;
+
 		void Bind() override;
 		void UnBind() override;
 

@@ -13,6 +13,8 @@ namespace meduza
 		}
 		virtual ~Shader() = default;
 
+		virtual void Reload() = 0;
+
 		virtual void Bind() = 0;
 		virtual void UnBind() = 0;
 		inline void SetLayout(meduza::ShaderLayout a_layout) { m_shaderLayout = a_layout; }

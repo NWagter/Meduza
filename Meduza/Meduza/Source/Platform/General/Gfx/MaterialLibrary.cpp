@@ -60,3 +60,11 @@ meduza::Material* meduza::MaterialLibrary::GetMaterial(unsigned int a_id)
 	ME_GFX_LOG("Material doesn't exists! \n");
 	return nullptr;
 }
+
+void meduza::MaterialLibrary::Reload()
+{
+	for (auto m : m_materials)
+	{
+		m.second->Reload();
+	}
+}

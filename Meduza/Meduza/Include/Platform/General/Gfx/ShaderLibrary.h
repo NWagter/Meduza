@@ -20,6 +20,7 @@ namespace meduza
 		static bool UnLoadShader(std::string);
 		static bool UnLoadShader(unsigned int, bool = true);
 
+		void Reload();
 	private:
 		static ShaderLibrary* m_instance;
 		std::unordered_map<unsigned int, Shader*> m_shaders;

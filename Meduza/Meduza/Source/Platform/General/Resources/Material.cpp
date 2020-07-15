@@ -89,6 +89,10 @@ std::vector<float> meduza::Material::GetData(std::string a_name)
 	return data;
 }
 
+void meduza::Material::Reload()
+{
+}
+
 void meduza::Material::ScaleBuffer()
 {
 	unsigned int scale = 0;

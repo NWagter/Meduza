@@ -30,6 +30,13 @@ meduza::ShaderGL::~ShaderGL()
     glDeleteShader(m_program);
 }
 
+void meduza::ShaderGL::Reload()
+{
+    glDeleteShader(m_program);
+
+    m_program = GenerateShader();
+}
+
 void meduza::ShaderGL::Bind()
 {
     glUseProgram(m_program);

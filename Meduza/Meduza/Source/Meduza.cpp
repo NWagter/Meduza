@@ -121,7 +121,11 @@ void meduza::Meduza::SetupRenderer()
 		m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 		m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
 	}
+
 	m_reload = true;
+	m_shaderLibrary->Reload();
+	m_materialLibrary->Reload();
+	m_textureLibrary->Reload();
 
 	delete data;
 }

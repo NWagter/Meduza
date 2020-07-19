@@ -104,7 +104,7 @@ namespace meduza
 		math::Vec2 GetWindowSize() const;
 	private:
 		void SetupRenderer(meduza::API);
-		void SetupRenderer();
+		void SetupRenderer(math::Vec2);
 
 		renderer::Renderer* m_renderer = nullptr;
 		ImGuiRenderer* m_imGuiRenderer = nullptr;

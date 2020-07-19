@@ -61,6 +61,15 @@ namespace meduza
 		glm::vec3 m_vertexPos;
 	};
 
+	struct Vertex2 : public Vertex
+	{
+		Vertex2(float a_x, float a_y, float a_z, float a_r, float a_g, float a_b, float a_a) : Vertex(a_x,a_y,a_z)
+		{
+			m_colour = glm::vec4(a_r, a_g, a_b, a_a);
+		}
+		glm::vec4 m_colour;
+	};
+
 #define MAX_INSTANCES 4800
 #define MAX_TEXTURES 16
 

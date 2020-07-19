@@ -5,6 +5,9 @@
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 
+#include "Platform/Windows/Resources/Dx12/MeshDx12.h"
+#include "Platform/Windows/Resources/Dx12/ShaderDx12.h"
+
 meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_type, math::Vec2 a_size)
 {
 	auto device = RendererDx12::GetRenderer()->GetContext().GetDevice();
@@ -32,12 +35,20 @@ meduza::renderer::CommandListDx12::~CommandListDx12()
 
 void meduza::renderer::CommandListDx12::Close()
 {
+	m_closedList = true;
 	m_cmdList->Close();
 }
 
-void meduza::renderer::CommandListDx12::Reset(unsigned int a_frame)
+void meduza::renderer::CommandListDx12::Reset(unsigned int a_frame, ShaderDx12* a_shader)
 {
-	GetList()->Reset(m_cmdAllocator[a_frame].Get(), nullptr);
+	if (a_shader == nullptr)
+	{
+		GetList()->Reset(m_cmdAllocator[a_frame].Get(), nullptr);
+	}
+	else
+	{
+		GetList()->Reset(m_cmdAllocator[a_frame].Get(), a_shader->GetPSO().Get());
+	}
 }
 
 void meduza::renderer::CommandListDx12::SetViewPort(int a_port)
@@ -64,6 +75,23 @@ void meduza::renderer::CommandListDx12::SetViewAndScissor(math::Vec2 a_size)
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::GetCurrentAllocator(unsigned int a_id)
 {
 	return m_cmdAllocator[a_id];
+}
+
+void meduza::renderer::CommandListDx12::Draw(MeshDx12* a_mesh)
+{
+	if (a_mesh->m_vertexBufferGPU.Get() == nullptr)
+	{
+		a_mesh->GenerateBuffers();
+	}
+
+	D3D12_VERTEX_BUFFER_VIEW vBufferView = a_mesh->VertexBufferView();
+	D3D12_INDEX_BUFFER_VIEW iBufferView = a_mesh->IndexBufferView();
+	m_cmdList->IASetVertexBuffers(0, 1, &vBufferView);
+	m_cmdList->IASetIndexBuffer(&iBufferView);
+	m_cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
+	//m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(D3D12_COMMAND_LIST_TYPE a_type)

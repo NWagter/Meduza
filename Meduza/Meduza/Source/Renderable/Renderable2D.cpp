@@ -14,13 +14,13 @@
 
 meduza::Renderable2D::Renderable2D()
 {
-   // CreateQuad();
+   CreateQuad();
     m_transform.SetUnitsPerPixel(m_pixelsPerUnit);
 }
 
 meduza::Renderable2D::Renderable2D(float a_pPU)
 {
-    //CreateQuad();
+    CreateQuad();
     m_pixelsPerUnit = a_pPU;
     m_transform.SetUnitsPerPixel(m_pixelsPerUnit);
 }
@@ -35,8 +35,8 @@ void meduza::Renderable2D::CreateQuad()
         Vertex(0.5f, -0.5f, 0.0f)
     };
     std::vector<int> indices = {
-        3, 1, 0,
-        3, 0, 2
+        0, 1, 3,
+        0, 3, 2
     };
     VertexAttributes att;
     att.AddAttribute(Attributes::vec3Attribute);
@@ -45,12 +45,10 @@ void meduza::Renderable2D::CreateQuad()
     {
     case meduza::API::OpenGL:
         m_mesh = new MeshGL(0, vertices, indices, att);
-
         break;
     case meduza::API::DirectX12:
         m_mesh = new MeshDx12(0, vertices, indices, att);
         break;
-
     }
 }
 
@@ -73,4 +71,7 @@ void meduza::Renderable2D::SetUnitsPerPixel(float a_uPP)
 void meduza::Renderable2D::Reload()
 {
     //Base Reload
+    Renderable::Reload();
+
+    CreateQuad();
 }

@@ -29,5 +29,7 @@ void meduza::Renderable::SetMaterial(Material& a_material)
 
 void meduza::Renderable::Reload()
 {
+	delete m_mesh;
 
+	//Reload the mesh for new API
 }

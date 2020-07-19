@@ -17,16 +17,11 @@
 
 meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 {
-
 #if defined(MEDUZA_DEBUG)
 
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
-
-	Microsoft::WRL::ComPtr<IDXGIDebug> dxgiControler;
-	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiControler));
-	dxgiControler->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_SUMMARY));
 #endif
 
 	m_device = new DeviceDx12();
@@ -91,12 +86,6 @@ void meduza::renderer::ContextDx12::SwapBuffer()
 	{
 		Resize(m_size);
 	}
-
-#if defined(MEDUZA_DEBUG)
-	Microsoft::WRL::ComPtr<IDXGIDebug> dxgiControler;
-	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiControler));
-	dxgiControler->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_FLAGS(DXGI_DEBUG_RLO_SUMMARY));
-#endif
 }
 
 void meduza::renderer::ContextDx12::Resize(math::Vec2 a_size)
@@ -114,6 +103,7 @@ void meduza::renderer::ContextDx12::Resize(math::Vec2 a_size)
 	ClearRTV();
 
 	m_swapChain->ResizeBuffers(GS_FRAMEBUFFERS, int(a_size.m_x), int(a_size.m_y), m_backBufferFormat, swapChainDesc.Flags);
+	RendererDx12::GetRenderer()->Resize(m_size);
 
 
 	CreateRTV(*m_rtv);
@@ -192,7 +182,7 @@ void meduza::renderer::ContextDx12::CreateSwapChain()
 	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-
+	
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain1;
 	m_device->GetFactory()->CreateSwapChainForHwnd(
 		m_queue->GetQueue(),

@@ -31,6 +31,12 @@ meduza::MeshDx12::~MeshDx12()
 void meduza::MeshDx12::GenerateBuffers()
 {
 	auto cmd = &renderer::RendererDx12::GetRenderer()->GetCmd();
+
+	if (cmd->m_closedList)
+	{
+		return;
+	}
+
 	auto device = renderer::RendererDx12::GetRenderer()->GetContext().GetDevice();
 
 	if (device == nullptr || cmd == nullptr)
@@ -60,14 +66,6 @@ void meduza::MeshDx12::GenerateBuffers()
 
 D3D12_VERTEX_BUFFER_VIEW meduza::MeshDx12::VertexBufferView() const
 {
-	auto cmd = &renderer::RendererDx12::GetRenderer()->GetCmd();
-	auto device = renderer::RendererDx12::GetRenderer()->GetContext().GetDevice();
-
-	if (device == nullptr || cmd == nullptr)
-	{
-		ME_GFX_ASSERT_M(0, "No Buffers available!");
-	}
-
 	D3D12_VERTEX_BUFFER_VIEW vBufferView;
 	vBufferView.BufferLocation = m_vertexBufferGPU->GetGPUVirtualAddress();
 	vBufferView.StrideInBytes = m_vertexByteStride;
@@ -78,14 +76,6 @@ D3D12_VERTEX_BUFFER_VIEW meduza::MeshDx12::VertexBufferView() const
 
 D3D12_INDEX_BUFFER_VIEW meduza::MeshDx12::IndexBufferView() const
 {
-	auto cmd = &renderer::RendererDx12::GetRenderer()->GetCmd();
-	auto device = renderer::RendererDx12::GetRenderer()->GetContext().GetDevice();
-
-	if (device == nullptr || cmd == nullptr)
-	{
-		ME_GFX_ASSERT_M(0, "No Buffers available!");
-	}
-
 	D3D12_INDEX_BUFFER_VIEW indexBufferView;
 	indexBufferView.BufferLocation = m_indexBufferGPU->GetGPUVirtualAddress();
 	indexBufferView.Format = m_indexFormat;

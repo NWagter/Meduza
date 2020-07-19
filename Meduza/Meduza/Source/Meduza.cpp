@@ -92,10 +92,10 @@ void meduza::Meduza::SetupRenderer(meduza::API a_api)
 
 }
 
-void meduza::Meduza::SetupRenderer()
+void meduza::Meduza::SetupRenderer(math::Vec2 a_size)
 {
 	renderer::Renderer::RendererData* data = nullptr;
-	data = renderer::Renderer::CreateRenderer(math::Vec2(1080, 720));
+	data = renderer::Renderer::CreateRenderer(a_size);
 
 	if (m_eventSystem == nullptr)
 	{
@@ -268,6 +268,7 @@ void meduza::Meduza::Clear()
 {
 	if (static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
 	{
+		math::Vec2 size = m_window->GetSize();
 		delete m_editorMenu;
 		m_editorMenu = nullptr;
 		delete m_imGuiRenderer;
@@ -276,7 +277,7 @@ void meduza::Meduza::Clear()
 		m_renderer = nullptr;
 		delete m_window;
 		m_window = nullptr;
-		SetupRenderer();
+		SetupRenderer(size);
 	}
 
 

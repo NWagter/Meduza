@@ -5,12 +5,15 @@
 
 namespace meduza
 {
+	class ShaderDx12;
+
 	namespace renderer
 	{
 		class Context;
 		class ContextDx12;
 		class CommandListDx12;
 		class DescriptorDx12;
+		class DepthStencilDx12;
 
 		class RendererDx12 : public Renderer
 		{
@@ -20,6 +23,7 @@ namespace meduza
 
 			void Clear(Colour) override;
 			void Render(const Camera&) override;
+			void Resize(math::Vec2);
 
 			void Submit(Renderable&) override;
 			void Submit(Scene&) override;
@@ -39,9 +43,13 @@ namespace meduza
 			ContextDx12* m_context;
 
 			std::vector<CommandListDx12*> m_cmdList;
+			DepthStencilDx12* m_dsBuffer;
 			DescriptorDx12* m_rtv;
 			DescriptorDx12* m_srv;
 			DrawStatistics m_stats;
+
+			std::vector<Renderable*> m_renderables;
+			ShaderDx12* m_lastShader = nullptr;
 		};
 	}
 }

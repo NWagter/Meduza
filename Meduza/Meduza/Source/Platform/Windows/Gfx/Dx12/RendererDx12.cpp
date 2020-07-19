@@ -12,6 +12,15 @@
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
+#include "Platform/Windows/Gfx/Dx12/DepthStencilDx12.h"
+
+#include "Renderable/Renderable.h"
+#include "Scene/Scene.h"
+
+#include "Platform/Windows/Resources/Dx12/MeshDx12.h"
+#include "Platform/General/Resources/Material.h"
+#include "Platform/General/Gfx/ShaderLibrary.h"
+#include "Platform/Windows/Resources/Dx12/ShaderDx12.h"
 
 meduza::renderer::RendererDx12* meduza::renderer::RendererDx12::ms_renderer = nullptr;
 
@@ -42,6 +51,9 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 	m_srv = new DescriptorDx12(srvDesc);
 
+	math::Vec2 size = m_context->GetSize();
+	m_dsBuffer = new DepthStencilDx12(int(size.m_x), int(size.m_y));
+
 	m_context->GetQueue()->ExecuteList(&GetCmd());
 	m_context->GetQueue()->Flush();
 
@@ -56,6 +68,7 @@ meduza::renderer::RendererDx12::~RendererDx12()
 	}
 	delete m_rtv;
 	delete m_srv;
+	delete m_dsBuffer;
 	ms_renderer = nullptr;
 }
 
@@ -66,7 +79,11 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	auto backBuffer = m_context->GetCurrentBuffer();
 
 	commandAllocator->Reset();
-	cmd.Reset(m_context->GetCurrentFrameIndex());
+	cmd.Reset(m_context->GetCurrentFrameIndex(), m_lastShader);
+	for (auto cL : m_cmdList)
+	{
+		cL->m_closedList = false;
+	}
 
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		backBuffer,
@@ -76,9 +93,14 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_context->GetCurrentFrameIndex(), m_rtv->GetSize());
-	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, 1, nullptr);
+
+	D3D12_CPU_DESCRIPTOR_HANDLE dvsHandle = m_dsBuffer->DepthStencilView();
 
 	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
+	cmd.GetList()->ClearDepthStencilView(dvsHandle,
+		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+
+	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, false, &dvsHandle);
 }
 
 void meduza::renderer::RendererDx12::Render(const Camera&)
@@ -86,12 +108,22 @@ void meduza::renderer::RendererDx12::Render(const Camera&)
 	PopulateBuffers();
 }
 
-void meduza::renderer::RendererDx12::Submit(Renderable&)
+void meduza::renderer::RendererDx12::Resize(math::Vec2 a_size)
 {
+	m_dsBuffer->SetBuffer(int(a_size.m_x), int(a_size.m_y));
 }
 
-void meduza::renderer::RendererDx12::Submit(Scene&)
+void meduza::renderer::RendererDx12::Submit(Renderable& a_renderable)
 {
+	m_renderables.push_back(&a_renderable);
+}
+
+void meduza::renderer::RendererDx12::Submit(Scene& a_scene)
+{
+	for (auto r : a_scene.GetRenderables())
+	{
+		Submit(*r);
+	}
 }
 
 void meduza::renderer::RendererDx12::PreRender()
@@ -102,10 +134,20 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 {
 	PreRender();
 
-	GetCmd().SetViewPort(1);
 	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
 	GetCmd().GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
 
+
+	GetCmd().SetViewPort(1);
+
+	for (auto r : m_renderables)
+	{
+		m_lastShader = static_cast<ShaderDx12*>(ShaderLibrary::GetShader(r->GetMaterial().GetShaderID()));
+		m_lastShader->Bind();
+
+		MeshDx12* m = static_cast<MeshDx12*>(&r->GetMesh());
+		GetCmd().Draw(m);
+	}
 
 }
 

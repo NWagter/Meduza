@@ -10,31 +10,44 @@
 #include <glm/gtc/type_ptr.hpp>
 #pragma warning(pop)
 
-meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::GetHashedID(a_source.m_shaderName))
+meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source) : Shader(utils::GetHashedID(a_source.m_shaderName), API::OpenGL)
 {
     m_source = a_source;
 
-    m_program = GenerateShader();
+    if (MeduzaHelper::ms_activeAPI == API::OpenGL)
+    {
+        m_program = GenerateShader();
+    }
 }
 
-meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source, ShaderLayout a_layout) : Shader(utils::GetHashedID(a_source.m_shaderName))
+meduza::ShaderGL::ShaderGL(utils::ShaderSources a_source, ShaderLayout a_layout) : Shader(utils::GetHashedID(a_source.m_shaderName), API::OpenGL)
 {
     m_source = a_source;
     m_shaderLayout = a_layout;
     
-	m_program = GenerateShader();
+    if (MeduzaHelper::ms_activeAPI == API::OpenGL)
+    {
+        m_program = GenerateShader();
+    }
 }
 
 meduza::ShaderGL::~ShaderGL()
 {
-    glDeleteShader(m_program);
+    if (m_generated)
+    {
+        glDeleteShader(m_program);
+    }
 }
 
 void meduza::ShaderGL::Reload()
 {
+    m_generated = false;
     glDeleteShader(m_program);
 
-    m_program = GenerateShader();
+    if (MeduzaHelper::ms_activeAPI == API::OpenGL)
+    {
+        m_program = GenerateShader();
+    }
 }
 
 void meduza::ShaderGL::Bind()
@@ -152,5 +165,6 @@ unsigned int meduza::ShaderGL::GenerateShader()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    m_generated = true;
 	return shaderProgram;
 }

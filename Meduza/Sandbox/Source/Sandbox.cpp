@@ -14,9 +14,9 @@
 #include <Util/Timer.h>
 
 #ifdef WINDOWS
-	meduza::API const g_api = meduza::API::OpenGL;
+	meduza::API g_api = meduza::API::DirectX12;
 #elif defined(LINUX)
-	meduza::API const g_api = meduza::API::ES2;
+	meduza::API g_api = meduza::API::ES2;
 #endif
 
 
@@ -43,17 +43,20 @@ void Sandbox::Run()
 	meduza::math::Vec3 playerPos(0, 0, 0);
 	float camMoveSpeed = 50;
 
-	meduza::Shader& colourShader = m_meduza->GetShader("Data/Shaders/DefaultShader.glsl");
+	meduza::Shader& colourShaderGLSL = m_meduza->GetShader("Data/Shaders/GLSL/GL_DefaultShader.glsl");
+	meduza::Shader& colourShaderHLSL = m_meduza->GetShader("Data/Shaders/HLSL/DX_DefaultShader.hlsl");
 
-	meduza::Material& testMaterial = m_meduza->CreateMaterial(&colourShader, "testMaterial");
-	meduza::Material& testMaterial2 = m_meduza->CreateMaterial(&colourShader, "testMaterial2");
+	meduza::Material& testMaterial = m_meduza->CreateMaterial(&colourShaderGLSL, "testMaterial");
+	meduza::Material& testMaterial2 = m_meduza->CreateMaterial(&colourShaderGLSL, "testMaterial2");
+	meduza::Material& testMaterial3 = m_meduza->CreateMaterial(&colourShaderHLSL, "testMaterial3");
 
 	float c[] = { 0, 0, 0, 1 };
 	m_meduza->SetMaterialParameter(testMaterial, "a_colour", c);
 	float c2[] = { 1, 1, 1, 1 };
 	m_meduza->SetMaterialParameter(testMaterial2, "a_colour", c2);
 
-	meduza::Scene scene;
+	meduza::Scene sceneGLSL;
+	meduza::Scene sceneHLSL;
 
 	//Dirty checkboard generator..
 	bool checker = false;
@@ -62,7 +65,7 @@ void Sandbox::Run()
 		for (int y = 0; y < 32; y++)
 		{
 			meduza::Renderable2D* renderable = new meduza::Renderable2D();
-			
+
 			if (checker)
 			{
 				if (y % 2)
@@ -90,25 +93,40 @@ void Sandbox::Run()
 
 			renderable->GetTransform().SetPosition(meduza::math::Vec2(float(x * 16), float(y * 16)));
 
-			scene.Submit(*renderable);
+			sceneGLSL.Submit(*renderable);
 		}
 		checker = !checker;
 	}
 
+	meduza::Renderable2D* renderable2 = new meduza::Renderable2D();
+	renderable2->SetMaterial(testMaterial3);
+	renderable2->SetUnitsPerPixel(16);
+	renderable2->GetTransform().SetPosition(meduza::math::Vec2(0, 0));
+	sceneHLSL.Submit(*renderable2);
+
 	meduza::utils::Timer<float> deltaTimer;
 
+	meduza::API currentAPI = m_meduza->GetCurrentAPI();
 
 	while (m_meduza->IsWindowActive())
 	{
 		const float deltaSeconds = deltaTimer.GetElapsedTime();
 
+		currentAPI = m_meduza->GetCurrentAPI();
 		m_meduza->Clear();
 		m_meduza->Peek();
 		m_meduza->Update(deltaSeconds);
 
 		m_meduza->SetCamEye(playerPos);
 
-		m_meduza->Submit(scene);
+		if (currentAPI == meduza::API::OpenGL)
+		{
+			m_meduza->Submit(sceneGLSL);
+		}
+		else
+		{
+			m_meduza->Submit(sceneHLSL);
+		}
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))
 		{
@@ -131,9 +149,8 @@ void Sandbox::Run()
 			playerPos.m_x -= (camMoveSpeed * deltaSeconds);
 		}
 
-
 		m_meduza->SwapBuffers();
 	}
 
-	scene.Destroy();
+	sceneGLSL.Destroy();
 }

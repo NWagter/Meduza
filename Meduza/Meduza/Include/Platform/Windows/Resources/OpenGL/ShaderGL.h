@@ -36,5 +36,6 @@ namespace meduza
 
 		unsigned int GenerateShader();
 		unsigned int m_program;
+		bool m_generated = false;
 	};
 }

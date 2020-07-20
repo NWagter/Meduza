@@ -11,7 +11,7 @@
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 
-meduza::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, VertexAttributes a_atts) : meduza::Mesh(a_id, a_vert, a_ind, a_atts)
+meduza::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<uint16_t> a_ind, VertexAttributes a_atts) : meduza::Mesh(a_id, a_vert, a_ind, a_atts)
 {
 	GenerateBuffers();
 }
@@ -62,26 +62,20 @@ void meduza::MeshDx12::GenerateBuffers()
 		cmd->GetList(), m_indices.data(), m_indexBufferByteSize, m_indexBufferUploader);
 
 	m_indexFormat = DXGI_FORMAT_R16_UINT;
-}
 
-D3D12_VERTEX_BUFFER_VIEW meduza::MeshDx12::VertexBufferView() const
-{
 	D3D12_VERTEX_BUFFER_VIEW vBufferView;
 	vBufferView.BufferLocation = m_vertexBufferGPU->GetGPUVirtualAddress();
 	vBufferView.StrideInBytes = m_vertexByteStride;
 	vBufferView.SizeInBytes = m_vertexBufferByteSize;
 
-	return vBufferView;
-}
+	m_vBufferView = vBufferView;
 
-D3D12_INDEX_BUFFER_VIEW meduza::MeshDx12::IndexBufferView() const
-{
-	D3D12_INDEX_BUFFER_VIEW indexBufferView;
-	indexBufferView.BufferLocation = m_indexBufferGPU->GetGPUVirtualAddress();
-	indexBufferView.Format = m_indexFormat;
-	indexBufferView.SizeInBytes = m_indexBufferByteSize;
+	D3D12_INDEX_BUFFER_VIEW iBufferView;
+	iBufferView.BufferLocation = m_indexBufferGPU->GetGPUVirtualAddress();
+	iBufferView.Format = m_indexFormat;
+	iBufferView.SizeInBytes = m_indexBufferByteSize;
 
-	return indexBufferView;
+	m_iBufferView = iBufferView;
 }
 
 void meduza::MeshDx12::DisposeUploaders()

@@ -80,6 +80,8 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 
 	commandAllocator->Reset();
 	cmd.Reset(m_context->GetCurrentFrameIndex(), m_lastShader);
+	m_lastShader = nullptr;
+
 	for (auto cL : m_cmdList)
 	{
 		cL->m_closedList = false;
@@ -96,11 +98,14 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 
 	D3D12_CPU_DESCRIPTOR_HANDLE dvsHandle = m_dsBuffer->DepthStencilView();
 
+	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, false, &dvsHandle);
+
 	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
+
 	cmd.GetList()->ClearDepthStencilView(dvsHandle,
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
-	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, false, &dvsHandle);
+
 }
 
 void meduza::renderer::RendererDx12::Render(const Camera&)
@@ -137,13 +142,15 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
 	GetCmd().GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
 
-
 	GetCmd().SetViewPort(1);
 
 	for (auto r : m_renderables)
 	{
-		m_lastShader = static_cast<ShaderDx12*>(ShaderLibrary::GetShader(r->GetMaterial().GetShaderID()));
-		m_lastShader->Bind();
+		if(m_lastShader == nullptr || m_lastShader->GetId() != r->GetMaterial().GetShaderID()) // only change when shader / pso changes
+		{
+			m_lastShader = static_cast<ShaderDx12*>(ShaderLibrary::GetShader(r->GetMaterial().GetShaderID()));
+			m_lastShader->Bind();
+		}
 
 		MeshDx12* m = static_cast<MeshDx12*>(&r->GetMesh());
 		GetCmd().Draw(m);

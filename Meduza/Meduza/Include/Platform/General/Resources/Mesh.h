@@ -7,7 +7,7 @@ namespace meduza
 	class Mesh
 	{
 	public:
-		Mesh(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes);
+		Mesh(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes);
 		virtual ~Mesh() = default;
 			
 		inline unsigned int GetVerticesSize() const { return unsigned int(m_vertices.size()); }
@@ -15,7 +15,7 @@ namespace meduza
 	protected:
 		unsigned int m_meshId;
 		std::vector<Vertex> m_vertices;
-		std::vector<int> m_indices;
+		std::vector<uint16_t> m_indices;
 
 		unsigned int m_vertexByteStride = 0;
 		unsigned int m_vertexBufferByteSize = 0;

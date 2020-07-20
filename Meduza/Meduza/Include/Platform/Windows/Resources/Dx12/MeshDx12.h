@@ -7,17 +7,12 @@ namespace meduza
 	class MeshDx12 : public Mesh
 	{
 	public:
-		MeshDx12(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes);
+		MeshDx12(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes);
 		~MeshDx12() override;
 
 		void GenerateBuffers();
 
-		D3D12_VERTEX_BUFFER_VIEW VertexBufferView()const;
-		D3D12_INDEX_BUFFER_VIEW IndexBufferView()const;
-
 		void DisposeUploaders();
-
-		DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R16_UINT;
 
 		Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;
 		Microsoft::WRL::ComPtr<ID3DBlob> m_indexBufferCPU = nullptr;
@@ -28,5 +23,13 @@ namespace meduza
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBufferUploader = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferUploader = nullptr;
 
+		D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() const { return m_vBufferView; };
+		D3D12_INDEX_BUFFER_VIEW GetIndexBuffer() const { return m_iBufferView; };
+
+	private:
+		DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R32_UINT;
+
+		D3D12_VERTEX_BUFFER_VIEW m_vBufferView;
+		D3D12_INDEX_BUFFER_VIEW m_iBufferView;
 	};
 }

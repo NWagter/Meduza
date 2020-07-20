@@ -58,7 +58,6 @@ meduza::renderer::ContextDx12::~ContextDx12()
 	m_swapChain.ReleaseAndGetAddressOf();
 
 	delete m_queue;
-
 	delete m_device;
 }
 
@@ -74,7 +73,7 @@ void meduza::renderer::ContextDx12::SwapBuffer()
 
 	GetQueue()->ExecuteList(&cmd);
 
-	m_swapChain->Present(1, 0);
+	m_swapChain->Present(0, 0);
 
 	//Fence with Queue
 

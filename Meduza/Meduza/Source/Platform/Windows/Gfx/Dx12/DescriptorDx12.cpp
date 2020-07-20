@@ -13,6 +13,13 @@ meduza::renderer::DescriptorDx12::DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC a_de
 	m_heapSize = device->GetDevice()->GetDescriptorHandleIncrementSize(a_desc.Type);
 }
 
+meduza::renderer::DescriptorDx12::DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC a_desc, DeviceDx12& a_device)
+{
+	auto device = &a_device;
+	device->GetDevice()->CreateDescriptorHeap(&a_desc, IID_PPV_ARGS(m_heap.GetAddressOf()));
+	m_heapSize = device->GetDevice()->GetDescriptorHandleIncrementSize(a_desc.Type);
+}
+
 meduza::renderer::DescriptorDx12::~DescriptorDx12()
 {
 	m_heap.ReleaseAndGetAddressOf();

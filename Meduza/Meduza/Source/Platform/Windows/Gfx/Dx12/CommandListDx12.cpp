@@ -84,14 +84,17 @@ void meduza::renderer::CommandListDx12::Draw(MeshDx12* a_mesh)
 		a_mesh->GenerateBuffers();
 	}
 
-	D3D12_VERTEX_BUFFER_VIEW vBufferView = a_mesh->VertexBufferView();
-	D3D12_INDEX_BUFFER_VIEW iBufferView = a_mesh->IndexBufferView();
-	m_cmdList->IASetVertexBuffers(0, 1, &vBufferView);
-	m_cmdList->IASetIndexBuffer(&iBufferView);
-	m_cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
-	//m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
+	D3D12_VERTEX_BUFFER_VIEW vBuffer = a_mesh->GetVertexBuffer();
+	m_cmdList->IASetVertexBuffers(0, 1, &vBuffer);
+	m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	D3D12_INDEX_BUFFER_VIEW iBuffer = a_mesh->GetIndexBuffer();
+	m_cmdList->IASetIndexBuffer(&iBuffer);
+
+	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
+	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(D3D12_COMMAND_LIST_TYPE a_type)

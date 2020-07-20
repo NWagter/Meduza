@@ -29,12 +29,12 @@ void meduza::Renderable2D::CreateQuad()
 {
     // Generate Quad
     std::vector<Vertex> vertices = {
-        Vertex(-0.5f,  0.5f, 0.0f),
-        Vertex(0.5f ,  0.5f, 0.0f),
-        Vertex(-0.5f, -0.5f, 0.0f),
-        Vertex(0.5f, -0.5f, 0.0f)
+		Vertex(-0.5f,  0.5f, 0.0f), // top left
+		Vertex(0.5f,  0.5f, 0.0f),  // top right
+		Vertex(-0.5f, -0.5f, 0.0f), // bottom left 
+		Vertex(0.5f, -0.5f, 0.0f), // bottom right 
     };
-    std::vector<int> indices = {
+    std::vector<uint16_t> indices = {
         0, 1, 3,
         0, 3, 2
     };

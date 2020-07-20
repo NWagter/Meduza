@@ -9,7 +9,7 @@ namespace meduza
 	class MeshGL : public Mesh
 	{
 	public:
-		MeshGL(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes, GLenum = GL_LINE);
+		MeshGL(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes, GLenum = GL_LINE);
 		~MeshGL() override;
 
 		void EnableMode();

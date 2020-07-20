@@ -57,7 +57,7 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     Vertex(-0.5f, -0.5f, 0.0f),  // bottom left
     Vertex(0.5f, -0.5f, 0.0f),  // bottom right
     };
-    std::vector<int> indices = {  // note that we start from 0!
+    std::vector<uint16_t> indices = {  // note that we start from 0!
        3, 1, 0,  // first Triangle
        3, 0, 2,   // second Triangle
     };

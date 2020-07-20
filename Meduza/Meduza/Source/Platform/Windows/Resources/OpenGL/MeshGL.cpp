@@ -4,7 +4,7 @@
 
 #include "Platform/Windows/Resources/OpenGL/MeshGL.h"
 
-meduza::MeshGL::MeshGL(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, VertexAttributes a_atts, GLenum a_mode) : meduza::Mesh(a_id, a_vert, a_ind, a_atts)
+meduza::MeshGL::MeshGL(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<uint16_t> a_ind, VertexAttributes a_atts, GLenum a_mode) : meduza::Mesh(a_id, a_vert, a_ind, a_atts)
 {
     m_mode = a_mode;
 	GenerateBuffers();

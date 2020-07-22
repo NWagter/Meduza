@@ -3,12 +3,28 @@
 #include "Platform/General/Gfx/Renderer.h"
 #include "Math/MeduzaMath.h"
 
+#include "UploadBufferDx12.h"
+
 namespace meduza
 {
 	class ShaderDx12;
 
 	namespace renderer
 	{
+		struct ConstBuffer
+		{
+			DirectX::XMFLOAT4X4 m_viewProjection = DirectX::XMFLOAT4X4(
+				1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f);
+
+			DirectX::XMFLOAT4 m_colour = { 1,0,1,1 };
+
+			DirectX::XMFLOAT3 m_position = { 0,0,0 };
+			DirectX::XMFLOAT3 m_scale = { 1,1,1 };
+		};
+
 		class Context;
 		class ContextDx12;
 		class CommandListDx12;
@@ -38,7 +54,7 @@ namespace meduza
 		private:
 			static RendererDx12* ms_renderer;
 			void PreRender();
-			void PopulateBuffers();
+			void PopulateBuffers(const Camera&);
 
 			ContextDx12* m_context;
 

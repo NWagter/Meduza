@@ -1,10 +1,13 @@
 //Buffer data from big to small.
 
 
-/*cbuffer cbPerObject : register(b0)
+cbuffer cbPerObject : register(b0)
 {
 	float4x4 viewProjection;
-};*/
+	float4 constColour = float4(1,1,1,1);
+	float3 position = float3(0, 0, 0);
+	float3 scale = float3(1, 1, 1);
+};
 
 
 struct VS_INPUT
@@ -22,8 +25,12 @@ VS_OUTPUT VS(VS_INPUT a_input)
 {
 	VS_OUTPUT outPut;
 
-	float4 pos = float4(a_input.pos, 1.f);
-	outPut.colour = float4(1, 1, 1, 1);
+	float3 newPos = a_input.pos * scale;
+
+	newPos = newPos + position;
+
+	float4 pos = mul(float4(newPos, 1.f), viewProjection);
+	outPut.colour = constColour;
 	outPut.pos = pos;
 
 	return outPut;

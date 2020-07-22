@@ -49,11 +49,14 @@ void Sandbox::Run()
 	meduza::Material& testMaterial = m_meduza->CreateMaterial(&colourShaderGLSL, "testMaterial");
 	meduza::Material& testMaterial2 = m_meduza->CreateMaterial(&colourShaderGLSL, "testMaterial2");
 	meduza::Material& testMaterial3 = m_meduza->CreateMaterial(&colourShaderHLSL, "testMaterial3");
+	meduza::Material& testMaterial4 = m_meduza->CreateMaterial(&colourShaderHLSL, "testMaterial4");
 
 	float c[] = { 0, 0, 0, 1 };
 	m_meduza->SetMaterialParameter(testMaterial, "a_colour", c);
+	m_meduza->SetMaterialParameter(testMaterial3, "a_colour", c);
 	float c2[] = { 1, 1, 1, 1 };
 	m_meduza->SetMaterialParameter(testMaterial2, "a_colour", c2);
+	m_meduza->SetMaterialParameter(testMaterial4, "a_colour", c2);
 
 	meduza::Scene sceneGLSL;
 	meduza::Scene sceneHLSL;
@@ -98,11 +101,46 @@ void Sandbox::Run()
 		checker = !checker;
 	}
 
-	meduza::Renderable2D* renderable2 = new meduza::Renderable2D();
-	renderable2->SetMaterial(testMaterial3);
-	renderable2->SetUnitsPerPixel(16);
-	renderable2->GetTransform().SetPosition(meduza::math::Vec2(0, 0));
-	sceneHLSL.Submit(*renderable2);
+	checker = false;
+	for (int x = 0; x < 32; x++)
+	{
+		for (int y = 0; y < 32; y++)
+		{
+			meduza::Renderable2D* renderable = new meduza::Renderable2D();
+
+			if (checker)
+			{
+				if (y % 2)
+				{
+					renderable->SetMaterial(testMaterial3);
+				}
+				else
+				{
+					renderable->SetMaterial(testMaterial4);
+				}
+			}
+			else
+			{
+				if (y % 2)
+				{
+					renderable->SetMaterial(testMaterial4);
+				}
+				else
+				{
+					renderable->SetMaterial(testMaterial3);
+				}
+			}
+
+			renderable->SetUnitsPerPixel(16);
+
+			renderable->GetTransform().SetPosition(meduza::math::Vec2(float(x * 16), float(y * 16)));
+
+			sceneHLSL.Submit(*renderable);
+		}
+		checker = !checker;
+	}
+
+
 
 	meduza::utils::Timer<float> deltaTimer;
 

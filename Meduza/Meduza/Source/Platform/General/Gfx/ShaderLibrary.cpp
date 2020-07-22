@@ -39,6 +39,10 @@ meduza::ShaderLibrary::~ShaderLibrary()
 
 meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::string a_fragPath)
 {
+	ShaderLayout layout;
+
+	layout.AddItem(ShaderLayoutItem::itemFloat4, "a_colour");
+	layout.AddItem(ShaderLayoutItem::itemFloat, "a_textureId");
 
 	std::string ext = utils::FileSystem::GetFileExtention(a_vertPath);
 
@@ -60,7 +64,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderGL(source);
+		m_instance->m_shaders[hashedId] = new ShaderGL(source, layout);
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vertPath.c_str());
 		return GetShader(hashedId);
 	}
@@ -80,7 +84,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_vertPath, a_fragPath);
+		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_vertPath, a_fragPath, layout);
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vertPath.c_str());
 		return GetShader(hashedId);
@@ -138,7 +142,7 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_path);
+		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_path, layout);
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 

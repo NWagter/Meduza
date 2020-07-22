@@ -7,10 +7,11 @@
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 
-meduza::ShaderDx12::ShaderDx12(unsigned int a_id, std::string a_path) : Shader(a_id, API::DirectX12)
+meduza::ShaderDx12::ShaderDx12(unsigned int a_id, std::string a_path, ShaderLayout a_layout) : Shader(a_id, API::DirectX12)
 {
 	m_vertShader = a_path;
 	m_pixShader = a_path;
+	m_shaderLayout = a_layout;
 
 	if (renderer::RendererDx12::GetRenderer() != nullptr)
 	{
@@ -18,10 +19,11 @@ meduza::ShaderDx12::ShaderDx12(unsigned int a_id, std::string a_path) : Shader(a
 	}
 }
 
-meduza::ShaderDx12::ShaderDx12(unsigned int a_id, std::string a_vsPath, std::string a_psPath) : Shader(a_id, API::DirectX12)
+meduza::ShaderDx12::ShaderDx12(unsigned int a_id, std::string a_vsPath, std::string a_psPath, ShaderLayout a_layout) : Shader(a_id, API::DirectX12)
 {
 	m_vertShader = a_vsPath;
 	m_pixShader = a_psPath;
+	m_shaderLayout = a_layout;
 
 	if (renderer::RendererDx12::GetRenderer() != nullptr)
 	{
@@ -33,6 +35,7 @@ void meduza::ShaderDx12::LoadShader()
 {
 	std::wstring vShader = std::wstring(m_vertShader.begin(), m_vertShader.end());
 	std::wstring pShader = std::wstring(m_pixShader.begin(), m_pixShader.end());
+
 
 	CreateVertexShader(vShader.c_str());
 	CreatePixelShader(pShader.c_str());

@@ -22,6 +22,8 @@
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/Windows/Resources/Dx12/ShaderDx12.h"
 
+#include "Camera/Camera.h"
+
 meduza::renderer::RendererDx12* meduza::renderer::RendererDx12::ms_renderer = nullptr;
 
 meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
@@ -108,9 +110,12 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 
 }
 
-void meduza::renderer::RendererDx12::Render(const Camera&)
+void meduza::renderer::RendererDx12::Render(const Camera& a_cam)
 {
-	PopulateBuffers();
+	m_stats.Reset();
+	PopulateBuffers(a_cam);
+
+	m_renderables.clear();
 }
 
 void meduza::renderer::RendererDx12::Resize(math::Vec2 a_size)
@@ -133,10 +138,44 @@ void meduza::renderer::RendererDx12::Submit(Scene& a_scene)
 
 void meduza::renderer::RendererDx12::PreRender()
 {
+
 }
 
-void meduza::renderer::RendererDx12::PopulateBuffers()
+void meduza::renderer::RendererDx12::PopulateBuffers(const Camera& a_cam)
 {
+	glm::mat4 camera = a_cam.GetViewProjection();
+
+
+	DirectX::XMMATRIX vProjection(
+		camera[0][0], camera[0][1], camera[0][2], camera[0][3],
+		camera[1][0], camera[1][1], camera[1][2], camera[1][3],
+		camera[2][0], camera[2][1], camera[2][2], camera[2][3],
+		camera[3][0], camera[3][1], camera[3][2], camera[3][3]
+	);
+
+	std::vector<UploadBufferDx12<ConstBuffer>*> constBuffer;
+
+	for (auto r : m_renderables)
+	{
+		//ViewProjection.
+		ConstBuffer cData = ConstBuffer();
+
+		DirectX::XMStoreFloat4x4(&cData.m_viewProjection, DirectX::XMMatrixTranspose(vProjection));
+
+		UploadBufferDx12<ConstBuffer>* cBuffer = new UploadBufferDx12<ConstBuffer>(true);
+
+		auto c = r->GetMaterial().GetData("a_colour");
+		cData.m_colour = DirectX::XMFLOAT4(c.at(0), c.at(1), c.at(2), c.at(3));
+		auto p = r->GetTransform().Position();
+		cData.m_position = DirectX::XMFLOAT3(p.m_xyz);
+		auto s = r->GetTransform().GetPixelScale();
+		cData.m_scale = DirectX::XMFLOAT3(s.m_xyz);
+
+		cBuffer->CopyData(0, cData);
+
+		constBuffer.push_back(cBuffer);
+	}
+
 	PreRender();
 
 	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
@@ -144,16 +183,24 @@ void meduza::renderer::RendererDx12::PopulateBuffers()
 
 	GetCmd().SetViewPort(1);
 
+	int i = 0;
 	for (auto r : m_renderables)
 	{
+		m_stats.m_drawables++;
+		m_stats.m_vertices += r->GetMesh().GetVerticesSize();
+		m_stats.m_drawCalls++;
+
 		if(m_lastShader == nullptr || m_lastShader->GetId() != r->GetMaterial().GetShaderID()) // only change when shader / pso changes
 		{
 			m_lastShader = static_cast<ShaderDx12*>(ShaderLibrary::GetShader(r->GetMaterial().GetShaderID()));
 			m_lastShader->Bind();
 		}
 
+		GetCmd().GetList()->SetGraphicsRootConstantBufferView(0, constBuffer.at(i)->GetResource().Get()->GetGPUVirtualAddress());
+
 		MeshDx12* m = static_cast<MeshDx12*>(&r->GetMesh());
 		GetCmd().Draw(m);
+		i++;
 	}
 
 }

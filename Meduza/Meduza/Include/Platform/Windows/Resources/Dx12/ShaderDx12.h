@@ -12,8 +12,8 @@ namespace meduza
 	class ShaderDx12 : public Shader
 	{
 	public:
-		ShaderDx12(unsigned int, std::string);
-		ShaderDx12(unsigned int, std::string, std::string);
+		ShaderDx12(unsigned int, std::string, ShaderLayout);
+		ShaderDx12(unsigned int, std::string, std::string, ShaderLayout);
 		void LoadShader();
 		~ShaderDx12() override;
 

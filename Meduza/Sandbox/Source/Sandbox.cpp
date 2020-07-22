@@ -63,9 +63,9 @@ void Sandbox::Run()
 
 	//Dirty checkboard generator..
 	bool checker = false;
-	for (int x = 0; x < 32; x++)
+	for (int x = 0; x < 5; x++)
 	{
-		for (int y = 0; y < 32; y++)
+		for (int y = 0; y < 5; y++)
 		{
 			meduza::Renderable2D* renderable = new meduza::Renderable2D();
 
@@ -102,9 +102,9 @@ void Sandbox::Run()
 	}
 
 	checker = false;
-	for (int x = 0; x < 32; x++)
+	for (int x = 0; x < 5; x++)
 	{
-		for (int y = 0; y < 32; y++)
+		for (int y = 0; y < 5; y++)
 		{
 			meduza::Renderable2D* renderable = new meduza::Renderable2D();
 
@@ -139,7 +139,6 @@ void Sandbox::Run()
 		}
 		checker = !checker;
 	}
-
 
 
 	meduza::utils::Timer<float> deltaTimer;

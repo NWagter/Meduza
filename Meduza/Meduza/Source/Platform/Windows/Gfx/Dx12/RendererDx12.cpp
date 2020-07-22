@@ -26,6 +26,8 @@
 
 meduza::renderer::RendererDx12* meduza::renderer::RendererDx12::ms_renderer = nullptr;
 
+std::vector<meduza::renderer::UploadBufferDx12<meduza::renderer::ConstBuffer>*> m_cBuffer;
+
 meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 {
 	if (ms_renderer == nullptr)
@@ -64,10 +66,18 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 
 meduza::renderer::RendererDx12::~RendererDx12()
 {	
+	for (auto c : m_cBuffer)
+	{
+		delete c;
+	}
+
+	m_cBuffer.clear();
+
 	for (auto c : m_cmdList)
 	{
 		delete c;
 	}
+
 	delete m_rtv;
 	delete m_srv;
 	delete m_dsBuffer;
@@ -76,6 +86,13 @@ meduza::renderer::RendererDx12::~RendererDx12()
 
 void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 {
+	for (auto c : m_cBuffer)
+	{
+		delete c;
+	}
+
+	m_cBuffer.clear();
+
 	auto cmd = GetCmd();
 	auto commandAllocator = cmd.GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
@@ -121,6 +138,7 @@ void meduza::renderer::RendererDx12::Render(const Camera& a_cam)
 void meduza::renderer::RendererDx12::Resize(math::Vec2 a_size)
 {
 	m_dsBuffer->SetBuffer(int(a_size.m_x), int(a_size.m_y));
+	GetCmd().SetViewAndScissor(a_size);
 }
 
 void meduza::renderer::RendererDx12::Submit(Renderable& a_renderable)
@@ -153,8 +171,6 @@ void meduza::renderer::RendererDx12::PopulateBuffers(const Camera& a_cam)
 		camera[3][0], camera[3][1], camera[3][2], camera[3][3]
 	);
 
-	std::vector<UploadBufferDx12<ConstBuffer>*> constBuffer;
-
 	for (auto r : m_renderables)
 	{
 		//ViewProjection.
@@ -173,7 +189,7 @@ void meduza::renderer::RendererDx12::PopulateBuffers(const Camera& a_cam)
 
 		cBuffer->CopyData(0, cData);
 
-		constBuffer.push_back(cBuffer);
+		m_cBuffer.push_back(cBuffer);
 	}
 
 	PreRender();
@@ -196,7 +212,7 @@ void meduza::renderer::RendererDx12::PopulateBuffers(const Camera& a_cam)
 			m_lastShader->Bind();
 		}
 
-		GetCmd().GetList()->SetGraphicsRootConstantBufferView(0, constBuffer.at(i)->GetResource().Get()->GetGPUVirtualAddress());
+		GetCmd().GetList()->SetGraphicsRootConstantBufferView(0, m_cBuffer.at(i)->GetResource().Get()->GetGPUVirtualAddress());
 
 		MeshDx12* m = static_cast<MeshDx12*>(&r->GetMesh());
 		GetCmd().Draw(m);

@@ -13,6 +13,8 @@ namespace meduza
 	{
 		struct ConstBuffer
 		{
+			ConstBuffer() = default;
+
 			DirectX::XMFLOAT4X4 m_viewProjection = DirectX::XMFLOAT4X4(
 				1.0f, 0.0f, 0.0f, 0.0f,
 				0.0f, 1.0f, 0.0f, 0.0f,

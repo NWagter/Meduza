@@ -1,6 +1,5 @@
 //Buffer data from big to small.
 
-
 cbuffer cbPerObject : register(b0)
 {
 	float4x4 viewProjection;

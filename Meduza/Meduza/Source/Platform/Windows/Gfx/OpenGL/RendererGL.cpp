@@ -50,65 +50,17 @@ meduza::renderer::RendererGL::RendererGL(Context& a_context)
     ME_GFX_LOG("OpenGl version : %s \n", version.c_str());
 
     glViewport(0, 0, int(a_context.GetSize().m_x), int(a_context.GetSize().m_y));
-
-    std::vector<Vertex> vertices = {
-    Vertex(-0.5f,  0.5f, 0.0f),   // top left 
-    Vertex(0.5f ,  0.5f, 0.0f),  // top right
-    Vertex(-0.5f, -0.5f, 0.0f),  // bottom left
-    Vertex(0.5f, -0.5f, 0.0f),  // bottom right
-    };
-    std::vector<uint16_t> indices = {  // note that we start from 0!
-       3, 1, 0,  // first Triangle
-       3, 0, 2,   // second Triangle
-    };
-
-    VertexAttributes att;
-    att.AddAttribute(Attributes::vec3Attribute);
-
-    m_quad = new MeshGL(0, vertices, indices, att, GL_LINE);
-
-    m_vbo = helper::HelperGL::CreateEmptyVbo(14, &m_instances[0]);
-
-// Instanced
-    glBindVertexArray(m_quad->GetVAO());
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 0));
-    glVertexAttribPointer(2, 4, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 4));
-    glVertexAttribPointer(3, 3, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 8));
-    glVertexAttribPointer(4, 3, GL_FLOAT, false, sizeof(InstanceData2D), (void*)(sizeof(float) * 11));
-    glVertexAttribPointer(5, 1, GL_FLOAT, false , sizeof(InstanceData2D), (void*)(sizeof(float) * 14));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-
-    // sent these attributes only once per instance to the program:
-    glVertexAttribDivisor(1, 1);
-    glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
-    glVertexAttribDivisor(4, 1);
-    glVertexAttribDivisor(5, 1);
-
-    glBindVertexArray(0);
-
-    glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(InstanceData2D) * MAX_INSTANCES, NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 meduza::renderer::RendererGL::~RendererGL()
 {
-    if (m_quad != nullptr)
-    {
-        delete m_quad;
-    }
+    
 }
 
 void meduza::renderer::RendererGL::Clear(Colour a_colour)
 {
+    m_renderables.clear();
+
 	glClearColor(a_colour.m_r, a_colour.m_g, a_colour.m_b, a_colour.m_a);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -117,44 +69,20 @@ void meduza::renderer::RendererGL::Render(const Camera& a_camera)
 {
     m_viewProjection = a_camera.GetViewProjection();
     m_camPos = a_camera.GetEyePos();
+
 	PopulateBuffers();
-
-// Reset the Instance buffers
-
-    m_drawData.clear();
-    m_instances.clear();
-    m_textures.clear();
-    m_instances.resize(MAX_INSTANCES);
-
-    m_count = 0;
 }
 
 void meduza::renderer::RendererGL::Submit(Renderable& a_renderable)
 {
-    meduza::DrawData drawData = meduza::DrawData();
-
-    drawData.m_material = &a_renderable.GetMaterial();
-
-    if (m_cachedMaterial == nullptr || m_cachedMaterial != &a_renderable.GetMaterial())
-    {
-        m_cachedMaterial = &a_renderable.GetMaterial();
-        m_c = m_cachedMaterial->GetData("a_colour");
-    }
-
-    math::Vec3 pos = a_renderable.GetTransform().Position();
-    math::Vec3 scale = a_renderable.GetTransform().GetPixelScale();
-
-    drawData.m_position = glm::vec3(pos.m_x, pos.m_y, pos.m_z);
-    drawData.m_size = glm::vec3(scale.m_x, scale.m_y, scale.m_z);
-
-    drawData.m_shaderId = m_cachedMaterial->GetShaderID();    
-    drawData.m_colour = glm::vec4(m_c[0], m_c[1], m_c[2], m_c[3]);
-
     m_stats.m_drawables++;
 
-    if (Cull(math::Vec2(drawData.m_position.x, drawData.m_position.y), math::Vec2(drawData.m_size.x, drawData.m_size.y)))
+   auto position = a_renderable.GetTransform().Position();
+   auto scale = a_renderable.GetTransform().GetPixelScale();
+
+    if (Cull(math::Vec2(position.m_x, position.m_y), math::Vec2(scale.m_x, scale.m_y)))
     {
-        m_drawData.push_back(drawData);
+        m_renderables.push_back(&a_renderable);
     }
 }
 
@@ -173,65 +101,61 @@ meduza::renderer::DrawStatistics meduza::renderer::RendererGL::GetDrawStatistics
 
 void meduza::renderer::RendererGL::PreRender()
 {
-    if (m_quad != nullptr && !m_drawData.empty())
-    {      
-        unsigned int instances = m_count;
-        m_stats.m_drawCalls++;
-        m_stats.m_vertices += int(m_quad->GetVerticesSize() * instances);
+    meduza::Material* lastMat = nullptr;
+    meduza::MeshGL* lastMesh = nullptr;
 
-        auto s = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(m_shaderID));
-        s->Bind();
-        s->UploadUniformMat4("u_viewProjection", m_viewProjection);
+    for (auto r : m_renderables)
+    {
+        m_stats.m_drawCalls++;
+        m_stats.m_vertices += int(r->GetMesh().GetVerticesSize());
+
+        if (m_lastShader == nullptr || r->GetMaterial().GetShaderID() != m_lastShader->GetId())
+        {
+            m_lastShader = dynamic_cast<ShaderGL*>(ShaderLibrary::GetShader(r->GetMaterial().GetShaderID()));
+        }
+
+        if (lastMat == nullptr || lastMat != &r->GetMaterial())
+        {
+            lastMat = &r->GetMaterial();
+        }
+
+        if (lastMesh == nullptr || lastMesh != &r->GetMesh())
+        {
+            lastMesh = dynamic_cast<MeshGL*>(&r->GetMesh());
+
+        }
+
+        m_lastShader->Bind();
+
+        auto c = lastMat->GetData("a_colour");
+        glm::vec4 colour = glm::vec4(c.at(0), c.at(1), c.at(2), c.at(3));
+        auto p = r->GetTransform().Position();
+        glm::vec3 position = glm::vec3(p.m_x,p.m_y,p.m_z);
+        auto s = r->GetTransform().GetPixelScale();
+        glm::vec3 scale = glm::vec3(s.m_x, s.m_y, s.m_z);
+
+        m_lastShader->UploadUniformMat4("u_viewProjection", m_viewProjection);
+        m_lastShader->UploadUniformVec4("u_colour", colour);
+        m_lastShader->UploadUniformVec3("u_pos", position);
+        m_lastShader->UploadUniformVec3("u_scale", scale);
+
 
         // upload instance buffer data:
-        glBindBuffer(GL_UNIFORM_BUFFER, m_vbo);
-        glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstanceData2D) * instances, m_instances.data());
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-        glBindVertexArray(m_quad->GetVAO());
+        glBindBuffer(GL_UNIFORM_BUFFER, lastMesh->GetVBO());
+        glBindVertexArray(lastMesh->GetVAO());
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // render objects in scene
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, m_quad->GetVerticesSize(), instances);
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, lastMesh->GetIndicesSize(), 1);
 
-        s->UnBind();
-        glBindVertexArray(0);
     }
 }
 
 void meduza::renderer::RendererGL::PopulateBuffers()
 {
     m_stats.Reset();
-    CreateInstances();
     PreRender();
-}
-
-void meduza::renderer::RendererGL::CreateInstances()
-{
-    for (auto drawData : m_drawData)
-    {
-
-        if (m_count >= MAX_INSTANCES)
-        {
-            break;
-        }
-
-        if (m_shaderID <= 0)
-        {
-            m_shaderID = drawData.m_shaderId;
-        }
-
-        InstanceData2D data;
-
-        data.m_position = drawData.m_position;
-        data.m_size = drawData.m_size;
-
-        data.m_colour = drawData.m_colour;
-        m_instances[m_count] = data;
-        m_count++;
-    }
-    m_stats.m_instances = m_count;
 }
 
 bool meduza::renderer::RendererGL::Cull(math::Vec2 a_pos, math::Vec2 a_size)

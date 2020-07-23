@@ -14,7 +14,7 @@
 #include <Util/Timer.h>
 
 #ifdef WINDOWS
-	meduza::API g_api = meduza::API::DirectX12;
+	meduza::API g_api = meduza::API::OpenGL;
 #elif defined(LINUX)
 	meduza::API g_api = meduza::API::ES2;
 #endif
@@ -100,6 +100,7 @@ void Sandbox::Run()
 		}
 		checker = !checker;
 	}
+	
 
 	checker = false;
 	for (int x = 0; x < 5; x++)
@@ -139,7 +140,6 @@ void Sandbox::Run()
 		}
 		checker = !checker;
 	}
-
 
 	meduza::utils::Timer<float> deltaTimer;
 

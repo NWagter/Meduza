@@ -9,6 +9,7 @@ namespace meduza
 	class ShaderGL : public Shader
 	{
 	public:
+		ShaderGL() = default;
 		ShaderGL(utils::ShaderSources);
 		ShaderGL(utils::ShaderSources, ShaderLayout);
 		~ShaderGL() override;

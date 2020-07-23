@@ -6,6 +6,8 @@ namespace meduza
 {
 	class Texture;
 	class MeshGL;
+	class ShaderGL;
+	class Material;
 
 	namespace renderer
 	{
@@ -28,26 +30,13 @@ namespace meduza
 		private:
 			void PreRender();
 			void PopulateBuffers();
-			void CreateInstances();
 			bool Cull(math::Vec2, math::Vec2);
-			
 
-			unsigned int m_textureId = 0;
-			meduza::Texture* m_cachedTexture = nullptr;
-			meduza::Material* m_cachedMaterial = nullptr;
 			std::vector<float> m_c;
 
-			std::vector<DrawData> m_drawData;
+			ShaderGL* m_lastShader = nullptr;
 
-			std::vector<meduza::Texture*> m_textures;
-			std::vector<InstanceData2D> m_instances = std::vector<InstanceData2D>(MAX_INSTANCES);
-
-			unsigned int m_count = 0;
-			unsigned int m_vbo = 0;
-			unsigned int m_shaderID = 0;
-
-			MeshGL* m_quad = nullptr;
-			unsigned int m_shaderprogram = 0;
+			std::vector<Renderable*> m_renderables;
 
 			ContextGL* m_context;
 

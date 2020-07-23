@@ -9,6 +9,7 @@ namespace meduza
 	class Material
 	{
 	public:
+		Material() = default;
 		Material(Shader&);
 		~Material();
 

@@ -10,7 +10,7 @@ namespace meduza
 		MeshDx12(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes);
 		~MeshDx12() override;
 
-		void GenerateBuffers();
+		void GenerateBuffers() override;
 
 		void DisposeUploaders();
 

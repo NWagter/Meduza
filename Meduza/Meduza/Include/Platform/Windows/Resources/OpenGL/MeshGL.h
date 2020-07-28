@@ -9,11 +9,11 @@ namespace meduza
 	class MeshGL : public Mesh
 	{
 	public:
-		MeshGL(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes, GLenum = GL_LINE);
+		MeshGL(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes, GLenum = GL_FILL);
 		~MeshGL() override;
 
 		void EnableMode();
-		void GenerateBuffers();
+		void GenerateBuffers() override;
 		void GenerateAttributes();
 
 		unsigned int GetVBO() const { return m_vbo; }

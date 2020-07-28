@@ -3,14 +3,13 @@
 cbuffer cbPerObject : register(b0)
 {
 	float4x4 viewProjection;
-	float3 position = float3(0, 0, 0);
-	float3 scale = float3(1, 1, 1);
 };
-
 
 struct VS_INPUT
 {
-	float3 pos : POSITION;
+	float3 vertPos : POSITION0;
+	float3 position : POSITION1;
+	float3 scale : PSIZE;
 	float4 colour : COLOR;
 };
 
@@ -24,9 +23,9 @@ VS_OUTPUT VS(VS_INPUT a_input)
 {
 	VS_OUTPUT outPut;
 
-	float3 newPos = a_input.pos * scale;
+	float3 newPos = a_input.vertPos * a_input.scale;
 
-	newPos = newPos + position;
+	newPos = newPos + a_input.position;
 
 	float4 pos = mul(float4(newPos, 1.f), viewProjection);
 	outPut.colour = a_input.colour;

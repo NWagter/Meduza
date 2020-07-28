@@ -148,6 +148,7 @@ void meduza::renderer::RendererGL::PreRender()
 
         // render objects in scene
         glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, lastMesh->GetIndicesSize(), 1);
+        glBindVertexArray(0);
 
     }
 }

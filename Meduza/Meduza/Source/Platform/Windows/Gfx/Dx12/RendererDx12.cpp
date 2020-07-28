@@ -92,6 +92,7 @@ void meduza::renderer::RendererDx12::Clear(Colour a_colour)
 	}
 
 	m_cBuffer.clear();
+	m_renderables.clear();
 
 	auto cmd = GetCmd();
 	auto commandAllocator = cmd.GetCurrentAllocator(m_context->GetCurrentFrameIndex());
@@ -131,8 +132,6 @@ void meduza::renderer::RendererDx12::Render(const Camera& a_cam)
 {
 	m_stats.Reset();
 	PopulateBuffers(a_cam);
-
-	m_renderables.clear();
 }
 
 void meduza::renderer::RendererDx12::Resize(math::Vec2 a_size)
@@ -180,8 +179,6 @@ void meduza::renderer::RendererDx12::PopulateBuffers(const Camera& a_cam)
 
 		UploadBufferDx12<ConstBuffer>* cBuffer = new UploadBufferDx12<ConstBuffer>(true);
 
-		auto c = r->GetMaterial().GetData("a_colour");
-		cData.m_colour = DirectX::XMFLOAT4(c.at(0), c.at(1), c.at(2), c.at(3));
 		auto p = r->GetTransform().Position();
 		cData.m_position = DirectX::XMFLOAT3(p.m_xyz);
 		auto s = r->GetTransform().GetPixelScale();

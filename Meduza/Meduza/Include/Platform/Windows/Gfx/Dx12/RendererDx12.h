@@ -21,8 +21,6 @@ namespace meduza
 				0.0f, 0.0f, 1.0f, 0.0f,
 				0.0f, 0.0f, 0.0f, 1.0f);
 
-			DirectX::XMFLOAT4 m_colour = { 1,0,1,1 };
-
 			DirectX::XMFLOAT3 m_position = { 0,0,0 };
 			DirectX::XMFLOAT3 m_scale = { 1,1,1 };
 		};

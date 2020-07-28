@@ -38,12 +38,14 @@ void meduza::MeshGL::GenerateBuffers()
     glBufferData(GL_ARRAY_BUFFER, int(vertBytes * sizeof(Vertex)), m_vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, int(indBytes * sizeof(int)), m_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, int(indBytes * sizeof(uint16_t)), m_indices.data(), GL_STATIC_DRAW);
 
     GenerateAttributes();
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    EnableMode();
 }
 
 void meduza::MeshGL::GenerateAttributes()

@@ -29,10 +29,10 @@ void meduza::Renderable2D::CreateQuad()
 {
     // Generate Quad
     std::vector<Vertex> vertices = {
-		Vertex(-0.5f,  0.5f, 0.0f), // top left
-		Vertex(0.5f,  0.5f, 0.0f),  // top right
-		Vertex(-0.5f, -0.5f, 0.0f), // bottom left 
-		Vertex(0.5f, -0.5f, 0.0f), // bottom right 
+        Vertex(-0.5f,  0.5f, 0.0f, 0.f,1.f,0.f,1.f), // top left,
+        Vertex(0.5f,  0.5f, 0.0f, 1.f,0.f,0.f,1.f) ,  // top right
+        Vertex(-0.5f, -0.5f, 0.0f, 1.f,1.f,1.f,1.f), // bottom left 
+        Vertex(0.5f, -0.5f, 0.0f, 1.f,0.f,1.f,1.f), // bottom right 
     };
     std::vector<uint16_t> indices = {
         0, 1, 3,
@@ -40,11 +40,12 @@ void meduza::Renderable2D::CreateQuad()
     };
     VertexAttributes att;
     att.AddAttribute(Attributes::vec3Attribute);
+    att.AddAttribute(Attributes::vec4Attribute);
 
     switch (MeduzaHelper::ms_activeAPI)
     {
     case meduza::API::OpenGL:
-        m_mesh = new MeshGL(0, vertices, indices, att);
+        m_mesh = new MeshGL(0, vertices, indices, att, GL_FILL);
         break;
     case meduza::API::DirectX12:
         m_mesh = new MeshDx12(0, vertices, indices, att);

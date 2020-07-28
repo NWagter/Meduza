@@ -54,12 +54,18 @@ void meduza::MeshDx12::GenerateBuffers()
 
 	D3DCreateBlob(m_indexBufferByteSize, &m_indexBufferCPU);
 	CopyMemory(m_indexBufferCPU->GetBufferPointer(), m_indices.data(), m_indexBufferByteSize);
-
+	
 	m_vertexBufferGPU = renderer:: helper::HelperDx12::CreateBuffer(device->GetDevice(),
 		cmd->GetList(), m_vertices.data(), m_vertexBufferByteSize, m_vertexBufferUploader);
 
+	m_vertexBufferUploader.Get()->SetName(L"VertexBuffer Uploader");
+	m_vertexBufferGPU.Get()->SetName(L"GPU VertexBuffer");
+
 	m_indexBufferGPU = renderer::helper::HelperDx12::CreateBuffer(device->GetDevice(),
 		cmd->GetList(), m_indices.data(), m_indexBufferByteSize, m_indexBufferUploader);
+
+	m_vertexBufferUploader.Get()->SetName(L"IndexBuffer Uploader");
+	m_vertexBufferGPU.Get()->SetName(L"GPU IndexBuffer");
 
 	m_indexFormat = DXGI_FORMAT_R16_UINT;
 
@@ -76,6 +82,7 @@ void meduza::MeshDx12::GenerateBuffers()
 	iBufferView.SizeInBytes = m_indexBufferByteSize;
 
 	m_iBufferView = iBufferView;
+
 }
 
 void meduza::MeshDx12::DisposeUploaders()

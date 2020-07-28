@@ -2,6 +2,7 @@
 #version 330 core
 
 layout(location = 0) in vec3 a_pos;
+layout(location = 1) in vec4 a_colour;
 
 uniform mat4 u_viewProjection;
 uniform vec4 u_colour;
@@ -12,7 +13,7 @@ out vec4 v_colour;
 
 void main()
 {
-    v_colour = u_colour;
+    v_colour = a_colour;
 
     vec3 pos = a_pos * u_scale;
 

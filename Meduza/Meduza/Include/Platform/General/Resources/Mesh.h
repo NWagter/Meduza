@@ -12,6 +12,11 @@ namespace meduza
 			
 		inline unsigned int GetVerticesSize() const { return unsigned int(m_vertices.size()); }
 		inline unsigned int GetIndicesSize() const { return unsigned int(m_indices.size()); }
+		inline std::vector<Vertex> GetVertices() const { return m_vertices; }
+		inline std::vector<uint16_t> GetIndices() const { return m_indices; }
+
+		virtual void GenerateBuffers() = 0;
+
 	protected:
 		unsigned int m_meshId;
 		std::vector<Vertex> m_vertices;

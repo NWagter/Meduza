@@ -23,7 +23,7 @@ meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_typ
 		m_cmdAllocator->Get(),
 		nullptr,
 		IID_PPV_ARGS(m_cmdList.GetAddressOf()));
-
+	m_cmdList.Get()->SetName(L"Copy Cmd");
 	SetViewAndScissor(a_size);
 }
 

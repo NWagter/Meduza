@@ -157,16 +157,14 @@ void meduza::ShaderDx12::CreateSignature()
 
 void meduza::ShaderDx12::CreatePSO()
 {
-	// Generate Input Layout depending on Shader Layout
-	D3D12_INPUT_ELEMENT_DESC layout[] =
-	{
-		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 }
-	};
+	std::vector< D3D12_INPUT_ELEMENT_DESC> vLayout;
+	vLayout.push_back({ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 });
+	vLayout.push_back({ "COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 });
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
 
-	inputLayoutDesc.NumElements = sizeof(layout) / sizeof(D3D12_INPUT_ELEMENT_DESC);
-	inputLayoutDesc.pInputElementDescs = layout;
+	inputLayoutDesc.NumElements = static_cast<UINT>(vLayout.size());
+	inputLayoutDesc.pInputElementDescs = vLayout.data();
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));

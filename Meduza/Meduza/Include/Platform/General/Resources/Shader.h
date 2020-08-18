@@ -15,6 +15,7 @@ namespace meduza
 		virtual ~Shader() = default;
 
 		virtual void Reload() = 0;
+		virtual void Unload() = 0;
 
 		virtual void Bind() = 0;
 		virtual void UnBind() = 0;

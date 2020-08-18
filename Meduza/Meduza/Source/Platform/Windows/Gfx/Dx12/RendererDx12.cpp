@@ -65,7 +65,9 @@ meduza::renderer::RendererDx12::RendererDx12(Context& a_context)
 }
 
 meduza::renderer::RendererDx12::~RendererDx12()
-{	
+{
+	m_renderables.clear();
+
 	for (auto c : m_cBuffer)
 	{
 		delete c;
@@ -81,6 +83,7 @@ meduza::renderer::RendererDx12::~RendererDx12()
 	delete m_rtv;
 	delete m_srv;
 	delete m_dsBuffer;
+
 	ms_renderer = nullptr;
 }
 

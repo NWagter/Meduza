@@ -39,7 +39,12 @@ namespace meduza
 
 				m_bufferResource->Map(0, nullptr, reinterpret_cast<void**>(&m_bufferData));
 			}
-			~UploadBufferDx12() = default;
+			~UploadBufferDx12()
+			{
+				m_bufferResource.ReleaseAndGetAddressOf();
+				m_bufferData = nullptr;
+				m_bufferDataGPUAdress = nullptr;
+			}
 
 			void CopyData(int a_alignment, const T& a_data)
 			{

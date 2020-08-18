@@ -49,6 +49,7 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 meduza::renderer::ContextDx12::~ContextDx12()
 {
 	m_queue->Flush();
+
 	if (RendererDx12::GetRenderer() != nullptr)
 	{
 		SwapBuffer();
@@ -57,8 +58,8 @@ meduza::renderer::ContextDx12::~ContextDx12()
 	m_frameBuffer->ReleaseAndGetAddressOf();
 	m_swapChain.ReleaseAndGetAddressOf();
 
-	delete m_queue;
 	delete m_device;
+	delete m_queue;
 }
 
 void meduza::renderer::ContextDx12::SwapBuffer()

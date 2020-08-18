@@ -24,7 +24,7 @@ Sandbox::Sandbox()
 {
 	m_meduza = new meduza::Meduza(g_api);
 
-	m_meduza->EnableImGui();
+	//m_meduza->EnableImGui();
 }
 
 Sandbox::~Sandbox()
@@ -163,6 +163,15 @@ void Sandbox::Run()
 		else
 		{
 			m_meduza->Submit(sceneHLSL);
+		}
+
+		if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_B))
+		{
+			m_meduza->ChangeApi(meduza::API::DirectX12);
+		}
+		else if (meduza::EventSystem::GetEventSystem()->IsKeyDown(meduza::events::keyCodes::g_keyCode_C))
+		{
+			m_meduza->ChangeApi(meduza::API::OpenGL);
 		}
 
 		if (meduza::EventSystem::GetEventSystem()->GetEvent(meduza::events::Event::WindowResize))

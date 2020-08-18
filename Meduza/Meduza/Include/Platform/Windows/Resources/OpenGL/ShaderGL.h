@@ -15,6 +15,7 @@ namespace meduza
 		~ShaderGL() override;
 
 		void Reload() override;
+		void Unload() override;
 
 		void Bind() override;
 		void UnBind() override;

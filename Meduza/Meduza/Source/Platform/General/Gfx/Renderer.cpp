@@ -12,7 +12,7 @@
 #include "Platform/General/Window/Context.h"
 #endif
  
-meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size)
+meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size, meduza::Window* a_window)
 {
 	RendererData* returnData = new RendererData();
 
@@ -20,9 +20,16 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 	{
 	case meduza::API::OpenGL:
 #ifdef WINDOWS
-		returnData->window = new WinWindow(a_size);
-		returnData->window->CreateContext();
+		if (a_window == nullptr)
+		{
+			returnData->window = new WinWindow(a_size);
+		}
+		else
+		{
+			returnData->window = a_window;
+		}
 
+		returnData->window->CreateContext();
 		returnData->renderer = new RendererGL(*returnData->window->GetContext());
 
 		return returnData;
@@ -33,7 +40,15 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 
 #ifdef WINDOWS
 	case meduza::API::DirectX12:
-		returnData->window = new WinWindow(a_size);
+		if (a_window == nullptr)
+		{
+			returnData->window = new WinWindow(a_size);
+		}
+		else
+		{
+			returnData->window = a_window;
+		}
+
 		returnData->window->CreateContext();
 		returnData->renderer = new RendererDx12(*returnData->window->GetContext());
 

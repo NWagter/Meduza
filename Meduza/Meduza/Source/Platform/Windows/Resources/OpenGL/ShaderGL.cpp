@@ -41,13 +41,18 @@ meduza::ShaderGL::~ShaderGL()
 
 void meduza::ShaderGL::Reload()
 {
-    m_generated = false;
-    glDeleteShader(m_program);
+    Unload();
 
     if (MeduzaHelper::ms_activeAPI == API::OpenGL)
     {
         m_program = GenerateShader();
     }
+}
+
+void meduza::ShaderGL::Unload()
+{
+    m_generated = false;
+    glDeleteShader(m_program);
 }
 
 void meduza::ShaderGL::Bind()

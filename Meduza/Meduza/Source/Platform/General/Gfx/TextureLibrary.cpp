@@ -99,6 +99,13 @@ void meduza::TextureLibrary::Reload()
 {
 	for (auto t : m_textures)
 	{
-		t.second->Reload();
+		if (t.second->GetApi() == MeduzaHelper::ms_activeAPI)
+		{
+			t.second->Reload();
+		}
+		else
+		{
+			t.second->Unload();
+		}
 	}
 }

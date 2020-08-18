@@ -47,7 +47,7 @@ namespace meduza
 				Window* window = nullptr;
 			};
 
-			static RendererData* CreateRenderer(math::Vec2);
+			static RendererData* CreateRenderer(math::Vec2, meduza::Window* = nullptr);
 			static Renderer* SwitchAPI(Window&);
 			virtual ~Renderer() = default;
 			

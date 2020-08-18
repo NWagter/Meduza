@@ -95,7 +95,11 @@ void meduza::Meduza::SetupRenderer(meduza::API a_api)
 void meduza::Meduza::SetupRenderer(math::Vec2 a_size)
 {
 	renderer::Renderer::RendererData* data = nullptr;
+
+	delete m_window;
+	m_window = nullptr;
 	data = renderer::Renderer::CreateRenderer(a_size);
+	
 
 	if (m_eventSystem == nullptr)
 	{
@@ -136,6 +140,18 @@ void meduza::Meduza::EnableImGui()
 	m_window->EnableImGui();
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
 	m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
+}
+
+void meduza::Meduza::ChangeApi(meduza::API a_newApi)
+{
+	if (a_newApi == MeduzaHelper::ms_activeAPI)
+	{
+		return;
+	}
+
+	m_apiChange = true;
+
+	MeduzaHelper::ms_activeAPI = a_newApi;
 }
 
 std::string meduza::Meduza::LoadShader(std::string a_path) const
@@ -266,21 +282,6 @@ void meduza::Meduza::Submit(Scene& a_scene)
 
 void meduza::Meduza::Clear()
 {
-	if (static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
-	{
-		math::Vec2 size = m_window->GetSize();
-		delete m_editorMenu;
-		m_editorMenu = nullptr;
-		delete m_imGuiRenderer;
-		m_imGuiRenderer = nullptr;
-		delete m_renderer;
-		m_renderer = nullptr;
-		delete m_window;
-		m_window = nullptr;
-		SetupRenderer(size);
-	}
-
-
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
 		m_renderer->Clear(m_camera->GetSolidColour());
@@ -289,6 +290,29 @@ void meduza::Meduza::Clear()
 		{
 			m_imGuiRenderer->Clear();
 		}
+	}
+
+	if (m_imGuiRenderer != nullptr && static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
+	{
+		m_apiChange = true;
+	}
+
+	if (m_apiChange)
+	{
+		m_apiChange = false;
+		math::Vec2 size = m_window->GetSize();
+		if (m_imGuiRenderer != nullptr)
+		{
+			delete m_editorMenu;
+			m_editorMenu = nullptr;
+			delete m_imGuiRenderer;
+			m_imGuiRenderer = nullptr;
+		}
+		delete m_renderer;
+		m_renderer = nullptr;
+
+		SetupRenderer(size);
+		Clear();
 	}
 }
 
@@ -304,6 +328,7 @@ void meduza::Meduza::SwapBuffers()
 		}
 
 		m_window->SwapBuffers();
+
 		if (m_reload)
 		{
 			m_reload = false;

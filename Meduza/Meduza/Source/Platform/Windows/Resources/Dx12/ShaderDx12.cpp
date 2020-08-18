@@ -58,6 +58,13 @@ meduza::ShaderDx12::~ShaderDx12()
 
 void meduza::ShaderDx12::Reload()
 {
+	Unload();
+
+	LoadShader();
+}
+
+void meduza::ShaderDx12::Unload()
+{
 	if (m_pso.Get() != nullptr)
 	{
 		m_pso.ReleaseAndGetAddressOf();
@@ -67,8 +74,6 @@ void meduza::ShaderDx12::Reload()
 		}
 		m_signature.ReleaseAndGetAddressOf();
 	}
-
-	LoadShader();
 }
 
 void meduza::ShaderDx12::Bind()

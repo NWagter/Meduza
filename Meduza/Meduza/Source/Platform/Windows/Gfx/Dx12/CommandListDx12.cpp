@@ -30,6 +30,7 @@ meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_typ
 meduza::renderer::CommandListDx12::~CommandListDx12()
 {
 	m_cmdList.ReleaseAndGetAddressOf();
+
 	m_cmdAllocator->ReleaseAndGetAddressOf();
 }
 

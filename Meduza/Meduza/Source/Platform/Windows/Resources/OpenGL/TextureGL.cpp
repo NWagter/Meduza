@@ -63,3 +63,7 @@ void meduza::Texture2DGL::Bind(unsigned int a_slot)
 void meduza::Texture2DGL::Reload()
 {
 }
+
+void meduza::Texture2DGL::Unload()
+{
+}

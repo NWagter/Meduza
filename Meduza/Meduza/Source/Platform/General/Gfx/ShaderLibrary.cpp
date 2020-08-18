@@ -210,5 +210,9 @@ void meduza::ShaderLibrary::Reload()
 		{
 			s.second->Reload();
 		}
+		else
+		{
+			s.second->Unload();
+		}
 	}
 }

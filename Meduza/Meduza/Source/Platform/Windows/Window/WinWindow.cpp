@@ -101,7 +101,7 @@ void meduza::WinWindow::CreateContext()
 
 	if (m_context != nullptr)
 	{
-		delete m_context;
+		delete m_context;		
 	}
 
 	switch (MeduzaHelper::ms_activeAPI)
@@ -159,11 +159,16 @@ LRESULT meduza::WinWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		PostQuitMessage(0);
 		break;
 	case WM_SIZE:
-		m_size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
-
+		
 		if (m_context != nullptr)
 		{
-			m_context->Resize(m_size);
+			meduza::math::Vec2 size = math::Vec2(float(LOWORD(a_lParam)), float(HIWORD(a_lParam)));
+			m_context->Resize(size);
+
+			RECT rect;
+			::GetClientRect(m_hWnd, &rect);
+			m_size = math::Vec2(float(rect.right - rect.left), float(rect.bottom - rect.top));
+
 		}
 
 		PushEvent(events::Event::WindowResize);

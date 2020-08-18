@@ -93,6 +93,10 @@ void meduza::Material::Reload()
 {
 }
 
+void meduza::Material::Unload()
+{
+}
+
 void meduza::Material::ScaleBuffer()
 {
 	unsigned int scale = 0;

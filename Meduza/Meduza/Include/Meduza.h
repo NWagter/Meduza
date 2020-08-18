@@ -50,6 +50,7 @@ namespace meduza
 // ============ Tools
 
 		void EnableImGui();
+		void ChangeApi(meduza::API);
 
 // ============ Load Resource
 
@@ -116,6 +117,7 @@ namespace meduza
 		Camera* m_camera = nullptr;
 		editor::IEditor* m_editorMenu = nullptr;
 
+		bool m_apiChange = false;
 		bool m_reload = false;
 
 	};

@@ -18,6 +18,7 @@ namespace meduza
 		~ShaderDx12() override;
 
 		void Reload() override;
+		void Unload() override;
 
 		void Bind() override;
 		void UnBind() override;

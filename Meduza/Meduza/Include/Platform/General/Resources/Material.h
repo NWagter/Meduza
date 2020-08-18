@@ -20,6 +20,8 @@ namespace meduza
 		std::vector<float> GetData(std::string);
 
 		void Reload();
+		void Unload();
+
 	private:
 		void ScaleBuffer();
 

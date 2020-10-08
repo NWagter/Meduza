@@ -5,10 +5,9 @@ on:
     branches: [ Development ]
 
 jobs:
-  build:
-    
+  windows:    
     runs-on: windows-latest
-
+    
     steps:
     - uses: actions/checkout@master
 

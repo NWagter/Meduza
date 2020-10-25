@@ -36,6 +36,9 @@ namespace meduza
 
 		void SetTitle(std::string) override;
 		void CreateContext() override;
+
+		void Close() override;
+
 	private:
 		void PushEvent(events::Event) override;
 

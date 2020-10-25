@@ -1,6 +1,3 @@
-#ifndef MEDUZA_UTIL_H
-#define MEDUZA_UTIL_H
-
 #pragma once
 
 #include <vector>
@@ -12,7 +9,7 @@ namespace meduza
 	{
 		OpenGL = 0,
 #ifdef WINDOWS
-		DirectX12,
+		DirectX12 = 1,
 #endif // WIN
 
 #ifdef LINUX
@@ -111,13 +108,39 @@ namespace meduza
 		std::vector<std::pair<Attributes, int>> m_layout;
 	};
 
-	struct Material
+	enum class ShaderLayoutItem
 	{
-		unsigned int m_shaderId = 0;
-		unsigned int m_textureld = 0;
+		itemFloat = 0,
+		itemFloat2,
+		itemFloat3,
+		itemFloat4
+	};
 
-		float m_albedo[4] = { 1,1,1,1 };
+	struct ShaderLayout
+	{
+		void AddItem(ShaderLayoutItem a_item, std::string a_name)
+		{
+			unsigned int scale = 0;
 
+			switch (a_item)
+			{
+			case meduza::ShaderLayoutItem::itemFloat:
+				scale = 1;
+				break;
+			case meduza::ShaderLayoutItem::itemFloat2:
+				scale = 2;
+				break;
+			case meduza::ShaderLayoutItem::itemFloat3:
+				scale = 3;
+				break;
+			case meduza::ShaderLayoutItem::itemFloat4:
+				scale = 4;
+				break;
+			}
+
+			m_layout.push_back(std::pair<unsigned int, std::string>(scale, a_name));
+		}
+
+		std::vector<std::pair<unsigned int, std::string>> m_layout;
 	};
 }
-#endif

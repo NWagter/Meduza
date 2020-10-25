@@ -12,20 +12,61 @@
 #include "Platform/General/Gfx/ImGuiRenderer.h"
 #include "Platform/General/Gfx/ShaderLibrary.h"
 #include "Platform/General/Gfx/TextureLibrary.h"
+#include "Platform/General/Gfx/MaterialLibrary.h"
 
-#include "Drawable/Drawable.h"
 #include "Camera/Camera.h"
 
 #ifdef WINDOWS
 #include "Platform/Windows/Utils/FileSystem.h"
 #endif // WINDOWS
 
+#include "Editor/EditorMenu.h"
+
+#include "Renderable/Renderable.h"
+#include "Scene/Scene.h"
+
 meduza::Meduza::Meduza(API a_api)
+{
+	SetupRenderer(a_api);
+}
+
+
+meduza::Meduza::Meduza(API a_api, std::string a_title)
+{
+	SetupRenderer(a_api);
+	SetWindowTitle(a_title);
+	
+}
+
+meduza::Meduza::~Meduza()
+{
+	if (m_imGuiRenderer != nullptr)
+	{
+		delete m_editorMenu;
+		delete m_imGuiRenderer;
+	}
+
+	delete m_materialLibrary;
+	delete m_shaderLibrary;
+	delete m_textureLibrary;
+	delete m_renderer;
+	delete m_window;
+	delete m_camera;
+	delete m_eventSystem;
+}
+
+meduza::API meduza::Meduza::GetCurrentAPI() const
+{
+	return meduza::MeduzaHelper::ms_activeAPI;
+}
+
+void meduza::Meduza::SetupRenderer(meduza::API a_api)
 {
 	meduza::MeduzaHelper::ms_activeAPI = a_api;
 
 	renderer::Renderer::RendererData* data = nullptr;
-	data = renderer::Renderer::CreateRenderer(math::Vec2(1080,720));
+	data = renderer::Renderer::CreateRenderer(math::Vec2(1080, 720));
+
 	m_eventSystem = new EventSystem();
 
 	if (data == nullptr)
@@ -42,27 +83,55 @@ meduza::Meduza::Meduza(API a_api)
 	ME_LOG("Window title = %s \n", GetWindowName().c_str());
 
 	m_shaderLibrary = new ShaderLibrary();
-	m_shaderLibrary->LoadShader("Data/Shaders/DefaultShader.glsl");
+	m_materialLibrary = new MaterialLibrary();
 	m_textureLibrary = new TextureLibrary();
 
-	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, m_window->GetSize(), math::Vec2(-1,1));
+	m_camera = Camera::CreateCamera(CameraPerspective::Orthographic, m_window->GetSize(), math::Vec2(-1, 1));
 
 	delete data;
+
 }
 
-meduza::Meduza::~Meduza()
+void meduza::Meduza::SetupRenderer(math::Vec2 a_size)
 {
-	if (m_imGuiRenderer != nullptr)
+	renderer::Renderer::RendererData* data = nullptr;
+
+	delete m_window;
+	m_window = nullptr;
+	data = renderer::Renderer::CreateRenderer(a_size);
+	
+
+	if (m_eventSystem == nullptr)
 	{
-		delete m_imGuiRenderer;
+		m_eventSystem = new EventSystem();
 	}
 
-	delete m_shaderLibrary;
-	delete m_textureLibrary;
-	delete m_renderer;
-	delete m_window;
-	delete m_camera;
-	delete m_eventSystem;
+	if (data == nullptr)
+	{
+		ME_CORE_ASSERT_M(0, "Failed to generate Renderer!");
+	}
+	else
+	{
+		m_renderer = data->renderer;
+		m_window = data->window;
+		m_window->SetEventSystem(*m_eventSystem);
+	}
+
+	ME_LOG("Window title = %s \n", GetWindowName().c_str());
+
+	if (MeduzaHelper::ms_imGui)
+	{
+		m_window->EnableImGui();
+		m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+		m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
+	}
+
+	m_reload = true;
+	m_shaderLibrary->Reload();
+	m_materialLibrary->Reload();
+	m_textureLibrary->Reload();
+
+	delete data;
 }
 
 void meduza::Meduza::EnableImGui()
@@ -70,29 +139,19 @@ void meduza::Meduza::EnableImGui()
 	MeduzaHelper::ms_imGui = true;
 	m_window->EnableImGui();
 	m_imGuiRenderer = ImGuiRenderer::CreateRenderer(*m_renderer);
+	m_editorMenu = new editor::EditorMenu(*m_renderer, *m_window);
 }
 
-void meduza::Meduza::DebugDrawStats(float a_fps, bool a_log)
+void meduza::Meduza::ChangeApi(meduza::API a_newApi)
 {
-	renderer::DrawStatistics stats = m_renderer->GetDrawStatistics();
-	if (!MeduzaHelper::ms_imGui && a_log)
+	if (a_newApi == MeduzaHelper::ms_activeAPI)
 	{
-		ME_LOG("[Draw Stats] FPS : %f \n", a_fps);
-		ME_LOG("[Draw Stats] Drawcalls : %i \n", stats.m_drawCalls);
-		ME_LOG("[Draw Stats] Instances : %i \n", stats.m_instances);
-		ME_LOG("[Draw Stats] Drawables : %i \n", stats.m_drawables);
-		ME_LOG("[Draw Stats] Vertices : %i \n", stats.m_vertices);
-
 		return;
 	}
 
-	ImGui::Begin("Stats");
-	ImGui::Text("FPS : %f", a_fps);
-	ImGui::Text("DrawCalls : %i", stats.m_drawCalls);
-	ImGui::Text("Instances : %i", stats.m_instances);
-	ImGui::Text("Drawables : %i", stats.m_drawables);
-	ImGui::Text("Vertices : %i", stats.m_vertices);
-	ImGui::End();
+	m_apiChange = true;
+
+	MeduzaHelper::ms_activeAPI = a_newApi;
 }
 
 std::string meduza::Meduza::LoadShader(std::string a_path) const
@@ -115,6 +174,35 @@ meduza::Texture& meduza::Meduza::GetTexture(std::string a_path) const
 {	
 	return *m_textureLibrary->LoadTexture(a_path);
 }
+
+meduza::Material& meduza::Meduza::CreateMaterial(Shader* a_shader, std::string a_name)
+{
+	return *m_materialLibrary->CreateMaterial(*a_shader, a_name);
+}
+
+meduza::Material& meduza::Meduza::GetMaterial(std::string a_name)
+{
+	return *m_materialLibrary->GetMaterial(utils::GetHashedID(a_name));
+}
+
+meduza::Material& meduza::Meduza::GetMaterial(unsigned int a_id)
+{
+	return *m_materialLibrary->GetMaterial(a_id);
+}
+
+
+void meduza::Meduza::SetMaterialParameter(meduza::Material& a_material, std::string a_name, float a_data[])
+{
+	a_material.SetData(a_name, a_data);
+}
+
+void meduza::Meduza::SetMaterialParameter(meduza::Material& a_material, std::string a_name, meduza::Texture& a_texture)
+{
+	unsigned int data[] = { unsigned int(a_texture.GetId()) };
+
+	a_material.SetData(a_name, data);
+}
+
 void meduza::Meduza::SetNewCamera(CameraPerspective a_perspective, math::Vec2 a_size, math::Vec2 a_distance)
 {
 	delete m_camera;
@@ -150,32 +238,81 @@ void meduza::Meduza::SetCamEye(math::Vec3 a_pos)
 	}
 }
 
-void meduza::Meduza::Submit(drawable::Drawable* a_drawable)
+void meduza::Meduza::SetSolidColour(Colour a_colour)
 {
-	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
+	if (m_camera != nullptr)
 	{
-		m_renderer->Draw(a_drawable);
+		m_camera->SetColour(a_colour);
 	}
 }
 
-void meduza::Meduza::Submit(std::vector<drawable::Drawable*> a_drawables)
+void meduza::Meduza::SetSolidColour(float a_colour[4])
 {
-	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
+	if (m_camera != nullptr)
 	{
-		m_renderer->Submit(a_drawables);
+		m_camera->SetColour(Colour(a_colour));
 	}
 }
 
-void meduza::Meduza::Clear(Colour a_colour)
+void meduza::Meduza::Submit(Renderable& a_renderable)
 {
 	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
 	{
-		m_renderer->Clear(a_colour);
+		if (m_reload)
+		{
+			a_renderable.Reload();
+		}
+
+		m_renderer->Submit(a_renderable);
+	}
+}
+
+void meduza::Meduza::Submit(Scene& a_scene)
+{
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
+	{
+		if (m_reload)
+		{
+			a_scene.Reload();
+		}
+
+		m_renderer->Submit(a_scene);
+	}
+}
+
+void meduza::Meduza::Clear()
+{
+	if (m_renderer != nullptr && !MeduzaHelper::ms_minimized)
+	{
+		m_renderer->Clear(m_camera->GetSolidColour());
 
 		if (MeduzaHelper::ms_imGui)
 		{
 			m_imGuiRenderer->Clear();
 		}
+	}
+
+	if (m_imGuiRenderer != nullptr && static_cast<editor::EditorMenu*>(m_editorMenu)->GetChangeAPI())
+	{
+		m_apiChange = true;
+	}
+
+	if (m_apiChange)
+	{
+		m_apiChange = false;
+		math::Vec2 size = m_window->GetSize();
+		if (m_imGuiRenderer != nullptr)
+		{
+			delete m_editorMenu;
+			m_editorMenu = nullptr;
+			delete m_imGuiRenderer;
+			m_imGuiRenderer = nullptr;
+		}
+		delete m_renderer;
+		m_renderer = nullptr;
+
+		SetupRenderer(size);
+		Clear();
 	}
 }
 
@@ -189,7 +326,21 @@ void meduza::Meduza::SwapBuffers()
 		{
 			m_imGuiRenderer->Render();
 		}
+
 		m_window->SwapBuffers();
+
+		if (m_reload)
+		{
+			m_reload = false;
+		}
+	}
+}
+
+void meduza::Meduza::Update(const float a_dt)
+{
+	if (MeduzaHelper::ms_imGui)
+	{
+		m_editorMenu->Update(a_dt);
 	}
 }
 
@@ -219,6 +370,11 @@ std::string meduza::Meduza::GetWindowName() const
 	}
 
 	return "Unknown";
+}
+
+void meduza::Meduza::SetWindowTitle(std::string a_title)
+{
+	m_window->SetTitle(a_title);
 }
 
 meduza::math::Vec2 meduza::Meduza::GetWindowSize() const

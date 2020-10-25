@@ -12,7 +12,7 @@
 #include "Platform/General/Window/Context.h"
 #endif
  
-meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size)
+meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRenderer(math::Vec2 a_size, meduza::Window* a_window)
 {
 	RendererData* returnData = new RendererData();
 
@@ -20,9 +20,16 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 	{
 	case meduza::API::OpenGL:
 #ifdef WINDOWS
-		returnData->window = new WinWindow(a_size);
-		returnData->window->CreateContext();
+		if (a_window == nullptr)
+		{
+			returnData->window = new WinWindow(a_size);
+		}
+		else
+		{
+			returnData->window = a_window;
+		}
 
+		returnData->window->CreateContext();
 		returnData->renderer = new RendererGL(*returnData->window->GetContext());
 
 		return returnData;
@@ -33,7 +40,15 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 
 #ifdef WINDOWS
 	case meduza::API::DirectX12:
-		returnData->window = new WinWindow(a_size);
+		if (a_window == nullptr)
+		{
+			returnData->window = new WinWindow(a_size);
+		}
+		else
+		{
+			returnData->window = a_window;
+		}
+
 		returnData->window->CreateContext();
 		returnData->renderer = new RendererDx12(*returnData->window->GetContext());
 
@@ -51,4 +66,43 @@ meduza::renderer::Renderer::RendererData* meduza::renderer::Renderer::CreateRend
 
 	}
 	return nullptr;
+}
+
+meduza::renderer::Renderer* meduza::renderer::Renderer::SwitchAPI(Window& a_window)
+{
+	Renderer* newRenderer = nullptr;
+	auto window = &a_window;
+
+	window->CreateContext();
+
+	switch (MeduzaHelper::ms_activeAPI)
+	{
+	case meduza::API::OpenGL:
+#ifdef WINDOWS
+		newRenderer = new RendererGL(*a_window.GetContext());
+
+		return newRenderer;
+#elif LINUX // WIN
+
+#endif	
+		break;
+
+#ifdef WINDOWS
+	case meduza::API::DirectX12:
+		newRenderer = new RendererDx12(*a_window.GetContext());
+
+		return newRenderer;
+		break;
+#endif
+
+#ifdef LINUX
+	case meduza::API::ES2:
+
+
+		ME_GFX_LOG("No ES2 defined! windows would be %f - %f \n", a_size.m_x, a_size.m_y);
+		break;
+#endif
+
+	}
+	return newRenderer;
 }

@@ -15,10 +15,15 @@ namespace meduza
 		unsigned int GetId() const override { return m_textureId; }
 
 		void Bind(unsigned int a_slot = 0) override;
+		void Reload() override;
+		void Unload() override;
+
+		meduza::API GetApi() override { return API::OpenGL; }
 	private:
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
 		unsigned int m_texture = 0;
 		unsigned int m_textureId = 0;
+		std::string m_path;
 	};
 }

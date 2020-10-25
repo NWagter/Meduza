@@ -10,13 +10,14 @@
 
 meduza::Texture2DGL::Texture2DGL(std::string a_path, unsigned int a_id) : m_textureId(a_id)
 {
+	m_path = a_path;
 	int width;
 	int height;
 	int channels;
 	stbi_set_flip_vertically_on_load(0);
-	stbi_uc* data = stbi_load(a_path.c_str(), &width, &height, &channels, 0);
+	stbi_uc* data = stbi_load(m_path.c_str(), &width, &height, &channels, 0);
 	ME_GFX_ASSERT_M(data, "Failed to load Texture");
-	ME_GFX_LOG("Load texture : %s \n", utils::FileSystem::GetFileName(a_path).c_str());
+	ME_GFX_LOG("Load texture : %s \n", utils::FileSystem::GetFileName(m_path).c_str());
 	m_width = width;
 	m_height = height;
 
@@ -57,4 +58,12 @@ meduza::Texture2DGL::~Texture2DGL()
 void meduza::Texture2DGL::Bind(unsigned int a_slot)
 {
 	glBindTextureUnit(a_slot, m_texture);
+}
+
+void meduza::Texture2DGL::Reload()
+{
+}
+
+void meduza::Texture2DGL::Unload()
+{
 }

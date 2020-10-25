@@ -5,11 +5,9 @@
 #include "Gfx/Animator2D.h"
 #include "Gfx/Animation2D.h"
 
-#include "Drawable/Sprite.h"
-
-meduza::gfx::Animator2D::Animator2D(drawable::Sprite& a_sprite)
+meduza::gfx::Animator2D::Animator2D(Renderable2D& a_renderable)
 {
-	m_sprite = &a_sprite;
+	m_renderable = &a_renderable;
 }
 
 meduza::gfx::Animator2D::~Animator2D()
@@ -26,9 +24,9 @@ void meduza::gfx::Animator2D::Play()
 	if (m_isPlaying && m_timer.IsFinished())
 	{
 		auto anim = dynamic_cast<Animation2D*>(&GetAnimation(m_currentAnimation));
-		if (m_sprite != nullptr) 
+		if (m_renderable != nullptr) 
 		{
-			anim->UpdateFrame(*m_sprite);
+			anim->UpdateFrame(*m_renderable);
 		}
 		m_timer.Start(anim->GetCycleTime());
 	}
@@ -55,9 +53,9 @@ void meduza::gfx::Animator2D::SetAnimation(std::string a_anim)
 	m_timer.Start(anim->GetCycleTime());
 	m_isPlaying = true;
 
-	if (m_sprite != nullptr)
+	if (m_renderable != nullptr)
 	{
-		anim->UpdateFrame(*m_sprite);
+		anim->UpdateFrame(*m_renderable);
 	}
 }
 

@@ -1,40 +1,55 @@
 #include "mePch.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 
-meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_type, DeviceDx12& a_device, math::Vec2 a_size)
+#include "Platform/Windows/Resources/Dx12/MeshDx12.h"
+#include "Platform/Windows/Resources/Dx12/ShaderDx12.h"
+
+meduza::renderer::CommandListDx12::CommandListDx12(D3D12_COMMAND_LIST_TYPE a_type, math::Vec2 a_size)
 {
+	auto device = RendererDx12::GetRenderer()->GetContext().GetDevice();
 	for (auto& i : m_cmdAllocator)
 	{
-		i = CreateAlloc(a_device, a_type);
+		i = CreateAlloc(a_type);
 	}
 
 
-	a_device.GetDevice()->CreateCommandList(
+	device->GetDevice()->CreateCommandList(
 		0,
 		a_type,
 		m_cmdAllocator->Get(),
 		nullptr,
 		IID_PPV_ARGS(m_cmdList.GetAddressOf()));
-
+	m_cmdList.Get()->SetName(L"Copy Cmd");
 	SetViewAndScissor(a_size);
 }
 
 meduza::renderer::CommandListDx12::~CommandListDx12()
 {
 	m_cmdList.ReleaseAndGetAddressOf();
+
 	m_cmdAllocator->ReleaseAndGetAddressOf();
 }
 
 void meduza::renderer::CommandListDx12::Close()
 {
+	m_closedList = true;
 	m_cmdList->Close();
 }
 
-void meduza::renderer::CommandListDx12::Reset(unsigned int a_frame)
+void meduza::renderer::CommandListDx12::Reset(unsigned int a_frame, ShaderDx12* a_shader)
 {
-	GetList()->Reset(m_cmdAllocator[a_frame].Get(), nullptr);
+	if (a_shader == nullptr)
+	{
+		GetList()->Reset(m_cmdAllocator[a_frame].Get(), nullptr);
+	}
+	else
+	{
+		GetList()->Reset(m_cmdAllocator[a_frame].Get(), a_shader->GetPSO().Get());
+	}
 }
 
 void meduza::renderer::CommandListDx12::SetViewPort(int a_port)
@@ -63,10 +78,31 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12
 	return m_cmdAllocator[a_id];
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(DeviceDx12& a_device, D3D12_COMMAND_LIST_TYPE a_type)
+void meduza::renderer::CommandListDx12::Draw(MeshDx12* a_mesh)
 {
+	if (a_mesh->m_vertexBufferGPU.Get() == nullptr)
+	{
+		a_mesh->GenerateBuffers();
+	}
+
+
+	D3D12_VERTEX_BUFFER_VIEW vBuffer = a_mesh->GetVertexBuffer();
+	m_cmdList->IASetVertexBuffers(0, 1, &vBuffer);
+	m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	D3D12_INDEX_BUFFER_VIEW iBuffer = a_mesh->GetIndexBuffer();
+	m_cmdList->IASetIndexBuffer(&iBuffer);
+
+	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
+	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
+}
+
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> meduza::renderer::CommandListDx12::CreateAlloc(D3D12_COMMAND_LIST_TYPE a_type)
+{
+	auto device = RendererDx12::GetRenderer()->GetContext().GetDevice();
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator;
-	a_device.GetDevice()->CreateCommandAllocator(a_type, IID_PPV_ARGS(&commandAllocator));
+	device->GetDevice()->CreateCommandAllocator(a_type, IID_PPV_ARGS(&commandAllocator));
 
 	return commandAllocator;
 }

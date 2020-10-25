@@ -4,11 +4,12 @@
 
 meduza::ImGuiRendererGL::ImGuiRendererGL(renderer::Renderer&)
 {
-	ImGui_ImplOpenGL3_Init("#version 410");
+	ImGui_ImplOpenGL3_Init(0);
 }
 
 meduza::ImGuiRendererGL::~ImGuiRendererGL()
 {
+	ImGui::Render();
 	ImGui_ImplOpenGL3_Shutdown();
 }
 

@@ -12,6 +12,9 @@ namespace meduza
 		class Drawable;
 	}
 
+	class Renderable;
+	class Scene;
+
 	struct Colour;
 
 	namespace renderer
@@ -44,14 +47,16 @@ namespace meduza
 				Window* window = nullptr;
 			};
 
-			static RendererData* CreateRenderer(math::Vec2);
+			static RendererData* CreateRenderer(math::Vec2, meduza::Window* = nullptr);
+			static Renderer* SwitchAPI(Window&);
 			virtual ~Renderer() = default;
 			
 			virtual void Clear(Colour) = 0;
 			virtual void Render(const Camera&) = 0;
 
-			virtual void Draw(drawable::Drawable*) = 0;
-			virtual void Submit(std::vector<drawable::Drawable*>) = 0;
+			virtual void Submit(Renderable&) = 0;
+			virtual void Submit(Scene&) = 0;
+
 			virtual DrawStatistics GetDrawStatistics() const = 0;
 		};
 	}

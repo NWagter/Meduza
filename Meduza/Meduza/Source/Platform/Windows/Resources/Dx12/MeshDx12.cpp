@@ -5,18 +5,18 @@
 #include "Platform/Windows/Utils/Dx12/HelperDx12.h"
 
 #include "Platform/Windows/Resources/Dx12/MeshDx12.h"
-#include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
+
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
+#include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 
-meduza::renderer::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<int> a_ind, VertexAttributes a_atts, DeviceDx12& a_device, CommandListDx12* a_cmdList) : meduza::renderer::Mesh(a_id, a_vert, a_ind, a_atts)
+meduza::MeshDx12::MeshDx12(unsigned int a_id, std::vector<Vertex> a_vert, std::vector<uint16_t> a_ind, VertexAttributes a_atts) : meduza::Mesh(a_id, a_vert, a_ind, a_atts)
 {
-	m_device = &a_device;
-	m_cmd = a_cmdList;
-
 	GenerateBuffers();
 }
 
-meduza::renderer::MeshDx12::~MeshDx12()
+meduza::MeshDx12::~MeshDx12()
 {
 	m_vertexBufferCPU.ReleaseAndGetAddressOf();
 	m_indexBufferCPU.ReleaseAndGetAddressOf();;
@@ -28,9 +28,18 @@ meduza::renderer::MeshDx12::~MeshDx12()
 	m_indexBufferUploader.ReleaseAndGetAddressOf();
 }
 
-void meduza::renderer::MeshDx12::GenerateBuffers()
+void meduza::MeshDx12::GenerateBuffers()
 {
-	if (m_device == nullptr || m_cmd == nullptr)
+	auto cmd = &renderer::RendererDx12::GetRenderer()->GetCmd();
+
+	if (cmd->m_closedList)
+	{
+		return;
+	}
+
+	auto device = renderer::RendererDx12::GetRenderer()->GetContext().GetDevice();
+
+	if (device == nullptr || cmd == nullptr)
 	{
 		ME_GFX_ASSERT_M(0, "Can't Generate Buffers no context or device available!");
 	}
@@ -45,47 +54,38 @@ void meduza::renderer::MeshDx12::GenerateBuffers()
 
 	D3DCreateBlob(m_indexBufferByteSize, &m_indexBufferCPU);
 	CopyMemory(m_indexBufferCPU->GetBufferPointer(), m_indices.data(), m_indexBufferByteSize);
+	
+	m_vertexBufferGPU = renderer:: helper::HelperDx12::CreateBuffer(device->GetDevice(),
+		cmd->GetList(), m_vertices.data(), m_vertexBufferByteSize, m_vertexBufferUploader);
 
-	m_vertexBufferGPU = helper::HelperDx12::CreateBuffer(m_device->GetDevice(),
-		m_cmd->GetList(), m_vertices.data(), m_vertexBufferByteSize, m_vertexBufferUploader);
+	m_vertexBufferUploader.Get()->SetName(L"VertexBuffer Uploader");
+	m_vertexBufferGPU.Get()->SetName(L"GPU VertexBuffer");
 
-	m_indexBufferGPU = helper::HelperDx12::CreateBuffer(m_device->GetDevice(),
-		m_cmd->GetList(), m_indices.data(), m_indexBufferByteSize, m_indexBufferUploader);
+	m_indexBufferGPU = renderer::helper::HelperDx12::CreateBuffer(device->GetDevice(),
+		cmd->GetList(), m_indices.data(), m_indexBufferByteSize, m_indexBufferUploader);
+
+	m_vertexBufferUploader.Get()->SetName(L"IndexBuffer Uploader");
+	m_vertexBufferGPU.Get()->SetName(L"GPU IndexBuffer");
 
 	m_indexFormat = DXGI_FORMAT_R16_UINT;
-}
-
-D3D12_VERTEX_BUFFER_VIEW meduza::renderer::MeshDx12::VertexBufferView() const
-{
-	if (m_device == nullptr || m_cmd == nullptr)
-	{
-		ME_GFX_ASSERT_M(0, "No Buffers available!");
-	}
 
 	D3D12_VERTEX_BUFFER_VIEW vBufferView;
 	vBufferView.BufferLocation = m_vertexBufferGPU->GetGPUVirtualAddress();
 	vBufferView.StrideInBytes = m_vertexByteStride;
 	vBufferView.SizeInBytes = m_vertexBufferByteSize;
 
-	return vBufferView;
+	m_vBufferView = vBufferView;
+
+	D3D12_INDEX_BUFFER_VIEW iBufferView;
+	iBufferView.BufferLocation = m_indexBufferGPU->GetGPUVirtualAddress();
+	iBufferView.Format = m_indexFormat;
+	iBufferView.SizeInBytes = m_indexBufferByteSize;
+
+	m_iBufferView = iBufferView;
+
 }
 
-D3D12_INDEX_BUFFER_VIEW meduza::renderer::MeshDx12::IndexBufferView() const
-{	
-	if (m_device == nullptr || m_cmd == nullptr)
-	{
-		ME_GFX_ASSERT_M(0, "No Buffers available!");
-	}
-
-	D3D12_INDEX_BUFFER_VIEW indexBufferView;
-	indexBufferView.BufferLocation = m_indexBufferGPU->GetGPUVirtualAddress();
-	indexBufferView.Format = m_indexFormat;
-	indexBufferView.SizeInBytes = m_indexBufferByteSize;
-
-	return indexBufferView;
-}
-
-void meduza::renderer::MeshDx12::DisposeUploaders()
+void meduza::MeshDx12::DisposeUploaders()
 {
 	m_vertexBufferUploader = nullptr;
 	m_indexBufferUploader = nullptr;

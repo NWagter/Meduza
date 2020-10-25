@@ -9,8 +9,13 @@ namespace meduza
 	class ShaderGL : public Shader
 	{
 	public:
+		ShaderGL() = default;
 		ShaderGL(utils::ShaderSources);
+		ShaderGL(utils::ShaderSources, ShaderLayout);
 		~ShaderGL() override;
+
+		void Reload() override;
+		void Unload() override;
 
 		void Bind() override;
 		void UnBind() override;
@@ -33,5 +38,6 @@ namespace meduza
 
 		unsigned int GenerateShader();
 		unsigned int m_program;
+		bool m_generated = false;
 	};
 }

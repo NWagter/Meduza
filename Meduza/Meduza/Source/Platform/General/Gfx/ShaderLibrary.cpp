@@ -10,6 +10,7 @@
 #ifdef WINDOWS
 #include "Platform/Windows/Utils/FileSystem.h"
 #include "Platform/Windows/Resources/OpenGL/ShaderGL.h"
+#include "Platform/Windows/Resources/Dx12/ShaderDx12.h"
 
 #endif // WINDOWS
 
@@ -38,9 +39,15 @@ meduza::ShaderLibrary::~ShaderLibrary()
 
 meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::string a_fragPath)
 {
-	switch (MeduzaHelper::ms_activeAPI)
-	{
-	case meduza::API::OpenGL:
+	ShaderLayout layout;
+
+	layout.AddItem(ShaderLayoutItem::itemFloat4, "a_colour");
+	layout.AddItem(ShaderLayoutItem::itemFloat, "a_textureId");
+
+	std::string ext = utils::FileSystem::GetFileExtention(a_vertPath);
+
+
+	if(ext == "glsl")
 	{
 		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_vertPath));
 
@@ -57,26 +64,46 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_vertPath, std::s
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderGL(source);
+		m_instance->m_shaders[hashedId] = new ShaderGL(source, layout);
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vertPath.c_str());
 		return GetShader(hashedId);
 	}
 #ifdef WINDOWS
-	case meduza::API::DirectX12:
+	else if (ext == "hlsl")
 	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_vertPath));
 
-		break;
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
+
+		//Check if already exists
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return GetShader(hashedId);
+		}
+
+		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_vertPath, a_fragPath, layout);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vertPath.c_str());
+		return GetShader(hashedId);
 	}
 #endif // WINDOWS
-	}
 
 	return nullptr;
 }
 
 meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 {
-	switch (MeduzaHelper::ms_activeAPI)
-	{
-	case meduza::API::OpenGL:
+	ShaderLayout layout;
+
+	layout.AddItem(ShaderLayoutItem::itemFloat4, "a_colour");
+	layout.AddItem(ShaderLayoutItem::itemFloat, "a_textureId");
+
+	std::string ext = utils::FileSystem::GetFileExtention(a_path).c_str();
+
+	if (ext == "glsl")
 	{
 		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_path));
 
@@ -93,20 +120,35 @@ meduza::Shader* meduza::ShaderLibrary::LoadShader(std::string a_path)
 			return GetShader(hashedId);
 		}
 
-		m_instance->m_shaders[hashedId] = new ShaderGL(source);
+		m_instance->m_shaders[hashedId] = new ShaderGL(source, layout);
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 		return GetShader(hashedId);
 	}
 #ifdef WINDOWS
-	case meduza::API::DirectX12:
-	{
 
-		break;
+	else if (ext == "hlsl")
+	{
+		unsigned int hashedId = utils::GetHashedID(utils::FileSystem::GetFileName(a_path));
+
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return m_instance->m_shaders[hashedId];
+		}
+
+		//Check if already exists
+		if (m_instance->m_shaders[hashedId] != nullptr)
+		{
+			return GetShader(hashedId);
+		}
+
+		m_instance->m_shaders[hashedId] = new ShaderDx12(hashedId, a_path, layout);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+
+		return GetShader(hashedId);
 	}
 #endif // WINDOWS
-
-	}
 
 	return nullptr;
 }
@@ -158,4 +200,19 @@ bool meduza::ShaderLibrary::UnLoadShader(unsigned int a_id, bool a_message)
 	delete shader;
 
 	return true;
+}
+
+void meduza::ShaderLibrary::Reload()
+{
+	for (auto s : m_shaders)
+	{
+		if (s.second->GetAPI() == MeduzaHelper::ms_activeAPI)
+		{
+			s.second->Reload();
+		}
+		else
+		{
+			s.second->Unload();
+		}
+	}
 }

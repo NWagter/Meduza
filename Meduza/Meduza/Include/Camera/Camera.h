@@ -16,6 +16,8 @@ namespace meduza
 		virtual void SetRotation(math::Vec3) = 0;
 		virtual math::Vec3 GetEyePos() const = 0;
 		virtual math::Vec3 GetRotation() const = 0;
+		virtual void SetColour(Colour) = 0;
+		virtual Colour GetSolidColour() const = 0;
 
 		virtual void SetProjection(math::Vec2, math::Vec2 = math::Vec2(-1, 1)) = 0;
 

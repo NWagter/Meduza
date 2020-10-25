@@ -9,6 +9,7 @@ namespace meduza
 		class DescriptorDx12
 		{
 		public:
+			DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC);
 			DescriptorDx12(D3D12_DESCRIPTOR_HEAP_DESC, DeviceDx12&);
 			~DescriptorDx12();
 

@@ -21,6 +21,7 @@ namespace meduza
 		virtual void Render() override;
 
 	private:
+
 		renderer::RendererDx12* m_renderer;
 		renderer::DescriptorDx12* m_GuiHeap;
 	};

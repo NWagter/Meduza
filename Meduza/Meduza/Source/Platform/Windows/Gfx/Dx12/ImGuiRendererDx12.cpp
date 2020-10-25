@@ -21,7 +21,7 @@ meduza::ImGuiRendererDx12::ImGuiRendererDx12(renderer::Renderer& a_renderer)
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	heapDesc.NodeMask = 0;
 
-	m_GuiHeap = new renderer::DescriptorDx12(heapDesc, *device);
+	m_GuiHeap = new renderer::DescriptorDx12(heapDesc);
 
 	ImGui_ImplDX12_Init(
 		device->GetDevice(),
@@ -38,6 +38,7 @@ meduza::ImGuiRendererDx12::ImGuiRendererDx12(renderer::Renderer& a_renderer)
 
 meduza::ImGuiRendererDx12::~ImGuiRendererDx12()
 {
+	ImGui::Render();
 	ImGui_ImplDX12_Shutdown();
 	delete m_GuiHeap;
 }

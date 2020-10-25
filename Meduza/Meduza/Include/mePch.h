@@ -12,6 +12,7 @@
 #include <sstream>
 #include <ostream>
 #include <vector>
+#include <array>
 #include <unordered_map>
 #include <unordered_set>
 #include <stack>
@@ -51,6 +52,10 @@
 #include <DirectXMath.h>
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
+
+#ifdef MEDUZA_DEBUG
+#include <dxgidebug.h>
+#endif
 
 #include <ImGui/imgui_impl_dx12.h>
 

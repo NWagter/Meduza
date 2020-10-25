@@ -4,7 +4,7 @@
 
 #include "Gfx/Animation2D.h"
 #include "Platform/General/Gfx/TextureLibrary.h"
-#include "Drawable/Sprite.h"
+#include "Renderable/Renderable2D.h"
 
 meduza::gfx::Animation2D::Animation2D(std::string a_name, float a_speed, Texture& a_texture): Animation(a_name,a_speed)
 {
@@ -34,7 +34,7 @@ void meduza::gfx::Animation2D::AddFrame(math::Vec4 a_rect)
 	m_frameCount++;
 }
 
-void meduza::gfx::Animation2D::UpdateFrame(drawable::Sprite& a_sprite)
+void meduza::gfx::Animation2D::UpdateFrame(Renderable2D&)
 {
 	if (m_frameCount == 0)
 	{
@@ -48,8 +48,9 @@ void meduza::gfx::Animation2D::UpdateFrame(drawable::Sprite& a_sprite)
 	{
 		m_currentFrame = 0;
 	}
+	//Renderable TextureData SetUV
 
-	a_sprite.SetUV(m_frames[m_currentFrame].m_frameRect);
+	//a_sprite.SetUV(m_frames[m_currentFrame].m_frameRect);
 }
 
 void meduza::gfx::Animation2D::OnStart()

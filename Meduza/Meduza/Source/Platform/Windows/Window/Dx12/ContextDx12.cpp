@@ -7,16 +7,18 @@
 
 #include "Math/MeduzaMath.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
 #include "Platform/Windows/Window/Dx12/ContextDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/DescriptorDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
+#include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 
 meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 {
-
 #if defined(MEDUZA_DEBUG)
+
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
@@ -30,7 +32,7 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 	queueDesc.NodeMask = 0;
 
-	m_queue = new CommandQueueDx12(queueDesc, *m_device);
+	m_queue = new CommandQueueDx12(queueDesc, m_device);
 
 	m_hwnd = a_hwnd;
 
@@ -46,15 +48,32 @@ meduza::renderer::ContextDx12::ContextDx12(HWND a_hwnd)
 
 meduza::renderer::ContextDx12::~ContextDx12()
 {
+	m_queue->Flush();
+
+	if (RendererDx12::GetRenderer() != nullptr)
+	{
+		SwapBuffer();
+	}
+
+	m_frameBuffer->ReleaseAndGetAddressOf();
+	m_swapChain.ReleaseAndGetAddressOf();
+
 	delete m_device;
 	delete m_queue;
-
-	m_swapChain.ReleaseAndGetAddressOf();
-	m_frameBuffer->ReleaseAndGetAddressOf();
 }
 
 void meduza::renderer::ContextDx12::SwapBuffer()
 {
+	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		GetCurrentBuffer(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
+	auto cmd = RendererDx12::GetRenderer()->GetCmd();
+
+	cmd.GetList()->ResourceBarrier(1, &barrier);
+
+	GetQueue()->ExecuteList(&cmd);
+
 	m_swapChain->Present(0, 0);
 
 	//Fence with Queue
@@ -84,6 +103,7 @@ void meduza::renderer::ContextDx12::Resize(math::Vec2 a_size)
 	ClearRTV();
 
 	m_swapChain->ResizeBuffers(GS_FRAMEBUFFERS, int(a_size.m_x), int(a_size.m_y), m_backBufferFormat, swapChainDesc.Flags);
+	RendererDx12::GetRenderer()->Resize(m_size);
 
 
 	CreateRTV(*m_rtv);
@@ -162,7 +182,7 @@ void meduza::renderer::ContextDx12::CreateSwapChain()
 	swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-
+	
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain1;
 	m_device->GetFactory()->CreateSwapChainForHwnd(
 		m_queue->GetQueue(),

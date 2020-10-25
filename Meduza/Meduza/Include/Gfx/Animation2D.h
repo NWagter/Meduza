@@ -6,10 +6,7 @@
 
 namespace meduza
 {
-	namespace drawable
-	{
-		class Sprite;
-	}
+	class Renderable2D;
 
 	class Texture;
 
@@ -29,7 +26,7 @@ namespace meduza
 			~Animation2D() override;
 
 			void AddFrame(math::Vec4);
-			void UpdateFrame(drawable::Sprite&);
+			void UpdateFrame(Renderable2D&);
 
 			// Inherited via Animation
 			virtual void OnStart() override;

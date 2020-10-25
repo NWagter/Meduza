@@ -33,3 +33,13 @@ std::string meduza::utils::FileSystem::GetFileName(std::string a_path)
 
 	return a_path.substr(lastSlash, count);
 }
+
+std::string meduza::utils::FileSystem::GetFileExtention(std::string a_path)
+{
+	size_t i = a_path.rfind('.', a_path.length());
+	if (i != std::string::npos) {
+		return(a_path.substr(i + 1, a_path.length() - i));
+	}
+
+	return("");
+}

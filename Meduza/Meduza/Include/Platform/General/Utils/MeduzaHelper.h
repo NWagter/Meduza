@@ -6,6 +6,8 @@ namespace meduza
 {
 	static const int  GS_FRAMEBUFFERS = 3;
 
+	class Material;
+
 	namespace renderer
 	{
 		class Mesh;
@@ -30,7 +32,7 @@ namespace meduza
 			m_colour = glm::vec4(1, 1, 1, 1);
 			m_shaderId = 0;
 			m_textureId = 0;
-
+			m_material = nullptr;
 		}
 
 		~DrawData() = default;
@@ -43,6 +45,7 @@ namespace meduza
 		glm::vec4 m_colour;
 
 		renderer::Mesh* m_mesh;
+		meduza::Material* m_material;
 
 		unsigned int m_shaderId;
 		unsigned int m_textureId;
@@ -50,12 +53,14 @@ namespace meduza
 
 	struct Vertex
 	{
-		Vertex(float a_x, float a_y, float a_z)
+		Vertex(float a_x, float a_y, float a_z, float a_r, float a_g, float a_b, float a_a)
 		{
 			m_vertexPos = glm::vec3(a_x, a_y, a_z);
+			m_colour = glm::vec4(a_r, a_g, a_b, a_a);
 		}
 
 		glm::vec3 m_vertexPos;
+		glm::vec4 m_colour;
 	};
 
 #define MAX_INSTANCES 4800

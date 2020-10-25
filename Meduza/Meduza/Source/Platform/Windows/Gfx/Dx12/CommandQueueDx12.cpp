@@ -2,18 +2,29 @@
 
 #include "Platform/General/Utils/MeduzaHelper.h"
 
+#include "Platform/Windows/Gfx/Dx12/RendererDx12.h"
+#include "Platform/Windows/Window/Dx12/ContextDx12.h"
+
 #include "Platform/Windows/Gfx/Dx12/CommandQueueDx12.h"
 
 #include "Platform/Windows/Gfx/Dx12/DeviceDx12.h"
 #include "Platform/Windows/Gfx/Dx12/CommandListDx12.h"
 #include "Platform/Windows/Gfx/Dx12/FenceDx12.h"
 
-meduza::renderer::CommandQueueDx12::CommandQueueDx12(D3D12_COMMAND_QUEUE_DESC a_desc, DeviceDx12& a_device)
+meduza::renderer::CommandQueueDx12::CommandQueueDx12(D3D12_COMMAND_QUEUE_DESC a_desc, DeviceDx12* a_device)
 {
-	m_fence = new FenceDx12(a_device);
+
+	auto device = a_device;
+
+	if (device == nullptr)
+	{
+		device = RendererDx12::GetRenderer()->GetContext().GetDevice();
+	}
+
+	m_fence = new FenceDx12(device);
 	m_description = a_desc;
 
-	a_device.GetDevice()->CreateCommandQueue(
+	device->GetDevice()->CreateCommandQueue(
 		&m_description,
 		IID_PPV_ARGS(&m_queue));
 }

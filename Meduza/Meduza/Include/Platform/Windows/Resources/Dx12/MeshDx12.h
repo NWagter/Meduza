@@ -4,38 +4,32 @@
 
 namespace meduza
 {
-	namespace renderer
+	class MeshDx12 : public Mesh
 	{
-		class DeviceDx12;
-		class CommandListDx12;
+	public:
+		MeshDx12(unsigned int, std::vector<Vertex>, std::vector<uint16_t>, VertexAttributes);
+		~MeshDx12() override;
 
-		class MeshDx12 : public Mesh
-		{
-		public:
-			MeshDx12(unsigned int, std::vector<Vertex>, std::vector<int>, VertexAttributes, DeviceDx12&, CommandListDx12*);
-			~MeshDx12() override;
+		void GenerateBuffers() override;
 
-			void GenerateBuffers() override;
+		void DisposeUploaders();
 
-			D3D12_VERTEX_BUFFER_VIEW VertexBufferView()const;
-			D3D12_INDEX_BUFFER_VIEW IndexBufferView()const;
+		Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;
+		Microsoft::WRL::ComPtr<ID3DBlob> m_indexBufferCPU = nullptr;
 
-			void DisposeUploaders();
-		private:
-			DeviceDx12* m_device;
-			CommandListDx12* m_cmd;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBufferGPU = nullptr;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferGPU = nullptr;
 
-			DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R16_UINT;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBufferUploader = nullptr;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferUploader = nullptr;
 
-			Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;
-			Microsoft::WRL::ComPtr<ID3DBlob> m_indexBufferCPU = nullptr;
+		D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() const { return m_vBufferView; };
+		D3D12_INDEX_BUFFER_VIEW GetIndexBuffer() const { return m_iBufferView; };
 
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBufferGPU = nullptr;
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferGPU = nullptr;
+	private:
+		DXGI_FORMAT m_indexFormat = DXGI_FORMAT_R32_UINT;
 
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_vertexBufferUploader = nullptr;
-			Microsoft::WRL::ComPtr<ID3D12Resource> m_indexBufferUploader = nullptr;
-
-		};
-	}
+		D3D12_VERTEX_BUFFER_VIEW m_vBufferView;
+		D3D12_INDEX_BUFFER_VIEW m_iBufferView;
+	};
 }

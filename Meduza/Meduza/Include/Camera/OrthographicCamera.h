@@ -13,6 +13,9 @@ namespace meduza
 		inline void SetEye(math::Vec3 a_pos) override { m_position = glm::vec3(a_pos.m_x, a_pos.m_y, a_pos.m_z); RecalculateViewMatrix(); }
 		inline void SetRotation(math::Vec3 a_euler) override { m_rotationZ = a_euler.m_z; RecalculateViewMatrix();}
 
+		inline void SetColour(Colour a_colour) override { m_solidColour = a_colour; };
+		inline Colour GetSolidColour() const override { return m_solidColour; };
+
 		inline math::Vec3 GetEyePos() const override { return math::Vec3(m_position.x, m_position.y, m_position.z); }
 		inline math::Vec3 GetRotation() const override { return math::Vec3(0, 0, m_rotationZ); };
 
@@ -33,6 +36,9 @@ namespace meduza
 		
 		glm::vec3 m_position = glm::vec3(0);
 		float m_rotationZ = 0;
+
+		Colour m_solidColour = Colours::CELESTIAL_BLUE;
+
 
 	};
 }

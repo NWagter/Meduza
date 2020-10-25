@@ -1,6 +1,6 @@
 # Meduza
 Personal Render engine project by Nick Wagter
-The purpose of this project is to learn DirectX12 and how to write a Graphics Engine.
+The purpose of this project is to learn DirectX12 and how to write a Cross-Platform Graphics Engine.
 
 # What will it contain
 This project is in the early stages of development and does not contain a lot yet,
@@ -24,19 +24,11 @@ but what is currently planned is the following :
     - Skeletal animations
 
 # Graphics APIs :
-- OpenGL
+- OpenGL 3.1
 - DirectX 12
 
 # Libraries Used :
-- ImGui
-- Optick
-- GLM
 - GLAD
 
 # Project description
-Meduza will be a static library that will be as user friendly as possible.
-
-The executable will be a seperate project containing examples on how to use the renderer and some tools using ImGui to show what is possible to do with the engine.
-
-The reason for this project is to learn more about graphics programming and provide a useable library for others not interested in graphics programming but in need of an library that can do it for them.
-And to learn more about render abstractions with the use of mutliple Graphics APIs
+Meduza is a cross-platform renderer project

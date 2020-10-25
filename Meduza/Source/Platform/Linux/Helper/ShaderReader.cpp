@@ -3,21 +3,21 @@
 
 #include "Platform/General/FileSystem/FileSystem.h"
 
-Me::Helper::GL::ShaderSources Me::Helper::GL::ShaderUtils::GetSources(std::string a_vertPath, std::string a_fragPath)
-{
-	ShaderSources source;
-
-	source.m_vertexSource = File::FileSystem::ReadFile(a_vertPath);
-	source.m_pixelSource = File::FileSystem::ReadFile(a_fragPath);
-
-	source.m_shaderName = File::FileSystem::GetFileName(a_vertPath);
-	return source;
-}
-Me::Helper::GL::ShaderSources Me::Helper::GL::ShaderUtils::GetSources(std::string a_path)
+Me::Helper::GL::ShaderSources Me::Helper::GL::ShaderHelper::GetSources(std::string a_vertPath, std::string a_fragPath)
 {
 	ShaderSources source;
 	
-	std::string shaderSource = File::FileSystem::ReadFile(a_path);
+	source.m_vertexSource = Files::FileSystem::ReadFile(a_vertPath);
+	source.m_pixelSource = Files::FileSystem::ReadFile(a_fragPath);
+
+	source.m_shaderName = Files::FileSystem::GetFileName(a_vertPath);
+	return source;
+}
+Me::Helper::GL::ShaderSources Me::Helper::GL::ShaderHelper::GetSources(std::string a_path)
+{
+	ShaderSources source;
+	
+	std::string shaderSource = Files::FileSystem::ReadFile(a_path);
 
 	const char* typeToken = "#type";
 	size_t typeTokenLenght = strlen(typeToken);
@@ -45,7 +45,7 @@ Me::Helper::GL::ShaderSources Me::Helper::GL::ShaderUtils::GetSources(std::strin
 
 	}
     
-	source.m_shaderName = File::FileSystem::GetFileName(a_path);
+	source.m_shaderName = Files::FileSystem::GetFileName(a_path);
 
 	return source;
 }

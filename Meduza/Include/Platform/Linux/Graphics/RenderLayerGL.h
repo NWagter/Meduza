@@ -11,6 +11,7 @@ namespace Me
         namespace GL
         {
             class Mesh;
+            class Shader;
         }
     }
 
@@ -32,8 +33,12 @@ namespace Me
 
                 Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
             private:
+                void Populate();
                 LinuxWindow* m_window;
                 Context* m_context;
+
+                std::vector<Renderable*> m_renderables;
+                Resources::GL::Shader* m_activeShader;
             };
         }
     }

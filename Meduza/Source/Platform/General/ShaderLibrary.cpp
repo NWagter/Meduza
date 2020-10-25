@@ -83,6 +83,18 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
 		return nullptr;
 	}
+
+	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
+	if (ms_instance->m_shaders[hashedId] != nullptr)
+	{
+		return ms_instance->m_shaders[hashedId];
+	}
+
+	ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
+
+	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+
+	return GetShader(hashedId);
 	#elif PLATFORM_APPLE
 
 	#endif
@@ -118,6 +130,18 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
 		return nullptr;
 	}
+
+	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_vsPath));
+	if (ms_instance->m_shaders[hashedId] != nullptr)
+	{
+		return ms_instance->m_shaders[hashedId];
+	}
+
+	ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
+
+	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+
+	return GetShader(hashedId);
 
 	#elif PLATFORM_APPLE
 

@@ -3,13 +3,13 @@
 
 Me::Resources::GL::Shader::Shader(std::string a_vShader, std::string a_pShader)
 {
-    m_source = Helper::GL::GetSources(a_vShader, a_pShader)
+    m_source = Helper::GL::ShaderHelper::GetSources(a_vShader,a_pShader);
     m_program = GenerateShader();
 }
 
 Me::Resources::GL::Shader::Shader(std::string a_shader)
 {
-    m_source = Helper::GL::GetSources(a_shader)
+    m_source = Helper::GL::ShaderHelper::GetSources(a_shader);
     m_program = GenerateShader();
 }
 
@@ -38,7 +38,7 @@ void Me::Resources::GL::Shader::UnBind()
     glUseProgram(0);
 }
 
-bool ShaderDebug(unsigned int a_shader)
+bool ShaderDebug(unsigned int a_shader, std::string a_type)
 {
     int success;
     char infoLog[512];
@@ -46,7 +46,7 @@ bool ShaderDebug(unsigned int a_shader)
     if (!success)
     {
         glGetShaderInfoLog(a_shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::SHADER::" << a_type.c_str() << "::COMPILATION_FAILED\n" << infoLog << std::endl;
         return false;
     }
 
@@ -62,20 +62,20 @@ unsigned int Me::Resources::GL::Shader::GenerateShader()
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertSource, NULL);
     glCompileShader(vertexShader);
-    ShaderDebug(vertexShader);
+    ShaderDebug(vertexShader, "VERTEX");
 
     // fragment shader
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragSource, NULL);
     glCompileShader(fragmentShader);
-    ShaderDebug(fragmentShader);
+    ShaderDebug(fragmentShader, "PIXEL");
 
     // link shaders
     unsigned int shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
-    ShaderDebug(shaderProgram);
+    ShaderDebug(shaderProgram, "PROGRAM");
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);

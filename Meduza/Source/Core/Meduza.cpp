@@ -44,7 +44,13 @@ Me::Meduza::Meduza()
 	Resources::ShaderBase* shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 	if(shader == nullptr)
 	{
-		ME_CORE_ASSERT_M(false, "No Shader!");
+		ME_CORE_LOG("No HLSL Shader");
+		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_ShaderGL.glsl");
+
+		if(shader == nullptr)
+		{
+			ME_CORE_ASSERT_M(false, "No GLSL Shader!");
+		}
 	}
 	// Create Quad!
 	std::vector<Vertex> vertices = 

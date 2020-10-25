@@ -2,6 +2,7 @@
 bin/
 gen/
 out/
+build/
 .vs/
 debug/
 release/

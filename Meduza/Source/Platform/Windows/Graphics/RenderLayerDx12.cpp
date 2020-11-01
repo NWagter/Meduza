@@ -11,8 +11,13 @@
 
 #include "Platform/Windows/Resources/Mesh.h"
 #include "Platform/General/MeshLibrary.h"
+
 #include "Platform/Windows/Resources/Shader.h"
 #include "Platform/General/ShaderLibrary.h"
+
+#include "Platform/Windows/Resources/Texture.h"
+#include "Platform/General/TextureLibrary.h"
+#include "Platform/Windows/Helper/TextureLoader.h"
 
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
@@ -24,7 +29,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 
     //cast the window into a WindowsWindow type
     m_window = dynamic_cast<WindowsWindow*>(a_window);
-
+	
     m_device = new Device();
     m_context = new Context(m_window->GetWindowHandle(), m_device);
 	m_window->SetContext(m_context);
@@ -42,6 +47,8 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 
     m_context->CreateSwapchain();
     
+	m_textureLoader = new Helper::Dx12::TextureLoader(*m_device, GetCmd());
+
     D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -56,7 +63,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvDesc.NodeMask = 0;
-
+	
 	m_srv = new Descriptor(srvDesc, *m_device);
 
 	m_activeShader = nullptr;
@@ -66,6 +73,7 @@ Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
 {
     m_queue->Flush();
 
+	delete m_textureLoader;
     delete m_context;
     delete m_device;
     delete m_queue;
@@ -150,4 +158,11 @@ Me::Renderer::Dx12::Device& Me::Renderer::Dx12::RenderLayerDx12::GetDevice()
 Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
 	return new Me::Resources::Dx12::Mesh(a_vertices,a_indices, *m_device, GetCmd());
+}
+
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_path)
+{
+	auto tData = m_textureLoader->LoadTexture(a_path);
+
+	return nullptr;
 }

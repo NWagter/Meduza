@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/Windows/Helpers/Helper.h"
+#include "Platform/Windows/Helper/Helper.h"
 
 Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 	ID3D12Device* a_device,

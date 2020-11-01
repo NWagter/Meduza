@@ -6,18 +6,17 @@ namespace Me
         class TextureBase
         {
         public:
-            TextureBase();
+            TextureBase(const Math::Vec2);
 
             virtual ~TextureBase();   
 
             virtual void Reload() = 0;
             virtual void Unload() = 0;
 
-            virtual void Bind() = 0;
-            virtual void UnBind() = 0;
+            inline Math::Vec2 GetSize() const {return m_size;}
 
         protected:
-
+            Math::Vec2 m_size;
         };
     }
 }

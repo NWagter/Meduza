@@ -10,8 +10,9 @@ if(WIN32)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Windows/*.cpp
 	Source/Platform/Windows/Graphics/*.cpp
 	Source/Platform/Windows/Resources/*.cpp	
-	Source/Platform/Windows/Helper/*.cpp)	
-	file(GLOB EXTERNAL_INCLUDE ${PROJECT_SOURCE_DIR}/External/Win)
+	Source/Platform/Windows/Helper/*.cpp
+	${PROJECT_SOURCE_DIR}/External/Win/DX12/*.cpp)	
+	file(GLOB EXTERNAL_INCLUDE ${PROJECT_SOURCE_DIR}/External/Win/DX12)
 elseif(UNIX AND NOT APPLE)
 	add_compile_definitions(PLATFORM_LINUX)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Linux/*.cpp

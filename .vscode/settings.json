@@ -71,6 +71,7 @@
         "random": "cpp",
         "string_view": "cpp",
         "fstream": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "xlocbuf": "cpp"
     }
 }

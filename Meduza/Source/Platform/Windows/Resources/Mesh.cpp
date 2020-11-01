@@ -1,7 +1,7 @@
 #include "MePCH.h"
 #include "Platform/Windows/Resources/Mesh.h"
 
-#include "Platform/Windows/Helpers/Helper.h"
+#include "Platform/Windows/Helper/Helper.h"
 
 #include "Platform/Windows/Graphics/Device.h"
 #include "Platform/Windows/Graphics/CommandList.h"

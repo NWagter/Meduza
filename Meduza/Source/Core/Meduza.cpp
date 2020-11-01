@@ -43,6 +43,9 @@ Me::Meduza::Meduza()
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 
+	Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
+	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
+
 	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 	if(shader == 0)
 	{

@@ -5,6 +5,17 @@ namespace Me
     {
         namespace Dx12
         {
+            struct TextureData
+            {
+                unsigned int m_resourceId;
+                unsigned int m_srvOffset = 0;
+
+                std::string m_filename;
+
+                Microsoft::WRL::ComPtr<ID3D12Resource> m_resource = nullptr;
+                Microsoft::WRL::ComPtr<ID3D12Resource> m_uploadHeap = nullptr;
+            };
+
             class Helper
             {
                 public:

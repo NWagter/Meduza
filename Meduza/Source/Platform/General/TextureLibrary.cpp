@@ -3,6 +3,11 @@
 
 #include "Platform/General/FileSystem/FileSystem.h"
 
+#ifdef PLATFORM_WINDOWS
+#include "Platform/Windows/Graphics/RenderLayerDx12.h"
+#include "Platform/Windows/Resources/Texture.h"
+#endif
+
 Me::Resources::TextureLibrary* Me::Resources::TextureLibrary::ms_instance = nullptr;
 
 Me::Resources::TextureLibrary* Me::Resources::TextureLibrary::CreateTextureLibrary(Renderer::RenderLayer& a_renderLayer)
@@ -31,7 +36,17 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
         return hashedId;
     }
 
+#ifdef PLATFORM_WINDOWS
 
+    auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture);
+
+    if(texture != nullptr)
+    {
+        ms_instance->m_textures[hashedId] = texture;
+        return hashedId;
+    }
+
+#endif
 
     return 0;
 }

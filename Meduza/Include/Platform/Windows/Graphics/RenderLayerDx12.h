@@ -11,6 +11,15 @@ namespace Me
         {
             class Mesh;
             class Shader;
+            class Texture;
+        }
+    }
+
+    namespace Helper
+    {
+        namespace Dx12
+        {
+            class TextureLoader;
         }
     }
 
@@ -36,7 +45,8 @@ namespace Me
                 void Submit(Renderable&) override;
                 
                 Resources::Dx12::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
-                
+                Resources::Dx12::Texture* LoadTexture(std::string);
+
                 CommandList& GetCmd(int a_id = 0);
                 Device& GetDevice();
 
@@ -44,8 +54,11 @@ namespace Me
                 void Populate();
 
                 WindowsWindow* m_window = nullptr;
+                
                 Context* m_context = nullptr;
                 Device* m_device = nullptr;
+
+                Helper::Dx12::TextureLoader* m_textureLoader = nullptr;
 
                 CommandQueue* m_queue = nullptr;
                 Descriptor* m_rtv;

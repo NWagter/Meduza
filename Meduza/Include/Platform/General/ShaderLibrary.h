@@ -16,14 +16,14 @@ namespace Me
             static ShaderLibrary* CreateShaderLibrary(Renderer::RenderLayer&);
             static void Destroy();
 
-            static ShaderBase* CreateShader(std::string);
-            static ShaderBase* CreateShader(std::string, std::string);
+            static Shader CreateShader(std::string);
+            static Shader CreateShader(std::string, std::string);
             
             static ShaderBase* GetShader(std::string);
-            static ShaderBase* GetShader(unsigned int);
+            static ShaderBase* GetShader(Shader);
 
             static bool UnLoadShader(std::string);
-            static bool UnLoadShader(unsigned int, bool = true);
+            static bool UnLoadShader(Shader, bool = true);
 
         private:
             ShaderLibrary(Renderer::RenderLayer&);
@@ -32,7 +32,7 @@ namespace Me
             Renderer::RenderLayer* m_renderLayer;
 
             static ShaderLibrary* ms_instance;
-            std::unordered_map<unsigned int, ShaderBase*> m_shaders;
+            std::unordered_map<Shader, ShaderBase*> m_shaders;
         };
     }
 }

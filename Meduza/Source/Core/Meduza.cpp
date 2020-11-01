@@ -41,13 +41,13 @@ Me::Meduza::Meduza()
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 
-	Resources::ShaderBase* shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
-	if(shader == nullptr)
+	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+	if(shader == 0)
 	{
 		ME_CORE_LOG("No HLSL Shader");
 		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_ShaderGL.glsl");
 
-		if(shader == nullptr)
+		if(shader == 0)
 		{
 			ME_CORE_ASSERT_M(false, "No GLSL Shader!");
 		}
@@ -66,11 +66,11 @@ Me::Meduza::Meduza()
         0, 1, 3,
         0, 3, 2
     };
-	unsigned int quadId = static_cast<unsigned int>(Primitives::Quad);
-	Resources::MeshBase* quad = Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
+	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
+	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
 	m_renderable = new Renderable();
-	m_renderable->m_mesh = quad;
+	m_renderable->m_mesh = quadId;
 	m_renderable->m_shader = shader;
 }
 

@@ -5,7 +5,9 @@
 #include "Platform/Linux/Context.h"
 
 #include "Platform/Linux/Resources/Mesh.h"
+#include "Platform/General/MeshLibrary.h"
 #include "Platform/Linux/Resources/Shader.h"
+#include "Platform/General/ShaderLibrary.h"
 
 Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 {
@@ -48,8 +50,8 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 {
     for (auto r : m_renderables)
     {
-		auto s = static_cast<Resources::GL::Shader*>(r->m_shader);
-        auto m = static_cast<Resources::GL::Mesh*>(r->m_mesh);
+		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
+        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
 
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{

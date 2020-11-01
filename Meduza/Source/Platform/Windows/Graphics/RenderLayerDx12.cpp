@@ -10,7 +10,9 @@
 #include "Platform/Windows/Graphics/Descriptor.h"
 
 #include "Platform/Windows/Resources/Mesh.h"
+#include "Platform/General/MeshLibrary.h"
 #include "Platform/Windows/Resources/Shader.h"
+#include "Platform/General/ShaderLibrary.h"
 
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
@@ -117,8 +119,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {
 	for (auto r : m_renderables)
 	{
-		auto s = static_cast<Resources::Dx12::Shader*>(r->m_shader);
-		auto m = static_cast<Resources::Dx12::Mesh*>(r->m_mesh);
+		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
+		auto m = static_cast<Resources::Dx12::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{
 			m_activeShader = s;

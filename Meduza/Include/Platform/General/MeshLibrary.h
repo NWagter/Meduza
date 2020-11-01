@@ -16,14 +16,14 @@ namespace Me
             static MeshLibrary* CreateMeshLibrary(Renderer::RenderLayer&);
             static void Destroy();
 
-            static MeshBase* CreateMesh(std::string);
-            static MeshBase* CreateMesh(unsigned int, std::vector<Vertex>, std::vector<uint16_t>);
+            static Mesh CreateMesh(std::string);
+            static Mesh CreateMesh(Mesh, std::vector<Vertex>, std::vector<uint16_t>);
             
             static MeshBase* GetMesh(std::string);
-            static MeshBase* GetMesh(unsigned int);
+            static MeshBase* GetMesh(Mesh);
 
             static bool UnLoadMesh(std::string);
-            static bool UnLoadMesh(unsigned int, bool = true);
+            static bool UnLoadMesh(Mesh, bool = true);
 
         private:
             MeshLibrary(Renderer::RenderLayer&);
@@ -32,7 +32,7 @@ namespace Me
             Renderer::RenderLayer* m_renderLayer;
 
             static MeshLibrary* ms_instance;
-            std::unordered_map<unsigned int, MeshBase*> m_meshes;
+            std::unordered_map<Mesh, MeshBase*> m_meshes;
         };
     }
 }

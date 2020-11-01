@@ -6,7 +6,12 @@ namespace Me
     {
         class MeshBase;
         class ShaderBase;
+        class TextureBase;
     }
+
+    using Mesh = uint16_t;
+    using Shader = uint16_t;
+    using Texture = uint16_t;
 
     enum class ResourceTypes
     {
@@ -27,8 +32,8 @@ namespace Me
 
     struct Renderable
     {
-        Resources::MeshBase* m_mesh;
-        Resources::ShaderBase* m_shader;
+        Mesh m_mesh;
+        Shader m_shader;
     };
 
     struct Colour

@@ -52,28 +52,30 @@ Me::Resources::MeshLibrary::~MeshLibrary()
 	ms_instance->m_meshes.clear();
 }
 
-Me::Resources::MeshBase* Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
+Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 {
     printf("Couldn't load %s as loading meshes from files is not supported! \n", a_name.c_str());
-    return nullptr;
+    return 0;
 }
 
-Me::Resources::MeshBase* Me::Resources::MeshLibrary::CreateMesh(unsigned int a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
     if (ms_instance->m_meshes[a_id] != nullptr)
     {
-        return GetMesh(a_id);
+        return a_id;
     }
 
 #ifdef PLATFORM_WINDOWS
-	return (static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer))->CreateMesh(a_vertices, a_indices);
+	ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+	return a_id;
 #elif PLATFORM_LINUX
-	return (static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer))->CreateMesh(a_vertices, a_indices);
+	ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+	return a_id;
 #elif PLATFORM_APPLE
 
 #endif
 
-    return nullptr;
+    return 0;
 }
 
 Me::Resources::MeshBase* Me::Resources::MeshLibrary::GetMesh(std::string a_name)
@@ -81,7 +83,7 @@ Me::Resources::MeshBase* Me::Resources::MeshLibrary::GetMesh(std::string a_name)
 	return GetMesh(Utils::Utilities::GetHashedID(a_name));
 }
 
-Me::Resources::MeshBase* Me::Resources::MeshLibrary::GetMesh(unsigned int a_id)
+Me::Resources::MeshBase* Me::Resources::MeshLibrary::GetMesh(uint16_t a_id)
 {
     //Check if already exists
 	if (ms_instance->m_meshes[a_id] == nullptr)
@@ -104,7 +106,7 @@ bool Me::Resources::MeshLibrary::UnLoadMesh(std::string a_name)
 	return true;
 }
 
-bool Me::Resources::MeshLibrary::UnLoadMesh(unsigned int a_id, bool a_message)
+bool Me::Resources::MeshLibrary::UnLoadMesh(uint16_t a_id, bool a_message)
 {
 	//Check if already exists
 	if (ms_instance->m_meshes[a_id] == nullptr)

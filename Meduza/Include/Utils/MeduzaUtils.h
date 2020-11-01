@@ -6,7 +6,7 @@ namespace Me
       class Utilities
       {
       public:
-        static unsigned int GetHashedID(std::string);
+        static uint16_t GetHashedID(std::string);
       };     
     }
 

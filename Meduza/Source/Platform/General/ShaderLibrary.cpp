@@ -53,7 +53,7 @@ Me::Resources::ShaderLibrary::~ShaderLibrary()
 	ms_instance->m_shaders.clear();
 }
 
-Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
+Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
 
@@ -62,13 +62,13 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 	if(ext != "hlsl")
 	{
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return nullptr;
+		return 0;
 	}
 
-	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
+	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
 		if (ms_instance->m_shaders[hashedId] != nullptr)
 		{
-			return ms_instance->m_shaders[hashedId];
+			return hashedId;
 		}
 
 		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
@@ -76,32 +76,32 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 
-		return GetShader(hashedId);
+		return hashedId;//GetShader(hashedId);
 	#elif PLATFORM_LINUX
 	if(ext != "glsl")
 	{
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return nullptr;
+		return 0;
 	}
 
-	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
+	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
 	if (ms_instance->m_shaders[hashedId] != nullptr)
 	{
-		return ms_instance->m_shaders[hashedId];
+		return hashedId;
 	}
 
 	ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
 
 	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 
-	return GetShader(hashedId);
+	return hashedId;
 	#elif PLATFORM_APPLE
 
 	#endif
-    return nullptr;
+    return 0;
 }
 
-Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::string a_vsPath, std::string a_psPath)
+Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_vsPath, std::string a_psPath)
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_vsPath);
 	
@@ -109,13 +109,13 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 	if(ext != "hlsl")
 	{
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return nullptr;
+		return 0;
 	}
 	std::string name = Files::FileSystem::GetFileName(a_vsPath);
 	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_vsPath));
 		if (ms_instance->m_shaders[hashedId] != nullptr)
 		{
-			return ms_instance->m_shaders[hashedId];
+			return hashedId;
 		}
 
 		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_vsPath, a_psPath,
@@ -123,31 +123,30 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::CreateShader(std::strin
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", name.c_str());
 
-		return GetShader(hashedId);
+		return hashedId;
 	#elif PLATFORM_LINUX
 	if(ext != "glsl")
 	{
 		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return nullptr;
+		return 0;
 	}
 
 	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_vsPath));
 	if (ms_instance->m_shaders[hashedId] != nullptr)
 	{
-		return ms_instance->m_shaders[hashedId];
+		return hashedId;
 	}
 
 	ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
 
 	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 
-	return GetShader(hashedId);
+	return hashedId;
 
 	#elif PLATFORM_APPLE
 
 	#endif
-    return nullptr;
-    return nullptr;
+    return 0;
 }
 
 Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::GetShader(std::string a_name)
@@ -155,16 +154,16 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::GetShader(std::string a
 	return GetShader(Utils::Utilities::GetHashedID(a_name));
 }
 
-Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::GetShader(unsigned int a_id)
+Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::GetShader(Me::Shader a_shader)
 {
     //Check if already exists
-	if (ms_instance->m_shaders[a_id] == nullptr)
+	if (ms_instance->m_shaders[a_shader] == nullptr)
 	{
-		ME_GFX_LOG("Shader with id : %i doesn't exist", a_id);
+		ME_GFX_LOG("Shader with id : %i doesn't exist", a_shader);
 		return nullptr;
 	}
 
-	return ms_instance->m_shaders[a_id];
+	return ms_instance->m_shaders[a_shader];
 }
 
 bool Me::Resources::ShaderLibrary::UnLoadShader(std::string a_name)
@@ -179,21 +178,21 @@ bool Me::Resources::ShaderLibrary::UnLoadShader(std::string a_name)
 	return true;
 }
 
-bool Me::Resources::ShaderLibrary::UnLoadShader(unsigned int a_id, bool a_message)
+bool Me::Resources::ShaderLibrary::UnLoadShader(Me::Shader a_shader, bool a_message)
 {
 	//Check if already exists
-	if (ms_instance->m_shaders[a_id] == nullptr)
+	if (ms_instance->m_shaders[a_shader] == nullptr)
 	{
 		if (a_message)
 		{
-			ME_GFX_LOG("Shader with ID : %i doesn't exist", a_id);
+			ME_GFX_LOG("Shader with ID : %i doesn't exist", a_shader);
 		}
 
 		return false;
 	}
 
-	auto mesh = ms_instance->m_shaders[a_id];
-	ms_instance->m_shaders.erase(a_id);
+	auto mesh = ms_instance->m_shaders[a_shader];
+	ms_instance->m_shaders.erase(a_shader);
 	delete mesh;
 
 	return true;

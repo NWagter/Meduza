@@ -99,7 +99,7 @@ bool Me::Resources::MeshLibrary::UnLoadMesh(std::string a_name)
     //Check if already exists
 	if (!UnLoadMesh(Utils::Utilities::GetHashedID(a_name), false))
 	{
-		printf("Shader : %s doesn't exist", a_name.c_str());
+		ME_CORE_LOG("Mesh : %s doesn't exist", a_name.c_str());
 		return false;
 	}
     
@@ -113,7 +113,7 @@ bool Me::Resources::MeshLibrary::UnLoadMesh(uint16_t a_id, bool a_message)
 	{
 		if (a_message)
 		{
-			printf("Shader with ID : %i doesn't exist", a_id);
+			ME_CORE_LOG("Mesh with ID : %i doesn't exist", a_id);
 		}
 
 		return false;

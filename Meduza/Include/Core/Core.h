@@ -37,7 +37,7 @@
 	if(!(assertion))\
 	{\
 		std::string assertmsg = std::string("Assertion `"#assertion"` failed in ") + std::string(__FILE__) + " on line: " + std::to_string(__LINE__) + ": ";\
-		printf("[CORE] %s", assertmsg.c_str());\
+		printf("[CORE] %s \n%s", msg, assertmsg.c_str());\
 		std::terminate();\
 	}\
 }
@@ -57,7 +57,7 @@
 	if(!(assertion))\
 	{\
 		std::string assertmsg = std::string("Assertion `"#assertion"` failed in ") + std::string(__FILE__) + " on line: " + std::to_string(__LINE__) + ": ";\
-		printf("[GFX] %s", assertmsg.c_str());\
+		printf("[GFX] %s \n%s", msg, assertmsg.c_str());\
 		std::terminate();\
 	}\
 }

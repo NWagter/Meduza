@@ -1,14 +1,7 @@
 #pragma once
 
 namespace Me
-{        
-    namespace Resources
-    {
-        class MeshBase;
-        class ShaderBase;
-        class TextureBase;
-    }
-
+{      
     using Mesh = uint16_t;
     using Shader = uint16_t;
     using Texture = uint16_t;

@@ -191,9 +191,9 @@ bool Me::Resources::ShaderLibrary::UnLoadShader(Me::Shader a_shader, bool a_mess
 		return false;
 	}
 
-	auto mesh = ms_instance->m_shaders[a_shader];
+	auto shader = ms_instance->m_shaders[a_shader];
 	ms_instance->m_shaders.erase(a_shader);
-	delete mesh;
+	delete shader;
 
 	return true;
 }

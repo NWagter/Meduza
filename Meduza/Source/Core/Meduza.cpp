@@ -5,6 +5,7 @@
 
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"
+#include "Platform/General/TextureLibrary.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
@@ -40,6 +41,7 @@ Me::Meduza::Meduza()
 
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
+	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 
 	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 	if(shader == 0)
@@ -120,6 +122,10 @@ void Me::Meduza::Present()
 
 void Me::Meduza::Destroy()
 {
+	Resources::TextureLibrary::Destroy();
+	Resources::ShaderLibrary::Destroy();
+	Resources::MeshLibrary::Destroy();
+
 	if(m_window != nullptr)
 	{
 		delete m_window;

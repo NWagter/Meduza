@@ -72,6 +72,10 @@
         "string_view": "cpp",
         "fstream": "cpp",
         "cinttypes": "cpp",
-        "xlocbuf": "cpp"
+        "xlocbuf": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "regex": "cpp",
+        "shared_mutex": "cpp"
     }
 }

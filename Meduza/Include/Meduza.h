@@ -8,5 +8,5 @@
 
 
 ///--- Entry Point ---
-#include "Core/EntryPoint.h"
+#include "Core/Entrypoint.h"
 ///-------------------

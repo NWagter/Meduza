@@ -43,7 +43,7 @@ Me::Meduza::Meduza()
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 
-	Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
+	Me::Texture texture = Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
 	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
 
 	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
@@ -60,10 +60,10 @@ Me::Meduza::Meduza()
 	// Create Quad!
 	std::vector<Vertex> vertices = 
 	{
-        Vertex(-0.5f,  0.5f, 0.0f), // top left,
-        Vertex(0.5f,  0.5f, 0.0f) ,  // top right
-        Vertex(-0.5f, -0.5f, 0.0f), // bottom left 
-        Vertex(0.5f, -0.5f, 0.0f), // bottom right 
+        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 0.0f), // top left,
+        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 0.0f) ,  // top right
+        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f), // bottom left 
+        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f), // bottom right 
     };
 
 	std::vector<uint16_t> indices = 
@@ -77,6 +77,7 @@ Me::Meduza::Meduza()
 	m_renderable = new Renderable();
 	m_renderable->m_mesh = quadId;
 	m_renderable->m_shader = shader;
+	m_renderable->m_texture = texture;
 }
 
 Me::Meduza::~Meduza()

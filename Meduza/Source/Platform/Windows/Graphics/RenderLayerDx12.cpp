@@ -8,6 +8,8 @@
 #include "Platform/Windows/Graphics/CommandList.h"
 #include "Platform/Windows/Graphics/CommandQueue.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
+#include "Platform/Windows/Graphics/DepthStencil.h"
+
 
 #include "Platform/Windows/Resources/Mesh.h"
 #include "Platform/General/MeshLibrary.h"
@@ -26,6 +28,15 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
         printf("Window is Null!");
         return;
     }
+
+#if defined(_DEBUG)
+	// Always enable the debug layer before doing anything DX12 related
+	// so all possible errors generated while creating DX12 objects
+	// are caught by the debug layer.
+	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
+	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
+	debugInterface->EnableDebugLayer();
+#endif
 
     //cast the window into a WindowsWindow type
     m_window = dynamic_cast<WindowsWindow*>(a_window);
@@ -66,6 +77,15 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	
 	m_srv = new Descriptor(srvDesc, *m_device);
 
+	RECT rect;
+	::GetClientRect(m_context->GetHWND(), &rect);
+	int w = static_cast<int>(rect.right - rect.left);
+	int h = static_cast<int>(rect.bottom - rect.top);
+
+	m_dsBuffer = new DepthStencilBuffer(*m_device, GetCmd(), w, h);
+
+	m_startUp = true;
+
 	m_activeShader = nullptr;
 }
 
@@ -77,12 +97,20 @@ Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
     delete m_context;
     delete m_device;
     delete m_queue;
+	delete m_dsBuffer;
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 {
-	m_renderables.clear();
 	auto cmd = GetCmd();
+
+	if(m_startUp)
+	{
+		m_startUp = false;
+		m_queue->ExecuteList(&cmd);
+		m_queue->Flush();
+	}
+
 	auto commandAllocator = cmd.GetCurrentAllocator(m_context->GetCurrentFrameIndex());
 	auto backBuffer = m_context->GetCurrentBuffer();
 
@@ -103,9 +131,18 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_context->GetCurrentFrameIndex(), m_rtv->GetSize());
 
-	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+	D3D12_CPU_DESCRIPTOR_HANDLE dvsHandle = m_dsBuffer->DepthStencilView();
+
 
 	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
+	cmd.GetList()->ClearDepthStencilView(dvsHandle,
+		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+
+	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, 1, &dvsHandle);
+
+	
+	m_renderables.clear();
+	m_activeShader = nullptr;
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
@@ -125,17 +162,33 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(Renderable& a_renderable)
 
 void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {
+	auto cmd = &GetCmd();
+
+	unsigned int textureId = 0;
+	auto srv = m_textureLoader->GetSRV(textureId);
+
+	ID3D12DescriptorHeap* inlineDesHeap[] = { srv.m_srv->GetHeap().Get() };
+	cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
+
 	for (auto r : m_renderables)
 	{
 		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
 		auto m = static_cast<Resources::Dx12::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
+		auto t = static_cast<Resources::Dx12::Texture*>(Resources::TextureLibrary::GetTexture(r->m_texture));
+
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{
 			m_activeShader = s;
 			m_activeShader->Bind();
 		}
+		
+		if(textureId != t->GetSRVId())
+		{
+			textureId = t->GetSRVId();
+		}
 
-		GetCmd().Draw(m);
+		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
+		cmd->Draw(m);
 	}
 }
 
@@ -164,5 +217,7 @@ Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(s
 {
 	auto tData = m_textureLoader->LoadTexture(a_path);
 
-	return nullptr;
+	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
+
+	return texture;
 }

@@ -172,6 +172,7 @@ void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned
 {
     auto t = &a_texture;
     auto srv = m_srvs.at(a_srvId).m_srv;
+
     CD3DX12_CPU_DESCRIPTOR_HANDLE hDescriptor(srv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
 	if (t->m_srvOffset != 0)
@@ -186,6 +187,7 @@ void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
 
 	auto tResource = t->m_resource;
+    m_srvs.at(a_srvId).m_textures.push_back(t);
 
 	srvDesc.Texture2D.MipLevels = tResource->GetDesc().MipLevels;
 	srvDesc.Format = tResource->GetDesc().Format;

@@ -32,6 +32,7 @@ namespace Me
             class CommandQueue;
             class Descriptor;
             class CommandList;
+            class DepthStencilBuffer;
 
 
             class RenderLayerDx12 : public RenderLayer
@@ -61,13 +62,15 @@ namespace Me
                 Helper::Dx12::TextureLoader* m_textureLoader = nullptr;
 
                 CommandQueue* m_queue = nullptr;
-                Descriptor* m_rtv;
-                Descriptor* m_srv;
+                Descriptor* m_rtv = nullptr;
+                Descriptor* m_srv = nullptr;
+                DepthStencilBuffer* m_dsBuffer = nullptr;
                 std::vector<CommandList*> m_cmd;
                 
                 std::vector<Renderable*> m_renderables;
-
                 Resources::Dx12::Shader* m_activeShader;
+
+                bool m_startUp;
             };
         }
     }

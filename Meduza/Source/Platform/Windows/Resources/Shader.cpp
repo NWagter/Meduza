@@ -100,7 +100,7 @@ void Me::Resources::Dx12::Shader::CreateVertexShader(const wchar_t* a_path)
 		nullptr,
 		nullptr,
 		"VS",
-		"vs_5_0",
+		"vs_5_1",
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 		0,
 		&vertexShader,
@@ -125,7 +125,7 @@ void Me::Resources::Dx12::Shader::CreatePixelShader(const wchar_t* a_path)
 		nullptr,
 		nullptr,
 		"PS",
-		"ps_5_0",
+		"ps_5_1",
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 		0,
 		&pixelShader,
@@ -144,8 +144,7 @@ void Me::Resources::Dx12::Shader::CreateSignature()
 	texTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
 
 	CD3DX12_ROOT_PARAMETER  rootParameters[1];
-	//Generate depended on Shader
-	rootParameters[0].InitAsConstantBufferView(0);
+	rootParameters[0].InitAsDescriptorTable(1, &texTable, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	auto staticSamplers = GetStaticSamplers();
 
@@ -167,6 +166,9 @@ void Me::Resources::Dx12::Shader::CreatePSO()
     vLayout.push_back(
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
         );
+	vLayout.push_back(		
+    	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		);
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
 

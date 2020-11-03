@@ -27,6 +27,7 @@ namespace Me
     {
         Mesh m_mesh;
         Shader m_shader;
+        Texture m_texture;
     };
 
     struct Colour
@@ -59,6 +60,17 @@ namespace Me
             m_vertexPos.m_z = a_z;
         }
 
+        Vertex(float a_x, float a_y, float a_z, float a_u, float a_v)
+        {
+            m_vertexPos.m_x = a_x;
+            m_vertexPos.m_y = a_y;
+            m_vertexPos.m_z = a_z;
+
+            m_uvCoord.m_x = a_u;
+            m_uvCoord.m_y = a_v;
+        }
+
         Math::Vec3 m_vertexPos;
+        Math::Vec2 m_uvCoord;
     };
 }

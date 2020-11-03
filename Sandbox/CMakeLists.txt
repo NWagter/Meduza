@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 add_executable(Sandbox 
-    Source/main.cpp Source/Application.cpp 
+    Source/Game.cpp 
 )
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

@@ -22,8 +22,10 @@ namespace Me {
 		void Update();
 		void Present();
 
+		void Submit(Renderable*);
+		void Submit(std::vector<Renderable*>);
+
 	private:
-		Renderable* m_renderable;
 		void Destroy();
 
 		bool m_isRunning;

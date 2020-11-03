@@ -50,7 +50,7 @@ Me::Meduza::Meduza()
 	if(shader == 0)
 	{
 		ME_CORE_LOG("No HLSL Shader");
-		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_ShaderGL.glsl");
+		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
 
 		if(shader == 0)
 		{

@@ -41,7 +41,6 @@ file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General)
 
 
 add_library(${PROJECT_NAME} 
-	Source/MePCH.cpp
 	${SOURCES}
 	${PLATFORM_GENERAL_SOURCE} 
 	${PLATFORM_SOURCE}

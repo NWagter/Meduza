@@ -10,6 +10,11 @@
 #include "Platform/Linux/Resources/Shader.h"
 #include "Platform/General/ShaderLibrary.h"
 
+
+#include "Platform/Linux/Resources/Texture.h"
+#include "Platform/General/TextureLibrary.h"
+
+
 Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 {
     if(a_window== nullptr)
@@ -53,6 +58,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     {
 		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
         auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
+        auto t = static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(r->m_texture));
 
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{
@@ -60,6 +66,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 			m_activeShader->Bind();
 		}
         glBindBuffer(GL_UNIFORM_BUFFER, m->GetVBO());
+        t->Bind();
         glBindVertexArray(m->GetVAO());
 
         glEnable(GL_BLEND);

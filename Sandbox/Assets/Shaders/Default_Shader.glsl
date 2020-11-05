@@ -10,6 +10,7 @@ out vec2 textC;
 
 void main()
 {
+    textC = a_textC;
     gl_Position = vec4(a_pos.x, a_pos.y, a_pos.z, 1.0);
 }
 
@@ -17,9 +18,9 @@ void main()
 #version 140
 
 in vec2 textC;
-uniform sampler2D ourTexture;
+uniform sampler2D u_texture;
 
 void main()
 {
-    FragColor = texture(ourTexture, TexCoord);
+    gl_FragColor = texture(u_texture, textC);
 }

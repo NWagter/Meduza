@@ -30,20 +30,26 @@ bool Me::Application::Run()
 
     OnInitilized();
 
-	Me::Texture texture = Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
+	Me::Texture texture = 0;//= 
 	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
+    //Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
 
 	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 	if(shader == 0)
 	{
 		ME_CORE_LOG("No HLSL Shader");
 		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
-
+        texture = Resources::TextureLibrary::GetTexture("Assets/Textures/DefaultTex.png");
 		if(shader == 0)
 		{
 			ME_CORE_ASSERT_M(false, "No GLSL Shader!");
 		}
 	}
+
+    if(texture == 0)
+    {
+        texture = Resources::TextureLibrary::GetTexture("Assets/Textures/DefaultTex.png");
+    }
 	// Create Quad!
 	std::vector<Vertex> vertices = 
 	{

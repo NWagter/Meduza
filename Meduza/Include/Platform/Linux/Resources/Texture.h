@@ -12,10 +12,10 @@ namespace Me
                 {
                 public:
                     Texture(std::string);
-                    ~Texture();
+                    virtual ~Texture();
 
-                    virtual void Reload();
-                    virtual void Unload();
+                    void Reload() override;
+                    void Unload() override;
 
                     void Bind();
                     void UnBind();

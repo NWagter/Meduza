@@ -2,12 +2,13 @@
 
 #include "Platform/Linux/Resources/Texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Me::Resources::Texture::Texture(std::string a_textureFile)
+Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0))
 {
     glGenTextures(1, &m_texture);  
-    glBindTexture(GL_TEXTURE_2D, texture);  
+    glBindTexture(GL_TEXTURE_2D, m_texture);  
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -15,7 +16,8 @@ Me::Resources::Texture::Texture(std::string a_textureFile)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(a_textureFile.cstr(), &width, &height, &nrChannels, 0); 
+    const char* file = a_textureFile.c_str();
+    unsigned char *data = stbi_load(file, &width, &height, &nrChannels, 0); 
     if (data)
     {   
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -25,31 +27,32 @@ Me::Resources::Texture::Texture(std::string a_textureFile)
     {
         ME_GFX_ASSERT_M(true, "Failed to load Texture!");
     }
-    
+
+    m_size = Math::Vec2(float(width), float(height));
     stbi_image_free(data);
 }
 
-Me::Resources::Texture~Texture()
+Me::Resources::GL::Texture::~Texture()
 {
 
 }
 
-void Me::Resources::Texture::Reload()
+void Me::Resources::GL::Texture::Reload()
 {
 
 }
 
-void Me::Resources::Texture::Unload()
+void Me::Resources::GL::Texture::Unload()
 {
 
 }
 
-void Me::Resources::Texture::Bind()
+void Me::Resources::GL::Texture::Bind()
 {
     glBindTexture(GL_TEXTURE_2D, m_texture);
 }
 
-void Me::Resources::Texture::UnBind()
+void Me::Resources::GL::Texture::UnBind()
 {
     glBindTexture(GL_TEXTURE_2D, 0);    
 }

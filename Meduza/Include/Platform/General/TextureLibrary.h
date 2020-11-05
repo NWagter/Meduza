@@ -19,7 +19,7 @@ namespace Me
 
             static Texture CreateTexture(std::string);
             
-            static TextureBase* GetTexture(std::string);
+            static Texture GetTexture(std::string);
             static TextureBase* GetTexture(Texture);
 
             static bool UnloadTexture(std::string);

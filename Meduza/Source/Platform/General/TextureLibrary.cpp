@@ -6,6 +6,8 @@
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Texture.h"
+#elif PLATFORM_LINUX
+#include "Platform/Linux/Resources/Texture.h"
 #endif
 
 Me::Resources::TextureLibrary* Me::Resources::TextureLibrary::ms_instance = nullptr;
@@ -46,14 +48,31 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
         return hashedId;
     }
 
+#elif PLATFORM_LINUX
+
+    auto texture = new GL::Texture(a_texture);
+
+    if(texture != nullptr)
+    {
+        ms_instance->m_textures[hashedId] = texture;
+        return hashedId;
+    }
+
 #endif
 
     return 0;
 }
 
-Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
+Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
 {
-    return GetTexture(Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_texture)));
+    Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_texture));
+    if (ms_instance->m_textures[hashedId] != nullptr)
+    {
+        return hashedId;
+    }
+
+    ME_GFX_LOG("Texture %s does not Exist!", a_texture.c_str());
+    return 0;
 }
 Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Texture a_texture)
 {

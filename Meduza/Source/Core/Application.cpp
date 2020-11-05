@@ -30,9 +30,9 @@ bool Me::Application::Run()
 
     OnInitilized();
 
-	Me::Texture texture = 0;//= 
+	Me::Texture texture = 0;
 	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
-    //Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
+    Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
 
 	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 	if(shader == 0)

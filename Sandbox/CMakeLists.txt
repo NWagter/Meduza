@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 add_executable(${PROJECT_NAME} 
+    Source/PCH.cpp
     Source/Game.cpp 
 )
 
@@ -46,6 +47,7 @@ elseif(APPLE)
 endif()
 
 file(COPY ${PROJECT_SOURCE_DIR}/Assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+target_precompile_headers(${PROJECT_NAME} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>")
 
 install(TARGETS ${PROJECT_NAME})
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/Assets DESTINATION bin)

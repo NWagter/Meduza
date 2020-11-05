@@ -1,4 +1,3 @@
-#include "MePCH.h"
 #include "Core/Meduza.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"

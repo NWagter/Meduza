@@ -28,7 +28,6 @@ elseif(APPLE)
 endif()
 
 file(GLOB PLATFORM_GENERAL_SOURCE
-	Source/MePCH.cpp
 	Source/Core/*.cpp
 	Source/Math/*.cpp
 	Source/Utils/*.cpp
@@ -41,9 +40,14 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General)
 
 
-add_library(${PROJECT_NAME} ${SOURCES} ${PLATFORM_GENERAL_SOURCE} ${PLATFORM_SOURCE})
+add_library(${PROJECT_NAME} 
+	Source/MePCH.cpp
+	${SOURCES}
+	${PLATFORM_GENERAL_SOURCE} 
+	${PLATFORM_SOURCE}
+	)
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/MePCH.h>")
+target_precompile_headers(${PROJECT_NAME} PUBLIC  $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/MePCH.h>)
 
 target_include_directories(Meduza PUBLIC 
 		${PROJECT_SOURCE_DIR}/Include

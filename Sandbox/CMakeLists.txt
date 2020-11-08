@@ -10,6 +10,11 @@ add_executable(${PROJECT_NAME}
     Source/Game.cpp 
 )
 
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set_target_properties(${PROJECT_NAME}
+PROPERTIES 
+RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR})
+
 target_include_directories(${PROJECT_NAME} PUBLIC 
     ${PROJECT_SOURCE_DIR}/Include 
 )
@@ -42,7 +47,7 @@ endif()
 
 file(COPY ${PROJECT_SOURCE_DIR}/Assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>)
+target_precompile_headers(${PROJECT_NAME} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>")
 
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)

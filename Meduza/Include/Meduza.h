@@ -6,6 +6,7 @@
 
 #include "Core/Application.h"
 
-//=======
-#include "Core/EntryPoint.h"
-//=======
+
+///--- Entry Point ---
+#include "Core/Entrypoint.h"
+///-------------------

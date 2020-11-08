@@ -5,8 +5,3 @@
 #include "Core/MeduzaCore.h"
 
 #include "Core/Application.h"
-
-
-///--- Entry Point ---
-#include "Core/Entrypoint.h"
-///-------------------

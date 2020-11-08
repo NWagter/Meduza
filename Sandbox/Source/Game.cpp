@@ -27,9 +27,3 @@ void Game::OnClose()
 {
     ME_GAME_LOG("Game Closed \n");
 }
-
-//Create the game "Application"
-Me::Application* Me::CreateApplication()
-{
-	return new Game();
-}

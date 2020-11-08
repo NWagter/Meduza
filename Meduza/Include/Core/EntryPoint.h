@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Meduza.h"
-
 int main()
 {
     auto app = Me::CreateApplication();

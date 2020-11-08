@@ -28,12 +28,18 @@ void Game::OnClose()
     ME_GAME_LOG("Game Closed \n");
 }
 
+//Create the game "Application"
+Me::Application* Me::CreateApplication()
+{
+	return new Game();
+}
+
 int main()
 {
-    auto app = new Game();
+    auto app = Me::CreateApplication();
     if(!app->Run())
     {
-        ME_CORE_LOG("Can't Create Game! \n");
+
     }
 
     delete app;

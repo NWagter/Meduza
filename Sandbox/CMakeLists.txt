@@ -47,11 +47,5 @@ endif()
 
 file(COPY ${PROJECT_SOURCE_DIR}/Assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-target_precompile_headers(${PROJECT_NAME} PUBLIC  $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>)
-
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
-endif()
-
 install(TARGETS ${PROJECT_NAME})
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/Assets DESTINATION bin)

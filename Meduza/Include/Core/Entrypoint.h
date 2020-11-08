@@ -1,6 +1,6 @@
 #pragma once
 
-int main()
+/*int main()
 {
     auto app = Me::CreateApplication();
     if(!app->Run())
@@ -11,4 +11,4 @@ int main()
     delete app;
 
     return 0;
-}
+}*/

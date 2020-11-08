@@ -20,6 +20,4 @@ namespace Me
         Meduza* m_meduza;
 		Renderable* m_renderable;
     };
-
-	Application* CreateApplication();
 }

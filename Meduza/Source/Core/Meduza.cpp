@@ -1,3 +1,4 @@
+#include "MePCH.h"
 #include "Core/Meduza.h"
 
 #include "ECS/EntityManager.h"
@@ -48,7 +49,7 @@ Me::Meduza::Meduza()
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
-	
+
 	auto r = new RenderSystem();
 	auto e1 = EntityManager::CreateEntity();
 	auto e2 = EntityManager::CreateEntity();

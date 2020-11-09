@@ -23,13 +23,6 @@ namespace Me
         Torus
     };
 
-    struct Renderable
-    {
-        Mesh m_mesh;
-        Shader m_shader;
-        Texture m_texture;
-    };
-
     struct Colour
     {
         Colour(float a_r, float a_g, float a_b, float a_a)

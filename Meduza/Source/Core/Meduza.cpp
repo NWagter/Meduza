@@ -3,9 +3,9 @@
 
 #include "ECS/EntityManager.h"
 #include "ECS/Entity.h"
-#include "Core/Systems/RenderSystem.h"
 
-#include "Core/Components/TransformComponent.h"
+#include "Core/Systems/RenderSystem.h"
+#include "Core/Components/RenderComponent.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
@@ -49,15 +49,9 @@ Me::Meduza::Meduza()
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
-
-	auto r = new RenderSystem();
-	auto e1 = EntityManager::CreateEntity();
-	auto e2 = EntityManager::CreateEntity();
-
-	EntityManager::AddComponent(e1, new TransformComponent());
-	r->AddComponentToFilter(TransformComponent::m_componentID);
-
-
+	
+	auto r = new RenderSystem(m_renderLayer);
+	r->AddComponentToFilter(RenderComponent::m_componentID);
 }
 
 Me::Meduza::~Meduza()
@@ -121,12 +115,7 @@ void Me::Meduza::Destroy()
 	}
 }
 
-void Me::Meduza::Submit(Renderable* a_renderable)
+void Me::Meduza::Submit(RenderComponent* a_renderable)
 {
 	m_renderLayer->Submit(*a_renderable);
-}
-
-void Me::Meduza::Submit(std::vector<Renderable*>)
-{
-
 }

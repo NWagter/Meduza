@@ -4,12 +4,20 @@
 
 namespace Me
 {
+    namespace Renderer
+    {
+        class RenderLayer;
+    }
+
     class RenderSystem : public BaseSystem
     {
-        public:
-        RenderSystem();
+    private:
+        Renderer::RenderLayer* m_renderLayer;
+
+    public:
+        RenderSystem(Renderer::RenderLayer*);
         
-        protected:
+    protected:
         void Update(float) override;
         
     };

@@ -14,6 +14,7 @@
 #include "Platform/Linux/Resources/Texture.h"
 #include "Platform/General/TextureLibrary.h"
 
+#include "Core/Components/RenderComponent.h"
 
 Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 {
@@ -78,7 +79,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     
 }
 
-void Me::Renderer::GL::RenderLayerGL::Submit(Renderable& a_renderable)
+void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable)
 {
     m_renderables.push_back(&a_renderable);
 }

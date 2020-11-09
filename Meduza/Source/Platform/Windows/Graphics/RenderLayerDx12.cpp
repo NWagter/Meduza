@@ -21,6 +21,8 @@
 #include "Platform/General/TextureLibrary.h"
 #include "Platform/Windows/Helper/TextureLoader.h"
 
+#include "Core/Components/RenderComponent.h"
+
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
     if(a_window == nullptr)
@@ -154,7 +156,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
     m_context->SwapBuffers(GetCmd());
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Submit(Renderable& a_renderable)
+void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable)
 {
     m_renderables.push_back(&a_renderable);
 }

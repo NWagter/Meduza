@@ -7,6 +7,10 @@
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
 
+#include "ECS/EntityManager.h"
+#include "Core/Components/RenderComponent.h"
+
+
 Me::Application::Application()
 {
     m_meduza = new Meduza();
@@ -19,9 +23,6 @@ Me::Application::~Application()
 
 void Me::Application::OnUpdate(float a_dt)
 {
-    m_meduza->Submit(m_renderable);
-
-    
     OnUpdate(a_dt);
 }
 
@@ -67,11 +68,16 @@ bool Me::Application::Run()
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
 	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
-    m_renderable = new Renderable();
-	m_renderable->m_mesh = quadId;
-	m_renderable->m_shader = shader;
-	m_renderable->m_texture = texture;
+	auto e1 = EntityManager::CreateEntity();
 
+    auto rC = new RenderComponent();
+
+	rC->m_mesh = quadId;
+	rC->m_shader = shader;
+	rC->m_texture = texture;
+
+	EntityManager::AddComponent(e1, rC);
+    
     while(m_meduza->IsRunning())
     {
         m_meduza->Clear();

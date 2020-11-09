@@ -3,7 +3,7 @@ namespace Me {
 
 	class Window;
 
-	struct Renderable;
+	struct RenderComponent;
 
 	namespace Renderer
 	{
@@ -22,8 +22,7 @@ namespace Me {
 		void Update();
 		void Present();
 
-		void Submit(Renderable*);
-		void Submit(std::vector<Renderable*>);
+		void Submit(RenderComponent*);
 
 	private:
 		void Destroy();

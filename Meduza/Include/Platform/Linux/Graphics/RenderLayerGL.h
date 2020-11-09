@@ -29,7 +29,7 @@ namespace Me
 
                 void Clear(Colour) override;
                 void Present() override;                
-                void Submit(Renderable&) override;
+                void Submit(RenderComponent&) override;
 
                 Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
             private:
@@ -37,7 +37,7 @@ namespace Me
                 LinuxWindow* m_window;
                 Context* m_context;
 
-                std::vector<Renderable*> m_renderables;
+                std::vector<RenderComponent*> m_renderables;
                 Resources::GL::Shader* m_activeShader;
             };
         }

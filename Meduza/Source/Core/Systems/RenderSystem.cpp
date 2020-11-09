@@ -4,9 +4,14 @@
 #include "ECS/Entity.h"
 #include "ECS/EntityManager.h"
 
-Me::RenderSystem::RenderSystem()
+#include "Platform/General/Graphics/RenderLayer.h"
+
+#include "Core/Components/RenderComponent.h"
+
+Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
 {
     EntityManager::AddSystem(this);
+    m_renderLayer = a_renderLayer;
 }
 
 void Me::RenderSystem::Update(float)
@@ -16,7 +21,9 @@ void Me::RenderSystem::Update(float)
     int counter = 0;
     for(auto ent : e)
     {
-        ME_CORE_LOG("Entities! %i \n", counter);
+        auto r = static_cast<RenderComponent*>(ent->GetComponent(RenderComponent::m_componentID));
+        m_renderLayer->Submit(*r);
+
         counter++;
     }
 }

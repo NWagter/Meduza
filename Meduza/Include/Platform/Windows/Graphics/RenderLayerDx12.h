@@ -43,7 +43,7 @@ namespace Me
 
                 void Clear(Colour) override;
                 void Present() override;
-                void Submit(Renderable&) override;
+                void Submit(RenderComponent&) override;
                 
                 Resources::Dx12::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
                 Resources::Dx12::Texture* LoadTexture(std::string);
@@ -67,7 +67,7 @@ namespace Me
                 DepthStencilBuffer* m_dsBuffer = nullptr;
                 std::vector<CommandList*> m_cmd;
                 
-                std::vector<Renderable*> m_renderables;
+                std::vector<RenderComponent*> m_renderables;
                 Resources::Dx12::Shader* m_activeShader;
 
                 bool m_startUp;

@@ -51,7 +51,9 @@ add_library(${PROJECT_NAME}
 
 if(NOT MSVC)
 	target_precompile_headers(${PROJECT_NAME} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>")
+   	if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
+	endif()
 endif()
 
 target_include_directories(Meduza PUBLIC 

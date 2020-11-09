@@ -1,5 +1,11 @@
 #include "Core/Meduza.h"
 
+#include "ECS/EntityManager.h"
+#include "ECS/Entity.h"
+#include "Core/Systems/RenderSystem.h"
+
+#include "Core/Components/TransformComponent.h"
+
 #include "Platform/General/Graphics/RenderLayer.h"
 
 #include "Platform/General/MeshLibrary.h"
@@ -41,6 +47,16 @@ Me::Meduza::Meduza()
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
+	EntityManager::CreateEntityManager();
+	
+	auto r = new RenderSystem();
+	auto e1 = EntityManager::CreateEntity();
+	auto e2 = EntityManager::CreateEntity();
+
+	EntityManager::AddComponent(e1, new TransformComponent());
+	r->AddComponentToFilter(TransformComponent::m_componentID);
+
+
 }
 
 Me::Meduza::~Meduza()
@@ -68,6 +84,7 @@ void Me::Meduza::Update()
 	}
 	
 	m_window->Peek();
+	EntityManager::GetEntityManager()->Update(0);
 		
 	if (!m_window->IsActive())
 	{

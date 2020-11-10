@@ -9,15 +9,13 @@ namespace Me
         class RenderLayer;
     }
 
-    struct RenderComponent;
-
-    class RenderSystem : public BaseSystem
+    class CameraSystem : public BaseSystem
     {
     private:
         Renderer::RenderLayer* m_renderLayer;
-        std::vector<RenderComponent*> m_components;
+
     public:
-        RenderSystem(Renderer::RenderLayer*);
+        CameraSystem(Renderer::RenderLayer*);
         
     protected:
         void Update(float) override;

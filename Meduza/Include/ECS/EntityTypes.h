@@ -1,15 +1,16 @@
 #pragma once
 
-using EntityID = uint16_t;
-using ComponentID = uint16_t;
-using SystemID = uint16_t;
+using EntityID = uint64_t;
+using ComponentID = uint64_t;
+using SystemID = uint64_t;
 
-using EntityFilter = std::vector<ComponentID>;
+using EntityFilter = std::set<ComponentID>;
 
 enum class Components
 {
     Transform,
     Render,
+    Camera,
 
     Game
 };

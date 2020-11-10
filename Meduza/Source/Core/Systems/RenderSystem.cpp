@@ -1,29 +1,41 @@
 #include "MePCH.h"
 #include "Core/Systems/RenderSystem.h"
 
-#include "ECS/Entity.h"
 #include "ECS/EntityManager.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
 #include "Core/Components/RenderComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
-{
-    EntityManager::AddSystem(this);
+{ 
+    SetFilter();
     m_renderLayer = a_renderLayer;
+}
+
+void Me::RenderSystem::SetFilter()
+{    
+    m_filter.insert(RenderComponent::s_componentID);
+    m_filter.insert(TransformComponent::s_componentID);
 }
 
 void Me::RenderSystem::Update(float)
 {
-    auto e = EntityManager::GetEntityManager()->GetEntities(m_filter);
+    // TODO : Improve Component Fetching Dirty Flag it for now in the Container
 
-    int counter = 0;
-    for(auto ent : e)
+    auto rContainer = EntityManager::GetComponents<RenderComponent>();
+    
+    if(!rContainer.empty())
     {
-        auto r = static_cast<RenderComponent*>(ent->GetComponent(RenderComponent::m_componentID));
-        m_renderLayer->Submit(*r);
+        for(auto r : rContainer)
+        {
+            m_components.push_back(r.second);
+        }
+    }
 
-        counter++;
+    for(auto c : m_components)
+    {
+        //m_renderLayer->Submit(*c);
     }
 }

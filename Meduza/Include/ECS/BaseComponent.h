@@ -6,7 +6,7 @@ namespace Me
 {
     struct BaseComponent
     {
-        virtual ComponentID GetComponentID() = 0;
+        static ComponentID s_componentID;
     };
     
 }

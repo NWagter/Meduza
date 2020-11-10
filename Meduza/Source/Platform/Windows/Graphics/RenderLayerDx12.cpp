@@ -31,14 +31,14 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
         return;
     }
 
-#if defined(_DEBUG)
+/*#if defined(_DEBUG)
 	// Always enable the debug layer before doing anything DX12 related
 	// so all possible errors generated while creating DX12 objects
 	// are caught by the debug layer.
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
-#endif
+#endif*/
 
     //cast the window into a WindowsWindow type
     m_window = dynamic_cast<WindowsWindow*>(a_window);

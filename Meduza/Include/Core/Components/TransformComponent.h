@@ -7,11 +7,10 @@ namespace Me
 {
     struct TransformComponent : public BaseComponent
     {
-        static const ComponentID m_componentID = static_cast<ComponentID>(Components::Transform);
+        Math::Vec3 m_position = Math::Vec3(0,0,0);
+        Math::Vec3 m_rotation = Math::Vec3(0,0,0);
+        float m_uniformScale = 1;
 
-        ComponentID GetComponentID() override
-        {
-            return TransformComponent::m_componentID;
-        }
+        static ComponentID s_componentID;
     };
 }

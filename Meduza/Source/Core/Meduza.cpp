@@ -2,10 +2,14 @@
 #include "Core/Meduza.h"
 
 #include "ECS/EntityManager.h"
-#include "ECS/Entity.h"
+
+#include "Core/Components/TransformComponent.h"
 
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Components/RenderComponent.h"
+
+#include "Core/Systems/CameraSystem.h"
+#include "Core/Components/CameraComponent.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
@@ -51,7 +55,7 @@ Me::Meduza::Meduza()
 	EntityManager::CreateEntityManager();
 	
 	auto r = new RenderSystem(m_renderLayer);
-	r->AddComponentToFilter(RenderComponent::m_componentID);
+	auto c = new CameraSystem(m_renderLayer);
 }
 
 Me::Meduza::~Meduza()

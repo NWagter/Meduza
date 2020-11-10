@@ -5,25 +5,20 @@
 namespace Me
 {
     class EntityManager;
+    class BaseComponent;
 
     class BaseSystem
     {
     public:
+        BaseSystem();
         virtual ~BaseSystem() = default;
-        
-        void AddComponentToFilter(ComponentID a_id)
-        {
-            if(std::find(m_filter.begin(), m_filter.end(), a_id) != m_filter.end())
-            {
-                return;
-            }
-            
-            m_filter.push_back(a_id);
-        }
+
     protected:
+        virtual void SetFilter() = 0;
         virtual void Update(float) = 0;
 
         EntityFilter m_filter;
+        std::vector<EntityID> m_entities;
     private:
         friend EntityManager;
     };

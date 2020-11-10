@@ -1,10 +1,11 @@
 #include "MePCH.h"
 #include "ECS/EntityManager.h"
 
-#include "ECS/Entity.h"
 #include "ECS/BaseSystem.h"
 #include "ECS/BaseComponent.h"
 
+
+static EntityID m_entityId = 0;
 
 Me::EntityManager* Me::EntityManager::ms_entityManager = nullptr;
 
@@ -33,11 +34,6 @@ Me::EntityManager::EntityManager()
 
 Me::EntityManager::~EntityManager()
 {
-    for(auto e : m_entities)
-    {
-        delete e;
-    }
-
     m_entities.clear();
 }
 
@@ -49,52 +45,78 @@ void Me::EntityManager::Update(float a_dt)
     }
 }
 
-std::vector<Me::Entity*> Me::EntityManager::GetEntities(EntityFilter a_filter)
+std::vector<EntityID> Me::EntityManager::GetEntities(EntityFilter a_filter)
 {
     // TODO : Filter out entities that contain all the Componets from filter
-    std::vector<Entity*> entities;
+    std::vector<EntityID> entities;
 
     for(auto e : m_entities)
     {
-        size_t components = a_filter.size();
+        int amount = a_filter.size();
 
-        for (auto cId : a_filter)
-        {      
-            if(components == 0)
+        if(amount <= 0)
+        {            
+            entities.push_back(e.first);
+            continue;
+        }
+
+        for(auto eC : e.second)
+        {
+            for(auto c : a_filter)
             {
+                if(eC == c)
+                {
+                    amount--;
+                    break;
+                }
+            }
+            
+            if(amount <= 0)
+            {
+                entities.push_back(e.first);
                 break;
             }
-
-            if(e->HasComponent(cId))
-            {
-                components--;
-            }
-        }
-        
- 
-        if(components == 0)
-        {
-            entities.push_back(e);
         }
     }
-
+   
     return entities;
 }
 
 void Me::EntityManager::AddSystem(BaseSystem* a_system)
 {
     ms_entityManager->m_systems.push_back(a_system);
+
+    for (auto ent : ms_entityManager->m_entities)
+    {
+        ms_entityManager->RegisterEntity(ent.first);
+    }
+    
 }
 
-Me::Entity* Me::EntityManager::CreateEntity()
+EntityID Me::EntityManager::CreateEntity()
 {
-    auto e = new Entity();
-
-    ms_entityManager->m_entities.push_back(e);
-
-    return e;
+    m_entityId++;
+    ms_entityManager->m_entities.insert(std::pair<EntityID, std::set<ComponentID>>(m_entityId,{}));
+    return m_entityId;
 }
-bool Me::EntityManager::AddComponent(Entity* a_entity, BaseComponent* a_comp)
+
+void Me::EntityManager::RegisterEntity(EntityID a_entID)
 {
-    return a_entity->AddComponent(a_comp);
+	auto ent = m_entities.find(a_entID);
+	std::set<ComponentID> eComp = ent->second;
+
+	for (auto s : m_systems)
+	{
+		EntityFilter filter = s->m_filter;
+
+        if(std::includes(eComp.begin(), eComp.end(), filter.begin(), filter.end()))
+        {
+            auto sIt = std::find(s->m_entities.begin(), s->m_entities.end(), ent->first);
+
+			if (sIt == s->m_entities.end())
+			{
+				s->m_entities.push_back(ent->first);
+			}
+        }
+	}
 }

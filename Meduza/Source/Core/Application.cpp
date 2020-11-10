@@ -1,4 +1,5 @@
 #include "MePCH.h"
+#include "Utils/Timer.h"
 
 #include "Core/Application.h"
 #include "Core/Meduza.h"
@@ -9,7 +10,8 @@
 
 #include "ECS/EntityManager.h"
 #include "Core/Components/RenderComponent.h"
-
+#include "Core/Components/TransformComponent.h"
+#include "Core/Components/CameraComponent.h"
 
 Me::Application::Application()
 {
@@ -68,23 +70,57 @@ bool Me::Application::Run()
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
 	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
-	auto e1 = EntityManager::CreateEntity();
 
+
+// ==== Created on the EntityManager which will allow for container based creation,
+// ====  linking to the Entity will remain
+
+    int counter = 0;
+    int testAmount = 250000;    
+
+        
     auto rC = new RenderComponent();
+    rC->m_mesh = quadId;
+    rC->m_shader = shader;
+    rC->m_texture = texture;
 
-	rC->m_mesh = quadId;
-	rC->m_shader = shader;
-	rC->m_texture = texture;
+    while(counter < testAmount)
+    {
+        EntityID ent = EntityManager::CreateEntity();
 
-	EntityManager::AddComponent(e1, rC);
+        EntityManager::AddComponent<RenderComponent>(ent, rC);     
+        EntityManager::AddComponent<TransformComponent>(ent);
+        counter++; 
+    }
     
+    EntityFilter emptyFilter;
+    int ent = static_cast<int>(EntityManager::GetEntityManager()->GetEntities(emptyFilter).size());
+    ME_CORE_LOG("There are %i Entities generated \n", ent);
+
+    Timer<float> deltaTimer;
+    float totalTime = 0.f;
+    unsigned frameCount = 0;
+
+    float fps;
+
     while(m_meduza->IsRunning())
     {
+        const float deltaSeconds = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
         m_meduza->Update();
-        Application::OnUpdate(0);
+        Application::OnUpdate(deltaSeconds);
 
         m_meduza->Present();
+
+        totalTime += deltaSeconds;
+        frameCount++;
+        if (totalTime >= 1.f)
+        {
+            fps = float(frameCount) / totalTime;
+            frameCount = 0;
+            totalTime = 0.f;
+            ME_CORE_LOG("FPS : %f \n", fps);
+        }
     };
 
     OnClose();

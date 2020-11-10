@@ -84,17 +84,18 @@ bool Me::Application::Run()
     rC->m_shader = shader;
     rC->m_texture = texture;
 
+    auto eManager = EntityManager::GetEntityManager();
     while(counter < testAmount)
     {
         EntityID ent = EntityManager::CreateEntity();
 
-        EntityManager::AddComponent<RenderComponent>(ent, rC);     
-        EntityManager::AddComponent<TransformComponent>(ent);
+        eManager->AddComponent<RenderComponent>(ent, rC);     
+        eManager->AddComponent<TransformComponent>(ent);
         counter++; 
     }
     
     EntityFilter emptyFilter;
-    int ent = static_cast<int>(EntityManager::GetEntityManager()->GetEntities(emptyFilter).size());
+    int ent = static_cast<int>(eManager->GetEntities(emptyFilter).size());
     ME_CORE_LOG("There are %i Entities generated \n", ent);
 
     Timer<float> deltaTimer;

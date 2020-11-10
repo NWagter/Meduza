@@ -24,7 +24,7 @@ void Me::RenderSystem::Update(float)
 {
     // TODO : Improve Component Fetching Dirty Flag it for now in the Container
 
-    auto rContainer = EntityManager::GetComponents<RenderComponent>();
+    auto rContainer = EntityManager::GetEntityManager()->GetComponents<RenderComponent>();
     
     if(!rContainer.empty())
     {

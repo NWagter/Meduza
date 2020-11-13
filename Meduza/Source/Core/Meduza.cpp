@@ -32,11 +32,11 @@ Me::Meduza::Meduza()
 	m_isRunning = true;
 
 #ifdef PLATFORM_WINDOWS
-	m_window = new WindowsWindow(720, 680, "Meduza | Windows");
+	m_window = new WindowsWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Windows");
 #elif PLATFORM_LINUX
-	m_window = new LinuxWindow(720, 680, "Meduza | Linux");
+	m_window = new LinuxWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Linux");
 #elif PLATFORM_APPLE
-	m_window = new MacOsWindow(720, 680, "Meduza | Apple");
+	m_window = new MacOsWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Apple");
 #endif
 
 	if(m_window != nullptr)
@@ -118,9 +118,4 @@ void Me::Meduza::Destroy()
 	{
 		delete m_renderLayer;
 	}
-}
-
-void Me::Meduza::Submit(RenderComponent* a_renderable)
-{
-	m_renderLayer->Submit(*a_renderable);
 }

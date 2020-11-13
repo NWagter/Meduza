@@ -75,10 +75,24 @@ bool Me::Application::Run()
     rC->m_mesh = quadId;
     rC->m_shader = shader;
     rC->m_texture = texture;
-    EntityID ent = EntityManager::CreateEntity();
+    EntityID entQuad = EntityManager::CreateEntity();
 
-    eManager->AddComponent<RenderComponent>(ent, rC);     
-    eManager->AddComponent<TransformComponent>(ent);
+    eManager->AddComponent<RenderComponent>(entQuad, rC);     
+    eManager->AddComponent<TransformComponent>(entQuad);
+
+    EntityID entCam = EntityManager::CreateEntity();
+
+    auto cC = new CameraComponent();
+    cC->m_cameraType = CameraType::Orthographic;
+    cC->m_near = 1;
+    cC->m_far = 100;
+    Math::Vec4 frustrum = Math::Vec4(
+        CAM_WIDTH / -2, CAM_WIDTH / 2,
+        CAM_HEIGHT / 2, CAM_HEIGHT / -2
+    );
+    cC->m_frustrum = frustrum;
+    eManager->AddComponent<CameraComponent>(entCam, cC);     
+    eManager->AddComponent<TransformComponent>(entCam);
 
     Timer<float> deltaTimer;
     float totalTime = 0.f;

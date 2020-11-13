@@ -4,6 +4,8 @@ namespace Me
     class Window;
 
     struct RenderComponent;
+    struct CameraComponent;
+    struct TransformComponent;
 
     namespace Renderer
     {
@@ -16,7 +18,8 @@ namespace Me
 
             virtual void Clear(Colour) = 0;
             virtual void Present() = 0;
-            virtual void Submit(RenderComponent&) = 0;
+            virtual void Submit(RenderComponent&, TransformComponent&) = 0;
+            virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
         };
     }
     

@@ -22,6 +22,8 @@
 #include "Platform/Windows/Helper/TextureLoader.h"
 
 #include "Core/Components/RenderComponent.h"
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
@@ -89,6 +91,8 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	m_startUp = true;
 
 	m_activeShader = nullptr;
+
+	m_cameraMatrix = DirectX::XMMatrixOrthographicLH(760,680,1,100);
 }
 
 Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
@@ -156,11 +160,18 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
     m_context->SwapBuffers(GetCmd());
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable)
+void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent&)
 {
     m_renderables.push_back(&a_renderable);
 }
 
+void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent&)
+{
+	if(a_cam.m_cameraType == CameraType::Orthographic)
+	{
+		//Set Camera Position when changed! #Dirt that Flag
+	}
+}
 
 void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {

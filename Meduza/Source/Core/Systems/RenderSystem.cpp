@@ -17,7 +17,8 @@ void Me::RenderSystem::Update(float)
 {
     for(auto& compTuple : m_components)
     {
-        RenderComponent* r = std::get<RenderComponent*>(compTuple);
-        m_renderLayer->Submit(*r);
+        RenderComponent* rC = std::get<RenderComponent*>(compTuple);
+        TransformComponent* tC = std::get<TransformComponent*>(compTuple);
+        m_renderLayer->Submit(*rC, *tC);
     }
 }

@@ -17,6 +17,9 @@ void Me::CameraSystem::Update(float)
 {
     for(auto& compTuple : m_components)
     {
+        CameraComponent* cC = std::get<CameraComponent*>(compTuple);
+        TransformComponent* tC = std::get<TransformComponent*>(compTuple);
         
+        m_renderLayer->SetCamera(*cC, *tC);
     }
 }

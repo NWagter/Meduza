@@ -43,7 +43,8 @@ namespace Me
 
                 void Clear(Colour) override;
                 void Present() override;
-                void Submit(RenderComponent&) override;
+                void Submit(RenderComponent&, TransformComponent&) override;
+                void SetCamera(CameraComponent&, TransformComponent&) override;
                 
                 Resources::Dx12::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
                 Resources::Dx12::Texture* LoadTexture(std::string);
@@ -71,6 +72,8 @@ namespace Me
                 Resources::Dx12::Shader* m_activeShader;
 
                 bool m_startUp;
+
+                DirectX::XMMATRIX m_cameraMatrix;
             };
         }
     }

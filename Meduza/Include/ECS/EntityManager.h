@@ -6,7 +6,7 @@
 
 namespace Me
 {
-    class BaseSystem;
+    class ECSSystem;
 
     class EntityManager
     {
@@ -16,7 +16,7 @@ namespace Me
         static void DestroyEntityManager();
         inline static EntityManager* GetEntityManager() {return ms_entityManager;}
 
-        static void AddSystem(BaseSystem*);
+        static void AddSystem(ECSSystem*);
         static EntityID CreateEntity();
 
         template<class C = BaseComponent>
@@ -32,14 +32,15 @@ namespace Me
         void Update(float);
         
         std::vector<EntityID> GetEntities(EntityFilter);
-
+        std::map<EntityID, std::set<ComponentID>> GetEntities() {return m_entities;}
+        std::map<ComponentID, IComponentContainer*> GetContainers() {return m_containers;}
         private:
         EntityManager();
         ~EntityManager();
         static EntityManager* ms_entityManager;
 
         std::map<EntityID, std::set<ComponentID>> m_entities;
-        std::vector<BaseSystem*> m_systems;
+        std::vector<ECSSystem*> m_systems;
 		std::map<ComponentID, IComponentContainer*> m_containers;
 
         template<class C = BaseComponent>
@@ -51,7 +52,7 @@ namespace Me
 
         void RegisterEntity(EntityID);
 
-        friend BaseSystem;
+        friend ECSSystem;
     };
 //====== Component Container Logics!
     template<class C>
@@ -64,7 +65,7 @@ namespace Me
     template<class C>
     void EntityManager::RemoveComponentContainer()
     {
-        auto container = std::find(m_containers.begin(), m_containers.end(), C::GetComponentID());
+        auto container = std::find(m_containers.begin(), m_containers.end(), C::s_componentID);
 		m_containers.erase(container);
     }
     template<class C>
@@ -72,14 +73,12 @@ namespace Me
     {
         if(m_containers.empty())
         {
-            ME_CORE_LOG("There are like zero containers what are you even trying to do? MATE \n");
             return nullptr;
         }
 
         auto container = m_containers.find(C::s_componentID);
         if(container == m_containers.end())
         {
-            ME_CORE_LOG("This is not the container you are looking for \n");
             return nullptr;
         }
 
@@ -138,10 +137,6 @@ namespace Me
     std::map<EntityID, C*> EntityManager::GetComponents()
     {
         auto container = GetComponentContainer<C>();
-        if(!container->m_dirtyFlag)
-        {
-            return std::map<EntityID, C*>{};
-        }
 		return container->GetComponents();
     }
 

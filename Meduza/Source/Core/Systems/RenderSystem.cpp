@@ -10,32 +10,14 @@
 
 Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
 { 
-    SetFilter();
     m_renderLayer = a_renderLayer;
-}
-
-void Me::RenderSystem::SetFilter()
-{    
-    m_filter.insert(RenderComponent::s_componentID);
-    m_filter.insert(TransformComponent::s_componentID);
 }
 
 void Me::RenderSystem::Update(float)
 {
-    // TODO : Improve Component Fetching Dirty Flag it for now in the Container
-
-    auto rContainer = EntityManager::GetEntityManager()->GetComponents<RenderComponent>();
-    
-    if(!rContainer.empty())
+    for(auto& compTuple : m_components)
     {
-        for(auto r : rContainer)
-        {
-            m_components.push_back(r.second);
-        }
-    }
-
-    for(auto c : m_components)
-    {
-        //m_renderLayer->Submit(*c);
+        RenderComponent* r = std::get<RenderComponent*>(compTuple);
+        m_renderLayer->Submit(*r);
     }
 }

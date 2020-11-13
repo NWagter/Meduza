@@ -10,6 +10,7 @@
 
 #include "Core/Systems/CameraSystem.h"
 #include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 

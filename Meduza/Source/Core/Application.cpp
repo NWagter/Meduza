@@ -70,33 +70,15 @@ bool Me::Application::Run()
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
 	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
-
-
-// ==== Created on the EntityManager which will allow for container based creation,
-// ====  linking to the Entity will remain
-
-    int counter = 0;
-    int testAmount = 250000;    
-
-        
+    auto eManager = EntityManager::GetEntityManager();
     auto rC = new RenderComponent();
     rC->m_mesh = quadId;
     rC->m_shader = shader;
     rC->m_texture = texture;
+    EntityID ent = EntityManager::CreateEntity();
 
-    auto eManager = EntityManager::GetEntityManager();
-    while(counter < testAmount)
-    {
-        EntityID ent = EntityManager::CreateEntity();
-
-        eManager->AddComponent<RenderComponent>(ent, rC);     
-        eManager->AddComponent<TransformComponent>(ent);
-        counter++; 
-    }
-    
-    EntityFilter emptyFilter;
-    int ent = static_cast<int>(eManager->GetEntities(emptyFilter).size());
-    ME_CORE_LOG("There are %i Entities generated \n", ent);
+    eManager->AddComponent<RenderComponent>(ent, rC);     
+    eManager->AddComponent<TransformComponent>(ent);
 
     Timer<float> deltaTimer;
     float totalTime = 0.f;

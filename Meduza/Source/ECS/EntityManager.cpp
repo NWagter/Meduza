@@ -82,7 +82,7 @@ std::vector<EntityID> Me::EntityManager::GetEntities(EntityFilter a_filter)
     return entities;
 }
 
-void Me::EntityManager::AddSystem(BaseSystem* a_system)
+void Me::EntityManager::AddSystem(ECSSystem* a_system)
 {
     ms_entityManager->m_systems.push_back(a_system);
 
@@ -107,16 +107,6 @@ void Me::EntityManager::RegisterEntity(EntityID a_entID)
 
 	for (auto s : m_systems)
 	{
-		EntityFilter filter = s->m_filter;
-
-        if(std::includes(eComp.begin(), eComp.end(), filter.begin(), filter.end()))
-        {
-            auto sIt = std::find(s->m_entities.begin(), s->m_entities.end(), ent->first);
-
-			if (sIt == s->m_entities.end())
-			{
-				s->m_entities.push_back(ent->first);
-			}
-        }
+        s->OnEntityCreated(a_entID);
 	}
 }

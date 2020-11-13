@@ -3,7 +3,7 @@
 
 #include "ECS/EntityManager.h"
 
-Me::BaseSystem::BaseSystem()
-{    
+Me::ECSSystem::ECSSystem()
+{
     EntityManager::AddSystem(this);
 }

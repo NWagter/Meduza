@@ -10,19 +10,12 @@
 
 Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 {
-    SetFilter();
     m_renderLayer = a_renderLayer;
-}
-
-void Me::CameraSystem::SetFilter()
-{    
-    m_filter.insert(CameraComponent::s_componentID);
-    m_filter.insert(TransformComponent::s_componentID);
 }
 
 void Me::CameraSystem::Update(float)
 {
-    for(auto ent : m_entities)
+    for(auto& compTuple : m_components)
     {
         
     }

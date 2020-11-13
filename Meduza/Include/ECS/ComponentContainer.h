@@ -5,6 +5,7 @@
 namespace Me
 {
     class EntityManager;
+    class BaseComponent;
 
     class IComponentContainer
     {
@@ -12,9 +13,8 @@ namespace Me
         IComponentContainer() {}
         virtual ~IComponentContainer() = default;
 
-
+        virtual BaseComponent* GetBaseComponent(EntityID a_entId) = 0;
         virtual bool RemoveComponent(EntityID a_entId) = 0;
-        bool m_dirtyFlag = false;
     };
 
     template<class C>
@@ -29,6 +29,8 @@ namespace Me
         bool RemoveComponent(EntityID a_entId);
 
         C* GetComponent(EntityID a_entId);
+
+        BaseComponent* GetBaseComponent(const EntityID a_entId) override;
 		std::map<EntityID, C*> GetComponents();
 
         std::map<EntityID, C*> m_components;
@@ -39,7 +41,6 @@ namespace Me
 	template <class C>
 	bool ComponentContainer<C>::AddComponent(EntityID a_entId, C* a_component)
 	{
-        m_dirtyFlag = true;
 		auto comp = m_components.find(a_entId);
 
         if(comp == m_components.end())
@@ -48,8 +49,6 @@ namespace Me
             return true;
         }
 
-        ME_CORE_LOG("Entity already has this Component! \n");
-
         return false;
 	}
 
@@ -57,12 +56,10 @@ namespace Me
 	template <class C>
 	bool ComponentContainer<C>::RemoveComponent(const EntityID a_entId)
 	{
-        m_dirtyFlag = true;
 		auto comp = m_components.find(a_entId);
 
         if(comp == m_components.end())
         {
-            ME_CORE_LOG("Entity doesn't have this Component! \n");
             return false;
         }
 
@@ -78,7 +75,6 @@ namespace Me
 
         if(comp == m_components.end())
         {
-            ME_CORE_LOG("Entity doesn't have this Component! \n");
 			return nullptr;
         }
 
@@ -88,7 +84,19 @@ namespace Me
     template <class C>
 	std::map<EntityID, C*> ComponentContainer<C>::GetComponents()
 	{
-        m_dirtyFlag = false;
 		return m_components;
+	}
+    
+    template <class C>
+    BaseComponent* ComponentContainer<C>::GetBaseComponent(const EntityID a_entId)
+	{
+        auto comp = m_components.find(a_entId);
+
+        if(comp == m_components.end())
+        {
+			return nullptr;
+        }
+
+        return dynamic_cast<BaseComponent*>(comp->second);
 	}
 }

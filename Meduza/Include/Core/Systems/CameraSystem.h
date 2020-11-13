@@ -9,7 +9,10 @@ namespace Me
         class RenderLayer;
     }
 
-    class CameraSystem : public BaseSystem
+    struct CameraComponent;
+    struct TransformComponent;
+
+    class CameraSystem : public BaseSystem<CameraComponent,TransformComponent>
     {
     private:
         Renderer::RenderLayer* m_renderLayer;
@@ -18,8 +21,6 @@ namespace Me
         CameraSystem(Renderer::RenderLayer*);
         
     protected:
-        void Update(float) override;
-        void SetFilter() override;
-        
+        void Update(float) override;        
     };
 }

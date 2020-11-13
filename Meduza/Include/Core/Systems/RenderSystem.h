@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ECS/BaseSystem.h"
-
+#include "Core/Components/RenderComponent.h"
+#include "Core/Components/TransformComponent.h"
 namespace Me
 {
     namespace Renderer
@@ -9,19 +10,15 @@ namespace Me
         class RenderLayer;
     }
 
-    struct RenderComponent;
-
-    class RenderSystem : public BaseSystem
+    class RenderSystem : public BaseSystem<RenderComponent,TransformComponent>
     {
     private:
         Renderer::RenderLayer* m_renderLayer;
-        std::vector<RenderComponent*> m_components;
     public:
         RenderSystem(Renderer::RenderLayer*);
         
     protected:
         void Update(float) override;
-        void SetFilter() override;
         
     };
 }

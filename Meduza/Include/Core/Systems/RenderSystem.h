@@ -1,14 +1,15 @@
 #pragma once
 
 #include "ECS/BaseSystem.h"
-#include "Core/Components/RenderComponent.h"
-#include "Core/Components/TransformComponent.h"
 namespace Me
 {
     namespace Renderer
     {
         class RenderLayer;
     }
+
+    struct RenderComponent;
+    struct TransformComponent;
 
     class RenderSystem : public BaseSystem<RenderComponent,TransformComponent>
     {

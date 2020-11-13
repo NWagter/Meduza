@@ -101,9 +101,10 @@ namespace Me
 
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
+        container->AddComponent(a_entID, comp);
 		RegisterEntity(a_entID);
 
-        return container->AddComponent(a_entID, comp);
+        return true;
     }
 
     template<class C>
@@ -117,9 +118,12 @@ namespace Me
 
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
+
+        container->AddComponent(a_entID, a_comp);
+
 		RegisterEntity(a_entID);
 
-        return container->AddComponent(a_entID, a_comp);
+        return true;
     }    
     template<class C>
     C* EntityManager::GetComponent(const EntityID a_entID)

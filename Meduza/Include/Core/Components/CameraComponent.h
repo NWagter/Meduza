@@ -8,6 +8,7 @@ namespace Me
     enum class CameraType
     {
         Orthographic,
+        Perspective
     };
 
     struct CameraComponent : public BaseComponent

@@ -33,14 +33,14 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
         return;
     }
 
-/*#if defined(_DEBUG)
+#if defined(_DEBUG)
 	// Always enable the debug layer before doing anything DX12 related
 	// so all possible errors generated while creating DX12 objects
 	// are caught by the debug layer.
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
-#endif*/
+#endif
 
     //cast the window into a WindowsWindow type
     m_window = dynamic_cast<WindowsWindow*>(a_window);
@@ -92,7 +92,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 
 	m_activeShader = nullptr;
 
-	m_cameraMatrix = DirectX::XMMatrixOrthographicLH(760,680,1,100);
+	m_camBuffer = new Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>(*m_device, true);
 }
 
 Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
@@ -169,7 +169,18 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 {
 	if(a_cam.m_cameraType == CameraType::Orthographic)
 	{
-		//Set Camera Position when changed! #Dirt that Flag
+		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
+		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, 
+			DirectX::XMMatrixOrthographicOffCenterLH(
+				a_cam.m_frustrum.m_x, a_cam.m_frustrum.m_y,
+				a_cam.m_frustrum.m_w, a_cam.m_frustrum.m_z,
+				a_cam.m_near, a_cam.m_far
+			));
+
+		m_camBuffer->CopyData(0, cBuffer);
+	}else if(a_cam.m_cameraType == CameraType::Perspective)
+	{
+
 	}
 }
 
@@ -200,6 +211,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 			textureId = t->GetSRVId();
 		}
 
+		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
 		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
 		cmd->Draw(m);
 	}

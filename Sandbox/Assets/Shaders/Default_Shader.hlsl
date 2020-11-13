@@ -1,6 +1,11 @@
 Texture2D gDiffuseMap[1] : register(t0);
 SamplerState gsamLinear  : register(s0);
 
+cbuffer CameraBuffer : register(b0)
+{
+    float4x4 viewProjection;
+};
+
 struct VS_INPUT
 {
     float3 pos : POSITION;
@@ -16,7 +21,9 @@ struct VS_OUTPUT
 VS_OUTPUT VS(VS_INPUT input)
 {
     VS_OUTPUT output;
-    output.pos = float4(input.pos, 1);
+    float4 pos = float4(input.pos, 1);    
+    output.pos = mul(pos, viewProjection);
+
     output.texC = input.texC;
     return output;
 }

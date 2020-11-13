@@ -102,11 +102,15 @@ EntityID Me::EntityManager::CreateEntity()
 
 void Me::EntityManager::RegisterEntity(EntityID a_entID)
 {
-	auto ent = m_entities.find(a_entID);
-	std::set<ComponentID> eComp = ent->second;
-
 	for (auto s : m_systems)
 	{
+        //Check if entity already is included to the system!
+        if(std::find(s->m_entities.begin(), s->m_entities.end(),a_entID) != s->m_entities.end())
+        {
+            continue;
+        }
+
+        s->m_entities.push_back(a_entID);
         s->OnEntityCreated(a_entID);
 	}
 }

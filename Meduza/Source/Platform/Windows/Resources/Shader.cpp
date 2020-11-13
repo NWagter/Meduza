@@ -143,8 +143,9 @@ void Me::Resources::Dx12::Shader::CreateSignature()
 	CD3DX12_DESCRIPTOR_RANGE texTable;
 	texTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
 
-	CD3DX12_ROOT_PARAMETER  rootParameters[1];
+	CD3DX12_ROOT_PARAMETER  rootParameters[2];
 	rootParameters[0].InitAsDescriptorTable(1, &texTable, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootParameters[1].InitAsConstantBufferView(0);
 
 	auto staticSamplers = GetStaticSamplers();
 

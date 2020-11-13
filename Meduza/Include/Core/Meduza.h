@@ -10,7 +10,7 @@ namespace Me {
 		class RenderLayer;
 	}
 
-	constexpr float CAM_WIDTH = 720;
+	constexpr float CAM_WIDTH = 760;
 	constexpr float CAM_HEIGHT = 680;
 
 	class Meduza

@@ -1,5 +1,6 @@
 #pragma once
 #include "Platform/General/Graphics/RenderLayer.h"
+#include "Platform/Windows/Helper/BufferStructures.h"
 
 namespace Me 
 {
@@ -68,12 +69,13 @@ namespace Me
                 DepthStencilBuffer* m_dsBuffer = nullptr;
                 std::vector<CommandList*> m_cmd;
                 
+                Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>* m_camBuffer;
                 std::vector<RenderComponent*> m_renderables;
                 Resources::Dx12::Shader* m_activeShader;
 
                 bool m_startUp;
-
-                DirectX::XMMATRIX m_cameraMatrix;
+                
+                DirectX::XMFLOAT4X4 m_viewProjection;
             };
         }
     }

@@ -13,6 +13,8 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/CameraComponent.h"
 
+constexpr float TESTQUAD_SIZE = 32;
+
 Me::Application::Application()
 {
     m_meduza = new Meduza();
@@ -56,10 +58,10 @@ bool Me::Application::Run()
 	// Create Quad!
 	std::vector<Vertex> vertices = 
 	{
-        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 0.0f), // top left,
-        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 0.0f) ,  // top right
-        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f), // bottom left 
-        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f), // bottom right 
+        Vertex(-0.5f * TESTQUAD_SIZE,  0.5f* TESTQUAD_SIZE, 0.0f, 0.0f, 0.0f), // top left,
+        Vertex(0.5f * TESTQUAD_SIZE,  0.5f * TESTQUAD_SIZE, 0.0f, 1.0f, 0.0f) ,  // top right
+        Vertex(-0.5f * TESTQUAD_SIZE, -0.5f * TESTQUAD_SIZE, 0.0f, 0.0f, 1.0f), // bottom left 
+        Vertex(0.5f * TESTQUAD_SIZE, -0.5f * TESTQUAD_SIZE, 0.0f, 1.0f, 1.0f), // bottom right 
     };
 
 	std::vector<uint16_t> indices = 
@@ -80,8 +82,6 @@ bool Me::Application::Run()
     eManager->AddComponent<RenderComponent>(entQuad, rC);     
     eManager->AddComponent<TransformComponent>(entQuad);
 
-    EntityID entCam = EntityManager::CreateEntity();
-
     auto cC = new CameraComponent();
     cC->m_cameraType = CameraType::Orthographic;
     cC->m_near = 1;
@@ -91,7 +91,9 @@ bool Me::Application::Run()
         CAM_HEIGHT / 2, CAM_HEIGHT / -2
     );
     cC->m_frustrum = frustrum;
-    eManager->AddComponent<CameraComponent>(entCam, cC);     
+
+    EntityID entCam = EntityManager::CreateEntity();
+    eManager->AddComponent<CameraComponent>(entCam, cC);
     eManager->AddComponent<TransformComponent>(entCam);
 
     Timer<float> deltaTimer;

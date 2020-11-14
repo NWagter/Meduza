@@ -17,17 +17,17 @@ void MoveSystem::Update(float a_time)
         Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
         MoveComponent* mC = std::get<MoveComponent*>(compTuple);
 
-        if(mC->m_moveUp)
+        if(mC->m_moveRight)
         {
-            tC->m_position.m_y += 50 * a_time;
+            tC->m_position.m_x += 64 * a_time;
         }else
         {
-            tC->m_position.m_y -= 50 * a_time;
+            tC->m_position.m_x -= 64 * a_time;
         }
 
-        if(tC->m_position.m_y < - 250 || tC->m_position.m_y > 250)
+        if(tC->m_position.m_x > 32 * 7 || tC->m_position.m_x < 0)
         {
-            mC->m_moveUp = !mC->m_moveUp;
+            mC->m_moveRight = !mC->m_moveRight;
         }
     }
 }

@@ -4,7 +4,7 @@
 
 struct MoveComponent : Me::BaseComponent
 {
-    bool m_moveUp;
+    bool m_moveRight = true;
     
     static ComponentID s_componentID;
 };

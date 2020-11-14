@@ -5,7 +5,7 @@
 
 enum class GameComponents : uint16_t
 {
-    GameComponent = Components::Game,
+    GameComponent = static_cast<uint16_t>(Components::Game),
     MoveComponent    
     
 };

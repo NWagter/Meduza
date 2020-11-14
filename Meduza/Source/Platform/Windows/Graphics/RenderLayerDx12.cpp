@@ -156,11 +156,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 
 	for(auto instanced : m_instancedRenderer)
 	{
-		delete instanced;
-	}
-
-	m_instancedRenderer.clear();
-	
+		instanced->ClearBuffer();
+	}	
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()

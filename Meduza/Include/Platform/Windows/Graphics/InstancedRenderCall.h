@@ -20,6 +20,7 @@ namespace Me
                 ~BaseInstanced() = default;
 
                 virtual void Draw(CommandList*) = 0;
+                virtual void ClearBuffer() = 0;
 
                 virtual Shader GetShader() = 0;
                 virtual Mesh GetMesh() = 0;
@@ -38,9 +39,19 @@ namespace Me
                     m_instancedBuffer = new Helper::Dx12::UploadBuffer<InstancedData>(*a_device, false);
                     m_instancedBuffer->SetElementCount(*a_device, MAX_INSTANCES, false);
                 }
+                ~InstancedRenderCall()
+                {
+                    delete m_instancedBuffer;
+                    m_instancedData.clear();
+                }
 
                 void Draw(CommandList*) override;
                 bool AddData(InstancedData);
+                void ClearBuffer() override
+                {
+                    m_instancedData.clear();
+                    m_alignmentItem = 0;
+                }
 
                 
                 Shader GetShader() override { return m_shaderIndex;}

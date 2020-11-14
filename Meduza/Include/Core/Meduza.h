@@ -22,7 +22,7 @@ namespace Me {
 		inline bool IsRunning() { return m_isRunning; }
 
 		void Clear();
-		void Update();
+		void Update(float);
 		void Present();
 
 	private:

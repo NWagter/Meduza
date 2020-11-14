@@ -6,8 +6,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
+file(GLOB GAME_SOURCE
+    Source/Components/*.cpp
+    Source/Systems/*.cpp
+)
+
 add_executable(${PROJECT_NAME} 
     Source/Game.cpp 
+	${GAME_SOURCE}
 )
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

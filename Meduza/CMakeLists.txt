@@ -32,6 +32,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Math/*.cpp
 	Source/ECS/*.cpp
 	Source/Core/Systems/*.cpp
+	Source/Core/Components/*.cpp
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
 	Source/Platform/General/Graphics/*.cpp

@@ -14,7 +14,7 @@ namespace Me
         Texture
     };
 
-    enum class Primitives
+    enum class Primitives : uint16_t
     {
         Quad = 0,
         Cube,

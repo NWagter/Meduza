@@ -75,7 +75,7 @@ void Me::Meduza::Clear()
 	m_isRunning = false;
 }
 
-void Me::Meduza::Update()
+void Me::Meduza::Update(float a_dt)
 {
 	if(m_window == nullptr)
 	{
@@ -84,7 +84,7 @@ void Me::Meduza::Update()
 	}
 	
 	m_window->Peek();
-	EntityManager::GetEntityManager()->Update(0);
+	EntityManager::GetEntityManager()->Update(a_dt);
 		
 	if (!m_window->IsActive())
 	{

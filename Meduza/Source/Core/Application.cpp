@@ -131,7 +131,7 @@ for(int x = 0; x < 8; x++)
     {
         const float deltaSeconds = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
-        m_meduza->Update();
+        m_meduza->Update(deltaSeconds);
         Application::OnUpdate(deltaSeconds);
 
         m_meduza->Present();

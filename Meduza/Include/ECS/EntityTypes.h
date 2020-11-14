@@ -6,7 +6,7 @@ using SystemID = uint64_t;
 
 using EntityFilter = std::set<ComponentID>;
 
-enum class Components
+enum class Components : uint16_t
 {
     Transform,
     Render,

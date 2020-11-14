@@ -14,6 +14,13 @@ namespace Me
                 DirectX::XMFLOAT4X4 m_viewProjection;
             };
 
+            struct DefaultInstancedBuffer
+            {
+                DirectX::XMFLOAT4 m_colour = DirectX::XMFLOAT4(1,0,1,1);
+                DirectX::XMFLOAT3 m_position= DirectX::XMFLOAT3(0,0,0);
+                unsigned int m_textureId = 0;
+            };
+
             template<typename T>
             class UploadBuffer
             {

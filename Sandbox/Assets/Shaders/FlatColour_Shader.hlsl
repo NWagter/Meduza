@@ -44,5 +44,5 @@ VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
 
 float4 PS(VS_OUTPUT a_input) : SV_TARGET
 {
-    return gDiffuseMap[0].Sample(gsamLinear, a_input.texC);
+    return a_input.colour;
 }

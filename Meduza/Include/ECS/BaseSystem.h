@@ -53,27 +53,27 @@ namespace Me
     {
         CompTuple compTuple;
         size_t matchingComps = 0;
-        for(auto& ent : EntityManager::GetEntityManager()->GetEntities())
+        auto ent = EntityManager::GetEntityManager()->GetEntities().at(a_entity);
+        for(auto& compId : ent)
         {
-            for(auto& compId : ent.second)
+            for(auto& container : EntityManager::GetEntityManager()->GetContainers())
             {
-                for(auto& container : EntityManager::GetEntityManager()->GetContainers())
+                if(container.first == compId)
                 {
-                    if(container.first == compId)
+                    if(ProcessEntityComponent<0, Comps...>(compId, container.second->GetBaseComponent(a_entity), compTuple))
                     {
-                        if(ProcessEntityComponent<0, Comps...>(compId, container.second->GetBaseComponent(ent.first), compTuple))
+                        ++matchingComps;
+                        if(matchingComps == sizeof...(Comps))
                         {
-                            ++matchingComps;
-                            if(matchingComps == sizeof...(Comps))
-                            {
-                                m_components.emplace_back(std::move(compTuple));
-                                break;
-                            }
+                            m_components.emplace_back(std::move(compTuple));
+                            m_entities.push_back(a_entity);
+                            break;
                         }
                     }
                 }
             }
         }
+        
     }
 
     template<class... Comps>

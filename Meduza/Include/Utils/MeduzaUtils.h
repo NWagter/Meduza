@@ -13,6 +13,8 @@ namespace Me
     
     namespace Colours
     {
+        static const Colour BLACK = Colour(0, 0, 0, 1.0f);
+        static const Colour WHITE = Colour(1.0f, 1.0f, 1.0f, 1.0f);
         static const Colour RED = Colour(1.0f, 0, 0, 1.0f);
         static const Colour BLUE = Colour(0, 0, 1.0f, 1.0f);
         static const Colour GREEN = Colour(0, 1.0f, 0, 1.0f);

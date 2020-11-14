@@ -35,6 +35,8 @@ namespace Me
             class CommandList;
             class DepthStencilBuffer;
 
+            class BaseInstanced;
+
 
             class RenderLayerDx12 : public RenderLayer
             {
@@ -72,6 +74,8 @@ namespace Me
                 Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>* m_camBuffer;
                 std::vector<RenderComponent*> m_renderables;
                 Resources::Dx12::Shader* m_activeShader;
+
+                std::vector<BaseInstanced*> m_instancedRenderer;
 
                 bool m_startUp;
                 

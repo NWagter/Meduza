@@ -13,8 +13,6 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/CameraComponent.h"
 
-constexpr float TESTQUAD_SIZE = 32;
-
 Me::Application::Application()
 {
     m_meduza = new Meduza();
@@ -39,7 +37,9 @@ bool Me::Application::Run()
 	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
     Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
 
-	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+	Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+
 	if(shader == 0)
 	{
 		ME_CORE_LOG("No HLSL Shader");
@@ -58,10 +58,10 @@ bool Me::Application::Run()
 	// Create Quad!
 	std::vector<Vertex> vertices = 
 	{
-        Vertex(-0.5f * TESTQUAD_SIZE,  0.5f* TESTQUAD_SIZE, 0.0f, 0.0f, 0.0f), // top left,
-        Vertex(0.5f * TESTQUAD_SIZE,  0.5f * TESTQUAD_SIZE, 0.0f, 1.0f, 0.0f) ,  // top right
-        Vertex(-0.5f * TESTQUAD_SIZE, -0.5f * TESTQUAD_SIZE, 0.0f, 0.0f, 1.0f), // bottom left 
-        Vertex(0.5f * TESTQUAD_SIZE, -0.5f * TESTQUAD_SIZE, 0.0f, 1.0f, 1.0f), // bottom right 
+        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 0.0f), // top left,
+        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 0.0f) ,  // top right
+        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f), // bottom left 
+        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f), // bottom right 
     };
 
 	std::vector<uint16_t> indices = 
@@ -73,14 +73,6 @@ bool Me::Application::Run()
 	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
     auto eManager = EntityManager::GetEntityManager();
-    auto rC = new RenderComponent();
-    rC->m_mesh = quadId;
-    rC->m_shader = shader;
-    rC->m_texture = texture;
-    EntityID entQuad = EntityManager::CreateEntity();
-
-    eManager->AddComponent<RenderComponent>(entQuad, rC);     
-    eManager->AddComponent<TransformComponent>(entQuad);
 
     auto cC = new CameraComponent();
     cC->m_cameraType = CameraType::Orthographic;
@@ -95,6 +87,39 @@ bool Me::Application::Run()
     EntityID entCam = EntityManager::CreateEntity();
     eManager->AddComponent<CameraComponent>(entCam, cC);
     eManager->AddComponent<TransformComponent>(entCam);
+
+bool black = true;
+for(int x = 0; x < 8; x++)
+{
+    for(int y = 0; y < 8; y++)
+    {
+        auto entt = EntityManager::CreateEntity();
+        auto tC = new TransformComponent();
+        auto rC = new RenderComponent();
+        tC->m_position = Math::Vec3(x * 32, y * 32 ,0);
+
+        rC->m_mesh = quadId;
+        rC->m_shader = shader;
+        rC->m_texture = texture;
+        if(black)
+        {
+            rC->m_colour = Colours::BLACK;
+        }
+        else
+        {
+            rC->m_colour = Colours::WHITE;
+
+        }
+        
+        black = !black;
+
+        eManager->AddComponent<RenderComponent>(entt, rC);     
+        eManager->AddComponent<TransformComponent>(entt, tC);
+    }
+
+    black = !black;
+}
+
 
     Timer<float> deltaTimer;
     float totalTime = 0.f;

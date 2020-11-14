@@ -109,8 +109,7 @@ void Me::EntityManager::RegisterEntity(EntityID a_entID)
         {
             continue;
         }
-
-        s->m_entities.push_back(a_entID);
+        
         s->OnEntityCreated(a_entID);
 	}
 }

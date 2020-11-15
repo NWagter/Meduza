@@ -1,5 +1,6 @@
 #pragma once
 #include "Platform/General/Graphics/RenderLayer.h"
+#include "Platform/Windows/Helper/BufferStructures.h"
 
 namespace Me 
 {
@@ -34,6 +35,8 @@ namespace Me
             class CommandList;
             class DepthStencilBuffer;
 
+            class BaseInstanced;
+
 
             class RenderLayerDx12 : public RenderLayer
             {
@@ -43,7 +46,8 @@ namespace Me
 
                 void Clear(Colour) override;
                 void Present() override;
-                void Submit(Renderable&) override;
+                void Submit(RenderComponent&, TransformComponent&) override;
+                void SetCamera(CameraComponent&, TransformComponent&) override;
                 
                 Resources::Dx12::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
                 Resources::Dx12::Texture* LoadTexture(std::string);
@@ -67,10 +71,15 @@ namespace Me
                 DepthStencilBuffer* m_dsBuffer = nullptr;
                 std::vector<CommandList*> m_cmd;
                 
-                std::vector<Renderable*> m_renderables;
+                Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>* m_camBuffer;
+                std::vector<RenderComponent*> m_renderables;
                 Resources::Dx12::Shader* m_activeShader;
 
+                std::vector<BaseInstanced*> m_instancedRenderer;
+
                 bool m_startUp;
+                
+                DirectX::XMFLOAT4X4 m_viewProjection;
             };
         }
     }

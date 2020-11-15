@@ -14,7 +14,7 @@ namespace Me
         Texture
     };
 
-    enum class Primitives
+    enum class Primitives : uint16_t
     {
         Quad = 0,
         Cube,
@@ -23,15 +23,15 @@ namespace Me
         Torus
     };
 
-    struct Renderable
-    {
-        Mesh m_mesh;
-        Shader m_shader;
-        Texture m_texture;
-    };
-
     struct Colour
     {
+        Colour()
+        {
+            m_colour[0] = 1;
+            m_colour[1] = 0;
+            m_colour[2] = 1;
+            m_colour[3] = 1; 
+        }
         Colour(float a_r, float a_g, float a_b, float a_a)
         {
             m_colour[0] = a_r;

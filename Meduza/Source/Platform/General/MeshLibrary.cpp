@@ -78,6 +78,17 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Verte
     return 0;
 }
 
+Me::Mesh Me::Resources::MeshLibrary::GetMeshIndex(std::string a_name)
+{
+	return Utils::Utilities::GetHashedID(a_name);
+}
+
+Me::Mesh Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives a_primitive)
+{
+	Mesh meshId = static_cast<uint16_t>(a_primitive);
+	return meshId;	
+}
+
 Me::Resources::MeshBase* Me::Resources::MeshLibrary::GetMesh(std::string a_name)
 {
 	return GetMesh(Utils::Utilities::GetHashedID(a_name));

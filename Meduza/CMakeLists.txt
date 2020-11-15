@@ -30,6 +30,9 @@ endif()
 file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Core/*.cpp
 	Source/Math/*.cpp
+	Source/ECS/*.cpp
+	Source/Core/Systems/*.cpp
+	Source/Core/Components/*.cpp
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
 	Source/Platform/General/Graphics/*.cpp
@@ -45,12 +48,6 @@ add_library(${PROJECT_NAME}
 	${PLATFORM_GENERAL_SOURCE} 
 	${PLATFORM_SOURCE}
 	)
-
-target_precompile_headers(${PROJECT_NAME} PUBLIC  $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/MePCH.h>)
-
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
-endif()
 
 target_include_directories(Meduza PUBLIC 
 		${PROJECT_SOURCE_DIR}/Include

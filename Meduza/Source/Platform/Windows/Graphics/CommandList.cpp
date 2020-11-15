@@ -97,3 +97,20 @@ void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh)
 	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
 	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
 }
+
+void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int a_count)
+{	
+	// set the root descriptor table 0 to the constant buffer descriptor heap
+	m_cmdList->SetGraphicsRootShaderResourceView(2, a_heaps->GetGPUVirtualAddress());
+
+	D3D12_VERTEX_BUFFER_VIEW vBuffer = a_mesh->GetVertexBuffer();
+	m_cmdList->IASetVertexBuffers(0, 1, &vBuffer);
+	m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	D3D12_INDEX_BUFFER_VIEW iBuffer = a_mesh->GetIndexBuffer();
+	m_cmdList->IASetIndexBuffer(&iBuffer);
+
+	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
+	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), a_count, 0, 0, 0);
+}

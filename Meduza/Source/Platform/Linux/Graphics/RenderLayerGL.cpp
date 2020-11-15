@@ -14,6 +14,9 @@
 #include "Platform/Linux/Resources/Texture.h"
 #include "Platform/General/TextureLibrary.h"
 
+#include "Core/Components/RenderComponent.h"
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 {
@@ -78,9 +81,14 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     
 }
 
-void Me::Renderer::GL::RenderLayerGL::Submit(Renderable& a_renderable)
+void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, TransformComponent&)
 {
     m_renderables.push_back(&a_renderable);
+}
+
+void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent&, TransformComponent&)
+{
+    
 }
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

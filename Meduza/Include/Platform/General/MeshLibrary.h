@@ -18,7 +18,10 @@ namespace Me
 
             static Mesh CreateMesh(std::string);
             static Mesh CreateMesh(Mesh, std::vector<Vertex>, std::vector<uint16_t>);
-            
+                    
+            static Mesh GetMeshIndex(std::string);
+            static Mesh GetMeshIndex(Primitives);
+        
             static MeshBase* GetMesh(std::string);
             static MeshBase* GetMesh(Mesh);
 

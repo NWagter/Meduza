@@ -3,12 +3,15 @@ namespace Me {
 
 	class Window;
 
-	struct Renderable;
+	struct RenderComponent;
 
 	namespace Renderer
 	{
 		class RenderLayer;
 	}
+
+	constexpr float CAM_WIDTH = 760;
+	constexpr float CAM_HEIGHT = 680;
 
 	class Meduza
 	{
@@ -19,11 +22,8 @@ namespace Me {
 		inline bool IsRunning() { return m_isRunning; }
 
 		void Clear();
-		void Update();
+		void Update(float);
 		void Present();
-
-		void Submit(Renderable*);
-		void Submit(std::vector<Renderable*>);
 
 	private:
 		void Destroy();

@@ -6,8 +6,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
+file(GLOB GAME_SOURCE
+    Source/Components/*.cpp
+    Source/Systems/*.cpp
+)
+
 add_executable(${PROJECT_NAME} 
     Source/Game.cpp 
+	${GAME_SOURCE}
 )
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -46,12 +52,6 @@ elseif(APPLE)
 endif()
 
 file(COPY ${PROJECT_SOURCE_DIR}/Assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
-target_precompile_headers(${PROJECT_NAME} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/Include/PCH.h>")
-
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
-endif()
 
 install(TARGETS ${PROJECT_NAME})
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/Assets DESTINATION bin)

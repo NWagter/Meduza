@@ -31,6 +31,7 @@ namespace Me
                 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(unsigned int);
 
                 void Draw(Resources::Dx12::Mesh*);
+                void Draw(Resources::Dx12::Mesh*, ID3D12Resource*, int);
 
                 bool m_closedList = false;
             private:

@@ -1,4 +1,5 @@
 #include "MePCH.h"
+#include "Utils/Timer.h"
 
 #include "Core/Application.h"
 #include "Core/Meduza.h"
@@ -6,6 +7,11 @@
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
+
+#include "ECS/EntityManager.h"
+#include "Core/Components/RenderComponent.h"
+#include "Core/Components/TransformComponent.h"
+#include "Core/Components/CameraComponent.h"
 
 Me::Application::Application()
 {
@@ -19,9 +25,6 @@ Me::Application::~Application()
 
 void Me::Application::OnUpdate(float a_dt)
 {
-    m_meduza->Submit(m_renderable);
-
-    
     OnUpdate(a_dt);
 }
 
@@ -34,7 +37,9 @@ bool Me::Application::Run()
 	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
     Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
 
-	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+	Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+
 	if(shader == 0)
 	{
 		ME_CORE_LOG("No HLSL Shader");
@@ -67,18 +72,47 @@ bool Me::Application::Run()
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
 	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
 
-    m_renderable = new Renderable();
-	m_renderable->m_mesh = quadId;
-	m_renderable->m_shader = shader;
-	m_renderable->m_texture = texture;
+    auto eManager = EntityManager::GetEntityManager();
+
+    auto cC = new CameraComponent();
+    cC->m_cameraType = CameraType::Orthographic;
+    cC->m_near = 1;
+    cC->m_far = 100;
+    Math::Vec4 frustrum = Math::Vec4(
+        CAM_WIDTH / -2, CAM_WIDTH / 2,
+        CAM_HEIGHT / 2, CAM_HEIGHT / -2
+    );
+    cC->m_frustrum = frustrum;
+
+    EntityID entCam = EntityManager::CreateEntity();
+    eManager->AddComponent<CameraComponent>(entCam, cC);
+    eManager->AddComponent<TransformComponent>(entCam);
+
+
+    Timer<float> deltaTimer;
+    float totalTime = 0.f;
+    unsigned frameCount = 0;
+
+    float fps;
 
     while(m_meduza->IsRunning())
     {
+        const float deltaSeconds = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
-        m_meduza->Update();
-        Application::OnUpdate(0);
+        m_meduza->Update(deltaSeconds);
+        Application::OnUpdate(deltaSeconds);
 
         m_meduza->Present();
+
+        totalTime += deltaSeconds;
+        frameCount++;
+        if (totalTime >= 1.f)
+        {
+            fps = float(frameCount) / totalTime;
+            frameCount = 0;
+            totalTime = 0.f;
+            ME_CORE_LOG("FPS : %f \n", fps);
+        }
     };
 
     OnClose();

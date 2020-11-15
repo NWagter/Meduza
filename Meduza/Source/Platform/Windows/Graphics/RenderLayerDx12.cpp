@@ -9,7 +9,7 @@
 #include "Platform/Windows/Graphics/CommandQueue.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
 #include "Platform/Windows/Graphics/DepthStencil.h"
-
+#include "Platform/Windows/Graphics/InstancedRenderCall.h"
 
 #include "Platform/Windows/Resources/Mesh.h"
 #include "Platform/General/MeshLibrary.h"
@@ -21,6 +21,12 @@
 #include "Platform/General/TextureLibrary.h"
 #include "Platform/Windows/Helper/TextureLoader.h"
 
+#include "Core/Components/RenderComponent.h"
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
+
+#define TEST_WITHOUT_DX_DEBUG 1
+
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
     if(a_window == nullptr)
@@ -30,12 +36,14 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
     }
 
 #if defined(_DEBUG)
+	#if TEST_WITHOUT_DX_DEBUG
 	// Always enable the debug layer before doing anything DX12 related
 	// so all possible errors generated while creating DX12 objects
 	// are caught by the debug layer.
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
 	D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface));
 	debugInterface->EnableDebugLayer();
+	#endif
 #endif
 
     //cast the window into a WindowsWindow type
@@ -87,6 +95,8 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	m_startUp = true;
 
 	m_activeShader = nullptr;
+
+	m_camBuffer = new Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>(*m_device, true);
 }
 
 Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
@@ -143,6 +153,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 	
 	m_renderables.clear();
 	m_activeShader = nullptr;
+
+	for(auto instanced : m_instancedRenderer)
+	{
+		instanced->ClearBuffer();
+	}	
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
@@ -154,11 +169,46 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
     m_context->SwapBuffers(GetCmd());
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Submit(Renderable& a_renderable)
+void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)
 {
-    m_renderables.push_back(&a_renderable);
+    //m_renderables.push_back(&a_renderable);
+
+	if(m_instancedRenderer.empty())
+	{
+		auto b = new InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>(
+			a_renderable.m_mesh, a_renderable.m_shader, m_device);
+		m_instancedRenderer.push_back(b);
+	}
+
+	auto iB = Helper::Dx12::DefaultInstancedBuffer();
+
+	iB.m_position = DirectX::XMFLOAT3(a_trans.m_position.m_xyz);
+	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
+	iB.m_uniformScale = a_trans.m_uniformScale;
+
+	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(m_instancedRenderer.at(0))->AddData(iB);
+
+
 }
 
+void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent&)
+{
+	if(a_cam.m_cameraType == CameraType::Orthographic)
+	{
+		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
+		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, 
+			DirectX::XMMatrixOrthographicOffCenterLH(
+				a_cam.m_frustrum.m_x, a_cam.m_frustrum.m_y,
+				a_cam.m_frustrum.m_w, a_cam.m_frustrum.m_z,
+				a_cam.m_near, a_cam.m_far
+			));
+
+		m_camBuffer->CopyData(0, cBuffer);
+	}else if(a_cam.m_cameraType == CameraType::Perspective)
+	{
+
+	}
+}
 
 void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {
@@ -169,7 +219,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 
 	ID3D12DescriptorHeap* inlineDesHeap[] = { srv.m_srv->GetHeap().Get() };
 	cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
-
+/*
 	for (auto r : m_renderables)
 	{
 		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
@@ -185,10 +235,33 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 		if(textureId != t->GetSRVId())
 		{
 			textureId = t->GetSRVId();
+			srv = m_textureLoader->GetSRV(textureId);
+
+			ID3D12DescriptorHeap* newHeapDesc[] = { srv.m_srv->GetHeap().Get() };
+			cmd->GetList()->SetDescriptorHeaps(_countof(newHeapDesc), newHeapDesc);
 		}
 
 		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
+
+		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
 		cmd->Draw(m);
+	}
+*/
+	for(auto instanced : m_instancedRenderer)
+	{
+		// TODO : Get Material and set the correct SRV
+		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(instanced->GetShader()));
+
+		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
+		{
+			m_activeShader = s;
+			m_activeShader->Bind();
+		}
+
+		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
+		
+		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
+		instanced->Draw(cmd);
 	}
 }
 

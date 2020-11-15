@@ -22,6 +22,13 @@ but what is currently planned is the following :
       - Point Lights
       - Directional Lights
     - Skeletal animations
+- Entity Component System
+  - Components
+  - Systems
+- Input
+  - Mouse
+  - Keyboard
+
 
 # Graphics APIs :
 - OpenGL 3.1

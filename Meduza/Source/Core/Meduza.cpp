@@ -1,4 +1,16 @@
+#include "MePCH.h"
 #include "Core/Meduza.h"
+
+#include "ECS/EntityManager.h"
+
+#include "Core/Components/TransformComponent.h"
+
+#include "Core/Systems/RenderSystem.h"
+#include "Core/Components/RenderComponent.h"
+
+#include "Core/Systems/CameraSystem.h"
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
@@ -20,11 +32,11 @@ Me::Meduza::Meduza()
 	m_isRunning = true;
 
 #ifdef PLATFORM_WINDOWS
-	m_window = new WindowsWindow(720, 680, "Meduza | Windows");
+	m_window = new WindowsWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Windows");
 #elif PLATFORM_LINUX
-	m_window = new LinuxWindow(720, 680, "Meduza | Linux");
+	m_window = new LinuxWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Linux");
 #elif PLATFORM_APPLE
-	m_window = new MacOsWindow(720, 680, "Meduza | Apple");
+	m_window = new MacOsWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Apple");
 #endif
 
 	if(m_window != nullptr)
@@ -41,6 +53,10 @@ Me::Meduza::Meduza()
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
+	EntityManager::CreateEntityManager();
+	
+	auto r = new RenderSystem(m_renderLayer);
+	auto c = new CameraSystem(m_renderLayer);
 }
 
 Me::Meduza::~Meduza()
@@ -59,7 +75,7 @@ void Me::Meduza::Clear()
 	m_isRunning = false;
 }
 
-void Me::Meduza::Update()
+void Me::Meduza::Update(float a_dt)
 {
 	if(m_window == nullptr)
 	{
@@ -68,6 +84,7 @@ void Me::Meduza::Update()
 	}
 	
 	m_window->Peek();
+	EntityManager::GetEntityManager()->Update(a_dt);
 		
 	if (!m_window->IsActive())
 	{
@@ -101,14 +118,4 @@ void Me::Meduza::Destroy()
 	{
 		delete m_renderLayer;
 	}
-}
-
-void Me::Meduza::Submit(Renderable* a_renderable)
-{
-	m_renderLayer->Submit(*a_renderable);
-}
-
-void Me::Meduza::Submit(std::vector<Renderable*>)
-{
-
 }

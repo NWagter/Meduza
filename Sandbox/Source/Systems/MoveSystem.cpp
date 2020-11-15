@@ -25,7 +25,10 @@ void MoveSystem::OnUpdate(float a_time)
             tC->m_position.m_x -= 64 * a_time;
         }
 
-        if(tC->m_position.m_x > 32 * 7 || tC->m_position.m_x < 0)
+        if(tC->m_position.m_x > 32 * 7)
+        {
+            mC->m_moveRight = !mC->m_moveRight;
+        }else if(tC->m_position.m_x < 0)
         {
             mC->m_moveRight = !mC->m_moveRight;
         }

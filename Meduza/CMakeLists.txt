@@ -37,6 +37,8 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Platform/General/*.cpp
 	Source/Platform/General/Graphics/*.cpp
 	Source/Platform/General/Resources/*.cpp
+	Source/Platform/General/Events/*.cpp
+	Source/Platform/General/Events/Input/*.cpp
 	Source/Platform/General/FileSystem/*.cpp
 )
 

@@ -3,6 +3,8 @@
 
 #include "Platform/General/ContextBase.h"
 
+#include "Platform/General/Events/EventSystem.h"
+
 Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
 {
 	m_active = true;
@@ -30,6 +32,8 @@ Me::WindowsWindow::~WindowsWindow()
 void Me::WindowsWindow::Peek()
 {
 	MSG msg;
+	m_eventSystem->Clear();
+
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
 	{
 		if (msg.message == WM_QUIT)
@@ -80,8 +84,33 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	switch (a_msg)
 	{
 	case WM_CLOSE:
+	{
 		PostQuitMessage(0);
 		break;
+	}
+// ---- Mouse
+	case WM_LBUTTONDOWN:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::LButton, Event::MouseEvent::MouseDown);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::LButton, Event::MouseEvent::MouseUp);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::RButton, Event::MouseEvent::MouseDown);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::RButton, Event::MouseEvent::MouseUp);
+		break;
+	}
+// ---- Keyboard
+
 	}
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
 }

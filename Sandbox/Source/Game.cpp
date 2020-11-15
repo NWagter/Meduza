@@ -23,8 +23,11 @@ Game::~Game()
 
 
 void Game::OnUpdate(float)
-{
-
+{   
+    if(Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton))
+    {
+        ME_GAME_LOG("Left Button is Down! \n");
+    }
 }
 
 void Game::OnInitilized()

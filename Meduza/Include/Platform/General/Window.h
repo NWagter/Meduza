@@ -1,6 +1,11 @@
 #pragma once
 namespace Me
 {
+	namespace Event
+	{
+		class EventSystem;
+	}
+
 	namespace Renderer
 	{
 		class ContextBase;
@@ -19,11 +24,19 @@ namespace Me
 			
 		inline bool IsActive() { return m_active; }
 
+	private:
+		inline void SetEventSystem(Event::EventSystem* a_system)
+		{
+			m_eventSystem = a_system;
+		}
 	protected:
 		Renderer::ContextBase* m_context;
 		int m_width, m_height;
 		const char* m_title;
 
 		bool m_active;
+		Event::EventSystem* m_eventSystem;
+
+	friend Event::EventSystem;
 	};
 }

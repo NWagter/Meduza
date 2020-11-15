@@ -3,6 +3,7 @@
 
 namespace Me
 {
+
 	namespace Renderer
 	{
 		class WindowsContext;

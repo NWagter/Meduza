@@ -39,6 +39,7 @@ void Game::OnInitilized()
     auto rC = new Me::RenderComponent();
     
     tC->m_position = Me::Math::Vec3(0,0,0);
+    tC->m_uniformScale = 32;
 
     rC->m_mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
     auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");

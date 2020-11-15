@@ -18,6 +18,7 @@ namespace Me
             {
                 DirectX::XMFLOAT4 m_colour = DirectX::XMFLOAT4(1,0,1,1);
                 DirectX::XMFLOAT3 m_position= DirectX::XMFLOAT3(0,0,0);
+                float m_uniformScale = 1;
                 unsigned int m_textureId = 0;
             };
 

@@ -184,6 +184,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	iB.m_position = DirectX::XMFLOAT3(a_trans.m_position.m_xyz);
 	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
+	iB.m_uniformScale = a_trans.m_uniformScale;
 
 	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(m_instancedRenderer.at(0))->AddData(iB);
 

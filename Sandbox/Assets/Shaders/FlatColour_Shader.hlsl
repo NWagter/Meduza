@@ -5,6 +5,7 @@ struct InstanceData
 {
 	float4 colour;
     float3 position;
+    float uniformScale;
 	int textureId;
 };
 StructuredBuffer<InstanceData> gInstanceData : register(t1, space1);
@@ -33,7 +34,7 @@ VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
     
 	InstanceData data = gInstanceData[instanceID];
 
-    float3 newPos = (input.pos * 32 ) + data.position;
+    float3 newPos = (input.pos * data.uniformScale ) + data.position;
     float4 pos = float4(newPos, 1);    
     output.pos = mul(pos, viewProjection);
 

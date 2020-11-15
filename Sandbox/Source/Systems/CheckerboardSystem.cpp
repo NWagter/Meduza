@@ -30,8 +30,10 @@ void CheckboardSystem::OnCreate()
             auto tC = new Me::TransformComponent();
             auto rC = new Me::RenderComponent();
             auto tileC = new TileComponent();
-            tC->m_position = Me::Math::Vec3(x * 32, y * 32 ,0);
 
+            tC->m_position = Me::Math::Vec3(x * 32, y * 32 ,0);
+            tC->m_uniformScale = 32;
+            
             rC->m_mesh = quad;
             rC->m_shader = shader;
             if(black)

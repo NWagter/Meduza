@@ -19,7 +19,7 @@ Me::LinuxWindow::LinuxWindow(int a_w, int a_h, const char* a_title) : Window(a_w
 
 	m_windowData->m_window = XCreateSimpleWindow(m_windowData->m_display,
 									RootWindow(m_windowData->m_display, m_windowData->m_screenHandle),
-									100,100, m_width,m_height, 1,
+									100,100, m_size.m_x,m_size.m_y, 1,
 									BlackPixel(m_windowData->m_display, m_windowData->m_screenHandle),
 									WhitePixel(m_windowData->m_display, m_windowData->m_screenHandle));
 
@@ -46,5 +46,5 @@ void Me::LinuxWindow::Quit()
 void Me::LinuxWindow::SetContext(Renderer::ContextBase* a_context)
 {
 	m_context = a_context;
-	dynamic_cast<Renderer::GL::Context*>(m_context)->InitContext(*m_windowData, m_width, m_height);
+	dynamic_cast<Renderer::GL::Context*>(m_context)->InitContext(*m_windowData, m_size.m_x, m_size.m_y);
 }

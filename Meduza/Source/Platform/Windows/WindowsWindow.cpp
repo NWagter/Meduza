@@ -93,14 +93,8 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	case WM_MOUSEMOVE: {
 		const auto mousePos = MAKEPOINTS(a_lParam);
 		Math::Vec2 mPos;
-		mPos.m_x = static_cast<float>(mousePos.x);
-		mPos.m_y = static_cast<float>(mousePos.y);
-
-		RECT rect;
-		::GetClientRect(a_hwnd, &rect);		
-
-		mPos.m_x = mPos.m_x - (m_size.m_x / 2);
-		mPos.m_y = (m_size.m_y / 2) - mPos.m_y;
+		mPos.m_x = static_cast<float>(mousePos.x) - (m_size.m_x / 2);
+		mPos.m_y = (m_size.m_y / 2) - static_cast<float>(mousePos.y);
 
 		if (mousePos.x >= 0 && float(mousePos.x) < m_size.m_x && mousePos.y >= 0 && float(mousePos.y) < m_size.m_y) {
 			m_eventSystem->OnMouseMove(mPos);

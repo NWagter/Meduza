@@ -14,14 +14,15 @@ namespace Me
         virtual ~ECSSystem() = default;
 
     protected:
-
-        virtual void Update(float) = 0;
+        virtual void OnCreate() {}
+        virtual void OnUpdate(float) = 0;
         virtual void OnEntityCreated(const EntityID& a_entity) = 0;
         virtual void OnEntityDestroy(const EntityID& a_entity) = 0;
 
         std::vector<EntityID> m_entities;
 
     private:
+        bool m_OnCreated = false;
         friend EntityManager;
     };
 

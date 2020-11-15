@@ -21,6 +21,6 @@ namespace Me
         CameraSystem(Renderer::RenderLayer*);
         
     protected:
-        void Update(float) override;        
+        void OnUpdate(float) override;        
     };
 }

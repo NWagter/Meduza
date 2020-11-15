@@ -41,7 +41,13 @@ void Me::EntityManager::Update(float a_dt)
 {
     for(auto s : m_systems)
     {
-        s->Update(a_dt);
+        if(!s->m_OnCreated)
+        {
+            s->OnCreate();
+            s->m_OnCreated = true;
+        }
+
+        s->OnUpdate(a_dt);
     }
 }
 
@@ -89,8 +95,7 @@ void Me::EntityManager::AddSystem(ECSSystem* a_system)
     for (auto ent : ms_entityManager->m_entities)
     {
         ms_entityManager->RegisterEntity(ent.first);
-    }
-    
+    }    
 }
 
 EntityID Me::EntityManager::CreateEntity()

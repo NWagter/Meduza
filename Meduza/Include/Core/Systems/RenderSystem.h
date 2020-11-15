@@ -19,7 +19,7 @@ namespace Me
         RenderSystem(Renderer::RenderLayer*);
         
     protected:
-        void Update(float) override;
+        void OnUpdate(float) override;
         
     };
 }

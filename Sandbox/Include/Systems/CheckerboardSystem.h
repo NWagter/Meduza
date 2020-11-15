@@ -7,14 +7,15 @@ namespace Me
     struct TransformComponent;
 }
 
-struct MoveComponent;
+struct TileComponent;
 
-class MoveSystem : public Me::BaseSystem<MoveComponent, Me::TransformComponent>
+class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformComponent>
 {
     public:
-    MoveSystem();
+    CheckboardSystem();
 
     protected:
+        void OnCreate() override;
         void OnUpdate(float) override;
 
 };

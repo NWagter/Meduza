@@ -7,9 +7,13 @@
 #include "Components/MoveComponent.h"
 #include "Systems/MoveSystem.h"
 
+#include "Components/TileComponent.h"
+#include "Systems/CheckerboardSystem.h"
+
 Game::Game()
 {
     new MoveSystem();
+    new CheckboardSystem();
 }
 
 Game::~Game()

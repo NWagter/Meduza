@@ -88,38 +88,6 @@ bool Me::Application::Run()
     eManager->AddComponent<CameraComponent>(entCam, cC);
     eManager->AddComponent<TransformComponent>(entCam);
 
-bool black = true;
-for(int x = 0; x < 8; x++)
-{
-    for(int y = 0; y < 8; y++)
-    {
-        auto entt = EntityManager::CreateEntity();
-        auto tC = new TransformComponent();
-        auto rC = new RenderComponent();
-        tC->m_position = Math::Vec3(x * 32, y * 32 ,0);
-
-        rC->m_mesh = quadId;
-        rC->m_shader = shader;
-        rC->m_texture = texture;
-        if(black)
-        {
-            rC->m_colour = Colours::BLACK;
-        }
-        else
-        {
-            rC->m_colour = Colours::WHITE;
-
-        }
-        
-        black = !black;
-
-        eManager->AddComponent<RenderComponent>(entt, rC);     
-        eManager->AddComponent<TransformComponent>(entt, tC);
-    }
-
-    black = !black;
-}
-
 
     Timer<float> deltaTimer;
     float totalTime = 0.f;

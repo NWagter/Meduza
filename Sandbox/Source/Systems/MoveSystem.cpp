@@ -10,7 +10,7 @@ MoveSystem::MoveSystem()
 
 }
 
-void MoveSystem::Update(float a_time)
+void MoveSystem::OnUpdate(float a_time)
 {
     for(auto& compTuple : m_components)
     {

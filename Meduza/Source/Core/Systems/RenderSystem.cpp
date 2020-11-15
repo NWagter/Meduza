@@ -13,7 +13,7 @@ Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
     m_renderLayer = a_renderLayer;
 }
 
-void Me::RenderSystem::Update(float)
+void Me::RenderSystem::OnUpdate(float)
 {
     for(auto& compTuple : m_components)
     {

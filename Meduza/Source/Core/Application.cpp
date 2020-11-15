@@ -58,10 +58,10 @@ bool Me::Application::Run()
 	// Create Quad!
 	std::vector<Vertex> vertices = 
 	{
-        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 0.0f), // top left,
-        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 0.0f) ,  // top right
-        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f), // bottom left 
-        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f), // bottom right 
+        Vertex(0.0f,  1.0f, 0.0f, 0.0f, 0.0f), // top left,
+        Vertex(1.0f,  1.0f, 0.0f, 1.0f, 0.0f) ,  // top right
+        Vertex(0.0f, 0.0f, 0.0f, 0.0f, 1.0f), // bottom left 
+        Vertex(1.0f, 0.0f, 0.0f, 1.0f, 1.0f), // bottom right 
     };
 
 	std::vector<uint16_t> indices = 

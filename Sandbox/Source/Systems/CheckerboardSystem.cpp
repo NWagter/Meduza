@@ -31,7 +31,7 @@ void CheckboardSystem::OnCreate()
             auto rC = new Me::RenderComponent();
             auto tileC = new TileComponent();
 
-            tC->m_position = Me::Math::Vec3(x * 32, y * 32 ,0);
+            tC->m_position = Me::Math::Vec3(x * 32, y * 32 , 10);
             tC->m_uniformScale = 32;
             
             rC->m_mesh = quad;
@@ -58,9 +58,33 @@ void CheckboardSystem::OnCreate()
 }
 
 void CheckboardSystem::OnUpdate(float)
-{
+{    
+    Me::Math::Vec2 pos;
+
+    bool onClick = false;
+
+    if(Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton))
+    {
+        onClick = true;
+        pos = Me::Event::EventSystem::GetEventSystem()->MousePosition();
+    }
+
     for(auto& compTuple : m_components)
     {
+        if(onClick)
+        {
+            Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
+            auto tPos = tC->m_position;
+            
+            if((pos.m_x > tPos.m_x && pos.m_x < (tPos.m_x + tC->m_uniformScale))
+                && (pos.m_y > tPos.m_y && pos.m_y < (tPos.m_y + tC->m_uniformScale)))
+            {           
+                TileComponent* tileC = std::get<TileComponent*>(compTuple);
 
+                printf("You selected tile : %i \n", tileC->m_tileId);
+            }
+
+
+        }
     }
 }

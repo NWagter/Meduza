@@ -12,16 +12,17 @@ Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window
 	ME_LOG("Window Created : %s \n", m_title);
 
 	RECT wr;
-	wr.left = 100;
-	wr.right = int(m_width) + wr.left;
-	wr.top = 100;
-	wr.bottom = int(m_height) + wr.top;
+	wr.left = 0;
+	wr.right = int(m_size.m_x) + wr.left;
+	wr.top = 0;
+	wr.bottom = int(m_size.m_y) + wr.top;
 	
 	m_hWnd = CreateWindow(WindowClass::GetName(), m_title,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
+	ShowCursor(false);
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 }
 
@@ -89,6 +90,33 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		break;
 	}
 // ---- Mouse
+	case WM_MOUSEMOVE: {
+		const auto mousePos = MAKEPOINTS(a_lParam);
+		Math::Vec2 mPos;
+		mPos.m_x = static_cast<float>(mousePos.x);
+		mPos.m_y = static_cast<float>(mousePos.y);
+
+		RECT rect;
+		::GetClientRect(a_hwnd, &rect);		
+
+		mPos.m_x = mPos.m_x - (m_size.m_x / 2);
+		mPos.m_y = (m_size.m_y / 2) - mPos.m_y;
+
+		if (mousePos.x >= 0 && float(mousePos.x) < m_size.m_x && mousePos.y >= 0 && float(mousePos.y) < m_size.m_y) {
+			m_eventSystem->OnMouseMove(mPos);
+			SetCapture(a_hwnd);
+		}
+		else {
+			if ((a_wParam & (MK_LBUTTON | MK_RBUTTON)) != 0u) {
+				m_eventSystem->OnMouseMove(mPos);
+			}
+			else {
+				ReleaseCapture();
+			}
+		}
+		break;
+	}
+
 	case WM_LBUTTONDOWN:
 	{
 		m_eventSystem->OnMouseEvent(Event::MouseButton::LButton, Event::MouseEvent::MouseDown);

@@ -31,7 +31,7 @@ namespace Me
 		}
 	protected:
 		Renderer::ContextBase* m_context;
-		int m_width, m_height;
+		Math::Vec2 m_size;
 		const char* m_title;
 
 		bool m_active;

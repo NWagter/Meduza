@@ -10,10 +10,14 @@
 #include "Components/TileComponent.h"
 #include "Systems/CheckerboardSystem.h"
 
+#include "Components/CursorComponent.h"
+#include "Systems/CursorSystem.h"
+
 Game::Game()
 {
-    new MoveSystem();
     new CheckboardSystem();
+    new CursorSystem();
+    new MoveSystem();
 }
 
 Game::~Game()
@@ -24,10 +28,7 @@ Game::~Game()
 
 void Game::OnUpdate(float)
 {   
-    if(Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton))
-    {
-        ME_GAME_LOG("Left Button is Down! \n");
-    }
+
 }
 
 void Game::OnInitilized()
@@ -57,9 +58,9 @@ void Game::OnInitilized()
 
     auto mC = new MoveComponent();
 
-    eManager->AddComponent(e, tC);
-    eManager->AddComponent(e, rC);
-    eManager->AddComponent(e, mC);
+    eManager->AddComponent<MoveComponent>(e, mC);
+    eManager->AddComponent<Me::TransformComponent>(e, tC);
+    eManager->AddComponent<Me::RenderComponent>(e, rC);
 
 }
 

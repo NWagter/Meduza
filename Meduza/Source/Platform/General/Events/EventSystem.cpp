@@ -79,7 +79,7 @@ bool Me::Event::EventSystem::MouseButtonPressed(MouseButton a_button)
 
 Me::Math::Vec2 Me::Event::EventSystem::MousePosition()
 {
-    return Math::Vec2();
+    return m_mouse->GetPosition();
 }
 
 // Engine Set

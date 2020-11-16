@@ -23,8 +23,6 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
-#include <cmath>
-
 #ifdef PLATFORM_WINDOWS
 
 #include <Windows.h>

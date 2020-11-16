@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace Me
 {
 	namespace Math
@@ -116,7 +118,7 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return std::sqrtf(m_x * m_x + m_y * m_y);
+				return sqrtf(m_x * m_x + m_y * m_y);
 			}
 		};
 
@@ -252,7 +254,7 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return std::sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);
+				return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);
 			}
 		};
 
@@ -395,7 +397,7 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return std::sqrtf(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
+				return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
 			}
 		};
 

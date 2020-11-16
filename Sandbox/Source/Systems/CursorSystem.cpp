@@ -25,7 +25,7 @@ void CursorSystem::OnCreate()
     rC->m_colour = Me::Colours::GREEN;
     rC->m_shader = shader;
 
-    tC->m_uniformScale = 16;
+    tC->m_uniformScale = 8;
 
     eManager->AddComponent<CursorComponent>(entt, cC);
     eManager->AddComponent<Me::RenderComponent>(entt, rC);     

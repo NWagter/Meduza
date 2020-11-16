@@ -182,9 +182,19 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	auto iB = Helper::Dx12::DefaultInstancedBuffer();
 
-	iB.m_position = DirectX::XMFLOAT3(a_trans.m_position.m_xyz);
 	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
-	iB.m_uniformScale = a_trans.m_uniformScale;
+
+	auto pos = a_trans.m_position;
+	auto scale = a_trans.m_uniformScale;
+	auto rot = a_trans.m_rotation.m_z;
+
+	const DirectX::XMMATRIX p = DirectX::XMMatrixTranslation(pos.m_x, pos.m_y, pos.m_z);
+	const DirectX::XMMATRIX s = DirectX::XMMatrixScaling(scale, scale, scale);
+	const DirectX::XMMATRIX r = DirectX::XMMatrixRotationZ(rot);
+
+	const DirectX::XMMATRIX model = r * s * p;
+
+	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMatrixTranspose(model));
 
 	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(m_instancedRenderer.at(0))->AddData(iB);
 
@@ -197,9 +207,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 	{
 		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
 		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, 
-			DirectX::XMMatrixOrthographicOffCenterLH(
-				a_cam.m_frustrum.m_x, a_cam.m_frustrum.m_y,
-				a_cam.m_frustrum.m_w, a_cam.m_frustrum.m_z,
+			DirectX::XMMatrixOrthographicLH(
+				a_cam.m_size.m_x, a_cam.m_size.m_y,
 				a_cam.m_near, a_cam.m_far
 			));
 

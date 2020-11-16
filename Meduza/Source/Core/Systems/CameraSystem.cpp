@@ -13,13 +13,14 @@ Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
     m_renderLayer = a_renderLayer;
 }
 
-void Me::CameraSystem::OnUpdate(float)
+void Me::CameraSystem::OnUpdate(float a_dt)
 {
     for(auto& compTuple : m_components)
     {
         CameraComponent* cC = std::get<CameraComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
         
+        tC->m_position.m_y += 10 * a_dt;
         m_renderLayer->SetCamera(*cC, *tC);
     }
 }

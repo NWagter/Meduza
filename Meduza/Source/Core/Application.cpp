@@ -76,13 +76,9 @@ bool Me::Application::Run()
 
     auto cC = new CameraComponent();
     cC->m_cameraType = CameraType::Orthographic;
-    cC->m_near = 1;
+    cC->m_near = 0;
     cC->m_far = 100;
-    Math::Vec4 frustrum = Math::Vec4(
-        CAM_WIDTH / -2, CAM_WIDTH / 2,
-        CAM_HEIGHT / 2, CAM_HEIGHT / -2
-    );
-    cC->m_frustrum = frustrum;
+    cC->m_size = Math::Vec2(CAM_WIDTH, CAM_HEIGHT);
 
     EntityID entCam = EntityManager::CreateEntity();
     eManager->AddComponent<CameraComponent>(entCam, cC);

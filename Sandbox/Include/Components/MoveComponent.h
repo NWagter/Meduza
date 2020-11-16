@@ -2,9 +2,10 @@
 
 #include "Components/GameComponents.h"
 
+#include "Math/MeduzaMath.h"
+
 struct MoveComponent : Me::BaseComponent
 {
-    bool m_moveRight = true;
-    
+    Me::Math::Vec3 m_destination;
     static ComponentID s_componentID;
 };

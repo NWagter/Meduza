@@ -13,7 +13,7 @@ namespace Me
 
     struct CameraComponent : public BaseComponent
     {
-        Math::Vec4 m_frustrum;
+        Math::Vec2 m_size;
         float m_near;
         float m_far;
 

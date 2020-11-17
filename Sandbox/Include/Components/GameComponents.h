@@ -9,6 +9,7 @@ enum class GameComponents : uint16_t
     MoveComponent,
     TileComponent,
     CursorComponent,
-    PlayerComponent
+    PlayerComponent,
+    PawnComponent
     
 };

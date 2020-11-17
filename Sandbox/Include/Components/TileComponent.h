@@ -2,9 +2,14 @@
 
 #include "Components/GameComponents.h"
 
+struct PawnComponent;
+
 struct TileComponent : Me::BaseComponent
 {
-    int m_tileId;
+    PawnComponent* m_pawn;
     
+    int m_tileId;
+    char m_char;
+
     static ComponentID s_componentID;
 };

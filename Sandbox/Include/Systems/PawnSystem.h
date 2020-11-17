@@ -1,18 +1,17 @@
 #pragma once
 
 #include "ECS/BaseSystem.h"
-
-#include "Components/MoveComponent.h"
+#include "Components/PawnComponent.h"
 
 namespace Me
 {    
     struct TransformComponent;
 }
 
-class MoveSystem : public Me::BaseSystem<MoveComponent, Me::TransformComponent>
+class PawnSystem : public Me::BaseSystem<PawnComponent, Me::TransformComponent>
 {
     public:
-    MoveSystem();
+    PawnSystem();
 
     protected:
         void OnUpdate(float) override;

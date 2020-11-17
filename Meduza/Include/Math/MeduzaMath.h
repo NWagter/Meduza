@@ -466,9 +466,9 @@ namespace Me
 		{
 			float lenght = a_lhs - a_rhs;
 
-			if(lenght == 0)
+			if(lenght < 0.05f && lenght > -0.05f)
 			{
-				return lenght;
+				return a_lhs;
 			}
 
 			if(lenght > 0)

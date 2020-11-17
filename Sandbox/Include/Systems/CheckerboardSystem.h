@@ -3,6 +3,7 @@
 #include "ECS/BaseSystem.h"
 
 #include "Components/TileComponent.h"
+#include "Components/PawnComponent.h"
 
 namespace Me
 {    
@@ -19,6 +20,9 @@ class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformCompo
         void OnUpdate(float) override;
 
     private:
+        void CreateBoard();
+        PawnComponent* CreatePieces(int, int);
+        std::string GetPieceName(PawnTypes);
     EntityID m_playerEntity;
 
 };

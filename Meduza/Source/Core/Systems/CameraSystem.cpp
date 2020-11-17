@@ -20,7 +20,6 @@ void Me::CameraSystem::OnUpdate(float a_dt)
         CameraComponent* cC = std::get<CameraComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
         
-        tC->m_position.m_y += 10 * a_dt;
         m_renderLayer->SetCamera(*cC, *tC);
     }
 }

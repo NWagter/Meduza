@@ -4,20 +4,18 @@
 
 #include "MeduzaIncluder.h"
 
-#include "Components/MoveComponent.h"
 #include "Systems/MoveSystem.h"
-
-#include "Components/TileComponent.h"
 #include "Systems/CheckerboardSystem.h"
-
-#include "Components/CursorComponent.h"
 #include "Systems/CursorSystem.h"
+#include "Systems/PlayerSystem.h"
 
 Game::Game()
 {
-    new CheckboardSystem();
     new CursorSystem();
+    new PlayerSystem();
+    
     new MoveSystem();
+    new CheckboardSystem();
 }
 
 Game::~Game()

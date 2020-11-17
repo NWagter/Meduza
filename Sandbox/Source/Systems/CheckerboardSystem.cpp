@@ -3,7 +3,8 @@
 
 #include "MeduzaIncluder.h"
 
-#include "Components/TileComponent.h"
+#include "Components/PlayerComponent.h"
+#include "Components/CursorComponent.h"
 
 CheckboardSystem::CheckboardSystem()
 {
@@ -55,6 +56,19 @@ void CheckboardSystem::OnCreate()
 
         black = !black;
     }
+
+
+    auto entList = Me::EntityManager::GetEntityManager()->GetEntities();
+    EntityID curEnt = 0;
+    for(auto entt : entList)
+    {
+        if(entt.second.find(PlayerComponent::s_componentID) != entt.second.end())
+        {            
+            curEnt = entt.first;
+            break;
+        }
+    }
+    m_playerEntity = curEnt;
 }
 
 void CheckboardSystem::OnUpdate(float)
@@ -66,7 +80,8 @@ void CheckboardSystem::OnUpdate(float)
     if(Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton))
     {
         onClick = true;
-        pos = Me::Event::EventSystem::GetEventSystem()->MousePosition();
+        Me::Math::Vec3 cPos = Me::EntityManager::GetEntityManager()->GetComponent<PlayerComponent>(m_playerEntity)->m_cursorComponent->m_position;
+        pos = Me::Math::Vec2(cPos.m_x, cPos.m_y);
     }
 
     for(auto& compTuple : m_components)

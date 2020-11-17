@@ -1,6 +1,22 @@
 #pragma once
 namespace Me
 {
+    namespace Math
+    {
+        namespace Dx12
+        {
+            static inline DirectX::XMFLOAT4X4 Identity4x4()
+            {
+                static DirectX::XMFLOAT4X4 s_i(
+                    1.0f, 0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+
+                return s_i;
+            }
+        }
+    }
     namespace Helper
     {
         namespace Dx12

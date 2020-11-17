@@ -2,12 +2,12 @@
 
 #include "ECS/BaseSystem.h"
 
+#include "Components/TileComponent.h"
+
 namespace Me
 {    
     struct TransformComponent;
 }
-
-struct TileComponent;
 
 class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformComponent>
 {
@@ -17,5 +17,8 @@ class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformCompo
     protected:
         void OnCreate() override;
         void OnUpdate(float) override;
+
+    private:
+    EntityID m_playerEntity;
 
 };

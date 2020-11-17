@@ -2,12 +2,12 @@
 
 #include "ECS/BaseSystem.h"
 
+#include "Components/MoveComponent.h"
+
 namespace Me
 {    
     struct TransformComponent;
 }
-
-struct MoveComponent;
 
 class MoveSystem : public Me::BaseSystem<MoveComponent, Me::TransformComponent>
 {

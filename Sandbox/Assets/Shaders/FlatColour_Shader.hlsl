@@ -5,6 +5,7 @@ struct InstanceData
 {
 	float4x4 model;
 	float4 colour;
+    float4 textureCoord;
 	int textureId;
 };
 StructuredBuffer<InstanceData> gInstanceData : register(t1, space1);

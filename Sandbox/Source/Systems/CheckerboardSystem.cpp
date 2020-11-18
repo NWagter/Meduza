@@ -87,12 +87,18 @@ void CheckboardSystem::OnUpdate(float)
                     {
                         printf("You can't selected : %s of colour (Black) \n ", GetPieceName(pawn->m_type).c_str());                        
                     }
-                    if(!pawn->m_moving)
+                    else
                     {
-                        printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
-                        player->m_selectedPawn = pawn;
+                        if(!pawn->m_moving)
+                        {
+                            printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
+                            player->m_selectedPawn = pawn;
+                        }
                     }
                 }
+
+                onClick = false;
+                continue;
             }
         }
     }

@@ -15,6 +15,8 @@ namespace Me
         Shader m_shader;
         Texture m_texture;
 
+        Math::Vec4 m_textureCoords;
+
         static ComponentID s_componentID;
     };
 }

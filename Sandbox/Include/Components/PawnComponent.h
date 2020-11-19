@@ -25,6 +25,7 @@ struct PawnComponent : Me::BaseComponent
 {    
 
     Me::Math::Vec3 m_newPos;
+    float m_moveSpeed = 50.0f;
 
     PawnTypes m_type;
     PawnColour m_colour;

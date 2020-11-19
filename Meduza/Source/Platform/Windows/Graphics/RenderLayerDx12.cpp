@@ -226,6 +226,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
 	iB.m_textureId = textureId;
+	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
 	auto pos = a_trans.m_position;
 	auto scale = a_trans.m_uniformScale;

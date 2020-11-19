@@ -70,7 +70,7 @@ void CheckboardSystem::OnUpdate(float)
                     if(pawn == nullptr)
                     {
                         //Can move here!
-                        selectedPawn->m_newPos = tPos + 8;
+                        selectedPawn->m_newPos = tPos;
                         selectedPawn->m_moving = true;
                         tileC->m_pawn = selectedPawn;
                         selectedPawn->m_tile->m_pawn = nullptr;
@@ -170,7 +170,8 @@ PawnComponent* CheckboardSystem::CreatePieces(int a_row, int a_col)
     auto eManager = Me::EntityManager::GetEntityManager();
 
     auto quad = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
-    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+    auto texture = Me::Resources::TextureLibrary::CreateTexture("Assets/Textures/ChessPieces.png");
+    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
 
     auto entt = Me::EntityManager::CreateEntity();
 
@@ -178,16 +179,20 @@ PawnComponent* CheckboardSystem::CreatePieces(int a_row, int a_col)
     auto rC = new Me::RenderComponent();
     auto pC = new PawnComponent();
 
-    tC->m_position = Me::Math::Vec3(8 + (a_col * 32),8 + (a_row * 32),  9);
-    tC->m_uniformScale = 16;
+    tC->m_position = Me::Math::Vec3((a_col * 32),(a_row * 32),  9);
+    tC->m_uniformScale = 32;
 
     rC->m_shader = shader;
     rC->m_mesh = quad;
+    rC->m_texture = texture;
 
     if(r == 2 || r == 7)
     {
         //Set Pawn Texture
         pC->m_type = PawnTypes::Pawn;
+        rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                        Me::Math::Vec2(850,0),
+                                                        Me::Math::Vec2(170,170));
 
         if(r == 2)
         {        
@@ -208,18 +213,34 @@ PawnComponent* CheckboardSystem::CreatePieces(int a_row, int a_col)
         {
         case 0: case 7:
             pC->m_type = PawnTypes::Rook;
+            rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                            Me::Math::Vec2(680,0),
+                                                            Me::Math::Vec2(170,170));
+            
             break;            
         case 1: case 6: 
             pC->m_type = PawnTypes::Knight;
+            rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                            Me::Math::Vec2(510,0),
+                                                            Me::Math::Vec2(170,170));
             break;            
         case 2: case 5:
             pC->m_type = PawnTypes::Bishop;
+            rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                            Me::Math::Vec2(340,0),
+                                                            Me::Math::Vec2(170,170));
             break;            
         case 3:
             pC->m_type = PawnTypes::Queen;
+            rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                            Me::Math::Vec2(170,0),
+                                                            Me::Math::Vec2(170,170));
             break;            
         case 4:
             pC->m_type = PawnTypes::King;
+            rC->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
+                                                            Me::Math::Vec2(0,0),
+                                                            Me::Math::Vec2(170,170));
             break;
         }
 

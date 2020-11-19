@@ -8,6 +8,8 @@ namespace Me
       public:
         static uint16_t GetHashedID(std::string);
       };     
+
+      Math::Vec4 TextureSlice(Math::Vec2 a_textureSize, Math::Vec2 a_sliceBegin, Math::Vec2 a_sliceSize);
     }
 
     

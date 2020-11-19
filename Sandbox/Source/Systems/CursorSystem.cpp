@@ -22,7 +22,7 @@ void CursorSystem::OnCreate()
     auto cC = new CursorComponent();
 
     rC->m_mesh = quad;
-    rC->m_colour = Me::Colours::GREEN;
+    rC->m_colour = Me::Colours::WHITE;
     rC->m_shader = shader;
     rC->m_texture = texture;
 

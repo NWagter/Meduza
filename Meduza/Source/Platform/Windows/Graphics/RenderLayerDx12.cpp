@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 
+#include "Platform/Windows/Helper/Helper.h"
+
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/Windows/Graphics/Context.h"
 
@@ -171,18 +173,59 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
 
 void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)
 {
-    //m_renderables.push_back(&a_renderable);
+	// If no instanced Renderers we just create one
+	BaseInstanced* instancedRenderer = nullptr;
+	
+	unsigned int srv = 0;
+	unsigned int textureId = 0;
+	if(a_renderable.m_texture != 0)
+	{
+		auto t = static_cast<Resources::Dx12::Texture*>(Resources::TextureLibrary::GetTexture(a_renderable.m_texture));	
+		srv = t->GetSRVId();
+		textureId = t->GetTexture().m_srvOffset;		
+	}
 
 	if(m_instancedRenderer.empty())
 	{
+
 		auto b = new InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>(
-			a_renderable.m_mesh, a_renderable.m_shader, m_device);
+			a_renderable.m_mesh, a_renderable.m_shader, srv, m_device);
 		m_instancedRenderer.push_back(b);
+
+		instancedRenderer = b;
 	}
+	else
+	{
+		for(auto iR : m_instancedRenderer)
+		{
+
+			if(	a_renderable.m_mesh == iR->GetMesh()
+				&& a_renderable.m_shader == iR->GetShader()
+				&& srv == iR->GetSRVID())
+			{
+				if(!iR->ReachedMaxSize())
+				{
+					instancedRenderer = iR;
+					break;
+				}
+			}
+		}
+
+		if(instancedRenderer == nullptr)
+		{		
+			auto b = new InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>(
+				a_renderable.m_mesh, a_renderable.m_shader, srv, m_device);
+			m_instancedRenderer.push_back(b);
+
+			instancedRenderer = b;
+		}
+	}
+
 
 	auto iB = Helper::Dx12::DefaultInstancedBuffer();
 
 	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
+	iB.m_textureId = textureId;
 
 	auto pos = a_trans.m_position;
 	auto scale = a_trans.m_uniformScale;
@@ -196,7 +239,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMatrixTranspose(model));
 
-	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(m_instancedRenderer.at(0))->AddData(iB);
+	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 
 
 }
@@ -232,43 +275,22 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {
 	auto cmd = &GetCmd();
 
-	unsigned int textureId = 0;
-	auto srv = m_textureLoader->GetSRV(textureId);
+	unsigned int srvId = 0;
+	Helper::Dx12::SRV srv = m_textureLoader->GetSRV(srvId);
+	ID3D12DescriptorHeap* DescHeap[] = { srv.m_srv->GetHeap().Get() };
+	cmd->GetList()->SetDescriptorHeaps(_countof(DescHeap), DescHeap);
 
-	ID3D12DescriptorHeap* inlineDesHeap[] = { srv.m_srv->GetHeap().Get() };
-	cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
-/*
-	for (auto r : m_renderables)
-	{
-		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
-		auto m = static_cast<Resources::Dx12::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
-		auto t = static_cast<Resources::Dx12::Texture*>(Resources::TextureLibrary::GetTexture(r->m_texture));
-
-		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
-		{
-			m_activeShader = s;
-			m_activeShader->Bind();
-		}
-		
-		if(textureId != t->GetSRVId())
-		{
-			textureId = t->GetSRVId();
-			srv = m_textureLoader->GetSRV(textureId);
-
-			ID3D12DescriptorHeap* newHeapDesc[] = { srv.m_srv->GetHeap().Get() };
-			cmd->GetList()->SetDescriptorHeaps(_countof(newHeapDesc), newHeapDesc);
-		}
-
-		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
-
-		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
-		cmd->Draw(m);
-	}
-*/
 	for(auto instanced : m_instancedRenderer)
 	{
 		// TODO : Get Material and set the correct SRV
 		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(instanced->GetShader()));
+		if(instanced->GetSRVID() != srvId)
+		{
+			srvId = instanced->GetSRVID();
+			srv = m_textureLoader->GetSRV(srvId);
+			ID3D12DescriptorHeap* inlineDesHeap[] = { srv.m_srv->GetHeap().Get() };
+			cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
+		}
 
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{

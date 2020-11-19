@@ -12,7 +12,7 @@ namespace Me
         namespace Dx12
         {
 
-            constexpr unsigned int MAX_INSTANCES = 128;
+            constexpr unsigned int MAX_INSTANCES = 4096;
 
             class BaseInstanced
             {
@@ -22,18 +22,21 @@ namespace Me
                 virtual void Draw(CommandList*) = 0;
                 virtual void ClearBuffer() = 0;
 
-                virtual Shader GetShader() = 0;
                 virtual Mesh GetMesh() = 0;
+                virtual Shader GetShader() = 0;
+                virtual unsigned int GetSRVID() = 0;
+                virtual bool ReachedMaxSize() = 0;
             };
             
             template<typename InstancedData>
             class InstancedRenderCall : public BaseInstanced
             {
             public:
-                InstancedRenderCall(Mesh& a_mesh, Shader& a_shader, Device* a_device)
+                InstancedRenderCall(Mesh& a_mesh, Shader& a_shader, unsigned int& a_srvId, Device* a_device)
                 {
                     m_meshIndex = a_mesh;
                     m_shaderIndex = a_shader;
+                    m_srvId = a_srvId;
 
                     m_alignmentItem = 0;
                     m_instancedBuffer = new Helper::Dx12::UploadBuffer<InstancedData>(*a_device, false);
@@ -53,12 +56,14 @@ namespace Me
                     m_alignmentItem = 0;
                 }
 
-                
-                Shader GetShader() override { return m_shaderIndex;}
                 Mesh GetMesh() override { return m_meshIndex;}
+                Shader GetShader() override { return m_shaderIndex;}
+                unsigned int GetSRVID() override { return m_srvId;}
+                bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES);}
             protected:
                 Mesh m_meshIndex;
                 Shader m_shaderIndex;
+                unsigned int m_srvId;
 
                 std::vector<InstancedData> m_instancedData;
 

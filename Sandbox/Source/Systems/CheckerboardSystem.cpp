@@ -57,9 +57,10 @@ void CheckboardSystem::OnUpdate(float)
         {
             Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
             auto tPos = tC->m_position;
+            auto tSize = tC->m_uniformScale / 2;
             
-            if((pos.m_x > tPos.m_x && pos.m_x < (tPos.m_x + tC->m_uniformScale))
-                && (pos.m_y > tPos.m_y && pos.m_y < (tPos.m_y + tC->m_uniformScale)))
+            if( (pos.m_x > tPos.m_x - tSize && pos.m_x < tPos.m_x + tSize) &&
+                (pos.m_y > tPos.m_y - tSize && pos.m_y < tPos.m_y + tSize))
             {           
                 TileComponent* tileC = std::get<TileComponent*>(compTuple);
                 auto pawn = tileC->m_pawn;

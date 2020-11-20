@@ -10,10 +10,10 @@ namespace Me
     struct TransformComponent;
 }
 
-class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformComponent>
+class ChessboardSystem : public Me::BaseSystem<TileComponent, Me::TransformComponent>
 {
     public:
-    CheckboardSystem();
+    ChessboardSystem();
 
     protected:
         void OnCreate() override;
@@ -23,6 +23,7 @@ class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformCompo
         void CreateBoard();
         PawnComponent* CreatePieces(int, int);
         std::string GetPieceName(PawnTypes);
-    EntityID m_playerEntity;
+        bool CheckMove(PawnComponent*, TileComponent*);
 
+        EntityID m_playerEntity;
 };

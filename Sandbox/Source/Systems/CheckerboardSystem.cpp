@@ -1,5 +1,5 @@
 #include "PCH.h"
-#include "Systems/CheckerboardSystem.h"
+#include "Systems/ChessboardSystem.h"
 
 #include "MeduzaIncluder.h"
 
@@ -12,12 +12,12 @@ static char chars[] =
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
 };
 
-CheckboardSystem::CheckboardSystem()
+ChessboardSystem::ChessboardSystem()
 {
 
 }
 
-void CheckboardSystem::OnCreate()
+void ChessboardSystem::OnCreate()
 {
     CreateBoard();
 
@@ -34,7 +34,7 @@ void CheckboardSystem::OnCreate()
     m_playerEntity = curEnt;
 }
 
-void CheckboardSystem::OnUpdate(float)
+void ChessboardSystem::OnUpdate(float)
 {    
     Me::Math::Vec2 pos;
 
@@ -63,15 +63,20 @@ void CheckboardSystem::OnUpdate(float)
                 (pos.m_y > tPos.m_y - tSize && pos.m_y < tPos.m_y + tSize))
             {           
                 TileComponent* tileC = std::get<TileComponent*>(compTuple);
-                auto pawn = tileC->m_pawn;
 
                 if(player->m_selectedPawn != nullptr)
                 {
                     auto selectedPawn = player->m_selectedPawn;
-                    if(pawn == nullptr)
+                    if(CheckMove(selectedPawn, tileC))
                     {
-                        //Can move here!
+                        if(!selectedPawn->m_hasMoved)
+                        {
+                            //Required for Pawn
+                            selectedPawn->m_hasMoved = true;
+                        }
+
                         selectedPawn->m_newPos = tPos;
+                        selectedPawn->m_newPos.m_z = 9;
                         selectedPawn->m_moving = true;
                         tileC->m_pawn = selectedPawn;
                         selectedPawn->m_tile->m_pawn = nullptr;
@@ -80,21 +85,15 @@ void CheckboardSystem::OnUpdate(float)
                     }
 
                     player->m_selectedPawn = nullptr;
-                }
-
-                if(pawn != nullptr && player != nullptr)
+                    break;
+                }              
+                else
                 {
-                    if(pawn->m_colour == PawnColour::Black)
+                    auto pawn = tileC->m_pawn;
+                    if(pawn != nullptr && !pawn->m_moving)
                     {
-                        printf("You can't selected : %s of colour (Black) \n ", GetPieceName(pawn->m_type).c_str());                        
-                    }
-                    else
-                    {
-                        if(!pawn->m_moving)
-                        {
-                            printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
-                            player->m_selectedPawn = pawn;
-                        }
+                        printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
+                        player->m_selectedPawn = pawn;
                     }
                 }
 
@@ -105,7 +104,7 @@ void CheckboardSystem::OnUpdate(float)
     }
 }
 
-void CheckboardSystem::CreateBoard()
+void ChessboardSystem::CreateBoard()
 {
     auto quad = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
     auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
@@ -143,6 +142,10 @@ void CheckboardSystem::CreateBoard()
             tileC->m_tileId = y + 1;
             tileC->m_char = chars[x];
             tileC->m_pawn = CreatePieces(y, x);
+
+            tileC->m_tileX = x;
+            tileC->m_tileY = y;
+
             if(tileC->m_pawn != nullptr)
             {
                 tileC->m_pawn->m_tile = tileC;
@@ -159,7 +162,7 @@ void CheckboardSystem::CreateBoard()
 
 }
 
-PawnComponent* CheckboardSystem::CreatePieces(int a_row, int a_col)
+PawnComponent* ChessboardSystem::CreatePieces(int a_row, int a_col)
 {
     int r = a_row + 1;
     
@@ -265,7 +268,7 @@ PawnComponent* CheckboardSystem::CreatePieces(int a_row, int a_col)
     return pC;
 }
 
-std::string CheckboardSystem::GetPieceName(PawnTypes a_type)
+std::string ChessboardSystem::GetPieceName(PawnTypes a_type)
 {
     switch (a_type)
     {
@@ -290,4 +293,48 @@ std::string CheckboardSystem::GetPieceName(PawnTypes a_type)
     }
 
     return "";
+}
+
+bool ChessboardSystem::CheckMove(PawnComponent* a_pawn, TileComponent* a_destination)
+{
+    if(a_destination->m_pawn != nullptr && a_destination->m_pawn->m_colour == a_pawn->m_colour)
+    {
+        return false;
+    }
+
+    PawnTypes pType = a_pawn->m_type;
+    auto originTile = a_pawn->m_tile;
+
+    Me::Math::Vec2 origin = Me::Math::Vec2(originTile->m_tileX, originTile->m_tileY);
+    Me::Math::Vec2 destination = Me::Math::Vec2(a_destination->m_tileX, a_destination->m_tileY);
+
+    Me::Math::Vec2 dir = (destination - origin);
+
+    dir.ABS();
+
+    if(dir.m_x == dir.m_y)
+    {
+        //Diagonal
+        if(pType == PawnTypes::Bishop || pType == PawnTypes::Queen)
+        {
+            return true;
+        }
+    }
+    else if((dir.m_x == 0 && dir.m_y != 0 ) || (dir.m_x != 0 && dir.m_y == 0 ))
+    {
+        //Horizonal and Vertical
+        if(pType == PawnTypes::Rook || pType == PawnTypes::Queen)
+        {
+            return true;
+        }
+    }
+    else if(pType == PawnTypes::Knight)
+    {
+        if((dir.m_x == 2 && dir.m_y == 1) || (dir.m_x == 1 && dir.m_y == 2))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

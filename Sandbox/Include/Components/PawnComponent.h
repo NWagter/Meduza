@@ -32,6 +32,7 @@ struct PawnComponent : Me::BaseComponent
 
     TileComponent* m_tile;
     bool m_moving = false;
+    bool m_hasMoved = false;
     
     static ComponentID s_componentID;
 };

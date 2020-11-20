@@ -5,7 +5,7 @@
 #include "MeduzaIncluder.h"
 
 #include "Systems/PawnSystem.h"
-#include "Systems/CheckerboardSystem.h"
+#include "Systems/ChessboardSystem.h"
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
 
@@ -15,7 +15,7 @@ Game::Game()
     new PlayerSystem();
     
     new PawnSystem();
-    new CheckboardSystem();
+    new ChessboardSystem();
 }
 
 Game::~Game()

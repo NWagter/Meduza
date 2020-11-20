@@ -32,6 +32,11 @@ namespace Me
 				m_x = a_x;
 				m_y = a_y;
 			}
+			inline Vec2(int a_x, int a_y)
+			{
+				m_x = static_cast<float>(a_x);
+				m_y = static_cast<float>(a_y);
+			}
 
 			inline Vec2& operator=(const Vec2& a_rhs)
 			{
@@ -119,6 +124,22 @@ namespace Me
 			inline float Lenght()
 			{
 				return sqrtf(m_x * m_x + m_y * m_y);
+			}
+
+			inline float Distance(Vec2 a_rhs)
+			{
+				float x = a_rhs.m_x - m_x;
+				float y = a_rhs.m_y - m_y;
+
+				return abs(sqrtf(x * x + y * y));
+			}
+
+			inline Vec2& ABS()
+			{
+				m_x = abs(m_x);
+				m_y = abs(m_y);
+
+				return *this;
 			}
 		};
 
@@ -255,6 +276,14 @@ namespace Me
 			inline float Lenght()
 			{
 				return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);
+			}
+
+			inline float Distance(Vec3 a_rhs)
+			{
+				float x = a_rhs.m_x - m_x;
+				float y = a_rhs.m_y - m_y;
+				float z = a_rhs.m_z - m_z;
+				return abs(sqrtf(x * x + y * y + z *z));
 			}
 		};
 
@@ -461,6 +490,21 @@ namespace Me
 		}
 
 	// === Helpers
+		inline float Distance(Vec2 a_rhs, Vec2 a_lhs)
+		{
+			float x = a_lhs.m_x - a_rhs.m_x;
+			float y = a_lhs.m_y - a_rhs.m_y;
+
+			return abs(sqrtf(x * x + y * y));
+		}
+		inline float Distance(Vec3 a_rhs, Vec3 a_lhs)
+		{
+			float x = a_lhs.m_x - a_rhs.m_x;
+			float y = a_lhs.m_y - a_rhs.m_y;
+			float z = a_lhs.m_z - a_rhs.m_z;
+			
+			return abs(sqrtf(x * x + y * y + z *z));
+		}
 
 		inline float MoveTowards(float a_rhs, float a_lhs, float a_delta)
 		{
@@ -481,6 +525,15 @@ namespace Me
 			}
 		}
 
+		inline Vec2 Direction(Vec2 a_origin, Vec2 a_destination)
+		{
+			return a_destination - a_origin;
+		}
+		inline Vec3 Direction(Vec3 a_origin, Vec3 a_destination)
+		{
+			return a_destination - a_origin;
+		}
+
 		inline Vec2 Lerp(Vec2 a_rhs, Vec2 a_lhs, float a_delta)
 		{
 			float x = (1 - a_delta) * a_rhs.m_x + a_delta * a_lhs.m_x;
@@ -488,7 +541,6 @@ namespace Me
 			
 			return Math::Vec2(x,y);
 		}
-
 		inline Vec3 Lerp(Vec3 a_rhs, Vec3 a_lhs, float a_delta)
 		{
 			float x = (1 - a_delta) * a_rhs.m_x + a_delta * a_lhs.m_x;
@@ -498,19 +550,8 @@ namespace Me
 			return Math::Vec3(x,y,z);
 		}
 
-		inline Vec4 Lerp(Vec4 a_rhs, Vec4 a_lhs, float a_delta)
-		{
-			float x = (1 - a_delta) * a_rhs.m_x + a_delta * a_lhs.m_x;
-			float y = (1 - a_delta) * a_rhs.m_y + a_delta * a_lhs.m_y;
-			float z = (1 - a_delta) * a_rhs.m_z + a_delta * a_lhs.m_z;
-			float w = (1 - a_delta) * a_rhs.m_w + a_delta * a_lhs.m_w;
-			
-			return Math::Vec4(x,y,z,w);
-		}
-
 		inline Vec2 MoveTowards(Vec2 a_rhs, Vec2 a_lhs, float a_delta)
 		{
-			float delta = (a_lhs - a_lhs).Lenght();
 			Math::Vec2 returnValue;
 
 			returnValue.m_x = MoveTowards(a_rhs.m_x, a_lhs.m_x, a_delta);
@@ -518,28 +559,13 @@ namespace Me
 
 			return returnValue;
 		}
-
 		inline Vec3 MoveTowards(Vec3 a_rhs, Vec3 a_lhs, float a_delta)
 		{
-			float delta = (a_lhs - a_lhs).Lenght();
 			Math::Vec3 returnValue;
 
 			returnValue.m_x = MoveTowards(a_rhs.m_x, a_lhs.m_x, a_delta);
 			returnValue.m_y = MoveTowards(a_rhs.m_y, a_lhs.m_y, a_delta);
 			returnValue.m_z = MoveTowards(a_rhs.m_z, a_lhs.m_z, a_delta);
-
-			return returnValue;
-		}
-
-		inline Vec4 MoveTowards(Vec4 a_rhs, Vec4 a_lhs, float a_delta)
-		{
-			float delta = (a_lhs - a_lhs).Lenght();
-			Math::Vec4 returnValue;
-
-			returnValue.m_x = MoveTowards(a_rhs.m_x, a_lhs.m_x, a_delta);
-			returnValue.m_y = MoveTowards(a_rhs.m_y, a_lhs.m_y, a_delta);
-			returnValue.m_z = MoveTowards(a_rhs.m_z, a_lhs.m_z, a_delta);
-			returnValue.m_w = MoveTowards(a_rhs.m_w, a_lhs.m_w, a_delta);
 
 			return returnValue;
 		}

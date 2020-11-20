@@ -8,6 +8,8 @@ struct TileComponent : Me::BaseComponent
 {
     PawnComponent* m_pawn;
     
+    int m_tileX, m_tileY;
+
     int m_tileId;
     char m_char;
 

@@ -343,28 +343,64 @@ bool ChessboardSystem::CheckMove(PawnComponent* a_pawn, TileComponent* a_destina
     Me::Math::Vec2 destination = Me::Math::Vec2(a_destination->m_tileX, a_destination->m_tileY);
 
     Me::Math::Vec2 dir = (destination - origin);
+    Me::Math::Vec2 dirAbs = dir;
+    dirAbs.ABS();
 
-    dir.ABS();
 
-    if(dir.m_x == dir.m_y)
+    if(pType == PawnTypes::Pawn)
+    {
+        if(dirAbs.m_x == dirAbs.m_y  && a_destination->m_pawn != nullptr)
+        {
+            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
+            {
+                return true;
+            }else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
+            {
+                return true;
+            }
+        }
+        else if(dirAbs.m_x == 0)
+        {
+            if((!a_pawn->m_hasMoved && dirAbs.m_y > 2) || (a_pawn->m_hasMoved && dirAbs.m_y > 1))
+            {
+                return false;
+            }
+
+            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
+            {
+                return true;
+            }else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
+            {
+                return true;
+            }
+        }
+    }
+    if(pType == PawnTypes::Bishop || pType == PawnTypes::Queen)
     {
         //Diagonal
-        if(pType == PawnTypes::Bishop || pType == PawnTypes::Queen)
+        if(dirAbs.m_x == dirAbs.m_y)
         {
             return true;
         }
     }
-    else if((dir.m_x == 0 && dir.m_y != 0 ) || (dir.m_x != 0 && dir.m_y == 0 ))
+    if(pType == PawnTypes::Rook || pType == PawnTypes::Queen)
     {
         //Horizonal and Vertical
-        if(pType == PawnTypes::Rook || pType == PawnTypes::Queen)
+        if((dirAbs.m_x == 0 && dirAbs.m_y != 0 ) || (dirAbs.m_x != 0 && dirAbs.m_y == 0 ))
         {
             return true;
         }
     }
-    else if(pType == PawnTypes::Knight)
+    if(pType == PawnTypes::Knight)
     {
-        if((dir.m_x == 2 && dir.m_y == 1) || (dir.m_x == 1 && dir.m_y == 2))
+        if((dirAbs.m_x == 2 && dirAbs.m_y == 1) || (dirAbs.m_x == 1 && dirAbs.m_y == 2))
+        {
+            return true;
+        }
+    }
+    if(pType == PawnTypes::King)
+    {
+        if(dirAbs.m_x <= 1 && dirAbs.m_y <= 1)        
         {
             return true;
         }

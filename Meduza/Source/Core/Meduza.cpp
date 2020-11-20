@@ -106,6 +106,11 @@ void Me::Meduza::Present()
 	m_isRunning = false;
 }
 
+void Me::Meduza::SetAppName(std::string a_name)
+{
+	m_window->SetTitle(a_name);
+}
+
 void Me::Meduza::Destroy()
 {
 	Resources::TextureLibrary::Destroy();

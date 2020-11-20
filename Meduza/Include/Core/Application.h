@@ -6,7 +6,7 @@ namespace Me
 
     class Application
     {
-        public:
+    public:
         Application();
         virtual ~Application();
 
@@ -15,8 +15,10 @@ namespace Me
         virtual void OnClose() = 0;
         
         bool Run();
+    protected:
+        virtual void SetName(std::string) final;
 
-        private:
+    private:
         Meduza* m_meduza;
     };
 

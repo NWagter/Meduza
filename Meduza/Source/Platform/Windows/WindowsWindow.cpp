@@ -53,6 +53,14 @@ void Me::WindowsWindow::Quit()
 		PostQuitMessage(0);
 }
 
+void Me::WindowsWindow::SetTitle(std::string a_title)
+{
+	std::string title = a_title;
+	title.append(" | Windows");
+	SetWindowText(m_hWnd, title.c_str());
+	ME_GFX_LOG("Change name of window to : %s \n", title.c_str());
+} 
+
 void Me::WindowsWindow::SetContext(Renderer::ContextBase* a_context)
 {
 	m_context = a_context;

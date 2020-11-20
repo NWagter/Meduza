@@ -21,7 +21,9 @@ namespace Me
 		virtual void Peek() = 0;
 		virtual void Quit() = 0;
 		virtual void SetContext(Renderer::ContextBase*) = 0;
-			
+		
+		virtual void SetTitle(std::string) = 0;
+		
 		inline bool IsActive() { return m_active; }
 
 	private:

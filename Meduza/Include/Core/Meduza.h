@@ -25,6 +25,7 @@ namespace Me {
 		void Update(float);
 		void Present();
 
+		void SetAppName(std::string);
 	private:
 		void Destroy();
 

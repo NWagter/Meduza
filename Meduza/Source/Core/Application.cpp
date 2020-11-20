@@ -115,3 +115,8 @@ bool Me::Application::Run()
 
     return true;
 }
+
+void Me::Application::SetName(std::string a_name)
+{
+    m_meduza->SetAppName(a_name);
+}

@@ -27,3 +27,8 @@ void Me::MacOsWindow::SetContext(Renderer::ContextBase* a_context)
 {
 	m_context = a_context;
 }
+
+void Me::MacOsWindow::SetTitle(std::string)
+{
+
+} 

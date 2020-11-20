@@ -1,40 +1,42 @@
 #include "PCH.h"
-#include "Game.h"
+#include "Sandbox.h"
 #include "Meduza.h"
 
 #include "MeduzaIncluder.h"
 
-#include "Systems/PawnSystem.h"
-#include "Systems/ChessboardSystem.h"
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
 
-Game::Game()
+#include "Games/Chess.h"
+
+Sandbox::Sandbox()
 {
     new CursorSystem();
     new PlayerSystem();
-    
-    new PawnSystem();
-    new ChessboardSystem();
+
+    m_game = new Chess();
+    SetName("Chess | Meduza");
 }
 
-Game::~Game()
+Sandbox::~Sandbox()
 {
 
 }
 
 
-void Game::OnUpdate(float)
+void Sandbox::OnUpdate(float)
 {   
 
 }
 
-void Game::OnInitilized()
+void Sandbox::OnInitilized()
 {
     ME_GAME_LOG("Game Initilzed \n");
+
+    m_game->InitGame();
 }
 
-void Game::OnClose()
+void Sandbox::OnClose()
 {
     ME_GAME_LOG("Game Closed \n");
 }
@@ -42,5 +44,5 @@ void Game::OnClose()
 //Create the game "Application"
 Me::Application* Me::CreateApplication()
 {
-	return new Game();
+	return new Sandbox();
 }

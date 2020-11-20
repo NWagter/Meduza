@@ -6,6 +6,7 @@
 #include "Components/PlayerComponent.h"
 #include "Components/CursorComponent.h"
 #include "Components/PawnComponent.h"
+#include "Components/ChessComponent.h"
 
 static char chars[] =
 {
@@ -31,7 +32,20 @@ void ChessboardSystem::OnCreate()
             break;
         }
     }
+    
     m_playerEntity = curEnt;
+
+    EntityID chessEnt = 0;
+    for(auto entt : entList)
+    {
+        if(entt.second.find(ChessComponent::s_componentID) != entt.second.end())
+        {            
+            chessEnt = entt.first;
+            break;
+        }
+    }
+
+    m_chessEntity = chessEnt;
 }
 
 void ChessboardSystem::OnUpdate(float)
@@ -40,7 +54,13 @@ void ChessboardSystem::OnUpdate(float)
 
     bool onClick = false;
     bool onLeftClick = false;
-    PlayerComponent* player;
+    PlayerComponent* player = nullptr;
+    ChessComponent* chess = nullptr;
+
+    if(m_chessEntity != 0)
+    {    
+        chess = Me::EntityManager::GetEntityManager()->GetComponent<ChessComponent>(m_chessEntity);
+    }
 
     if(Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton))
     {
@@ -53,8 +73,22 @@ void ChessboardSystem::OnUpdate(float)
 
     for(auto& compTuple : m_components)
     {
+        if(chess == nullptr)
+        {
+            ME_CORE_ASSERT_M(false, "We don't have a Chess system to controll the playing field!");
+            break;
+        }else
+        {
+            if(chess->m_movingPawn != nullptr)
+            {
+                break;
+            }
+        }
+        
+
         if(onClick)
         {
+
             Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
             auto tPos = tC->m_position;
             auto tSize = tC->m_uniformScale / 2;
@@ -80,17 +114,17 @@ void ChessboardSystem::OnUpdate(float)
                         selectedPawn->m_moving = true;
                         tileC->m_pawn = selectedPawn;
                         selectedPawn->m_tile->m_pawn = nullptr;
-                        selectedPawn->m_tile = tileC;
-                        
+                        selectedPawn->m_tile = tileC;  
+                        chess->m_movingPawn = selectedPawn;                      
                     }
-
+                    
                     player->m_selectedPawn = nullptr;
                     break;
                 }              
                 else
                 {
                     auto pawn = tileC->m_pawn;
-                    if(pawn != nullptr && !pawn->m_moving)
+                    if(pawn != nullptr && !pawn->m_moving && pawn->m_colour == chess->m_turn)
                     {
                         printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
                         player->m_selectedPawn = pawn;

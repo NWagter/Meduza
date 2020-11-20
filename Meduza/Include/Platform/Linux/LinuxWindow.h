@@ -20,6 +20,8 @@ namespace Me
 		void Peek() override;
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;
+
+		void SetTitle(std::string) override; 
 		private:
 		WindowData* m_windowData;
 	};

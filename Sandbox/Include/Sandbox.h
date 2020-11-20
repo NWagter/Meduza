@@ -2,13 +2,18 @@
 
 #include "Core/Application.h"
 
-class Game final : public Me::Application
+class BaseGame;
+
+class Sandbox final : public Me::Application
 {
 public:
-	Game();
-	~Game() override;
+	Sandbox();
+	~Sandbox() override;
 
     void OnUpdate(float) override;
     void OnInitilized() override;
     void OnClose() override;
+
+private:
+    BaseGame* m_game;
 };

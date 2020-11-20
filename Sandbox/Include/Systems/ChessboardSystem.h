@@ -26,4 +26,5 @@ class ChessboardSystem : public Me::BaseSystem<TileComponent, Me::TransformCompo
         bool CheckMove(PawnComponent*, TileComponent*);
 
         EntityID m_playerEntity;
+        EntityID m_chessEntity;
 };

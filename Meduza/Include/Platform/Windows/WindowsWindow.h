@@ -38,6 +38,8 @@ namespace Me
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;
 
+		void SetTitle(std::string) override; 
+
 		inline HWND GetWindowHandle() {return m_hWnd;}
 	private:
 		static LRESULT WINAPI HandleMsgSetup(HWND, UINT, WPARAM, LPARAM);

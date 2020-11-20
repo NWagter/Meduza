@@ -43,6 +43,11 @@ void Me::LinuxWindow::Quit()
 	
 }
 
+void Me::LinuxWindow::SetTitle(std::string)
+{
+
+} 
+
 void Me::LinuxWindow::SetContext(Renderer::ContextBase* a_context)
 {
 	m_context = a_context;

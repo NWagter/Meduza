@@ -18,6 +18,7 @@ namespace Me
 
         static void AddSystem(ECSSystem*);
         static EntityID CreateEntity();
+        static void DestroyEntity(EntityID);
 
         template<class C = BaseComponent>
         bool AddComponent(const EntityID a_entID);
@@ -51,6 +52,7 @@ namespace Me
 		ComponentContainer<C>* GetComponentContainer();
 
         void RegisterEntity(EntityID);
+        void UnRegisterEntity(EntityID);
 
         friend ECSSystem;
     };

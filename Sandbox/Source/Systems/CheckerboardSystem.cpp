@@ -103,16 +103,15 @@ void ChessboardSystem::OnUpdate(float)
                     auto selectedPawn = player->m_selectedPawn;
                     if(CheckMove(selectedPawn, tileC))
                     {
+                        
                         if(!selectedPawn->m_hasMoved)
                         {
                             //Required for Pawn
                             selectedPawn->m_hasMoved = true;
                         }
-
                         selectedPawn->m_newPos = tPos;
                         selectedPawn->m_newPos.m_z = 9;
                         selectedPawn->m_moving = true;
-                        tileC->m_pawn = selectedPawn;
                         selectedPawn->m_tile->m_pawn = nullptr;
                         selectedPawn->m_tile = tileC;  
                         chess->m_movingPawn = selectedPawn;                      

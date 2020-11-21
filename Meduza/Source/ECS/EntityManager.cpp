@@ -105,6 +105,16 @@ EntityID Me::EntityManager::CreateEntity()
     return m_entityId;
 }
 
+void Me::EntityManager::DestroyEntity(EntityID a_entID)
+{
+    ms_entityManager->UnRegisterEntity(a_entID);
+
+    for(auto container : ms_entityManager->m_containers)
+    {
+        container.second->RemoveComponent(a_entID);
+    }
+}
+
 void Me::EntityManager::RegisterEntity(EntityID a_entID)
 {
 	for (auto s : m_systems)
@@ -116,5 +126,17 @@ void Me::EntityManager::RegisterEntity(EntityID a_entID)
         }
         
         s->OnEntityCreated(a_entID);
+	}
+}
+
+void Me::EntityManager::UnRegisterEntity(EntityID a_entID)
+{
+    for (auto s : m_systems)
+	{
+        //Check if entity already is included to the system!
+        if(std::find(s->m_entities.begin(), s->m_entities.end(),a_entID) != s->m_entities.end())
+        {
+            s->OnEntityDestroy(a_entID);
+        }        
 	}
 }

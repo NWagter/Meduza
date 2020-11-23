@@ -141,6 +141,32 @@ namespace Me
 
 				return *this;
 			}
+
+			inline Vec2& Normalize()
+			{
+				float lenght = Lenght();
+
+				m_x = m_x / lenght;
+				m_y = m_y / lenght;
+
+				return *this;
+			}
+
+			inline Vec2& Floor()
+			{
+				m_x = floorf(m_x);
+				m_y = floorf(m_y);
+
+				return *this;
+			}
+
+			inline Vec2& Ceil()
+			{
+				m_x = ceilf(m_x);
+				m_y = ceilf(m_y);
+				
+				return *this;
+			}
 		};
 
 		class Vec3

@@ -3,15 +3,20 @@
 
 #include "MeduzaIncluder.h"
 
+#include "Components/ChessComponent.h"
+
+#include "Components/TileComponent.h"
+#include "Components/PawnComponent.h"
+
 #include "Components/PlayerComponent.h"
 #include "Components/CursorComponent.h"
-#include "Components/PawnComponent.h"
-#include "Components/ChessComponent.h"
 
 static char chars[] =
 {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
 };
+
+static constexpr float TILE_SIZE = 32;
 
 ChessboardSystem::ChessboardSystem()
 {
@@ -77,31 +82,37 @@ void ChessboardSystem::OnUpdate(float)
         {
             ME_CORE_ASSERT_M(false, "We don't have a Chess system to controll the playing field!");
             break;
-        }else
+        }
+        else
         {
             if(chess->m_movingPawn != nullptr)
             {
                 break;
             }
         }
-        
+
 
         if(onClick)
         {
+            ChessBoardComponent* board = std::get<ChessBoardComponent*>(compTuple);
 
-            Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
-            auto tPos = tC->m_position;
-            auto tSize = tC->m_uniformScale / 2;
-            
-            if( (pos.m_x > tPos.m_x - tSize && pos.m_x < tPos.m_x + tSize) &&
-                (pos.m_y > tPos.m_y - tSize && pos.m_y < tPos.m_y + tSize))
-            {           
-                TileComponent* tileC = std::get<TileComponent*>(compTuple);
+            int x = static_cast<int>(floorf((pos.m_x + (TILE_SIZE / 2)) / TILE_SIZE));
+            int y = static_cast<int>(floorf((pos.m_y + (TILE_SIZE / 2)) / TILE_SIZE));
+            TileComponent* tile = nullptr;
+
+            if((x < 8 && x >= 0) && (y < 8 && y >= 0))
+            {
+                tile = GetTile(x,y, board);
+            }
+
+            if(tile != nullptr)
+            {
+                Me::Math::Vec3 tPos = Me::Math::Vec3(tile->m_tileX * TILE_SIZE, tile->m_tileY * TILE_SIZE, 9);
 
                 if(player->m_selectedPawn != nullptr)
                 {
                     auto selectedPawn = player->m_selectedPawn;
-                    if(CheckMove(selectedPawn, tileC))
+                    if(CheckMove(selectedPawn, tile, board))
                     {
                         
                         if(!selectedPawn->m_hasMoved)
@@ -110,10 +121,9 @@ void ChessboardSystem::OnUpdate(float)
                             selectedPawn->m_hasMoved = true;
                         }
                         selectedPawn->m_newPos = tPos;
-                        selectedPawn->m_newPos.m_z = 9;
                         selectedPawn->m_moving = true;
                         selectedPawn->m_tile->m_pawn = nullptr;
-                        selectedPawn->m_tile = tileC;  
+                        selectedPawn->m_tile = tile;  
                         chess->m_movingPawn = selectedPawn;                      
                     }
                     
@@ -122,7 +132,7 @@ void ChessboardSystem::OnUpdate(float)
                 }              
                 else
                 {
-                    auto pawn = tileC->m_pawn;
+                    auto pawn = tile->m_pawn;
                     if(pawn != nullptr && !pawn->m_moving && pawn->m_colour == chess->m_turn)
                     {
                         printf("You selected : %s \n ", GetPieceName(pawn->m_type).c_str());
@@ -137,62 +147,163 @@ void ChessboardSystem::OnUpdate(float)
     }
 }
 
-void ChessboardSystem::CreateBoard()
+TileComponent* ChessboardSystem::GetTile(Me::Math::Vec2 a_pos, ChessBoardComponent* a_board)
 {
-    auto quad = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
-    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
-    auto eManager = Me::EntityManager::GetEntityManager();
+    int x = static_cast<int>(a_pos.m_x);
+    int y = static_cast<int>(a_pos.m_y);
 
-    if(shader == 0)
+    return a_board->m_chessBoard[x][y];
+}
+TileComponent* ChessboardSystem::GetTile(int a_x, int a_y, ChessBoardComponent* a_board)
+{
+    return a_board->m_chessBoard[a_x][a_y];
+}
+
+std::string ChessboardSystem::GetPieceName(PawnTypes a_type)
+{
+    switch (a_type)
     {
-        Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
+    case PawnTypes::Pawn :
+        return "Pawn";
+        break;
+    case PawnTypes::Bishop :
+        return "Bishop";
+        break;
+    case PawnTypes::Rook :
+        return "Rook";
+        break;
+    case PawnTypes::Knight :
+        return "Knight";
+        break;
+    case PawnTypes::Queen :
+        return "Queen";
+        break;
+    case PawnTypes::King :
+        return "King";
+        break;
     }
 
-    bool black = true;
-    for(int x = 0; x < 8; x++)
+    return "";
+}
+
+bool ChessboardSystem::CheckMove(PawnComponent* a_pawn, TileComponent* a_destination, ChessBoardComponent* a_board)
+{
+    if(a_destination->m_pawn != nullptr && a_destination->m_pawn->m_colour == a_pawn->m_colour)
     {
-        for(int y = 0; y < 8; y++)
+        return false;
+    }
+
+    PawnTypes pType = a_pawn->m_type;
+    auto originTile = a_pawn->m_tile;
+
+    Me::Math::Vec2 origin = Me::Math::Vec2(originTile->m_tileX, originTile->m_tileY);
+    Me::Math::Vec2 destination = Me::Math::Vec2(a_destination->m_tileX, a_destination->m_tileY);
+
+    Me::Math::Vec2 dir = (destination - origin);
+    Me::Math::Vec2 dirAbs = dir;
+    dir.Normalize();
+    dirAbs.ABS();
+
+    bool obstacle = false;
+    if(a_pawn->m_type != PawnTypes::Knight)
+    {
+        obstacle = CheckTiles(origin, destination, a_board);
+    }
+
+    if(obstacle)
+    {
+        return false;
+    }
+
+    if(pType == PawnTypes::Pawn)
+    {
+        if(dirAbs.m_x == dirAbs.m_y  && a_destination->m_pawn != nullptr)
         {
-            auto entt = Me::EntityManager::CreateEntity();
-            auto tC = new Me::TransformComponent();
-            auto rC = new Me::RenderComponent();
-            auto tileC = new TileComponent();
-
-            tC->m_position = Me::Math::Vec3(x * 32, y * 32 , 10);
-            tC->m_uniformScale = 32;
-            
-            rC->m_mesh = quad;
-            rC->m_shader = shader;
-            if(black)
+            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
             {
-                rC->m_colour = Me::Colours::BLACK;
-            }
-            else
+                return true;
+            }else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
             {
-                rC->m_colour = Me::Colours::WHITE;
-
+                return true;
             }
-            tileC->m_tileId = y + 1;
-            tileC->m_char = chars[x];
-            tileC->m_pawn = CreatePieces(y, x);
-
-            tileC->m_tileX = x;
-            tileC->m_tileY = y;
-
-            if(tileC->m_pawn != nullptr)
-            {
-                tileC->m_pawn->m_tile = tileC;
-            }
-            black = !black;
-
-            eManager->AddComponent<Me::RenderComponent>(entt, rC);     
-            eManager->AddComponent<Me::TransformComponent>(entt, tC);
-            eManager->AddComponent<TileComponent>(entt, tileC);
         }
+        else if(dirAbs.m_x == 0)
+        {
+            if((!a_pawn->m_hasMoved && dirAbs.m_y > 2) || (a_pawn->m_hasMoved && dirAbs.m_y > 1))
+            {
+                return false;
+            }
 
-        black = !black;
+            if(GetTile(a_pawn->m_tile->m_tileX, a_pawn->m_tile->m_tileY + dir.m_y, a_board)->m_pawn != nullptr)
+            {
+                return false;
+            }
+
+            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
+            {
+                return true;
+            }
+            else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
+            {
+                return true;
+            }
+        }
+    }
+    if(pType == PawnTypes::Bishop || pType == PawnTypes::Queen)
+    {
+        //Diagonal
+        if(dirAbs.m_x == dirAbs.m_y)
+        {
+            return true;
+        }
+    }
+    if(pType == PawnTypes::Rook || pType == PawnTypes::Queen)
+    {
+        //Horizonal and Vertical
+        if((dirAbs.m_x == 0 && dirAbs.m_y != 0 ))
+        {   
+            return true;
+        }
+        else if((dirAbs.m_x != 0 && dirAbs.m_y == 0 ))
+        {
+            return true;
+        }
+    }
+    if(pType == PawnTypes::Knight)
+    {
+        if((dirAbs.m_x == 2 && dirAbs.m_y == 1) || (dirAbs.m_x == 1 && dirAbs.m_y == 2))
+        {
+            return true;
+        }
+    }
+    if(pType == PawnTypes::King)
+    {
+        if(dirAbs.m_x <= 1 && dirAbs.m_y <= 1)        
+        {
+            return true;
+        }
     }
 
+    return false;
+}
+
+bool ChessboardSystem::CheckTiles(Me::Math::Vec2 a_origin, Me::Math::Vec2 a_dest, ChessBoardComponent* a_board)
+{
+    Me::Math::Vec2 dir = (a_dest - a_origin).Normalize();
+    auto d = Me::Math::Vec2(roundf(dir.m_x), roundf(dir.m_y));
+    Me::Math::Vec2 currentPos = a_origin + d;
+    
+    while(currentPos != a_dest)
+    {
+        auto tile = GetTile(currentPos, a_board);
+        if(tile->m_pawn != nullptr && currentPos != a_dest)
+        {
+            return true;
+        }
+        currentPos += d;
+    }
+
+    return false;
 }
 
 PawnComponent* ChessboardSystem::CreatePieces(int a_row, int a_col)
@@ -216,8 +327,8 @@ PawnComponent* ChessboardSystem::CreatePieces(int a_row, int a_col)
     auto rC = new Me::RenderComponent();
     auto pC = new PawnComponent();
 
-    tC->m_position = Me::Math::Vec3((a_col * 32),(a_row * 32),  9);
-    tC->m_uniformScale = 32;
+    tC->m_position = Me::Math::Vec3((a_col * TILE_SIZE),(a_row * TILE_SIZE),  9);
+    tC->m_uniformScale = TILE_SIZE;
 
     rC->m_shader = shader;
     rC->m_mesh = quad;
@@ -301,109 +412,66 @@ PawnComponent* ChessboardSystem::CreatePieces(int a_row, int a_col)
     return pC;
 }
 
-std::string ChessboardSystem::GetPieceName(PawnTypes a_type)
+void ChessboardSystem::CreateBoard()
 {
-    switch (a_type)
+    auto quad = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
+    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+    auto eManager = Me::EntityManager::GetEntityManager();
+
+    if(shader == 0)
     {
-    case PawnTypes::Pawn :
-        return "Pawn";
-        break;
-    case PawnTypes::Bishop :
-        return "Bishop";
-        break;
-    case PawnTypes::Rook :
-        return "Rook";
-        break;
-    case PawnTypes::Knight :
-        return "Knight";
-        break;
-    case PawnTypes::Queen :
-        return "Queen";
-        break;
-    case PawnTypes::King :
-        return "King";
-        break;
+        Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
     }
 
-    return "";
-}
-
-bool ChessboardSystem::CheckMove(PawnComponent* a_pawn, TileComponent* a_destination)
-{
-    if(a_destination->m_pawn != nullptr && a_destination->m_pawn->m_colour == a_pawn->m_colour)
+    auto chessBoardEntt = Me::EntityManager::CreateEntity();
+    ChessBoardComponent* comp = new ChessBoardComponent();
+    bool black = true;
+    for(int x = 0; x < 8; x++)
     {
-        return false;
-    }
-
-    PawnTypes pType = a_pawn->m_type;
-    auto originTile = a_pawn->m_tile;
-
-    Me::Math::Vec2 origin = Me::Math::Vec2(originTile->m_tileX, originTile->m_tileY);
-    Me::Math::Vec2 destination = Me::Math::Vec2(a_destination->m_tileX, a_destination->m_tileY);
-
-    Me::Math::Vec2 dir = (destination - origin);
-    Me::Math::Vec2 dirAbs = dir;
-    dirAbs.ABS();
-
-
-    if(pType == PawnTypes::Pawn)
-    {
-        if(dirAbs.m_x == dirAbs.m_y  && a_destination->m_pawn != nullptr)
+        for(int y = 0; y < 8; y++)
         {
-            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
+            auto entt = Me::EntityManager::CreateEntity();
+            auto tC = new Me::TransformComponent();
+            auto rC = new Me::RenderComponent();
+            auto tileC = new TileComponent();
+
+            tC->m_position = Me::Math::Vec3(x * TILE_SIZE, y * TILE_SIZE , 10);
+            tC->m_uniformScale = TILE_SIZE;
+            
+            rC->m_mesh = quad;
+            rC->m_shader = shader;
+            if(black)
             {
-                return true;
-            }else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
-            {
-                return true;
+                rC->m_colour = Me::Colours::BLACK;
             }
-        }
-        else if(dirAbs.m_x == 0)
-        {
-            if((!a_pawn->m_hasMoved && dirAbs.m_y > 2) || (a_pawn->m_hasMoved && dirAbs.m_y > 1))
+            else
             {
-                return false;
-            }
+                rC->m_colour = Me::Colours::WHITE;
 
-            if(dir.m_y > 0 && a_pawn->m_colour == PawnColour::White)
-            {
-                return true;
-            }else if(dir.m_y < 0 && a_pawn->m_colour == PawnColour::Black)
-            {
-                return true;
             }
+            tileC->m_tileId = y + 1;
+            tileC->m_char = chars[x];
+            tileC->m_pawn = CreatePieces(y, x);
+
+            tileC->m_tileX = x;
+            tileC->m_tileY = y;
+
+            if(tileC->m_pawn != nullptr)
+            {
+                tileC->m_pawn->m_tile = tileC;
+            }
+            black = !black;
+
+            eManager->AddComponent<Me::RenderComponent>(entt, rC);     
+            eManager->AddComponent<Me::TransformComponent>(entt, tC);
+            eManager->AddComponent<TileComponent>(entt, tileC);
+
+            comp->m_chessBoard[x][y] = tileC;
         }
-    }
-    if(pType == PawnTypes::Bishop || pType == PawnTypes::Queen)
-    {
-        //Diagonal
-        if(dirAbs.m_x == dirAbs.m_y)
-        {
-            return true;
-        }
-    }
-    if(pType == PawnTypes::Rook || pType == PawnTypes::Queen)
-    {
-        //Horizonal and Vertical
-        if((dirAbs.m_x == 0 && dirAbs.m_y != 0 ) || (dirAbs.m_x != 0 && dirAbs.m_y == 0 ))
-        {
-            return true;
-        }
-    }
-    if(pType == PawnTypes::Knight)
-    {
-        if((dirAbs.m_x == 2 && dirAbs.m_y == 1) || (dirAbs.m_x == 1 && dirAbs.m_y == 2))
-        {
-            return true;
-        }
-    }
-    if(pType == PawnTypes::King)
-    {
-        if(dirAbs.m_x <= 1 && dirAbs.m_y <= 1)        
-        {
-            return true;
-        }
+
+        black = !black;
     }
 
-    return false;
+    eManager->AddComponent<ChessBoardComponent>(chessBoardEntt, comp);
+
 }

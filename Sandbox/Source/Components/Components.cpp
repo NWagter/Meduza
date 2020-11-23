@@ -6,6 +6,7 @@
 #include "Components/PlayerComponent.h"
 #include "Components/PawnComponent.h"
 #include "Components/ChessComponent.h"
+#include "Components/ChessBoardComponent.h"
 
 
 ComponentID CursorComponent::s_componentID = static_cast<ComponentID>(GameComponents::CursorComponent);
@@ -14,5 +15,6 @@ ComponentID TileComponent::s_componentID = static_cast<ComponentID>(GameComponen
 ComponentID PlayerComponent::s_componentID = static_cast<ComponentID>(GameComponents::PlayerComponent);
 ComponentID PawnComponent::s_componentID = static_cast<ComponentID>(GameComponents::PawnComponent);
 ComponentID ChessComponent::s_componentID = static_cast<ComponentID>(GameComponents::ChessComponent);
+ComponentID ChessBoardComponent::s_componentID = static_cast<ComponentID>(GameComponents::ChessBoardComponent);
 
 

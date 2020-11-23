@@ -11,6 +11,7 @@ enum class GameComponents : uint16_t
     CursorComponent,
     PlayerComponent,
     PawnComponent,
-    ChessComponent
+    ChessComponent,
+    ChessBoardComponent
     
 };

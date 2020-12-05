@@ -3,19 +3,18 @@
 #include "Meduza.h"
 
 #include "MeduzaIncluder.h"
+#include "Games/Chess/ChessGame.h"
 
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
-
-#include "Games/Chess.h"
 
 Sandbox::Sandbox()
 {
     new CursorSystem();
     new PlayerSystem();
 
-    m_game = new Chess();
-    SetName("Chess | Meduza");
+    m_game = new Chess::ChessGame();    
+    SetName(m_game->GetGameName() + " | Meduza");
 }
 
 Sandbox::~Sandbox()

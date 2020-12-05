@@ -6,12 +6,7 @@
 enum class GameComponents : uint16_t
 {
     GameComponent = static_cast<uint16_t>(Components::Game),
-    MoveComponent,
-    TileComponent,
     CursorComponent,
-    PlayerComponent,
-    PawnComponent,
-    ChessComponent,
-    ChessBoardComponent
+    PlayerComponent
     
 };

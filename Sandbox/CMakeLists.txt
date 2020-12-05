@@ -10,6 +10,7 @@ file(GLOB GAME_SOURCE
     Source/Components/*.cpp
     Source/Systems/*.cpp
     Source/Games/*.cpp
+    Source/Games/Chess/*.cpp
 )
 
 add_executable(${PROJECT_NAME} 

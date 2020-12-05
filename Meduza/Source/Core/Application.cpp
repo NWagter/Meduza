@@ -120,3 +120,8 @@ void Me::Application::SetName(std::string a_name)
 {
     m_meduza->SetAppName(a_name);
 }
+
+Me::Math::Vec2 Me::Application::GetScreenSize()
+{
+    return m_meduza->GetScreenSize();
+}

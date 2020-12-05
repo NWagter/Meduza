@@ -4,6 +4,11 @@ namespace Me
     class Meduza;
 	struct Renderable;
 
+    namespace Math
+    {
+        class Vec2;
+    }
+
     class Application
     {
     public:
@@ -17,6 +22,7 @@ namespace Me
         bool Run();
     protected:
         virtual void SetName(std::string) final;
+        Math::Vec2 GetScreenSize();
 
     private:
         Meduza* m_meduza;

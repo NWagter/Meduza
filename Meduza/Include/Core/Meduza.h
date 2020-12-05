@@ -26,6 +26,7 @@ namespace Me {
 		void Present();
 
 		void SetAppName(std::string);
+		Math::Vec2 GetScreenSize();
 	private:
 		void Destroy();
 

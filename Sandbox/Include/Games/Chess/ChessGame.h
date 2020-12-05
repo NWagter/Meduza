@@ -4,6 +4,8 @@
 
 namespace Chess
 {
+    struct ChessBoardComponent;
+
     class ChessGame : public BaseGame
     {
     public:
@@ -11,5 +13,9 @@ namespace Chess
         ~ChessGame();
 
         void InitGame() override;
+
+    private:
+        void CreateBoard();
+        void CreatePieces(ChessBoardComponent*);
     };
 }

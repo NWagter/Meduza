@@ -25,6 +25,7 @@ namespace Me
 		virtual void SetTitle(std::string) = 0;
 		
 		inline bool IsActive() { return m_active; }
+		inline Math::Vec2 GetSize() { return m_size; }
 
 	private:
 		inline void SetEventSystem(Event::EventSystem* a_system)

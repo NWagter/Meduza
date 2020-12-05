@@ -111,6 +111,11 @@ void Me::Meduza::SetAppName(std::string a_name)
 	m_window->SetTitle(a_name);
 }
 
+Me::Math::Vec2 Me::Meduza::GetScreenSize()
+{
+	return m_window->GetSize();
+}
+
 void Me::Meduza::Destroy()
 {
 	Resources::TextureLibrary::Destroy();

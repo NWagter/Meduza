@@ -12,7 +12,6 @@ namespace Chess
 
 
     protected:
-        void OnCreate() override;
         void OnUpdate(float) override;
     };
 }

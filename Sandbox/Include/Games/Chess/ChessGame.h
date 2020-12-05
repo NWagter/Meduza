@@ -15,7 +15,7 @@ namespace Chess
         void InitGame() override;
 
     private:
-        void CreateBoard();
+        Chess::ChessBoardComponent* CreateBoard();
         void CreatePieces(ChessBoardComponent*);
     };
 }

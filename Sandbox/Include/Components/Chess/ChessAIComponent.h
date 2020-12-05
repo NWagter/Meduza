@@ -6,8 +6,13 @@
 
 namespace Chess
 {
+    struct ChessBoardComponent;
+
     struct ChessAIComponent : Me::BaseComponent
     {
+        ChessBoardComponent* m_board;
+        Colour m_aiColour;
+
         static ComponentID s_componentID;
     };
 }

@@ -7,6 +7,8 @@
 
 #include "Components/Chess/ChessBoardComponent.h"
 #include "Components/Chess/ChessPawnComponent.h"
+#include "Components/Chess/ChessAIComponent.h"
+#include "Components/Chess/ChessPlayerComponent.h"
 
 
 Chess::ChessGame::ChessGame()
@@ -21,15 +23,45 @@ Chess::ChessGame::~ChessGame()
 
 void Chess::ChessGame::InitGame()
 {
-   CreateBoard();
+   auto board = CreateBoard();
+   if(board == nullptr)
+   {
+      ME_GAME_ASSERT_M(false, "Failed to create Chess Board!")
+   }
+
+   Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
+
+//Create Player
+   EntityID player = eManager->CreateEntity();
+   ChessPlayerComponent* pComp = new ChessPlayerComponent();
+   pComp->m_board = board;
+   pComp->m_playerColour = Colour::White;
+   eManager->AddComponent<ChessPlayerComponent>(player, pComp);
+//Create AI
+   EntityID ai = eManager->CreateEntity();
+   ChessAIComponent* aiComp = new ChessAIComponent();
+   aiComp->m_board = board;
+   aiComp->m_aiColour = Colour::Black;
+   eManager->AddComponent<ChessAIComponent>(ai, aiComp);
+
+   switch (board->m_activePlayer)
+   {
+   case Colour::White:
+         ME_GAME_LOG("White Player starts!");
+      break;
+   case Colour::Black:
+         ME_GAME_LOG("Black Player starts!");
+      break;
+   }
 }
 
-void Chess::ChessGame::CreateBoard()
+Chess::ChessBoardComponent* Chess::ChessGame::CreateBoard()
 {
    Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
 
    EntityID boardEntt = eManager->CreateEntity();
    ChessBoardComponent* boardComp = new ChessBoardComponent();
+   boardComp->m_activePlayer = Colour::White;
    eManager->AddComponent<ChessBoardComponent>(boardEntt, boardComp);
 
 
@@ -74,13 +106,15 @@ void Chess::ChessGame::CreateBoard()
    }
 
    CreatePieces(boardComp);
+
+   return boardComp;
 }
 
 void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
 {
    if(a_board == nullptr)
    {
-      ME_CORE_ASSERT_M(false, "ChessBoard is NullPtr!")
+      ME_GAME_ASSERT_M(false, "ChessBoard is NullPtr!")
    }
    Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
 
@@ -94,6 +128,7 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
    }
 
    Me::Colour colour = Me::Colours::WHITE;
+   Colour pawnColour = Colour::White;
 
    //Spawn Pawns
    for(int y = 0; y < 8; y++)
@@ -106,6 +141,8 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             Me::RenderComponent* rComp = new Me::RenderComponent();
             Me::TransformComponent* tComp = new Me::TransformComponent();
             ChessPawnComponent* pawnComp = new ChessPawnComponent();
+            pawnComp->m_pawnColour = pawnColour;
+            pawnComp->m_pawnType = Pawns::Pawn;
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
@@ -133,6 +170,7 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             Me::RenderComponent* rComp = new Me::RenderComponent();
             Me::TransformComponent* tComp = new Me::TransformComponent();
             ChessPawnComponent* pawnComp = new ChessPawnComponent();
+            pawnComp->m_pawnColour = pawnColour;
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
@@ -148,30 +186,35 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
                rComp->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
                                                 Me::Math::Vec2(680,0),
                                                 Me::Math::Vec2(170,170));
+               pawnComp->m_pawnType = Pawns::Rook;
             } 
             else if(x == 1 || x == 6)//Knight
             {
                rComp->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
                                                 Me::Math::Vec2(510,0),
                                                 Me::Math::Vec2(170,170));
+               pawnComp->m_pawnType = Pawns::Knight;
             }
             else if(x == 2 || x == 5)//Bishop
             {
                rComp->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
                                                 Me::Math::Vec2(340,0),
                                                 Me::Math::Vec2(170,170));
+            pawnComp->m_pawnType = Pawns::Bishop;
             }
             else if(x == 3)//Queen
             {
                rComp->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
                                                 Me::Math::Vec2(170,0),
                                                 Me::Math::Vec2(170,170));
+               pawnComp->m_pawnType = Pawns::Queen;
             }
             else if(x == 4)//King
             {
                rComp->m_textureCoords = Me::Utils::TextureSlice(  Me::Math::Vec2(1024,170),
                                                 Me::Math::Vec2(0,0),
                                                 Me::Math::Vec2(170,170));
+               pawnComp->m_pawnType = Pawns::King;
             }
 
             a_board->m_board[x][y] = pawnComp;
@@ -183,6 +226,7 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
       if(y > 2)
       {
          colour = Me::Colours::RESENE_DARK_OAK;
+         pawnColour = Colour::Black;
       }
    }
 

@@ -8,12 +8,11 @@ Chess::ChessPawnSystem::ChessPawnSystem()
 
 }
 
-void Chess::ChessPawnSystem::OnCreate()
-{
-
-}
-
 void Chess::ChessPawnSystem::OnUpdate(float)
 {
-
+    for(auto& compTuple : m_components)
+    {     
+        ChessPawnComponent* pawnComp = std::get<ChessPawnComponent*>(compTuple); 
+        
+    }
 }

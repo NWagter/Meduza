@@ -12,6 +12,8 @@ namespace Chess
     {
         ChessPawnComponent* m_board[gs_boardWidth][gs_boardHeight];
 
+        Colour m_activePlayer;
+
         static ComponentID s_componentID;
     };
 }

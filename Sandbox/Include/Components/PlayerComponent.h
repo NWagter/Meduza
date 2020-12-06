@@ -13,7 +13,6 @@ struct CursorComponent;
 
 struct PlayerComponent : Me::BaseComponent
 {    
-
     Me::TransformComponent* m_cameraTransform;
     CursorComponent* m_cursorComponent;
     

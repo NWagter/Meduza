@@ -22,4 +22,12 @@ namespace Chess
         White,
         Black
     };
+
+    struct ChessPawnComponent;
+    
+    class ChessHelper
+    {
+        public:
+            static void LogType(ChessPawnComponent&);    
+    };
 }

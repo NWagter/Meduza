@@ -10,10 +10,18 @@
 #include "Components/Chess/ChessAIComponent.h"
 #include "Components/Chess/ChessPlayerComponent.h"
 
+#include "Systems/Chess/ChessPawnSystem.h"
+#include "Systems/Chess/ChessPlayerSystem.h"
+#include "Systems/Chess/ChessAISystem.h"
+
 
 Chess::ChessGame::ChessGame()
 {
    m_gameName = "Chess"; 
+
+   new Chess::ChessPawnSystem();
+   new Chess::ChessAISystem();
+   new Chess::ChessPlayerSystem();
 }
 
 Chess::ChessGame::~ChessGame()
@@ -143,6 +151,7 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             ChessPawnComponent* pawnComp = new ChessPawnComponent();
             pawnComp->m_pawnColour = pawnColour;
             pawnComp->m_pawnType = Pawns::Pawn;
+            pawnComp->m_boardPos = Me::Math::Vec2(x,y);
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
@@ -170,7 +179,9 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             Me::RenderComponent* rComp = new Me::RenderComponent();
             Me::TransformComponent* tComp = new Me::TransformComponent();
             ChessPawnComponent* pawnComp = new ChessPawnComponent();
+            
             pawnComp->m_pawnColour = pawnColour;
+            pawnComp->m_boardPos = Me::Math::Vec2(x,y);
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);

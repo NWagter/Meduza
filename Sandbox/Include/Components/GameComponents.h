@@ -2,6 +2,7 @@
 
 #include "ECS/EntityTypes.h"
 #include "ECS/BaseComponent.h"
+#include "MeduzaIncluder.h"
 
 enum class GameComponents : uint16_t
 {

@@ -8,6 +8,8 @@ namespace Chess
 {
     struct ChessPawnComponent : Me::BaseComponent
     {
+        Me::Math::Vec2 m_boardPos;
+
         Pawns m_pawnType;
         Colour m_pawnColour;
 

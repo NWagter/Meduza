@@ -9,9 +9,11 @@ namespace Chess
     {
     public:
         ChessPlayerSystem();
-
-
+        
     protected:
+        void OnCreate() override;
         void OnUpdate(float) override;
+
+        EntityID m_cursor;
     };
 }

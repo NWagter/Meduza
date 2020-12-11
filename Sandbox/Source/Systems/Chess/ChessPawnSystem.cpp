@@ -31,7 +31,7 @@ void Chess::ChessPawnSystem::OnUpdate(float a_dt)
                 pawnComp->m_boardPos.m_y * gs_tileSize,
                 transComp->m_position.m_z);
                 
-            transComp->m_position = Me::Math::MoveTowards(transComp->m_position, pos, 25 * a_dt);
+            transComp->m_position = Me::Math::MoveTowards(transComp->m_position, pos, gs_pawnSpeed * a_dt);
         }
     }
 }

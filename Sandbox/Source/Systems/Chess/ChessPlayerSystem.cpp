@@ -80,6 +80,8 @@ void Chess::ChessPlayerSystem::OnUpdate(float)
                         pComp->m_board->m_board[x][y] = pComp->m_selectedPawn;
                         pComp->m_selectedPawn = nullptr;
                         pComp->m_possibleMoves.clear();
+
+                        pComp->m_board->m_activePlayer = Colour::Black;
                     }
                 }
             }

@@ -181,7 +181,7 @@ std::vector<std::pair<int,int>> Chess::ChessHelper::GetPossibleMoves(ChessPawnCo
         int rX = x;
         for(int rY = y; rY < gs_boardHeight; ++rY, ++rX)
         {       
-            if(rX >= gs_boardWidth)
+            if(rX > gs_boardWidth - 1)
             {
                 break;
             }
@@ -238,7 +238,7 @@ std::vector<std::pair<int,int>> Chess::ChessHelper::GetPossibleMoves(ChessPawnCo
         rX = x;
         for(int rY = y; rY >= 0; --rY, ++rX)
         {            
-            if(rX >= gs_boardWidth)
+            if(rX > gs_boardWidth - 1)
             {
                 break;
             }
@@ -341,6 +341,7 @@ std::vector<std::pair<int,int>> Chess::ChessHelper::GetPossibleMoves(ChessPawnCo
         moves.push_back(std::pair<int,int>(x, y + 1));
     }
 
+    
     return moves;
 }
 
@@ -355,6 +356,44 @@ bool Chess::ChessHelper::CanMove(std::pair<int,int> a_pos, std::vector<std::pair
     }
 
     return false;
+}
+
+std::pair<int,int> Chess::ChessHelper::GetBestMove(std::vector<std::pair<int,int>> a_moves, ChessBoardComponent* a_board)
+{
+    int value = 0;
+    int moveIndex = 0;
+
+    int cIndex = 0;
+
+    for(auto m : a_moves)
+    {
+        if(m.first < 0 || m.first >= gs_boardWidth || m.second < 0 || m.second >= gs_boardHeight)
+        {        
+            cIndex++;
+            continue;
+        }
+
+        auto p = a_board->m_board[m.first][m.second];
+        float v = 0;
+        if(p != nullptr)
+        {
+            v = GetValue(*p);            
+        }else
+        {
+            v = -1;
+        }        
+
+        if(v < value)
+        {
+            value = v;
+            moveIndex = cIndex;
+        }
+        
+        cIndex++;
+    }
+
+
+    return std::pair<int,int>(moveIndex, value);
 }
 
 int Chess::ChessHelper::GetValue(ChessPawnComponent& a_pawn)
@@ -382,7 +421,7 @@ int Chess::ChessHelper::GetValue(ChessPawnComponent& a_pawn)
         break;
     }
 
-    if(a_pawn.m_pawnColour == Colour::Black)
+    if(a_pawn.m_pawnColour == Colour::White && v != 0)
     {
         v = v * -1;
     }

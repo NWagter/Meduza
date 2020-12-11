@@ -18,6 +18,7 @@ namespace Chess
     const static unsigned int gs_boardHeight = 8;
 
     const static int gs_tileSize = 32;
+    const static float gs_pawnSpeed = 64;
 
     enum class Pawns
     {
@@ -44,6 +45,9 @@ namespace Chess
             static void LogType(ChessPawnComponent&);    
             static std::vector<std::pair<int,int>> GetPossibleMoves(ChessPawnComponent&, ChessBoardComponent*);
             static bool CanMove(std::pair<int,int>, std::vector<std::pair<int,int>>);
+
+            static std::pair<int, int> GetBestMove(std::vector<std::pair<int,int>>, ChessBoardComponent*);
             static int GetValue(ChessPawnComponent&);
+            
     };
 }

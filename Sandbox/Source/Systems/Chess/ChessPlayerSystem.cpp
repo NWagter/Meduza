@@ -35,6 +35,7 @@ void Chess::ChessPlayerSystem::OnUpdate(float)
 
     Me::Math::Vec3 mousePos = mouseComp->m_position;
     bool lClick = Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::LButton);
+    bool rClick = Me::Event::EventSystem::GetEventSystem()->MouseButtonDown(Me::Event::MouseButton::RButton);
 
     for(auto& compTuple : m_components)
     {     
@@ -45,6 +46,11 @@ void Chess::ChessPlayerSystem::OnUpdate(float)
         }
 
         //Player Logics
+        if(rClick && pComp->m_selectedPawn != nullptr)
+        {
+            pComp->m_selectedPawn = nullptr;
+            pComp->m_possibleMoves.clear();
+        }
 
         if(lClick)
         {
@@ -59,15 +65,21 @@ void Chess::ChessPlayerSystem::OnUpdate(float)
 
                     if(pawn != nullptr && pawn->m_pawnColour == pComp->m_playerColour)
                     {
-                        ChessHelper::LogType(*pawn);
+                        pComp->m_possibleMoves = ChessHelper::GetPossibleMoves(*pawn, pComp->m_board);
                         pComp->m_selectedPawn = pawn;
                     }
-                    else if(pawn == nullptr && pComp->m_selectedPawn != nullptr)
+                    else if(ChessHelper::CanMove(std::pair<int,int>(x,y), pComp->m_possibleMoves))
                     {
                         Me::Math::Vec2 pos = pComp->m_selectedPawn->m_boardPos;
                         pComp->m_board->m_board[static_cast<int>(pos.m_x)][static_cast<int>(pos.m_y)] = nullptr;
                         pComp->m_selectedPawn->m_boardPos = Me::Math::Vec2(x,y);
+                        if(pComp->m_board->m_board[x][y] != nullptr)
+                        {
+                            Me::EntityManager::DestroyEntity(pComp->m_board->m_board[x][y]->m_pawnEntity);
+                        }
                         pComp->m_board->m_board[x][y] = pComp->m_selectedPawn;
+                        pComp->m_selectedPawn = nullptr;
+                        pComp->m_possibleMoves.clear();
                     }
                 }
             }

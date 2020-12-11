@@ -149,9 +149,11 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             Me::RenderComponent* rComp = new Me::RenderComponent();
             Me::TransformComponent* tComp = new Me::TransformComponent();
             ChessPawnComponent* pawnComp = new ChessPawnComponent();
+
             pawnComp->m_pawnColour = pawnColour;
             pawnComp->m_pawnType = Pawns::Pawn;
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
+            pawnComp->m_pawnEntity = pawn;
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
@@ -182,6 +184,7 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             
             pawnComp->m_pawnColour = pawnColour;
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
+            pawnComp->m_pawnEntity = pawn;
 
             tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
             tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);

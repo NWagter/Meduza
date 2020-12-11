@@ -15,6 +15,7 @@ namespace Chess
         Colour m_playerColour;
 
         ChessPawnComponent* m_selectedPawn = nullptr;
+        std::vector<std::pair<int,int>> m_possibleMoves;
 
         static ComponentID s_componentID;
     };

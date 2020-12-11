@@ -13,5 +13,7 @@ namespace Me
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;
 
+		void SetTitle(std::string) override; 
+
 	};
 }

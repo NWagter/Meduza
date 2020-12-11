@@ -2,17 +2,18 @@
 
 #include "ECS/BaseSystem.h"
 
+#include "Components/CursorComponent.h"
+
 namespace Me
 {    
     struct TransformComponent;
 }
 
-struct TileComponent;
-
-class CheckboardSystem : public Me::BaseSystem<TileComponent, Me::TransformComponent>
+class CursorSystem : public Me::BaseSystem<CursorComponent, Me::TransformComponent>
 {
     public:
-    CheckboardSystem();
+    CursorSystem();
+
 
     protected:
         void OnCreate() override;

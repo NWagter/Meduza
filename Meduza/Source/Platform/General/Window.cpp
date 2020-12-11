@@ -3,8 +3,7 @@
 
 Me::Window::Window(int a_w, int a_h, const char* a_title)
 {
-	m_width = a_w;
-	m_height = a_h;
+	m_size = Math::Vec2(a_w, a_h);
 	m_title = a_title;
 
 	m_active = false;

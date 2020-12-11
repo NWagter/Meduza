@@ -13,7 +13,7 @@ Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
     m_renderLayer = a_renderLayer;
 }
 
-void Me::CameraSystem::OnUpdate(float)
+void Me::CameraSystem::OnUpdate(float a_dt)
 {
     for(auto& compTuple : m_components)
     {

@@ -3,6 +3,8 @@
 
 #include "Platform/General/ContextBase.h"
 
+#include "Platform/General/Events/EventSystem.h"
+
 Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
 {
 	m_active = true;
@@ -10,16 +12,17 @@ Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window
 	ME_LOG("Window Created : %s \n", m_title);
 
 	RECT wr;
-	wr.left = 100;
-	wr.right = int(m_width) + wr.left;
-	wr.top = 100;
-	wr.bottom = int(m_height) + wr.top;
+	wr.left = 0;
+	wr.right = int(m_size.m_x) + wr.left;
+	wr.top = 0;
+	wr.bottom = int(m_size.m_y) + wr.top;
 	
 	m_hWnd = CreateWindow(WindowClass::GetName(), m_title,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
+	ShowCursor(false);
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 }
 
@@ -30,6 +33,8 @@ Me::WindowsWindow::~WindowsWindow()
 void Me::WindowsWindow::Peek()
 {
 	MSG msg;
+	m_eventSystem->Clear();
+
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
 	{
 		if (msg.message == WM_QUIT)
@@ -47,6 +52,14 @@ void Me::WindowsWindow::Quit()
 {
 		PostQuitMessage(0);
 }
+
+void Me::WindowsWindow::SetTitle(std::string a_title)
+{
+	std::string title = a_title;
+	title.append(" | Windows");
+	SetWindowText(m_hWnd, title.c_str());
+	ME_GFX_LOG("Change name of window to : %s \n", title.c_str());
+} 
 
 void Me::WindowsWindow::SetContext(Renderer::ContextBase* a_context)
 {
@@ -80,8 +93,54 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	switch (a_msg)
 	{
 	case WM_CLOSE:
+	{
 		PostQuitMessage(0);
 		break;
+	}
+// ---- Mouse
+	case WM_MOUSEMOVE: {
+		const auto mousePos = MAKEPOINTS(a_lParam);
+		Math::Vec2 mPos;
+		mPos.m_x = static_cast<float>(mousePos.x) - (m_size.m_x / 2);
+		mPos.m_y = (m_size.m_y / 2) - static_cast<float>(mousePos.y);
+
+		if (mousePos.x >= 0 && float(mousePos.x) < m_size.m_x && mousePos.y >= 0 && float(mousePos.y) < m_size.m_y) {
+			m_eventSystem->OnMouseMove(mPos);
+			SetCapture(a_hwnd);
+		}
+		else {
+			if ((a_wParam & (MK_LBUTTON | MK_RBUTTON)) != 0u) {
+				m_eventSystem->OnMouseMove(mPos);
+			}
+			else {
+				ReleaseCapture();
+			}
+		}
+		break;
+	}
+
+	case WM_LBUTTONDOWN:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::LButton, Event::MouseEvent::MouseDown);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::LButton, Event::MouseEvent::MouseUp);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::RButton, Event::MouseEvent::MouseDown);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		m_eventSystem->OnMouseEvent(Event::MouseButton::RButton, Event::MouseEvent::MouseUp);
+		break;
+	}
+// ---- Keyboard
+
 	}
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);
 }

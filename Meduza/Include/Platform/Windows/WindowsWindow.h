@@ -3,6 +3,7 @@
 
 namespace Me
 {
+
 	namespace Renderer
 	{
 		class WindowsContext;
@@ -36,6 +37,8 @@ namespace Me
 		void Peek() override;
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;
+
+		void SetTitle(std::string) override; 
 
 		inline HWND GetWindowHandle() {return m_hWnd;}
 	private:

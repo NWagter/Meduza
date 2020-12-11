@@ -18,6 +18,8 @@
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
 
+#include "Platform/General/Events/EventSystem.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
 #elif PLATFORM_LINUX
@@ -50,6 +52,7 @@ Me::Meduza::Meduza()
 		}
 	}
 
+	Event::EventSystem::Create(m_window);
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
@@ -103,11 +106,22 @@ void Me::Meduza::Present()
 	m_isRunning = false;
 }
 
+void Me::Meduza::SetAppName(std::string a_name)
+{
+	m_window->SetTitle(a_name);
+}
+
+Me::Math::Vec2 Me::Meduza::GetScreenSize()
+{
+	return m_window->GetSize();
+}
+
 void Me::Meduza::Destroy()
 {
 	Resources::TextureLibrary::Destroy();
 	Resources::ShaderLibrary::Destroy();
 	Resources::MeshLibrary::Destroy();
+	Event::EventSystem::Destroy();
 
 	if(m_window != nullptr)
 	{

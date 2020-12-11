@@ -7,12 +7,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 file(GLOB GAME_SOURCE
+    Source/Games/*.cpp
     Source/Components/*.cpp
     Source/Systems/*.cpp
+    Source/Games/Chess/*.cpp
+    Source/Components/Chess/*.cpp
+    Source/Systems/Chess/*.cpp
 )
 
 add_executable(${PROJECT_NAME} 
-    Source/Game.cpp 
+    Source/Sandbox.cpp 
 	${GAME_SOURCE}
 )
 

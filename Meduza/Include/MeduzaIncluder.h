@@ -17,8 +17,12 @@
 ///--- Base Components --
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"
+#include "Core/Components/CameraComponent.h"
 ///------ Library -------
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
+//------ Events ---------
+#include "Platform/General/Events/EventSystem.h"
+#include "Platform/General/Events/Events.h"
 

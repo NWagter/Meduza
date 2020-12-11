@@ -23,7 +23,6 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
-
 #ifdef PLATFORM_WINDOWS
 
 #include <Windows.h>
@@ -61,3 +60,4 @@
 #include "Core/MeduzaCore.h"
 
 #include "Utils/MeduzaUtils.h"
+#include "Platform/General/Events/Events.h"

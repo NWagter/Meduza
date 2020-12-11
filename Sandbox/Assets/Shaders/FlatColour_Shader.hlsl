@@ -3,9 +3,9 @@ SamplerState gsamLinear  : register(s0);
 
 struct InstanceData
 {
+	float4x4 model;
 	float4 colour;
-    float3 position;
-    float uniformScale;
+    float4 textureCoord;
 	int textureId;
 };
 StructuredBuffer<InstanceData> gInstanceData : register(t1, space1);
@@ -23,8 +23,9 @@ struct VS_INPUT
 
 struct VS_OUTPUT
 {
-    float4 pos: SV_POSITION;
+	float4 posH : SV_POSITION;
     float4 colour : COLOUR;
+	float3 posW : POSITION;
     float2 texC: TEXCOORD;
 };
 
@@ -34,9 +35,9 @@ VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
     
 	InstanceData data = gInstanceData[instanceID];
 
-    float3 newPos = (input.pos * data.uniformScale ) + data.position;
-    float4 pos = float4(newPos, 1);    
-    output.pos = mul(pos, viewProjection);
+    float4 pos = mul(float4(input.pos, 1.f), data.model);  
+    output.posW = pos.xyz;
+    output.posH = mul(pos, viewProjection);
 
     output.colour = data.colour;
     output.texC = input.texC;

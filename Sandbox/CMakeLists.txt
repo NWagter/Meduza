@@ -10,6 +10,9 @@ file(GLOB GAME_SOURCE
     Source/Games/*.cpp
     Source/Components/*.cpp
     Source/Systems/*.cpp
+    Source/Games/Empty/*.cpp
+
+    
     Source/Games/Chess/*.cpp
     Source/Components/Chess/*.cpp
     Source/Systems/Chess/*.cpp

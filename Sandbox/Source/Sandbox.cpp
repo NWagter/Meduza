@@ -3,7 +3,7 @@
 #include "Meduza.h"
 
 #include "MeduzaIncluder.h"
-#include "Games/Empty/EmptyGame.h"
+#include "Games/Chess/ChessGame.h"
 
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
@@ -13,7 +13,7 @@ Sandbox::Sandbox()
     new CursorSystem();
     new PlayerSystem();
 
-    m_game = new EmptyGame();
+    m_game = new Chess::ChessGame();
     SetName(m_game->GetGameName() + " | Meduza");
 }
 

@@ -28,10 +28,7 @@ namespace Me
 		inline Math::Vec2 GetSize() { return m_size; }
 
 	private:
-		inline void SetEventSystem(Event::EventSystem* a_system)
-		{
-			m_eventSystem = a_system;
-		}
+		void SetEventSystem(Event::EventSystem*);
 	protected:
 		Renderer::ContextBase* m_context;
 		Math::Vec2 m_size;

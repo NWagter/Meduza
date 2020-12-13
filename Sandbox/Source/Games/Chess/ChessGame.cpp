@@ -31,13 +31,23 @@ Chess::ChessGame::~ChessGame()
 
 void Chess::ChessGame::InitGame()
 {
+   Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
+
+   auto cC = new Me::CameraComponent();
+   cC->m_cameraType = Me::CameraType::Orthographic;
+   cC->m_near = 0.0f;
+   cC->m_far = 100;
+   cC->m_size = Me::Event::EventSystem::GetEventSystem()->ScreenSize();
+
+   EntityID entCam = Me::EntityManager::CreateEntity();
+   eManager->AddComponent<Me::CameraComponent>(entCam, cC);
+   eManager->AddComponent<Me::TransformComponent>(entCam);
+
    auto board = CreateBoard();
    if(board == nullptr)
    {
       ME_GAME_ASSERT_M(false, "Failed to create Chess Board!")
    }
-
-   Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
 
 //Create Player
    EntityID player = eManager->CreateEntity();

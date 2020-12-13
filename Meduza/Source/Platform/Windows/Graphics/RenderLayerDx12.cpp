@@ -230,12 +230,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	auto pos = a_trans.m_position;
 	auto scale = a_trans.m_uniformScale;
-	auto rot = a_trans.m_rotation.m_z;
+	auto rot = a_trans.m_rotation;
 
 	const DirectX::XMMATRIX p = DirectX::XMMatrixTranslation(pos.m_x, pos.m_y, pos.m_z);
 	const DirectX::XMMATRIX s = DirectX::XMMatrixScaling(scale, scale, scale);
-	const DirectX::XMMATRIX r = DirectX::XMMatrixRotationZ(rot);
-
+	const DirectX::XMMATRIX r = DirectX::XMMatrixRotationRollPitchYaw(rot.m_x, rot.m_y, rot.m_z);
 	const DirectX::XMMATRIX model = r * s * p;
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMatrixTranspose(model));
@@ -266,9 +265,29 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, viewProjection);
 
 		m_camBuffer->CopyData(0, cBuffer);
-	}else if(a_cam.m_cameraType == CameraType::Perspective)
+	}
+	else if(a_cam.m_cameraType == CameraType::Perspective)
 	{
+		auto pos = a_trans.m_position;
+		auto rot = a_trans.m_rotation.m_z;
+			
+		auto transMatrix = DirectX::XMMatrixTranslation(pos.m_x,pos.m_y,pos.m_z);
+		auto rotMatrix = DirectX::XMMatrixRotationZ(rot);
+		
+		// set starting camera state
+		auto cameraTarget = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+		auto cameraUp = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
 
+		// build projection and view matrix
+		DirectX::XMMATRIX projectionMat = DirectX::XMMatrixPerspectiveFovLH(45.0f*(3.14f/180.0f),
+		a_cam.m_size.m_x / a_cam.m_size.m_y, a_cam.m_near, a_cam.m_far);
+
+		auto viewProjection = DirectX::XMMatrixTranspose((transMatrix * rotMatrix) * projectionMat);
+
+		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
+		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, viewProjection);
+
+		m_camBuffer->CopyData(0, cBuffer);
 	}
 }
 

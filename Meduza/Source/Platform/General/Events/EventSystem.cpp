@@ -82,6 +82,11 @@ Me::Math::Vec2 Me::Event::EventSystem::MousePosition()
     return m_mouse->GetPosition();
 }
 
+Me::Math::Vec2 Me::Event::EventSystem::ScreenSize()
+{
+    return m_screenSize;
+}
+
 // Engine Set
 
 void Me::Event::EventSystem::OnKeyEvent(KeyCode, KeyState)

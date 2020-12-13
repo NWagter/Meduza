@@ -29,7 +29,7 @@ namespace Me
             bool MouseButtonUp(MouseButton);
             bool MouseButtonPressed(MouseButton);
             Math::Vec2 MousePosition();
-
+            Math::Vec2 ScreenSize();
             void Clear();
         private:
             EventSystem(Window*);
@@ -43,6 +43,8 @@ namespace Me
 
             Input::Mouse* m_mouse;
             Input::Keyboard* m_keyboard;
+
+            Me::Math::Vec2 m_screenSize;
 
         friend Window;
         friend WindowsWindow;

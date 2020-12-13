@@ -10,13 +10,10 @@ namespace Me {
 		class RenderLayer;
 	}
 
-	constexpr float CAM_WIDTH = 760;
-	constexpr float CAM_HEIGHT = 680;
-
 	class Meduza
 	{
 	public:
-		Meduza();
+		Meduza(int,int);
 		~Meduza();
 		
 		inline bool IsRunning() { return m_isRunning; }
@@ -29,6 +26,7 @@ namespace Me {
 		Math::Vec2 GetScreenSize();
 	private:
 		void Destroy();
+		void CreatePrimitives();
 
 		bool m_isRunning;
 		Renderer::RenderLayer* m_renderLayer;

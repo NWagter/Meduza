@@ -13,9 +13,9 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/CameraComponent.h"
 
-Me::Application::Application()
+Me::Application::Application(int a_w,int a_h)
 {
-    m_meduza = new Meduza();
+    m_meduza = new Meduza(a_w,a_h);
 }
 
 Me::Application::~Application()
@@ -32,58 +32,6 @@ bool Me::Application::Run()
 {
 
     OnInitilized();
-
-	Me::Texture texture = 0;
-	Resources::TextureLibrary::CreateTexture("Assets/Textures/DefaultTex.png");
-    Resources::TextureLibrary::CreateTexture("Assets/Textures/Checkboard.dds");
-
-	Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
-	Me::Shader shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
-
-	if(shader == 0)
-	{
-		ME_CORE_LOG("No HLSL Shader");
-		shader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
-        texture = Resources::TextureLibrary::GetTexture("Assets/Textures/DefaultTex.png");
-		if(shader == 0)
-		{
-			ME_CORE_ASSERT_M(false, "No GLSL Shader!");
-		}
-	}
-
-    if(texture == 0)
-    {
-        texture = Resources::TextureLibrary::GetTexture("Assets/Textures/DefaultTex.png");
-    }
-	// Create Quad!
-	std::vector<Vertex> vertices = 
-	{
-        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 0.0f), // top left,
-        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 0.0f) ,  // top right
-        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f), // bottom left 
-        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f), // bottom right 
-    };
-
-	std::vector<uint16_t> indices = 
-	{
-        0, 1, 3,
-        0, 3, 2
-    };
-	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
-	Resources::MeshLibrary::CreateMesh(quadId, vertices, indices);
-
-    auto eManager = EntityManager::GetEntityManager();
-
-    auto cC = new CameraComponent();
-    cC->m_cameraType = CameraType::Orthographic;
-    cC->m_near = 0;
-    cC->m_far = 100;
-    cC->m_size = Math::Vec2(CAM_WIDTH, CAM_HEIGHT);
-
-    EntityID entCam = EntityManager::CreateEntity();
-    eManager->AddComponent<CameraComponent>(entCam, cC);
-    eManager->AddComponent<TransformComponent>(entCam);
-
 
     Timer<float> deltaTimer;
     float totalTime = 0.f;

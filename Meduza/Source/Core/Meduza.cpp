@@ -36,9 +36,9 @@ Me::Meduza::Meduza(int a_w, int a_h)
 #ifdef PLATFORM_WINDOWS
 	m_window = new WindowsWindow(a_w, a_h, "Meduza | Windows");
 #elif PLATFORM_LINUX
-	m_window = new LinuxWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Linux");
+	m_window = new LinuxWindow(a_w, a_h, "Meduza | Linux");
 #elif PLATFORM_APPLE
-	m_window = new MacOsWindow(CAM_WIDTH, CAM_HEIGHT, "Meduza | Apple");
+	m_window = new MacOsWindow(a_w, a_h, "Meduza | Apple");
 #endif
 
 	if(m_window != nullptr)

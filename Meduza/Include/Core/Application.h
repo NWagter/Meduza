@@ -12,7 +12,7 @@ namespace Me
     class Application
     {
     public:
-        Application(int a_width = 720 ,int a_height = 480);
+        Application(int a_width = 1280 ,int a_height = 720);
         virtual ~Application();
 
         virtual void OnUpdate(float);

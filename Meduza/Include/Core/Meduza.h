@@ -26,7 +26,6 @@ namespace Me {
 		Math::Vec2 GetScreenSize();
 	private:
 		void Destroy();
-		void CreatePrimitives();
 
 		bool m_isRunning;
 		Renderer::RenderLayer* m_renderLayer;

@@ -31,6 +31,8 @@ namespace Me
         private:
             MeshLibrary(Renderer::RenderLayer&);
             ~MeshLibrary();
+
+            void GeneratePrimitives();
             
             Renderer::RenderLayer* m_renderLayer;
 

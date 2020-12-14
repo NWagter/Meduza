@@ -229,7 +229,6 @@ jobs:
         path: ./${{ matrix.config.artifact }}
         name: ${{ matrix.config.artifact }}
 
-    steps:
     - name: Download artifact
       uses: actions/download-artifact@v1
       with:

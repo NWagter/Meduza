@@ -6,6 +6,9 @@ namespace Me
 {
 	namespace Math
 	{
+		static constexpr float gs_pi = 3.141592654f;
+		static constexpr float gs_pi2 = 6.283185307f;
+
 		class Vec3;
 		class Vec4;
 
@@ -310,6 +313,17 @@ namespace Me
 				float y = a_rhs.m_y - m_y;
 				float z = a_rhs.m_z - m_z;
 				return abs(sqrtf(x * x + y * y + z *z));
+			}			
+
+			inline Vec3& Normalize()
+			{
+				float lenght = Lenght();
+
+				m_x = m_x / lenght;
+				m_y = m_y / lenght;
+				m_y = m_z / lenght;
+
+				return *this;
 			}
 		};
 

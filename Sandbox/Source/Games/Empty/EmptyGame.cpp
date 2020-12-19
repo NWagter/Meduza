@@ -51,10 +51,23 @@ void EmptyGame::InitGame()
 
 void EmptyGame::CreateCube(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager)
 {
-     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColourLighted_Shader.hlsl");
+    int i = rand() % 100;
+    std::string textureFile = "Assets/Textures/Crate.png";
+    Me::Primitives meshId = Me::Primitives::Cube;
+
+    if(i < 50)
+    {
+        meshId = Me::Primitives::Sphere;
+        textureFile = "Assets/Textures/Earth_TEXTURE_CM.png";
+    }
+
+    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(meshId);
+
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
+    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
 
     EntityID cube = a_eManager->CreateEntity();
+
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
@@ -66,7 +79,8 @@ void EmptyGame::CreateCube(float a_x,float a_y,float a_z, Me::EntityManager* a_e
 
     rComp->m_mesh = mesh;
     rComp->m_shader = shader;
-    rComp->m_colour = Me::Colours::CELESTIAL_BLUE;
+    rComp->m_colour = Me::Colours::WHITE;
+    rComp->m_texture = texture;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

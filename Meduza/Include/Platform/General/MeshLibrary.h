@@ -32,7 +32,9 @@ namespace Me
             MeshLibrary(Renderer::RenderLayer&);
             ~MeshLibrary();
 
-            void GeneratePrimitives();
+            void CreateQuad();
+            void CreateCube();
+            void CreateSphere();
             
             Renderer::RenderLayer* m_renderLayer;
 

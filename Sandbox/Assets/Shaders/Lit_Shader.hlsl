@@ -29,6 +29,7 @@ struct VS_OUTPUT
 	float3 posW : POSITION;
     float3 normal : NORMAL;
     float2 texC: TEXCOORD;
+    nointerpolation int textureId : TEXTID;
 };
 
 VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
@@ -42,7 +43,12 @@ VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
     output.posH = mul(pos, viewProjection);
 
     output.colour = data.colour;
-    output.texC = input.texC;
+
+	float4 tCoord = data.textureCoord;
+    output.texC = float2(tCoord.x + (tCoord.z * input.texC.x),
+			            tCoord.y + (tCoord.w * input.texC.y));
+
+    output.textureId = data.textureId;
 
     output.normal = mul(input.normal, (float3x3)data.model);
 
@@ -51,15 +57,17 @@ VS_OUTPUT VS(VS_INPUT input, uint instanceID : SV_InstanceID)
 
 float4 PS(VS_OUTPUT a_input) : SV_TARGET
 {
-    float3 ambient = float3(0.2f, 0.2f, 0.2f) * a_input.colour.xyz;
+    float4 c = gDiffuseMap[a_input.textureId].Sample(gsamLinear, a_input.texC) * a_input.colour;
+
+    float3 ambient = float3(0.7f, 0.7f, 0.7f) * c.xyz;
     float3 N = normalize(a_input.normal);
 
     float3 light = float3(0,10,0);
     float3 lightDir = normalize(light - a_input.posW.xyz);  
     float diff = max(dot(N, lightDir), 0.0f);
 
-    float3 diffuse = float3(0.5f, 0.5f, 0.5f) * diff * (a_input.colour.xyz);
+    float3 diffuse = float3(1.0f, 1.0f, 1.0f) * diff * (c.xyz);
 
-    float4 result = float4(ambient + diffuse, a_input.colour.w);
+    float4 result = float4(ambient + diffuse, c.w);
     return result;
 }

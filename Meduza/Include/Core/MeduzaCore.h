@@ -53,6 +53,11 @@ namespace Me
     
     struct Vertex
     {
+        Vertex()
+        {
+
+        }
+
         Vertex(float a_x, float a_y, float a_z)
         {
             m_vertexPos = Math::Vec3(a_x,a_y,a_z);

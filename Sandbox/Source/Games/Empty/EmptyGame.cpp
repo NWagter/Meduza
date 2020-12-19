@@ -33,18 +33,34 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
+    float x = 100;
+    float y = 75;
+    float z = 50;
+
+    for(int i = -x; i <= x; i += x)
+    {
+        for(int j = -y; j <= y; j += y)
+        {
+            for(int n = z; n <= (z * 10); n += z)
+            {
+                CreateCube(i,j,n, eManager);
+            }
+        }
+    }
+}
+
+void EmptyGame::CreateCube(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager)
+{
+     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColourLighted_Shader.hlsl");
 
-    EntityID cube = eManager->CreateEntity();
+    EntityID cube = a_eManager->CreateEntity();
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
 
-    tComp->m_position.m_x = static_cast<float>(0);
-    tComp->m_position.m_y = static_cast<float>(0);
-    tComp->m_position.m_z = 200;
-    tComp->m_uniformScale = static_cast<float>(20);
+    tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
+    tComp->m_uniformScale = static_cast<float>(10);
 
     rotComp->m_rotateSpeed = 0.25f;
 
@@ -52,7 +68,7 @@ void EmptyGame::InitGame()
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::CELESTIAL_BLUE;
 
-    eManager->AddComponent<RotateComponent>(cube, rotComp);
-    eManager->AddComponent<Me::RenderComponent>(cube, rComp);
-    eManager->AddComponent<Me::TransformComponent>(cube, tComp);
+    a_eManager->AddComponent<RotateComponent>(cube, rotComp);
+    a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
+    a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
 }

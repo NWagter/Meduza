@@ -54,7 +54,7 @@ float4 PS(VS_OUTPUT a_input) : SV_TARGET
     float3 ambient = float3(0.2f, 0.2f, 0.2f) * a_input.colour.xyz;
     float3 N = normalize(a_input.normal);
 
-    float3 light = float3(10,10,0);
+    float3 light = float3(0,10,0);
     float3 lightDir = normalize(light - a_input.posW.xyz);  
     float diff = max(dot(N, lightDir), 0.0f);
 

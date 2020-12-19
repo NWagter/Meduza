@@ -2,6 +2,11 @@
 
 #include "Games/BaseGame.h"
 
+namespace Me
+{
+    class EntityManager;
+}
+
 class EmptyGame : public BaseGame
 {
 public:
@@ -11,4 +16,5 @@ public:
     void InitGame() override;
 
 private:
+    void CreateCube(float,float,float, Me::EntityManager*);
 };

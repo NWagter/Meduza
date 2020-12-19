@@ -27,7 +27,7 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/TransformComponent.h"
 
-#define TEST_WITHOUT_DX_DEBUG 1
+#define TEST_WITH_DX_DEBUG 1
 
 Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 {
@@ -38,7 +38,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
     }
 
 #if defined(_DEBUG)
-	#if TEST_WITHOUT_DX_DEBUG
+	#if TEST_WITH_DX_DEBUG
 	// Always enable the debug layer before doing anything DX12 related
 	// so all possible errors generated while creating DX12 objects
 	// are caught by the debug layer.

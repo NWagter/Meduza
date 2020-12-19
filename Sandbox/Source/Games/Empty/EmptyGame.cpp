@@ -34,7 +34,7 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColourLighted_Shader.hlsl");
 
     EntityID cube = eManager->CreateEntity();
     Me::RenderComponent* rComp = new Me::RenderComponent();

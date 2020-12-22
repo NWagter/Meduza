@@ -4,8 +4,8 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 1
-#define Run_Chess 0
+#define Run_EmptyTest 0
+#define Run_Chess 1
 
 #if Run_EmptyTest
 #include "Games/Empty/EmptyGame.h"

@@ -237,10 +237,10 @@ void Me::Resources::MeshLibrary::CreateSphere()
 
 	float radius = 0.5f;
 	uint16_t sliceCount = 20;
-	uint16_t stackCount = sliceCount * 2;
+	uint16_t stackCount = sliceCount;
 
 	Vertex topVertex;
-	Me::Math::Vec3 vPos = Me::Math::Vec3(0,-radius,0);
+	Me::Math::Vec3 vPos = Me::Math::Vec3(0,radius,0);
 	topVertex.m_vertexPos = vPos;
 	topVertex.m_normals = vPos.Normalize();
 	topVertex.SetUV(0,0);
@@ -268,12 +268,13 @@ void Me::Resources::MeshLibrary::CreateSphere()
 			Vertex v;
 
 			// spherical to cartesian
-			v.m_vertexPos.m_x = radius*sinf(phi)*cosf(theta);
-			v.m_vertexPos.m_y = radius*cosf(phi);
-			v.m_vertexPos.m_z = radius*sinf(phi)*sinf(theta);
+			Math::Vec3 pos;
+			pos.m_x = sinf(phi)*cosf(theta);
+			pos.m_y = cosf(phi);
+			pos.m_z = sinf(phi)*sinf(theta);
 
-			Math::Vec3 p = v.m_vertexPos;
-			v.m_normals = p.Normalize();
+			v.m_normals = pos;
+			v.m_vertexPos = pos * radius;
 
 			v.m_uvCoord.m_x = theta / Math::gs_pi2;
 			v.m_uvCoord.m_y = phi / Math::gs_pi;

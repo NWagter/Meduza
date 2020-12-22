@@ -73,7 +73,7 @@ void EmptyGame::CreateCube(float a_x,float a_y,float a_z, Me::EntityManager* a_e
     RotateComponent* rotComp = new RotateComponent();
 
     tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
-    tComp->m_uniformScale = static_cast<float>(10);
+    tComp->m_uniformScale = static_cast<float>(25);
 
     rotComp->m_rotateSpeed = 0.25f;
 

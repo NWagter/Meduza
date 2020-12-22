@@ -242,6 +242,16 @@ namespace Me
 
 				return *this;
 			}
+
+			inline Vec3 operator*(float a_rhs)
+			{
+				float x = m_x * a_rhs;
+				float y = m_y * a_rhs;
+				float z = m_z * a_rhs;
+
+				return Vec3(x,y,z);
+			}
+
 			inline Vec3& operator/=(float a_rhs)
 			{
 				m_x = m_x / a_rhs;

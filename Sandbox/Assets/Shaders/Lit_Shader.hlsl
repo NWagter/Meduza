@@ -62,10 +62,10 @@ float4 PS(VS_OUTPUT a_input) : SV_TARGET
     float3 ambient = float3(0.2f, 0.2f, 0.2f) * c.xyz;
     float3 N = normalize(a_input.normal);
 
-    float3 light = float3(-1,0,1);
-    float3 lightDir = normalize(-light);   
-    float diff = max(dot(N, lightDir), 0.0f);
+    float3 light = float3(1,0,-1);
+    float3 lightDir = normalize(light);   
 
+    float diff = max(dot(N, lightDir), 0.0f);
     float3 diffuse = float3(0.8f, 0.8f, 0.8f) * diff * (c.xyz);
 
     float4 result = float4(ambient + diffuse, c.w);

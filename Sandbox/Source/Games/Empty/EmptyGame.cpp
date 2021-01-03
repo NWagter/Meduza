@@ -33,15 +33,15 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    float x = 100;
-    float y = 75;
-    float z = 50;
+    float x = 75;
+    float y = 50;
+    float z = 150;
 
     for(int i = -x; i <= x; i += x)
     {
         for(int j = -y; j <= y; j += y)
         {
-            for(int n = z; n <= (z * 10); n += z)
+            for(int n = z; n <= (z); n += z)
             {
                 CreateCube(i,j,n, eManager);
             }

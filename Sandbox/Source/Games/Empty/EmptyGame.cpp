@@ -37,25 +37,16 @@ void EmptyGame::InitGame()
     float y = 50;
     float z = 150;
 
-    for(int i = -x; i <= x; i += x)
-    {
-        for(int j = -y; j <= y; j += y)
-        {
-            for(int n = z; n <= (z); n += z)
-            {
-                CreateCube(i,j,n, eManager);
-            }
-        }
-    }
+    CreateObject(0,0,z, eManager, false);
 }
 
-void EmptyGame::CreateCube(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager)
+void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere)
 {
     int i = rand() % 100;
     std::string textureFile = "Assets/Textures/Crate.png";
     Me::Primitives meshId = Me::Primitives::Cube;
 
-    if(i < 50)
+    if(a_sphere)
     {
         meshId = Me::Primitives::Sphere;
         textureFile = "Assets/Textures/Earth_TEXTURE_CM.png";

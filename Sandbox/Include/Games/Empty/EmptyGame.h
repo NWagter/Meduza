@@ -16,5 +16,5 @@ public:
     void InitGame() override;
 
 private:
-    void CreateCube(float,float,float, Me::EntityManager*);
+    void CreateObject(float,float,float, Me::EntityManager*, bool = false);
 };

@@ -54,8 +54,8 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
 
     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(meshId);
 
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
-    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+    //Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
 
     EntityID cube = a_eManager->CreateEntity();
 
@@ -71,7 +71,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     rComp->m_mesh = mesh;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
-    rComp->m_texture = texture;
+    //rComp->m_texture = texture;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

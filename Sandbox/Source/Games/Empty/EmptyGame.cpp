@@ -35,9 +35,18 @@ void EmptyGame::InitGame()
 
     float x = 75;
     float y = 50;
-    float z = 150;
+    float z = 50;
 
-    CreateObject(0,0,z, eManager, false);
+    for(int i = -x; i <= x; i += x)
+    {
+        for(int j = -y; j <= y; j += y)
+        {
+            for(int n = z; n <= (z * 10); n += z)
+            {
+                CreateObject(i,j,n, eManager);
+            }
+        }
+    }
 }
 
 void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere)
@@ -46,7 +55,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     std::string textureFile = "Assets/Textures/Crate.png";
     Me::Primitives meshId = Me::Primitives::Cube;
 
-    if(a_sphere)
+    if(i < 50 || a_sphere)
     {
         meshId = Me::Primitives::Sphere;
         textureFile = "Assets/Textures/Earth_TEXTURE_CM.png";
@@ -54,8 +63,8 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
 
     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(meshId);
 
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
-    //Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
+    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
 
     EntityID cube = a_eManager->CreateEntity();
 
@@ -71,7 +80,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     rComp->m_mesh = mesh;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
-    //rComp->m_texture = texture;
+    rComp->m_texture = texture;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

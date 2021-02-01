@@ -143,6 +143,12 @@ namespace Me
     std::map<EntityID, C*> EntityManager::GetComponents()
     {
         auto container = GetComponentContainer<C>();
+
+        if(container == nullptr)
+        {
+            return std::map<EntityID, C*>();
+        }
+
 		return container->GetComponents();
     }
 

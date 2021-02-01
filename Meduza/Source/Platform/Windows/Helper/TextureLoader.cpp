@@ -13,7 +13,7 @@
 #include <codecvt>
 #include <regex>
 
-static constexpr size_t MAX_TEXTURES = 8;
+static constexpr size_t MAX_TEXTURES = 1;
 
 Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
 {

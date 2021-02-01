@@ -16,6 +16,11 @@ file(GLOB GAME_SOURCE
     Source/Games/Chess/*.cpp
     Source/Components/Chess/*.cpp
     Source/Systems/Chess/*.cpp
+
+    
+    Source/Games/Physics2D/*.cpp
+    Source/Components/Physics2D/*.cpp
+    Source/Systems/Physics2D/*.cpp
 )
 
 add_executable(${PROJECT_NAME} 

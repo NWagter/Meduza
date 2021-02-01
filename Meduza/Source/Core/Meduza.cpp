@@ -10,7 +10,10 @@
 
 #include "Core/Systems/CameraSystem.h"
 #include "Core/Components/CameraComponent.h"
-#include "Core/Components/TransformComponent.h"
+
+#include "Core/Components/PhysicsComponent.h"
+#include "Physics/Systems/PhysicsSystem.h"
+
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
@@ -60,6 +63,7 @@ Me::Meduza::Meduza(int a_w, int a_h)
 	
 	auto r = new RenderSystem(m_renderLayer);
 	auto c = new CameraSystem(m_renderLayer);
+	auto p = new Physics::PhysicsSystem();
 }
 
 Me::Meduza::~Meduza()

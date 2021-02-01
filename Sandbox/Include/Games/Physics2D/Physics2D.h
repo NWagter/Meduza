@@ -13,6 +13,6 @@ namespace Physics
         void InitGame() override;
 
     private:
-
+        void SetupScene();
     };
 }

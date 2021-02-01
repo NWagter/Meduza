@@ -15,8 +15,14 @@ namespace Me
             CollisionType m_collisionType;
             
             PhysicsBody* m_body;
+            bool m_gravity = true;
 
             static ComponentID s_componentID;
+
+            PhysicsComponent()
+            {
+                m_body = new BodyBox2D();
+            }
         };
     }
 }

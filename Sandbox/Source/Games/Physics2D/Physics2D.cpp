@@ -31,16 +31,20 @@ void Physics::Physics2D::InitGame()
     SetupScene();
 }
 
+void Physics::Physics2D::UpdateGame(float)
+{
+    auto eSystem = Me::Event::EventSystem::GetEventSystem();
+
+    if(eSystem->MouseButtonDown(Me::Event::MouseButton::LButton))
+    {
+        SpawnObjects();
+    }
+}
+
 void Physics::Physics2D::SetupScene()
 {
     
-    auto eManager = Me::EntityManager::GetEntityManager();
-
-    EntityID box2d = Me::EntityManager::CreateEntity();
-
-    auto rC = new Me::RenderComponent();
-    auto tC = new Me::TransformComponent();
-    auto pC = new Me::Physics::PhysicsComponent();
+    auto eManager = Me::EntityManager::GetEntityManager(); 
 
     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
@@ -49,21 +53,6 @@ void Physics::Physics2D::SetupScene()
     {      
         shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
     }
-
-    rC->m_colour = Me::Colours::AZURE_WHITE;
-    rC->m_shader = shader;
-    rC->m_mesh = mesh;
-
-    tC->m_position.m_x = static_cast<float>(0);
-    tC->m_position.m_y = static_cast<float>(0);
-    tC->m_position.m_z = 2;
-    tC->m_uniformScale = static_cast<float>(32);
-
-    pC->m_body->m_uniformScale = 32;
-
-    eManager->AddComponent<Me::RenderComponent>(box2d, rC);
-    eManager->AddComponent<Me::TransformComponent>(box2d, tC);
-    eManager->AddComponent<Me::Physics::PhysicsComponent>(box2d, pC);
 
     EntityID box2d2 = Me::EntityManager::CreateEntity();
 
@@ -86,6 +75,40 @@ void Physics::Physics2D::SetupScene()
     eManager->AddComponent<Me::RenderComponent>(box2d2, rC2);
     eManager->AddComponent<Me::TransformComponent>(box2d2, tC2);
     eManager->AddComponent<Me::Physics::PhysicsComponent>(box2d2, pC2);
+}
+
+void Physics::Physics2D::SpawnObjects()
+{      
+    auto eManager = Me::EntityManager::GetEntityManager(); 
+
+    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
+   
+    if(shader == 0)
+    {      
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
+    }
+
+    EntityID box2d = Me::EntityManager::CreateEntity();
+    auto rC = new Me::RenderComponent();
+    auto tC = new Me::TransformComponent();
+    auto pC = new Me::Physics::PhysicsComponent();
+    rC->m_colour = Me::Colours::AZURE_WHITE;
+    rC->m_shader = shader;
+    rC->m_mesh = mesh;
+
+    tC->m_position.m_x = static_cast<float>(0);
+    tC->m_position.m_y = static_cast<float>(128);
+    tC->m_position.m_z = 2;
+    tC->m_uniformScale = static_cast<float>(32);
+
+    pC->m_body->m_uniformScale = 32;
+
+    eManager->AddComponent<Me::RenderComponent>(box2d, rC);
+    eManager->AddComponent<Me::TransformComponent>(box2d, tC);
+    eManager->AddComponent<Me::Physics::PhysicsComponent>(box2d, pC);
+
+
 
     EntityID box2d3 = Me::EntityManager::CreateEntity();
 
@@ -98,7 +121,7 @@ void Physics::Physics2D::SetupScene()
     rC3->m_mesh = mesh;
 
     tC3->m_position.m_x = static_cast<float>(0);
-    tC3->m_position.m_y = static_cast<float>(128);
+    tC3->m_position.m_y = static_cast<float>(256);
     tC3->m_position.m_z = 2;
     tC3->m_uniformScale = static_cast<float>(32);
     

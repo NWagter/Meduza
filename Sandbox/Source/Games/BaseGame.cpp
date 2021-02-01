@@ -10,3 +10,8 @@ void BaseGame::InitGame()
 {
 
 }
+
+void BaseGame::UpdateGame(float)
+{
+
+}

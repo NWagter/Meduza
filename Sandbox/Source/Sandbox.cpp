@@ -41,9 +41,9 @@ Sandbox::~Sandbox()
 }
 
 
-void Sandbox::OnUpdate(float)
+void Sandbox::OnUpdate(float a_dt)
 {   
-
+    m_game->UpdateGame(a_dt);
 }
 
 void Sandbox::OnInitilized()

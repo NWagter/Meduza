@@ -46,23 +46,42 @@ void Me::Renderer::Dx12::DepthStencilBuffer::SetBuffer(Device& a_device, Command
 	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
-	D3D12_CLEAR_VALUE optClear;
+	D3D12_CLEAR_VALUE optClear;	
+	ZeroMemory(&optClear, sizeof(&optClear));
 	optClear.Format = m_dsFormat;
 	optClear.DepthStencil.Depth = 1.0f;
 	optClear.DepthStencil.Stencil = 0;
 
-	CD3DX12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	CD3DX12_HEAP_PROPERTIES dsHeapProp;
+	ZeroMemory(&dsHeapProp, sizeof(&dsHeapProp));
+
+	dsHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
+	dsHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	dsHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	dsHeapProp.CreationNodeMask = NULL;
+	dsHeapProp.VisibleNodeMask = NULL;
 
 	a_device.GetDevice()->CreateCommittedResource(
-		&prop,
-		D3D12_HEAP_FLAG_NONE,
-		&depthStencilDesc,
-		D3D12_RESOURCE_STATE_COMMON,
-		&optClear,
-		IID_PPV_ARGS(m_dsBuffer.GetAddressOf()));
+	&dsHeapProp,
+	D3D12_HEAP_FLAG_NONE,
+	&depthStencilDesc,
+	D3D12_RESOURCE_STATE_DEPTH_WRITE,
+	&optClear,
+	IID_PPV_ARGS(m_dsBuffer.GetAddressOf()));
+
+
+
+	// === Create view description
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsViewDesk;
+	ZeroMemory(&dsViewDesk, sizeof(D3D12_DEPTH_STENCIL_VIEW_DESC));
+
+	dsViewDesk.Format = DXGI_FORMAT_D32_FLOAT;
+	dsViewDesk.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsViewDesk.Flags = D3D12_DSV_FLAG_NONE;
+	dsViewDesk.Texture2D.MipSlice = 0;
 
 	// Create descriptor to mip level 0 of entire resource using the format of the resource.
-	a_device.GetDevice()->CreateDepthStencilView(m_dsBuffer.Get(), nullptr, DepthStencilView());
+	a_device.GetDevice()->CreateDepthStencilView(m_dsBuffer.Get(), &dsViewDesk, DepthStencilView());
 
 
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(m_dsBuffer.Get(),

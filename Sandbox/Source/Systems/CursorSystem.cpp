@@ -11,7 +11,7 @@ CursorSystem::CursorSystem()
 void CursorSystem::OnCreate()
 {
     auto quad = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
-    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+    auto shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.hlsl");
     auto texture = Me::Resources::TextureLibrary::CreateTexture("Assets/Textures/Pointer.png");
 
     auto eManager = Me::EntityManager::GetEntityManager();

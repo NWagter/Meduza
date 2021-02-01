@@ -169,7 +169,10 @@ void Me::Resources::Dx12::Shader::CreatePSO()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
         );
 	vLayout.push_back(		
-    	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+    	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		);
+	vLayout.push_back(		
+    	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 		);
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc = {};
@@ -193,7 +196,7 @@ void Me::Resources::Dx12::Shader::CreatePSO()
 	};
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	psoDesc.SampleDesc = { 1, 0 };
 	psoDesc.SampleMask = 0xffffffff;
 	CD3DX12_RASTERIZER_DESC rDesc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
@@ -216,7 +219,16 @@ void Me::Resources::Dx12::Shader::CreatePSO()
 
 	psoDesc.BlendState = blendDesc;
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+
+	D3D12_DEPTH_STENCIL_DESC depthDesc;
+	ZeroMemory(&depthDesc, sizeof(D3D12_DEPTH_STENCIL_DESC));
+
+	depthDesc.DepthEnable = TRUE;
+	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	depthDesc.StencilEnable = FALSE;
+
+	psoDesc.DepthStencilState = depthDesc;
 
 	m_renderLayer->GetDevice().GetDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pso));
 }

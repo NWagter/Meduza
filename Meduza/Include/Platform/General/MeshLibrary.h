@@ -31,6 +31,10 @@ namespace Me
         private:
             MeshLibrary(Renderer::RenderLayer&);
             ~MeshLibrary();
+
+            void CreateQuad();
+            void CreateCube();
+            void CreateSphere();
             
             Renderer::RenderLayer* m_renderLayer;
 

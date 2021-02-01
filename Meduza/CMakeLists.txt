@@ -30,9 +30,14 @@ endif()
 file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Core/*.cpp
 	Source/Math/*.cpp
+
+	Source/Physics/*.cpp
+	Source/Physics/Systems/*.cpp
+
 	Source/ECS/*.cpp
 	Source/Core/Systems/*.cpp
 	Source/Core/Components/*.cpp
+	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
 	Source/Platform/General/Graphics/*.cpp

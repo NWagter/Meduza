@@ -380,7 +380,7 @@ std::pair<int,int> Chess::ChessHelper::GetBestMove(std::vector<std::pair<int,int
             v = GetValue(*p);            
         }else
         {
-            v = -1;
+            v = -(rand() % 5);
         }        
 
         if(v < value)

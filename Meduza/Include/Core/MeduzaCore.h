@@ -53,24 +53,45 @@ namespace Me
     
     struct Vertex
     {
+        Vertex()
+        {
+
+        }
+
         Vertex(float a_x, float a_y, float a_z)
         {
-            m_vertexPos.m_x = a_x;
-            m_vertexPos.m_y = a_y;
-            m_vertexPos.m_z = a_z;
+            m_vertexPos = Math::Vec3(a_x,a_y,a_z);
         }
 
         Vertex(float a_x, float a_y, float a_z, float a_u, float a_v)
         {
-            m_vertexPos.m_x = a_x;
-            m_vertexPos.m_y = a_y;
-            m_vertexPos.m_z = a_z;
+            m_vertexPos = Math::Vec3(a_x,a_y,a_z);
+            m_uvCoord = Math::Vec2(a_u, a_v);
+        }
+        
+        Vertex(float a_x, float a_y, float a_z, float a_nX, float a_nY, float a_nZ)
+        {
+            m_vertexPos = Math::Vec3(a_x,a_y,a_z);
+            m_normals = Math::Vec3(a_nX, a_nY,a_nZ);
+        }  
+        Vertex(float a_x, float a_y, float a_z, float a_nX, float a_nY, float a_nZ, float a_u, float a_v)
+        {
+            m_vertexPos = Math::Vec3(a_x,a_y,a_z);
+            m_normals = Math::Vec3(a_nX, a_nY,a_nZ);
+            m_uvCoord = Math::Vec2(a_u, a_v);
+        }
 
-            m_uvCoord.m_x = a_u;
-            m_uvCoord.m_y = a_v;
+        void SetNormals(float a_nX, float a_nY, float a_nZ)
+        {
+            m_normals = Math::Vec3(a_nX, a_nY,a_nZ);
+        }
+        void SetUV(float a_u, float a_v)
+        {
+            m_uvCoord = Math::Vec2(a_u, a_v);
         }
 
         Math::Vec3 m_vertexPos;
+        Math::Vec3 m_normals;
         Math::Vec2 m_uvCoord;
     };
 }

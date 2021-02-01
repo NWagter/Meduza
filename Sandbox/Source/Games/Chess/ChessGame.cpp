@@ -84,7 +84,7 @@ Chess::ChessBoardComponent* Chess::ChessGame::CreateBoard()
 
 
    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
-   Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+   Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
    
    if(shader == 0)
    {      
@@ -137,12 +137,12 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
    Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
 
    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
-   Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.hlsl");
+   Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.hlsl");
    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture("Assets/Textures/ChessPieces.png");
    
    if(shader == 0)
    {      
-		shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
+		shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.glsl");
    }
 
    Me::Colour colour = Me::Colours::WHITE;

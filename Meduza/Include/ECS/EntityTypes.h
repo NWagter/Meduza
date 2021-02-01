@@ -11,6 +11,7 @@ enum class Components : uint16_t
     Transform,
     Render,
     Camera,
+    Physics,
 
     Game
 };

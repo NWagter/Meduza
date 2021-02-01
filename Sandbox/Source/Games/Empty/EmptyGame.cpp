@@ -33,26 +33,56 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/FlatColour_Shader.hlsl");
+    float x = 75;
+    float y = 50;
+    float z = 50;
 
-    EntityID cube = eManager->CreateEntity();
+    for(int i = -x; i <= x; i += x)
+    {
+        for(int j = -y; j <= y; j += y)
+        {
+            for(int n = z; n <= (z * 10); n += z)
+            {
+                CreateObject(i,j,n, eManager);
+            }
+        }
+    }
+}
+
+void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere)
+{
+    int i = rand() % 100;
+    std::string textureFile = "Assets/Textures/Crate.png";
+    Me::Primitives meshId = Me::Primitives::Cube;
+
+    if(i < 50 || a_sphere)
+    {
+        meshId = Me::Primitives::Sphere;
+        textureFile = "Assets/Textures/Earth_TEXTURE_CM.png";
+    }
+
+    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(meshId);
+
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
+    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
+
+    EntityID cube = a_eManager->CreateEntity();
+
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
 
-    tComp->m_position.m_x = static_cast<float>(0);
-    tComp->m_position.m_y = static_cast<float>(0);
-    tComp->m_position.m_z = 200;
-    tComp->m_uniformScale = static_cast<float>(20);
+    tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
+    tComp->m_uniformScale = static_cast<float>(25);
 
     rotComp->m_rotateSpeed = 0.25f;
 
     rComp->m_mesh = mesh;
     rComp->m_shader = shader;
-    rComp->m_colour = Me::Colours::CELESTIAL_BLUE;
+    rComp->m_colour = Me::Colours::WHITE;
+    rComp->m_texture = texture;
 
-    eManager->AddComponent<RotateComponent>(cube, rotComp);
-    eManager->AddComponent<Me::RenderComponent>(cube, rComp);
-    eManager->AddComponent<Me::TransformComponent>(cube, tComp);
+    a_eManager->AddComponent<RotateComponent>(cube, rotComp);
+    a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
+    a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
 }

@@ -19,8 +19,8 @@ void OverlapSystem::OnUpdate(float a_dt)
     {      
         Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);  
         Me::Physics::PhysicsComponent* pC = std::get<Me::Physics::PhysicsComponent*>(compTuple);  
-
-        for(auto c : pC->m_triggered)
+        
+        for(auto c : pC->GetTriggeredData())
         {
             if(c.m_physicsLayerId == 1)
             {

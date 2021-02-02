@@ -140,6 +140,25 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		break;
 	}
 // ---- Keyboard
+	case WM_SYSKEYDOWN:
+	{
+		case WM_KEYDOWN:
+		{
+			Event::KeyCode key = static_cast<Event::KeyCode>(a_wParam);
+			m_eventSystem->OnKeyEvent(key ,Event::KeyState::KeyDown);
+		}
+		break;
+	}
+	case WM_SYSKEYUP:
+	{
+		case WM_KEYUP:
+		{
+			Event::KeyCode key = static_cast<Event::KeyCode>(a_wParam);
+			m_eventSystem->OnKeyEvent(key ,Event::KeyState::KeyUp);
+		}
+		break;
+	}
+
 
 	}
 	return DefWindowProc(a_hwnd, a_msg, a_wParam, a_lParam);

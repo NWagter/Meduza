@@ -28,12 +28,8 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 
         Math::Vec3 newPos = tC->m_position;
         Math::Vec3 newRot = tC->m_rotation;
+        bool applyGravity = true;
 
-        if(pC->m_gravity)
-        {
-            newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
-        }
-        
         for(auto ph : physicsObjects)
         {
             auto physicsComponent = ph.second;
@@ -58,6 +54,11 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
                     //Block Movement
                     if(std::abs(data.m_hitNormal.m_y) > 0.01f)
                     {
+                        if(data.m_hitNormal.m_y > 0.01f) // ground check
+                        {
+                            applyGravity = false;
+                        }
+                        
                         newPos.m_y = pC->m_body->m_position.m_y;
                     }
                     if(std::abs(data.m_hitNormal.m_x) > 0.01f)
@@ -70,7 +71,12 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
                     pC->m_triggered.push_back(data);
                 }
             }
+        }
+        
 
+        if(pC->m_gravity && applyGravity)
+        {
+            newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
         }
 
         pC->m_body->m_position = tC->m_position = newPos;

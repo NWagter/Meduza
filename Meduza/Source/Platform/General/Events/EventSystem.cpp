@@ -3,6 +3,7 @@
 #include "Platform/General/Window.h"
 
 #include "Platform/General/Events/Input/Mouse.h"
+#include "Platform/General/Events/Input/Keyboard.h"
 
 Me::Event::EventSystem* Me::Event::EventSystem::ms_eventSystem = nullptr;
 
@@ -29,26 +30,39 @@ Me::Event::EventSystem::EventSystem(Window* a_window)
 {
     a_window->SetEventSystem(this);
     m_mouse = new Input::Mouse();
+    m_keyboard = new Input::Keyboard();
 }
 
 Me::Event::EventSystem::~EventSystem()
 {
     delete m_mouse;
+    delete m_keyboard;
 }
 
 void Me::Event::EventSystem::Clear()
 {
     m_mouse->Clear();
+    m_keyboard->Clear();
 }
 
 // User Check
 
-bool Me::Event::EventSystem::KeyDown(KeyCode)
+bool Me::Event::EventSystem::KeyDown(KeyCode a_key)
 {
+    if(m_keyboard->State(a_key) == KeyState::KeyDown)
+    {
+        return true;
+    }
+
     return false;
 }
-bool Me::Event::EventSystem::KeyUp(KeyCode)
+bool Me::Event::EventSystem::KeyUp(KeyCode a_key)
 {
+    if(m_keyboard->State(a_key) == KeyState::KeyUp)
+    {
+        return true;
+    }
+    
     return false;
 }
 bool Me::Event::EventSystem::MouseButtonDown(MouseButton a_button)
@@ -89,10 +103,11 @@ Me::Math::Vec2 Me::Event::EventSystem::ScreenSize()
 
 // Engine Set
 
-void Me::Event::EventSystem::OnKeyEvent(KeyCode, KeyState)
+void Me::Event::EventSystem::OnKeyEvent(KeyCode a_key, KeyState a_state)
 {
-
+    m_keyboard->SetState(a_key, a_state);
 }
+
 void Me::Event::EventSystem::OnMouseEvent(MouseButton a_button, MouseEvent a_event)
 {
     m_mouse->SetState(a_button, a_event);

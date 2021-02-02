@@ -38,7 +38,7 @@ void Physics::Physics2D::UpdateGame(float)
 {
     auto eSystem = Me::Event::EventSystem::GetEventSystem();
 
-    if(eSystem->MouseButtonDown(Me::Event::MouseButton::LButton))
+    if(eSystem->KeyDown(Me::Event::KeyCode::Space))
     {
         SpawnObjects();
     }

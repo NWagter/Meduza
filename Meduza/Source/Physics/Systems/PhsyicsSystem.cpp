@@ -49,17 +49,20 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
             if(Collision::CheckCollision(pC->m_body, physicsComponent->m_body, data))
             {
                 data.m_physicsLayerId = physicsComponent->m_physicsLayerId;
-                
+
                 //Add collisionData
                 if(pC->m_collisionType == CollisionType::Block)
                 {
                     pC->m_collided.push_back(data);
 
                     //Block Movement
-
-                    if(std::abs(data.m_hitNormal.m_y) > 0.01f) // means the it hit from the top, which results the normal to point upwards
+                    if(std::abs(data.m_hitNormal.m_y) > 0.01f)
                     {
                         newPos.m_y = pC->m_body->m_position.m_y;
+                    }
+                    if(std::abs(data.m_hitNormal.m_x) > 0.01f)
+                    {
+                        newPos.m_x = pC->m_body->m_position.m_x;
                     }
                 }
                 else

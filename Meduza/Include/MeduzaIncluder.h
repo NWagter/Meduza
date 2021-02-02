@@ -18,6 +18,9 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
+///------ Physics -------
+#include "Physics/Physics.h"
+#include "Core/Components/PhysicsComponent.h"
 ///------ Library -------
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"

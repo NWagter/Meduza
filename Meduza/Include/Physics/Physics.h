@@ -6,6 +6,8 @@ namespace Me
 {
     namespace Physics
     {
+        static constexpr float gs_Gravity = 9.8f;
+
         enum class CollisionType
         {
             Overlap,
@@ -20,7 +22,8 @@ namespace Me
 
         struct CollisionData
         {
-            Math::Vec3 m_position;
+            Math::Vec3 m_hitPoint;
+            Math::Vec3 m_hitNormal;
         };
 
         struct PhysicsBody
@@ -28,6 +31,8 @@ namespace Me
             Math::Vec3 m_position = Math::Vec3(0,0,0);
             Math::Vec3 m_rotation = Math::Vec3(0,0,0);
             float m_uniformScale = 1;
+
+            float m_bodyMass = 10.0f;
 
             BodyType m_bodyType;
 
@@ -39,7 +44,7 @@ namespace Me
 
         struct BodyBox2D : public PhysicsBody
         {
-            Me::Math::Vec2 m_size;
+            Me::Math::Vec2 m_size = Me::Math::Vec2(1,1);
 
             BodyBox2D() : PhysicsBody(BodyType::Box2D) {}
         };

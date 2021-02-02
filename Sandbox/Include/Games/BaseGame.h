@@ -7,6 +7,7 @@ public:
     virtual ~BaseGame() = default;
 
     virtual void InitGame();
+    virtual void UpdateGame(float);
 
     std::string GetGameName() { return m_gameName;}
 

@@ -32,6 +32,22 @@ bool Me::Physics::Collision::CheckCollision(PhysicsBody* a_self, PhysicsBody* a_
 bool Me::Physics::Collision::Box2DToBox2D(BodyBox2D* a_self, BodyBox2D* a_other, CollisionData& a_data)
 {
     // box2d to box2d collision check
+    Math::Vec3 sPos = a_self->m_position;
+    float sSize = a_self->m_uniformScale;
+
+    Math::Vec3 oPos = a_other->m_position;
+    float oSize = a_other->m_uniformScale;
+
+    if((sPos.m_x < oPos.m_x + oSize)
+        && (sPos.m_x + sSize > oPos.m_x)
+        && (sPos.m_y < oPos.m_y + oSize)
+        && (sPos.m_y + sSize > oPos.m_y))
+    {
+        a_data.m_hitNormal = (sPos - oPos);
+        return true;
+    }
+        
+
 
     return false;
 }

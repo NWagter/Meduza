@@ -11,8 +11,9 @@ namespace Physics
         ~Physics2D();
 
         void InitGame() override;
-
+        void UpdateGame(float) override;
     private:
-
+        void SetupScene();
+        void SpawnObjects();
     };
 }

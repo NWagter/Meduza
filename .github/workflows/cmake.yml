@@ -1,6 +1,6 @@
 name: Meduza Cross-Platform Build Pipeline
 
-on: [push]
+on: [workflow_dispatch]
 
 env:
   CMAKE_VERSION: 3.18.3

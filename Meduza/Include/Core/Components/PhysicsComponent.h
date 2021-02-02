@@ -11,8 +11,11 @@ namespace Me
     {
         struct PhysicsComponent : public BaseComponent
         {
-            std::vector<CollisionData> m_collisionData;
+            std::vector<CollisionData> m_collided;
+            std::vector<CollisionData> m_triggered;
             CollisionType m_collisionType;
+
+            PhysicsLayerID m_physicsLayerId;
             
             PhysicsBody* m_body;
             bool m_gravity = true;
@@ -22,6 +25,8 @@ namespace Me
             PhysicsComponent()
             {
                 m_body = new BodyBox2D();
+                m_collisionType = CollisionType::Block;
+                m_physicsLayerId = 0;
             }
         };
     }

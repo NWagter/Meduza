@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math/MeduzaMath.h"
+#include "ECS/EntityTypes.h"
 
 namespace Me
 {
@@ -19,9 +20,14 @@ namespace Me
             Cirlce,
             Box2D
         };
+        
+
+        using PhysicsLayerID = uint16_t;
 
         struct CollisionData
         {
+            EntityID m_entity;
+            PhysicsLayerID m_physicsLayerId;
             Math::Vec3 m_hitPoint;
             Math::Vec3 m_hitNormal;
         };

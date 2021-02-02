@@ -4,6 +4,8 @@
 
 #include "MeduzaIncluder.h"
 
+#include "Systems/Physics2D/OverlapSystem.h"
+
 Physics::Physics2D::Physics2D()
 {
     m_gameName = "Physics Test";
@@ -16,6 +18,7 @@ Physics::Physics2D::~Physics2D()
 
 void Physics::Physics2D::InitGame()
 {
+    new OverlapSystem();
     auto eManager = Me::EntityManager::GetEntityManager();
 
     auto cC = new Me::CameraComponent();
@@ -71,6 +74,7 @@ void Physics::Physics2D::SetupScene()
     
     pC2->m_body->m_uniformScale = 32;
     pC2->m_gravity = false;
+    pC2->m_physicsLayerId = 1;
 
     eManager->AddComponent<Me::RenderComponent>(box2d2, rC2);
     eManager->AddComponent<Me::TransformComponent>(box2d2, tC2);
@@ -102,6 +106,7 @@ void Physics::Physics2D::SpawnObjects()
     tC->m_position.m_z = 2;
     tC->m_uniformScale = static_cast<float>(32);
 
+    pC->m_collisionType = Me::Physics::CollisionType::Block;
     pC->m_body->m_uniformScale = 32;
 
     eManager->AddComponent<Me::RenderComponent>(box2d, rC);
@@ -125,6 +130,7 @@ void Physics::Physics2D::SpawnObjects()
     tC3->m_position.m_z = 2;
     tC3->m_uniformScale = static_cast<float>(32);
     
+    pC3->m_collisionType = Me::Physics::CollisionType::Overlap;
     pC3->m_body->m_uniformScale = 32;
     pC3->m_gravity = true;
 

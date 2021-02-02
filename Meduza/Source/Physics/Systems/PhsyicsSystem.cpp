@@ -23,12 +23,16 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
 
         //Clear Collision Data at start and fill in the collision loop
-        pC->m_collisionData.clear();
+        pC->m_collided.clear();
+        pC->m_triggered.clear();
 
         Math::Vec3 newPos = tC->m_position;
         Math::Vec3 newRot = tC->m_rotation;
 
-        bool grounded = false;
+        if(pC->m_gravity)
+        {
+            newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
+        }
         
         for(auto ph : physicsObjects)
         {
@@ -40,27 +44,31 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
             }
 
             CollisionData data;
+            data.m_entity = ph.first;
 
             if(Collision::CheckCollision(pC->m_body, physicsComponent->m_body, data))
             {
+                data.m_physicsLayerId = physicsComponent->m_physicsLayerId;
+                
                 //Add collisionData
-                pC->m_collisionData.push_back(data);
-                
-                //Move Object away
-                
-                if(data.m_hitNormal.m_y > 0.01f) // means the it hit from the top, which results the normal to point upwards
+                if(pC->m_collisionType == CollisionType::Block)
                 {
-                    grounded = true;
+                    pC->m_collided.push_back(data);
+
+                    //Block Movement
+
+                    if(std::abs(data.m_hitNormal.m_y) > 0.01f) // means the it hit from the top, which results the normal to point upwards
+                    {
+                        newPos.m_y = pC->m_body->m_position.m_y;
+                    }
+                }
+                else
+                {
+                    pC->m_triggered.push_back(data);
                 }
             }
 
         }
-
-        if(!grounded && pC->m_gravity)
-        {
-            newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
-        }
-
 
         pC->m_body->m_position = tC->m_position = newPos;
         pC->m_body->m_rotation = tC->m_rotation = newRot;

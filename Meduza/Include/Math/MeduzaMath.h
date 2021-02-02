@@ -331,7 +331,7 @@ namespace Me
 
 				m_x = m_x / lenght;
 				m_y = m_y / lenght;
-				m_y = m_z / lenght;
+				m_z = m_z / lenght;
 
 				return *this;
 			}

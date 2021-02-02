@@ -43,7 +43,9 @@ bool Me::Physics::Collision::Box2DToBox2D(BodyBox2D* a_self, BodyBox2D* a_other,
         && (sPos.m_y < oPos.m_y + oSize)
         && (sPos.m_y + sSize > oPos.m_y))
     {
-        a_data.m_hitNormal = (sPos - oPos);
+        
+        a_data.m_hitNormal = (sPos - oPos).Normalize();
+
         return true;
     }
         

@@ -38,5 +38,3 @@
 # Custom
 *.h linguist-language=C++
 *.cpp linguist-language=C++
-# Ingore
-Meduza/External/*.d linguist-generated=true

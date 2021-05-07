@@ -43,6 +43,8 @@ void EmptyGame::InitGame()
 
     CreateObject(x,y,z,eManager,Avocado, false);
 
+    x = -100;
+    y = - 100;
     z = 500;
 
     CreateObject(x,y,z,eManager,duck, false);

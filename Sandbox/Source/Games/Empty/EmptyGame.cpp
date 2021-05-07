@@ -21,6 +21,9 @@ EmptyGame::~EmptyGame()
 
 void EmptyGame::InitGame()
 {
+    Me::Mesh Avocado = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Lantern.glb");
+    Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+
     auto eManager = Me::EntityManager::GetEntityManager();
 
     auto cC = new Me::CameraComponent();
@@ -33,10 +36,18 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    float x = 75;
-    float y = 50;
-    float z = 50;
+    float x = 0;
+    float y = 0;
+    float z = 35;
 
+
+    CreateObject(x,y,z,eManager,Avocado, false);
+
+    z = 500;
+
+    CreateObject(x,y,z,eManager,duck, false);
+
+    /*
     for(int i = -x; i <= x; i += x)
     {
         for(int j = -y; j <= y; j += y)
@@ -47,9 +58,10 @@ void EmptyGame::InitGame()
             }
         }
     }
+    */
 }
 
-void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere)
+void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere, bool a_shouldRotate)
 {
     int i = rand() % 100;
     std::string textureFile = "Assets/Textures/Crate.png";
@@ -75,12 +87,37 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
     tComp->m_uniformScale = static_cast<float>(25);
 
-    rotComp->m_rotateSpeed = 0.25f;
+    if(a_shouldRotate)
+        rotComp->m_rotateSpeed = 0.25f;
 
     rComp->m_mesh = mesh;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
     rComp->m_texture = texture;
+
+    a_eManager->AddComponent<RotateComponent>(cube, rotComp);
+    a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
+    a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
+}
+void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
+{
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+
+    EntityID cube = a_eManager->CreateEntity();
+
+    Me::RenderComponent* rComp = new Me::RenderComponent();
+    Me::TransformComponent* tComp = new Me::TransformComponent();
+    RotateComponent* rotComp = new RotateComponent();
+
+    tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
+    tComp->m_uniformScale = static_cast<float>(1);
+
+    if(a_shouldRotate)
+        rotComp->m_rotateSpeed = 0.25f;
+
+    rComp->m_mesh = a_mesh;
+    rComp->m_shader = shader;
+    rComp->m_colour = Me::Colours::WHITE;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

@@ -4,9 +4,9 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 0
+#define Run_EmptyTest 1
 #define Run_Chess 0
-#define Run_Physics 1
+#define Run_Physics 0
 
 #if Run_EmptyTest
 #include "Games/Empty/EmptyGame.h"
@@ -31,7 +31,7 @@ Sandbox::Sandbox()
 #elif Run_Physics
     m_game = new Physics::Physics2D();
 #endif
-
+    
     SetName(m_game->GetGameName() + " | Meduza");
 }
 

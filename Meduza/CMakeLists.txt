@@ -47,8 +47,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Platform/General/FileSystem/*.cpp
 )
 
-file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General)
-
+file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General/Include)
 
 add_library(${PROJECT_NAME} 
 	${SOURCES}

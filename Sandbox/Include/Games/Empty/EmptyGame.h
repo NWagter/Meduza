@@ -5,6 +5,7 @@
 namespace Me
 {
     class EntityManager;
+    using Mesh = uint16_t;
 }
 
 class EmptyGame : public BaseGame
@@ -16,5 +17,6 @@ public:
     void InitGame() override;
 
 private:
-    void CreateObject(float,float,float, Me::EntityManager*, bool = false);
+    void CreateObject(float,float,float, Me::EntityManager*, bool = false, bool = true);
+    void CreateObject(float,float,float, Me::EntityManager*, Me::Mesh, bool = true);
 };

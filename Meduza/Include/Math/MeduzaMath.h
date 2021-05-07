@@ -17,7 +17,8 @@ namespace Me
 		public:
 #pragma warning(push)
 #pragma warning(disable : 4201)
-			union {
+			union 
+			{
 				struct
 				{
 					float m_x;
@@ -177,7 +178,8 @@ namespace Me
 		public:
 #pragma warning(push)
 #pragma warning(disable : 4201)
-			union {
+			union 
+			{
 				struct
 				{
 					float m_x;
@@ -342,7 +344,8 @@ namespace Me
 		public:
 #pragma warning(push)
 #pragma warning(disable : 4201)
-			union {
+			union 
+			{
 				struct
 				{
 					float m_x;

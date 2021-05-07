@@ -1,6 +1,16 @@
 #include "MePCH.h"
 #include "Platform/General/MeshLibrary.h"
 
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#define TINYGLTF_NOEXCEPTION
+#define JSON_NOEXCEPTION
+
+#include "tiny_gltf.h"
+#include "Utils/ModelLoaderUtils.h"
+#include "Platform/General/FileSystem/FileSystem.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Mesh.h"
@@ -58,8 +68,161 @@ Me::Resources::MeshLibrary::~MeshLibrary()
 
 Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 {
-    printf("Couldn't load %s as loading meshes from files is not supported! \n", a_name.c_str());
-    return 0;
+	tinygltf::Model model;
+
+	std::string ext = Files::FileSystem::GetFileExtention(a_name);
+
+	if(ext == "glb")
+	{
+		//Load Mesh
+		if(!Me::Utils::Resources::LoadGLBModelFromPath(a_name, model))
+		{
+			return 0;
+		}
+	}
+	else if(ext == "gltf")
+	{
+		//Load Mesh
+		if(!Me::Utils::Resources::LoadGLTFModelFromPath(a_name, model))
+		{
+			return 0;
+		}
+	}
+
+
+	std::vector<Vertex> vertices;
+	std::vector<uint16_t> indices;
+	std::string name;
+
+	for(auto primitive : model.meshes[0].primitives)
+	{
+		auto attr = primitive.attributes;
+        auto attribIter = attr.find("NORMAL");
+
+        if (attribIter != attr.end())
+        {
+			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+			auto count = model.accessors[attribIter->second].count;
+			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
+
+			vertices.reserve(count);
+			auto& buffer = model.buffers[bufferView.buffer];
+			auto start = bufferView.byteOffset;
+
+			for(std::size_t i = 0; i < count; ++i)
+			{
+				Math::Vec3 normals = *(Me::Utils::Resources::GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
+
+				if(vertices.size() <= i)
+				{
+					Vertex v;
+					v.m_normals = normals;
+					vertices.push_back(v);
+				}
+				else
+				{
+					vertices.at(i).m_normals = normals;
+				}
+			}
+		}
+	        
+		attribIter = attr.find("POSITION");
+        if (attribIter != attr.end())
+        {
+			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+			auto count = model.accessors[attribIter->second].count;
+			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
+
+			vertices.reserve(count);
+			auto& buffer = model.buffers[bufferView.buffer];
+			auto start = bufferView.byteOffset;
+
+			for(std::size_t i = 0; i < count; ++i)
+			{
+				Math::Vec3 vertPos = *(Me::Utils::Resources::GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
+
+				if(vertices.size() <= i)
+				{
+					Vertex v;
+					v.m_vertexPos = vertPos;
+					vertices.push_back(v);
+				}
+				else
+				{
+					vertices.at(i).m_vertexPos = vertPos;
+				}
+			}
+		}
+		
+		attribIter = attr.find("TEXCOORD_0");
+        if (attribIter != attr.end())
+        {
+			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+			auto count = model.accessors[attribIter->second].count;
+			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
+
+			vertices.reserve(count);
+			auto& buffer = model.buffers[bufferView.buffer];
+			auto start = bufferView.byteOffset;
+
+			for(std::size_t i = 0; i < count; ++i)
+			{
+				Math::Vec2 textCoord = *(Me::Utils::Resources::GetElementFromBuffer<Math::Vec2>(&buffer.data[accessorByteOffset], start, i));
+
+				if(vertices.size() <= i)
+				{
+					Vertex v;
+					v.m_uvCoord = textCoord;
+					vertices.push_back(v);
+				}
+				else
+				{
+					vertices.at(i).m_uvCoord = textCoord;
+				}
+			}
+		}
+	
+
+		int accesorIndex = primitive.indices;
+		if(accesorIndex != -1)
+		{
+			auto& bufferView = model.bufferViews[model.accessors[accesorIndex].bufferView];
+			auto count = model.accessors[accesorIndex].count;
+			auto accessorByteOffset = model.accessors[accesorIndex].byteOffset;
+
+			indices.reserve(count);
+
+			auto& buffer = model.buffers[bufferView.buffer];
+			auto start = bufferView.byteOffset;
+			auto compType = model.accessors[accesorIndex].componentType;
+
+			for(std::size_t i = 0; i < count; ++i)
+			{
+				uint16_t indice = 0;
+
+				if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT)
+				{
+					indice = static_cast<uint16_t>(*Me::Utils::Resources::GetElementFromBuffer<unsigned short>(&buffer.data[accessorByteOffset], start, i));
+				}
+				else if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT)
+				{
+					indice = (*Me::Utils::Resources::GetElementFromBuffer<uint16_t>(&buffer.data[accessorByteOffset], start, i));
+
+				}
+				else if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE)
+				{
+					indice = static_cast<uint16_t>(*Me::Utils::Resources::GetElementFromBuffer<unsigned char>(&buffer.data[accessorByteOffset], start, i));
+					
+				}
+
+				indices.push_back(indice);
+			}
+		}
+	}
+
+	ME_CORE_LOG("Mesh : %s is loaded with success \n", a_name.c_str());
+	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_name));
+    return CreateMesh(meshId, vertices, indices);
 }
 
 Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

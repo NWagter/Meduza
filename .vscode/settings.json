@@ -81,6 +81,9 @@
         "locale": "cpp",
         "xlocmes": "cpp",
         "xlocmon": "cpp",
-        "xloctime": "cpp"
+        "xloctime": "cpp",
+        "compare": "cpp",
+        "forward_list": "cpp",
+        "valarray": "cpp"
     }
 }

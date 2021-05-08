@@ -2,7 +2,6 @@
 
 #include "Platform/Linux/Resources/Texture.h"
 
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0))

@@ -15,9 +15,7 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    const char* file = a_textureFile.c_str();
-    
-    unsigned char *data = Me::Utils::Resources::ResourceLoaderUtils::LoadImage(file, &width, &height, &nrChannels, 0); 
+    unsigned char *data = Me::Utils::Resources::ResourceLoaderUtils::LoadImage(a_textureFile, &width, &height, &nrChannels); 
 
     if (data)
     {   

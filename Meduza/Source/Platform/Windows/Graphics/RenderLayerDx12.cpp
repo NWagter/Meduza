@@ -271,7 +271,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		auto pos = a_trans.m_position;
 		auto rot = a_trans.m_rotation.m_z;
 			
-		auto transMatrix = DirectX::XMMatrixTranslation(pos.m_x,pos.m_y,pos.m_z);
+		auto transMatrix = DirectX::XMMatrixTranslation(-pos.m_x,-pos.m_y,-pos.m_z);
 		auto rotMatrix = DirectX::XMMatrixRotationZ(rot);
 		
 		// set starting camera state

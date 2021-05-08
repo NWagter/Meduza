@@ -44,7 +44,7 @@ bool Me::Utils::Resources::ModelLoaderUtils::LoadModel(std::string a_path, std::
 			auto& buffer = model.buffers[bufferView.buffer];
 			auto start = bufferView.byteOffset;
 
-			for(std::size_t i = 0; i < count; ++i)
+			for(std::size_t i = 0; i < count; i++)
 			{
 				Math::Vec3 normals = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
 
@@ -72,7 +72,7 @@ bool Me::Utils::Resources::ModelLoaderUtils::LoadModel(std::string a_path, std::
 			auto& buffer = model.buffers[bufferView.buffer];
 			auto start = bufferView.byteOffset;
 
-			for(std::size_t i = 0; i < count; ++i)
+			for(std::size_t i = 0; i < count; i++)
 			{
 				Math::Vec3 vertPos = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
 

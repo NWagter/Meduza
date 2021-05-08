@@ -10,6 +10,7 @@ enum class GameComponents : uint16_t
     CursorComponent,
     PlayerComponent,
     RotateComponent,
+    CameraControllerComponent,
 
 
 //----------------------------------------------------------------       

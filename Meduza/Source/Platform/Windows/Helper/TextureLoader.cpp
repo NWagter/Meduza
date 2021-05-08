@@ -8,6 +8,8 @@
 #include "Platform/Windows/Graphics/CommandList.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
 
+#include "stb_image.h"
+
 #include <DDSTextureLoader.h>
 #include <WICTextureLoader.h>
 #include <codecvt>
@@ -75,6 +77,7 @@ Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(st
     
 	HRESULT hr = S_OK;
 
+
     if(a_ext == "dds")
     {
 		hr = DirectX::CreateDDSTextureFromFile12(
@@ -96,6 +99,10 @@ Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(st
     {
 	    std::unique_ptr<uint8_t[]> txtData;
 		D3D12_SUBRESOURCE_DATA subresources;
+    
+        int width, height, nrChannels;
+        const char* file = a_file.c_str();
+        unsigned char *data = stbi_load(file, &width, &height, &nrChannels, 0); 
 
 		hr = DirectX::LoadWICTextureFromFile(
 			m_device->GetDevice(),
@@ -103,7 +110,7 @@ Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(st
 			texture->m_resource.ReleaseAndGetAddressOf(),
 			txtData,
 			subresources);
-
+    
         if (hr != S_OK)
         {
             delete texture;

@@ -38,18 +38,34 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    float x = 0;
-    float y = 0;
-    float z = 5;
+    Me::Math::Vec3 position;
+    position.m_x = 0;
+    position.m_y = 0;
+    position.m_z = 5;
+
+    Me::Math::Vec3 rotation;
+    position.m_x = 0;
+    position.m_y = 0;
+    position.m_z = 0;
 
 /*
     CreateObject(x,y,z,eManager,box, true);
 */
-    x = -100;
-    y = - 100;
-    z = 200;
+    position.m_x = -100;
+    position.m_y = -100;
+    position.m_z = 300;
 
-    CreateObject(x,y,z,eManager,duck, false);
+    rotation.m_y = (Me::Math::gs_pi / 180) * 0;
+
+    CreateObject(position, rotation, eManager, duck, false); 
+    
+    position.m_x = 100;
+    position.m_y = -100;
+    position.m_z = 300;
+
+    rotation.m_y = 180;
+
+    CreateObject(position, rotation, eManager, duck, false);
 
     /*
     for(int i = -x; i <= x; i += x)
@@ -87,9 +103,9 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
-
-    tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
-    tComp->m_uniformScale = static_cast<float>(25);
+    
+    tComp->SetPosition(Me::Math::Vec3(a_x,a_y,a_z));
+    tComp->SetUniformScale(static_cast<float>(25));
 
     if(a_shouldRotate)
         rotComp->m_rotateSpeed = 0.25f;
@@ -103,7 +119,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
     a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
 }
-void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
+void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
 {
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
 
@@ -113,8 +129,9 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
 
-    tComp->m_position = Me::Math::Vec3(a_x,a_y,a_z);
-    tComp->m_uniformScale = static_cast<float>(1);
+    tComp->SetPosition(a_positon);
+    tComp->SetRotationDegree(a_rotation);
+    tComp->SetUniformScale(static_cast<float>(1));
 
     if(a_shouldRotate)
         rotComp->m_rotateSpeed = 0.25f;

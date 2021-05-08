@@ -67,10 +67,13 @@ void Physics::Physics2D::SetupScene()
     rC2->m_shader = shader;
     rC2->m_mesh = mesh;
 
-    tC2->m_position.m_x = static_cast<float>(0);
-    tC2->m_position.m_y = static_cast<float>(-128);
-    tC2->m_position.m_z = 2;
-    tC2->m_uniformScale = static_cast<float>(32);
+    Me::Math::Vec3 position2;
+
+    position2.m_x = static_cast<float>(0);
+    position2.m_y = static_cast<float>(-128);
+    position2.m_z = 2;
+    tC2->SetPosition(position2);
+    tC2->SetUniformScale(static_cast<float>(32));
     
     pC2->m_body->m_uniformScale = 32;
     pC2->m_gravity = false;
@@ -97,14 +100,19 @@ void Physics::Physics2D::SpawnObjects()
     auto rC = new Me::RenderComponent();
     auto tC = new Me::TransformComponent();
     auto pC = new Me::Physics::PhysicsComponent();
+    
     rC->m_colour = Me::Colours::AZURE_WHITE;
     rC->m_shader = shader;
     rC->m_mesh = mesh;
 
-    tC->m_position.m_x = static_cast<float>(0);
-    tC->m_position.m_y = static_cast<float>(128);
-    tC->m_position.m_z = 2;
-    tC->m_uniformScale = static_cast<float>(32);
+    Me::Math::Vec3 position;
+
+    position.m_x = static_cast<float>(0);
+    position.m_y = static_cast<float>(128);
+    position.m_z = 2;
+
+    tC->SetPosition(position);
+    tC->SetUniformScale(static_cast<float>(32));
 
     pC->m_collisionType = Me::Physics::CollisionType::Block;
     pC->m_body->m_uniformScale = 32;
@@ -125,10 +133,14 @@ void Physics::Physics2D::SpawnObjects()
     rC3->m_shader = shader;
     rC3->m_mesh = mesh;
 
-    tC3->m_position.m_x = static_cast<float>(0);
-    tC3->m_position.m_y = static_cast<float>(256);
-    tC3->m_position.m_z = 2;
-    tC3->m_uniformScale = static_cast<float>(32);
+    Me::Math::Vec3 position3;
+
+    position3.m_x = static_cast<float>(0);
+    position3.m_y = static_cast<float>(256);
+    position3.m_z = 2;
+
+    tC3->SetPosition(position3);
+    tC3->SetUniformScale(static_cast<float>(32));
     
     pC3->m_collisionType = Me::Physics::CollisionType::Overlap;
     pC3->m_body->m_uniformScale = 32;

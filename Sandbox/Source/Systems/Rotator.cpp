@@ -20,7 +20,11 @@ void Rotator::OnUpdate(float a_dt)
         Me::TransformComponent* trans = std::get<Me::TransformComponent*>(compTuple);  
         RotateComponent* rot = std::get<RotateComponent*>(compTuple);  
 
-        trans->m_rotation.m_x += rot->m_rotateSpeed * a_dt;
-        trans->m_rotation.m_z += rot->m_rotateSpeed * a_dt;
+        Me::Math::Vec3 rotation = trans->GetRotation();
+
+        rotation.m_x += rot->m_rotateSpeed * a_dt;
+        rotation.m_z += rot->m_rotateSpeed * a_dt;
+
+        trans->SetRotationRadian(rotation);
     }
 }

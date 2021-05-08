@@ -68,6 +68,13 @@ Me::Resources::MeshLibrary::~MeshLibrary()
 
 Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 {
+	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_name));
+
+    if (ms_instance->m_meshes[meshId] != nullptr)
+    {
+        return meshId;
+    }
+
 	std::vector<Vertex> vertices;
 	std::vector<uint16_t> indices;
 	
@@ -79,7 +86,6 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 	std::string name;
 
 	ME_CORE_LOG("Mesh : %s is loaded with success \n", a_name.c_str());
-	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_name));
     return CreateMesh(meshId, vertices, indices);
 }
 

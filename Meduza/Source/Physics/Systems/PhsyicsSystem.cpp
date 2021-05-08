@@ -26,8 +26,8 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
         pC->m_collided.clear();
         pC->m_triggered.clear();
 
-        Math::Vec3 newPos = tC->m_position;
-        Math::Vec3 newRot = tC->m_rotation;
+        Math::Vec3 newPos = tC->GetPosition();
+        Math::Vec3 newRot = tC->GetRotation();
         bool applyGravity = true;
 
         for(auto ph : physicsObjects)
@@ -79,7 +79,7 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
             newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
         }
 
-        pC->m_body->m_position = tC->m_position = newPos;
-        pC->m_body->m_rotation = tC->m_rotation = newRot;
+        pC->m_body->m_position = tC->SetPosition(newPos);
+        pC->m_body->m_rotation = tC->SetRotationRadian(newRot);
     }
 }

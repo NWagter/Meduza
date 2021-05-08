@@ -100,10 +100,13 @@ Chess::ChessBoardComponent* Chess::ChessGame::CreateBoard()
          Me::RenderComponent* rComp = new Me::RenderComponent();
          Me::TransformComponent* tComp = new Me::TransformComponent();
 
-         tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
-         tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
-         tComp->m_position.m_z = 2;
-         tComp->m_uniformScale = static_cast<float>(gs_tileSize);
+         Me::Math::Vec3 position;
+
+         position.m_x = static_cast<float>(x * gs_tileSize);
+         position.m_y = static_cast<float>(y * gs_tileSize);
+         position.m_z = 2;
+         tComp->SetPosition(position);
+         tComp->SetUniformScale(static_cast<float>(gs_tileSize));
 
          rComp->m_mesh = mesh;
          rComp->m_shader = shader;
@@ -165,9 +168,13 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
             pawnComp->m_pawnEntity = pawn;
 
-            tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
-            tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
-            tComp->m_uniformScale = static_cast<float>(gs_tileSize);
+            Me::Math::Vec3 position = tComp->GetPosition();
+
+            position.m_x = static_cast<float>(x * gs_tileSize);
+            position.m_y = static_cast<float>(y * gs_tileSize);
+
+            tComp->SetPosition(position);
+            tComp->SetUniformScale(static_cast<float>(gs_tileSize));
             
             rComp->m_shader = shader;
             rComp->m_texture = texture;
@@ -195,10 +202,14 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             pawnComp->m_pawnColour = pawnColour;
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
             pawnComp->m_pawnEntity = pawn;
+            
+            Me::Math::Vec3 position = tComp->GetPosition();
 
-            tComp->m_position.m_x = static_cast<float>(x * gs_tileSize);
-            tComp->m_position.m_y = static_cast<float>(y * gs_tileSize);
-            tComp->m_uniformScale = static_cast<float>(gs_tileSize);
+            position.m_x = static_cast<float>(x * gs_tileSize);
+            position.m_y = static_cast<float>(y * gs_tileSize);
+
+            tComp->SetPosition(position);
+            tComp->SetUniformScale(static_cast<float>(gs_tileSize));
             
             rComp->m_shader = shader;
             rComp->m_texture = texture;

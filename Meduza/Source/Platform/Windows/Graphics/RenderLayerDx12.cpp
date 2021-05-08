@@ -228,9 +228,9 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	iB.m_textureId = textureId;
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
-	auto pos = a_trans.m_position;
-	auto scale = a_trans.m_uniformScale;
-	auto rot = a_trans.m_rotation;
+	auto pos = a_trans.GetPosition();
+	auto scale = a_trans.GetUniformedScale();
+	auto rot = a_trans.GetRotation();
 
 	const DirectX::XMMATRIX p = DirectX::XMMatrixTranslation(pos.m_x, pos.m_y, pos.m_z);
 	const DirectX::XMMATRIX s = DirectX::XMMatrixScaling(scale, scale, scale);
@@ -248,8 +248,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 {
 	if(a_cam.m_cameraType == CameraType::Orthographic)
 	{
-		auto pos = a_trans.m_position;
-		auto rot = a_trans.m_rotation.m_z;
+		auto pos = a_trans.GetPosition();
+		auto rot = a_trans.GetRotation().m_z;
 			
 		auto transMatrix = DirectX::XMMatrixTranslation(pos.m_x,pos.m_y,pos.m_z);
 		auto rotMatrix = DirectX::XMMatrixRotationZ(rot);
@@ -268,8 +268,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 	}
 	else if(a_cam.m_cameraType == CameraType::Perspective)
 	{
-		auto pos = a_trans.m_position;
-		auto rot = a_trans.m_rotation;
+		auto pos = a_trans.GetPosition();
+		auto rot = a_trans.GetRotation();
 			
 		auto transMatrix = DirectX::XMMatrixTranslation(-pos.m_x,-pos.m_y,-pos.m_z);
 		auto rotMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationRollPitchYaw(rot.m_x,rot.m_y,rot.m_z));

@@ -8,6 +8,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define TINYGLTF_NOEXCEPTION
 #define JSON_NOEXCEPTION
+
 #include "tiny_gltf.h"
 
 bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices)
@@ -35,6 +36,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
     std::vector<Vertex> vertices;
 	std::vector<uint16_t> indices;
 
+	//Load Mesh
 	for(auto primitive : model.meshes[0].primitives)
 	{
 		auto attr = primitive.attributes;
@@ -161,9 +163,22 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
 		}
 	}
 
-
     a_vertices = vertices;
     a_indices = indices;
+
+    if (model.textures.size() > 0)
+	{
+		// fixme: Use material's baseColor
+		tinygltf::Texture &tex = model.textures[0];
+
+		if (tex.source > -1) 
+		{
+			tinygltf::Texture &tex = model.textures[0];
+			tinygltf::Image &image = model.images[tex.source];
+
+		}
+	}
+	
     return true;
 }
 

@@ -13,26 +13,26 @@ but what is currently planned is the following :
 
 - Rendering
   - 2D Rendering
-    - Textured Quads
+    - :white_check_mark: Textured Quads
     - Sprite Animator
   - 3D Rendering
     - Geometry
-      - Cubes
-      - Spheres
+      - :white_check_mark: Cubes
+      - :white_check_mark: Spheres
       - Planes
     - Object Loading
       - Obj
-      - glTF
+      - :white_check_mark: glTF
     - Lights
       - Point Lights
       - Directional Lights
     - Skeletal animations
 - Entity Component System
-  - Components
-  - Systems
+  - :white_check_mark: Components
+  - :white_check_mark: Systems
 - Input
   - Mouse
-  - Keyboard
+  - :white_check_mark: Keyboard
 - Physics
   - 2D Phsyics
     - Box2D Collision
@@ -55,3 +55,9 @@ but what is currently planned is the following :
 
 Meduza is a personal game engine project, mainly made with C++.
 Capable of Rendering 2D and 3D geometry, input events, ECS and basic Physics
+
+3D rendered Duck gltf loader
+
+<p align="center">
+  <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/DuckRendered.png" width="500"/>
+</p>

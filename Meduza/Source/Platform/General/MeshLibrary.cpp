@@ -2,7 +2,7 @@
 #include "Platform/General/MeshLibrary.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
-#include "Utils/ModelLoaderUtils.h"
+#include "Utils/ResourceLoaderUtils.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
@@ -71,7 +71,7 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 	std::vector<Vertex> vertices;
 	std::vector<uint16_t> indices;
 	
-	if(!Me::Utils::Resources::ModelLoaderUtils::LoadModel(a_name, vertices, indices))
+	if(!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_name, vertices, indices))
 	{
 		return 0;
 	}

@@ -1,12 +1,16 @@
 #include "MePCH.h"
-#include "Utils/ModelLoaderUtils.h"
+#include "Utils/ResourceLoaderUtils.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
 
-
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#define TINYGLTF_NOEXCEPTION
+#define JSON_NOEXCEPTION
 #include "tiny_gltf.h"
 
-bool Me::Utils::Resources::ModelLoaderUtils::LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices)
 {
 	tinygltf::Model model;
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
@@ -160,11 +164,21 @@ bool Me::Utils::Resources::ModelLoaderUtils::LoadModel(std::string a_path, std::
 
     a_vertices = vertices;
     a_indices = indices;
-    
     return true;
 }
 
-bool Me::Utils::Resources::ModelLoaderUtils::LoadGLTFModelFromPath(std::string a_path, tinygltf::Model& a_model)
+unsigned char * Me::Utils::Resources::ResourceLoaderUtils::LoadImage(std::string a_path,int *a_width, int *a_height, int *a_channels)
+{
+    const char* file = a_path.c_str();
+	return stbi_load(file, a_width, a_height, a_channels, 0);
+}
+
+void Me::Utils::Resources::ResourceLoaderUtils::FreeImage(void* a_data)
+{
+	stbi_image_free(a_data);
+}
+
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLTFModelFromPath(std::string a_path, tinygltf::Model& a_model)
 {
     tinygltf::TinyGLTF loader;
     std::string err;
@@ -192,7 +206,7 @@ bool Me::Utils::Resources::ModelLoaderUtils::LoadGLTFModelFromPath(std::string a
     
     return true;
 }
-bool Me::Utils::Resources::ModelLoaderUtils::LoadGLBModelFromPath(std::string a_path, tinygltf::Model& a_model)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLBModelFromPath(std::string a_path, tinygltf::Model& a_model)
 {
     tinygltf::TinyGLTF loader;
     tinygltf::Model model;

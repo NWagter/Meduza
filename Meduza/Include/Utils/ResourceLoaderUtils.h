@@ -11,14 +11,17 @@ namespace Me
     {
         namespace Resources 
         {
-            class ModelLoaderUtils
+            class ResourceLoaderUtils
             {
                 public:
-                    static bool LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices);
+                    static bool LoadModel(std::string, std::vector<Vertex>&, std::vector<uint16_t>&);
+
+                    static unsigned char * LoadImage(std::string, int*, int*, int*);
+                    static void FreeImage(void*);
 
                 private:
-                    static bool LoadGLTFModelFromPath(std::string a_path, tinygltf::Model& a_model);
-                    static bool LoadGLBModelFromPath(std::string a_path, tinygltf::Model& a_model);
+                    static bool LoadGLTFModelFromPath(std::string, tinygltf::Model& );
+                    static bool LoadGLBModelFromPath(std::string, tinygltf::Model& );
 
                     template<typename T>
                     inline static const T* GetElementFromBuffer(const unsigned char* a_data, const std::size_t a_offset, const std::size_t a_index)

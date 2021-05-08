@@ -2,7 +2,7 @@
 
 #include "Platform/Linux/Resources/Texture.h"
 
-#include "stb_image.h"
+#include "Utils/ResourceLoaderUtils.h"
 
 Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0))
 {
@@ -16,7 +16,9 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
 
     int width, height, nrChannels;
     const char* file = a_textureFile.c_str();
-    unsigned char *data = stbi_load(file, &width, &height, &nrChannels, 0); 
+    
+    unsigned char *data = Me::Utils::Resources::ResourceLoaderUtils::LoadImage(file, &width, &height, &nrChannels, 0); 
+
     if (data)
     {   
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -28,7 +30,7 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
     }
 
     m_size = Math::Vec2(float(width), float(height));
-    stbi_image_free(data);
+    Me::Utils::Resources::ResourceLoaderUtils::FreeImage(data);
 }
 
 Me::Resources::GL::Texture::~Texture()

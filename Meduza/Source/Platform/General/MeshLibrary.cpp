@@ -1,14 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/MeshLibrary.h"
 
-#define TINYGLTF_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define TINYGLTF_NOEXCEPTION
-#define JSON_NOEXCEPTION
-
 #include "Platform/General/FileSystem/FileSystem.h"
-#include "tiny_gltf.h"
 #include "Utils/ModelLoaderUtils.h"
 
 #ifdef PLATFORM_WINDOWS

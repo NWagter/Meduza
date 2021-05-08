@@ -2,6 +2,12 @@
 #include "Utils/ModelLoaderUtils.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
+
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#define TINYGLTF_NOEXCEPTION
+#define JSON_NOEXCEPTION
 #include "tiny_gltf.h"
 
 bool Me::Utils::Resources::ModelLoaderUtils::LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices)

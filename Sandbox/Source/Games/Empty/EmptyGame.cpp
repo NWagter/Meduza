@@ -23,8 +23,8 @@ EmptyGame::~EmptyGame()
 
 void EmptyGame::InitGame()
 {
-    Me::Mesh box = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Cube.glb");
-    Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+    Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+    Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
 
     auto eManager = Me::EntityManager::GetEntityManager();
 
@@ -38,50 +38,48 @@ void EmptyGame::InitGame()
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
-    Me::Math::Vec3 position;
-    position.m_x = 0;
-    position.m_y = 0;
-    position.m_z = 5;
 
-    Me::Math::Vec3 rotation;
-    position.m_x = 0;
-    position.m_y = 0;
-    position.m_z = 0;
-
-/*
-    CreateObject(x,y,z,eManager,box, true);
-*/
-    position.m_x = -100;
-    position.m_y = -100;
-    position.m_z = 300;
-
-    rotation.m_y = (Me::Math::gs_pi / 180) * 0;
-
-    CreateObject(position, rotation, eManager, duck, false); 
+    Me::Math::Vec3 spawnPointStart = Me::Math::Vec3(2,2,2);
+    Me::Math::Vec3 spawnPointRot = Me::Math::Vec3(0,0,0);
     
-    position.m_x = 100;
-    position.m_y = -100;
-    position.m_z = 300;
-
-    rotation.m_y = 180;
-
-    CreateObject(position, rotation, eManager, duck, false);
-
-    /*
-    for(int i = -x; i <= x; i += x)
+    for(int i = -spawnPointStart.m_x; i <= spawnPointStart.m_x; i += spawnPointStart.m_x)
     {
-        for(int j = -y; j <= y; j += y)
+        for(int j = -spawnPointStart.m_y; j <= spawnPointStart.m_y; j +=spawnPointStart.m_y)
         {
-            for(int n = z; n <= (z * 10); n += z)
+            for(int n = spawnPointStart.m_z; n <= (spawnPointStart.m_z * 10); n += spawnPointStart.m_z)
             {
-                CreateObject(i,j,n, eManager);
+                CreateObject(Me::Math::Vec3(i, j, n), spawnPointRot, eManager, false, true);
             }
         }
     }
-    */
 }
 
-void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, bool a_sphere, bool a_shouldRotate)
+void EmptyGame::UpdateGame(float)
+{
+    if(!m_spawnedDucks)
+    {
+        if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Space))
+        {
+            auto eManager = Me::EntityManager::GetEntityManager();
+
+            Me::Math::Vec3 position = Me::Math::Vec3(-10, 0, 25);
+            Me::Math::Vec3 rotation = Me::Math::Vec3(0,0,0);   
+            rotation.m_y = 180;
+
+            Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
+            CreateObject(position, rotation, 5, eManager, suzanne, false); 
+            
+            position.m_x = 10;
+            
+            Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+            CreateObject(position, rotation, 0.05f, eManager, duck, false);
+
+            m_spawnedDucks = true;
+        }
+    }
+}
+
+void EmptyGame::CreateObject(Me::Math::Vec3 a_pos, Me::Math::Vec3 a_rot, Me::EntityManager* a_eManager, bool a_sphere, bool a_shouldRotate)
 {
     int i = rand() % 100;
     std::string textureFile = "Assets/Textures/Crate.png";
@@ -104,8 +102,9 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
     
-    tComp->SetPosition(Me::Math::Vec3(a_x,a_y,a_z));
-    tComp->SetUniformScale(static_cast<float>(25));
+    tComp->SetPosition(a_pos);
+    tComp->SetRotationDegree(a_rot);
+    tComp->SetUniformScale(static_cast<float>(1));
 
     if(a_shouldRotate)
         rotComp->m_rotateSpeed = 0.25f;
@@ -119,7 +118,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
     a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
 }
-void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
+void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation, float a_uniformScale, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
 {
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
 
@@ -131,7 +130,7 @@ void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation
 
     tComp->SetPosition(a_positon);
     tComp->SetRotationDegree(a_rotation);
-    tComp->SetUniformScale(static_cast<float>(1));
+    tComp->SetUniformScale(a_uniformScale);
 
     if(a_shouldRotate)
         rotComp->m_rotateSpeed = 0.25f;

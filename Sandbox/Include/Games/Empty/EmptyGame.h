@@ -20,8 +20,10 @@ public:
     ~EmptyGame();
 
     void InitGame() override;
+    void UpdateGame(float) override;
 
 private:
-    void CreateObject(float,float,float, Me::EntityManager*, bool = false, bool = true);
-    void CreateObject(Me::Math::Vec3, Me::Math::Vec3, Me::EntityManager*, Me::Mesh, bool = true);
+    void CreateObject(Me::Math::Vec3, Me::Math::Vec3, Me::EntityManager*, bool = false, bool = true);
+    void CreateObject(Me::Math::Vec3, Me::Math::Vec3,float, Me::EntityManager*, Me::Mesh, bool = true);
+    bool m_spawnedDucks = false;
 };

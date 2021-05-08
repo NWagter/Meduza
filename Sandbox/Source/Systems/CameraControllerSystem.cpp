@@ -52,7 +52,7 @@ void CameraControllerSystem::OnUpdate(float a_dt)
         {
             rotation.m_y -= (10) * a_dt;
         }
-        
+
         Me::Math::Vec3 position = trans->GetPosition();
         position += (moveDir * 150) * a_dt;
 

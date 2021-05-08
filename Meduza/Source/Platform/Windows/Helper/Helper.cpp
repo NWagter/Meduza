@@ -10,6 +10,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 {
 	Microsoft::WRL::ComPtr<ID3D12Resource> defaultBuffer;
 
+
 	CD3DX12_HEAP_PROPERTIES heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(a_byteSize);
 
@@ -20,6 +21,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 		D3D12_RESOURCE_STATE_COMMON,
 		nullptr,
 		IID_PPV_ARGS(&defaultBuffer));
+
 	defaultBuffer->SetName(L"Default Buffer Resource Heap");
 
 	CD3DX12_HEAP_PROPERTIES heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -30,7 +32,10 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&a_uploadBuffer));
+
 	a_uploadBuffer->SetName(L"UploadBuffer Resource Heap");
+
+	
 
 	D3D12_SUBRESOURCE_DATA subResourceData = {};
 	subResourceData.pData = a_initData;

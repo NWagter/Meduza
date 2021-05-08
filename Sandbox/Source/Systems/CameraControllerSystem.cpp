@@ -42,7 +42,17 @@ void CameraControllerSystem::OnUpdate(float a_dt)
             moveDir.m_x--;
         }
 
-        trans->m_position += (moveDir * 10) * a_dt;
+
+        if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
+        {
+            trans->m_rotation.m_y += (10) * a_dt;
+        }
+        else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::E))
+        {
+            trans->m_rotation.m_y -= (10) * a_dt;
+        }
+
+        trans->m_position += (moveDir * 50) * a_dt;
 
     }
 }

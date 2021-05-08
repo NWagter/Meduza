@@ -42,12 +42,12 @@ void EmptyGame::InitGame()
     float y = 0;
     float z = 5;
 
-
+/*
     CreateObject(x,y,z,eManager,box, true);
-
+*/
     x = -100;
     y = - 100;
-    z = 500;
+    z = 200;
 
     CreateObject(x,y,z,eManager,duck, false);
 
@@ -105,8 +105,7 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
 }
 void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
 {
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
-    Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture("Assets/Textures/Crate.png");
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
 
     EntityID cube = a_eManager->CreateEntity();
 
@@ -123,7 +122,6 @@ void EmptyGame::CreateObject(float a_x,float a_y,float a_z, Me::EntityManager* a
     rComp->m_mesh = a_mesh;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
-    rComp->m_texture = texture;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

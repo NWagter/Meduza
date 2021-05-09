@@ -46,11 +46,11 @@ void CameraControllerSystem::OnUpdate(float a_dt)
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
         {
-            rotation.m_y += (10) * a_dt;
+            rotation.m_yaw += (10) * a_dt;
         }
         else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::E))
         {
-            rotation.m_y -= (10) * a_dt;
+            rotation.m_yaw -= (10) * a_dt;
         }
 
         Me::Math::Vec3 position = trans->GetPosition();

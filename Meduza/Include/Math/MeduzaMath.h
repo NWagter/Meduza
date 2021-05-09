@@ -186,6 +186,14 @@ namespace Me
 					float m_y;
 					float m_z;
 				};
+
+				struct
+				{
+					float m_roll;
+					float m_pitch;
+					float m_yaw;
+				};
+
 				float m_xyz[3];
 			};
 #pragma warning(pop)

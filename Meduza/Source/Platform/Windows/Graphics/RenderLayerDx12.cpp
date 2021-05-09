@@ -272,7 +272,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		auto rot = a_trans.GetRotation();
 			
 		auto transMatrix = DirectX::XMMatrixTranslation(-pos.m_x,-pos.m_y,-pos.m_z);
-		auto rotMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationRollPitchYaw(rot.m_x,rot.m_y,rot.m_z));
+		auto rotMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationRollPitchYaw(rot.m_pitch, rot.m_yaw, rot.m_roll));
 		
 		// set starting camera state
 		auto cameraTarget = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);

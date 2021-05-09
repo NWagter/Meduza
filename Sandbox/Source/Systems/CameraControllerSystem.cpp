@@ -22,24 +22,35 @@ void CameraControllerSystem::OnUpdate(float a_dt)
         Me::TransformComponent* trans = std::get<Me::TransformComponent*>(compTuple);
 
 
-        Me::Math::Vec3 moveDir;
+        float forwardMovment = 0;
+        float rightMovment = 0 ;
+        float upMovment = 0;
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::W))
         {
-            moveDir.m_z++;
+            forwardMovment++;
         }  
         else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::S))
         {            
-            moveDir.m_z--;
+            forwardMovment--;
         }
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::D))
         {
-            moveDir.m_x++;
+            rightMovment++;
         }
         else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::A))
         {
-            moveDir.m_x--;
+            rightMovment--;
+        }
+
+        if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Space))
+        {
+            upMovment++;
+        }
+        else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Shift))
+        {
+            upMovment--;
         }
 
         Me::Math::Vec3 rotation = trans->GetRotation();
@@ -52,11 +63,16 @@ void CameraControllerSystem::OnUpdate(float a_dt)
         {
             rotation.m_yaw -= (10) * a_dt;
         }
-
+        
         Me::Math::Vec3 position = trans->GetPosition();
-        position += (moveDir * 150) * a_dt;
 
-        trans->SetPosition(position);
+
+        Me::Math::Vec3 forward = trans->GetForward() * (forwardMovment * 150);
+        Me::Math::Vec3 right = trans->GetRight() * (rightMovment * 150);
+        Me::Math::Vec3 up = trans->GetUp() * (upMovment * 150);
+        Me::Math::Vec3 movement = forward + right + up;
+
+        trans->Translate(movement * a_dt);
         trans->SetRotationRadian(rotation);
     }
 }

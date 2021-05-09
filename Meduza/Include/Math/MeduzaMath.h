@@ -190,8 +190,8 @@ namespace Me
 				struct
 				{
 					float m_roll;
-					float m_pitch;
 					float m_yaw;
+					float m_pitch;
 				};
 
 				float m_xyz[3];
@@ -491,6 +491,302 @@ namespace Me
 			}
 		};
 
+
+		class Mat4
+		{
+		public:
+			#pragma warning(push)
+#pragma warning(disable : 4201)
+			union 
+			{
+				struct
+				{
+					Vec4 m_row0;
+					Vec4 m_row1;
+					Vec4 m_row2;
+					Vec4 m_row3;
+				};
+				struct
+				{
+					float m_00, m_01, m_02, m_03;
+					float m_10, m_11, m_12, m_13;
+					float m_20, m_21, m_22, m_23;
+					float m_30, m_31, m_32, m_33;
+				};
+				float m_mat[4][4];
+
+				float m_m[4*4];
+			};
+#pragma warning(pop)
+		public:
+			Mat4(Vec4 a_row0,Vec4 a_row1,Vec4 a_row2,Vec4 a_row3)
+			{
+				m_row0 = a_row0;
+				m_row1 = a_row1;
+				m_row2 = a_row2;
+				m_row3 = a_row3;
+			}
+			Mat4(
+				float a_00, float a_01, float a_02, float a_03,
+				float a_10, float a_11, float a_12, float a_13,
+				float a_20, float a_21, float a_22, float a_23,
+				float a_30, float a_31, float a_32, float a_33)
+			{
+				m_00 = a_00; m_01 = a_01; m_02 = a_02; m_03 = a_03;
+				m_10 = a_10; m_11 = a_11; m_12 = a_12; m_13 = a_13;
+				m_20 = a_20; m_21 = a_21; m_22 = a_22; m_23 = a_23;
+				m_30 = a_30; m_31 = a_31; m_32 = a_32; m_33 = a_33;			
+			}
+
+			inline float TriangleRule(	
+						float a_01, float a_02, float a_03,
+						float a_11, float a_12, float a_13,
+						float a_21, float a_22, float a_23)
+			{
+					return  (a_01 * a_12 * a_23) +
+							(a_02 * a_13 * a_21) +
+							(a_03 * a_11 * a_22) -
+							(a_03 * a_12 * a_21) -
+							(a_01 * a_13 * a_22) -
+							(a_02 * a_11 * a_23);
+			}
+
+			static inline Mat4 Identity()
+			{
+				return Mat4(1, 0, 0, 0,
+							0, 1, 0, 0,
+							0, 0, 1, 0,
+							0, 0, 0, 1);
+			}
+			inline Mat4& Inverse()
+			{
+				Mat4 temp = *this;
+
+				temp.m_00 = TriangleRule(m_11, m_12, m_13,
+					m_21, m_22, m_23,
+					m_31, m_32, m_33);
+				temp.m_10 = -TriangleRule(m_10, m_12, m_13,
+					m_20, m_22, m_23,
+					m_30, m_32, m_33);
+				temp.m_20 = TriangleRule(m_10, m_11, m_13,
+					m_20, m_21, m_23,
+					m_30, m_31, m_33);
+				temp.m_30 = -TriangleRule(m_10, m_11, m_12,
+					m_20, m_21, m_22,
+					m_30, m_31, m_32);
+
+				//colum 1
+
+				temp.m_01 = -TriangleRule(m_01, m_02, m_03,
+					m_21, m_22, m_23,
+					m_31, m_32, m_33);
+				temp.m_11 = TriangleRule(m_00, m_02, m_03,
+					m_20, m_22, m_23,
+					m_30, m_32, m_33);
+				temp.m_21 = -TriangleRule(m_00, m_01, m_03,
+					m_20, m_21, m_23,
+					m_30, m_31, m_33);
+				temp.m_31 = TriangleRule(m_00, m_01, m_02,
+					m_20, m_21, m_22,
+					m_30, m_31, m_32);
+				//colum 2
+
+				temp.m_02 = TriangleRule(m_01, m_02, m_03,
+					m_11, m_12, m_13,
+					m_31, m_32, m_33);
+				temp.m_12 = -TriangleRule(m_00, m_02, m_03,
+					m_10, m_12, m_13,
+					m_30, m_32, m_33);
+				temp.m_22 = TriangleRule(m_00, m_01, m_03,
+					m_10, m_11, m_13,
+					m_30, m_31, m_33);
+				temp.m_32 = -TriangleRule(m_00, m_01, m_02,
+					m_10, m_11, m_12,
+					m_30, m_31, m_32);
+
+				//colum 3
+
+				temp.m_03 = -TriangleRule(m_01, m_02, m_03,
+					m_11, m_12, m_13,
+					m_21, m_22, m_23);
+				temp.m_13 = TriangleRule(m_00, m_02, m_03,
+					m_10, m_12, m_13,
+					m_20, m_22, m_23);
+				temp.m_23 = -TriangleRule(m_00, m_01, m_03,
+					m_10, m_11, m_13,
+					m_20, m_21, m_23);
+				temp.m_33 = TriangleRule(m_00, m_01, m_02,
+					m_10, m_11, m_12,
+					m_20, m_21, m_22);
+
+				return *this;
+			}
+			
+			inline Mat4& operator=(Mat4 a_rhs)
+			{
+				for(int i = 0; i < 16; i++)
+					m_m[i] = a_rhs.m_m[i];
+
+				return *this;
+			}
+
+			inline Mat4 operator +(const Mat4& a_rhs)
+			{				
+				Mat4 temp = *this;
+
+				for (int i = 0; i < 16; i++)
+				{
+					temp.m_m[i] += a_rhs.m_m[i];
+				}
+
+				return temp;
+			}
+
+			inline Mat4 operator *(const Mat4& a_rhs)
+			{
+				Mat4 result = Mat4::Identity();
+				Mat4 self = *this;
+
+				for (auto i = 0; i < 4; ++i)
+				{
+					for (auto j = 0; j < 4; ++j)
+					{
+						result.m_mat[i][j] = 0.0f;
+
+						for (auto k = 0; k < 4; ++k)
+						{
+							result.m_mat[i][j] += self.m_mat[i][k] * a_rhs.m_mat[k][j];
+						}
+					}
+				}
+
+				return result;
+			}
+			
+			inline Mat4& operator*=(const Mat4 &a_rhs)
+			{
+				*this = *this * a_rhs;
+				return *this;
+			}
+
+			inline Mat4& Rotation(Vec3 a_rotation)
+			{
+				Mat4 newRotMat = Mat4::Identity();
+				newRotMat.RotateX(a_rotation.m_x);
+				newRotMat.RotateY(a_rotation.m_y);
+				newRotMat.RotateZ(a_rotation.m_z);
+
+				m_m[0] = newRotMat.m_m[0];
+				m_m[1] = newRotMat.m_m[1];
+				m_m[2] = newRotMat.m_m[2];
+				m_m[4] = newRotMat.m_m[4];
+				m_m[5] = newRotMat.m_m[5];
+				m_m[6] = newRotMat.m_m[6];
+				m_m[8] = newRotMat.m_m[8];
+				m_m[9] = newRotMat.m_m[9];
+				m_m[10] = newRotMat.m_m[10];
+
+				return *this;
+			} 
+			
+			inline Vec3 GetEuler()
+			{
+				Vec3 euler = Vec3(0,0,0);
+				
+				//Calc Euler
+
+				return euler;
+			}
+
+			inline Vec3 GetPosition()
+			{
+				return Vec3(m_03, m_13, m_23);
+			}
+			inline Mat4& SetPosition(Vec3 a_position)
+			{
+				m_03 = a_position.m_x;
+				m_13 = a_position.m_y;
+				m_23 = a_position.m_z;
+
+				return *this;
+			}
+
+			inline Mat4 Translate(Vec3& a_translation)
+			{
+				m_mat[0][3] += a_translation.m_x;
+				m_mat[1][3] += a_translation.m_y;
+				m_mat[2][3] += a_translation.m_z;
+
+				return *this;
+			}
+
+			inline Vec3 GetScale()
+			{
+				Vec3 euler = Vec3(0,0,0);
+				
+				//Calc Euler
+
+				return euler;
+			}
+
+			inline Mat4& SetScale(float)
+			{
+				Mat4 temp = *this;
+				
+				//Calc Scale
+
+				return *this;
+			}
+			inline Mat4& SetScale(Vec3)
+			{
+				Mat4 temp = *this;
+				
+				//Calc Scale
+
+				return *this;
+			}
+
+		private:
+			inline void RotateX(float a_radians)
+			{
+				const float c = cos(a_radians);
+				const float s = sin(a_radians);
+				Mat4 rot = Mat4::Identity();
+				
+				rot.m_11 = c;
+				rot.m_12 = s;
+				rot.m_21 = -s;
+				rot.m_22 = c;
+
+				*this = rot * *this;
+			}	
+			inline void RotateY(float a_radians)
+			{
+				const float c = cos(a_radians);
+				const float s = sin(a_radians);
+				Mat4 rot = Mat4::Identity();
+				
+				rot.m_00 = c;
+				rot.m_02 = -s;
+				rot.m_20 = s;
+				rot.m_22 = c;
+
+				*this = rot * *this;
+			}	
+			inline void RotateZ(float a_radians)
+			{
+				const float c = cos(a_radians);
+				const float s = sin(a_radians);
+				Mat4 rot = Mat4::Identity();
+				
+				rot.m_00 = c;
+				rot.m_01 = -s;
+				rot.m_10 = s;
+				rot.m_11 = c;
+
+				*this = rot * *this;
+			}
+		};
 // =========== Operators
 
 		inline bool operator==(Vec2 a_rhs, Vec2 a_lhs)

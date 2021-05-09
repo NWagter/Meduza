@@ -270,13 +270,14 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 	{
 		auto pos = a_trans.GetPosition();
 		auto rot = a_trans.GetRotation();
+		auto up = a_trans.GetUp();
 			
 		auto transMatrix = DirectX::XMMatrixTranslation(-pos.m_x,-pos.m_y,-pos.m_z);
-		auto rotMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationRollPitchYaw(rot.m_pitch, rot.m_yaw, rot.m_roll));
-		
+		auto rotMatrix = DirectX::XMMatrixRotationRollPitchYaw(rot.m_pitch,rot.m_yaw,rot.m_roll);
+
 		// set starting camera state
 		auto cameraTarget = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-		auto cameraUp = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
+		auto cameraUp = DirectX::XMFLOAT4(up.m_x, up.m_y, up.m_z, 0.0f);
 
 		// build projection and view matrix
 		DirectX::XMMATRIX projectionMat = DirectX::XMMatrixPerspectiveFovLH(45.0f*(3.14f/180.0f),

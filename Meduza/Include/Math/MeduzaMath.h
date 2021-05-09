@@ -501,13 +501,6 @@ namespace Me
 			{
 				struct
 				{
-					Vec4 m_row0;
-					Vec4 m_row1;
-					Vec4 m_row2;
-					Vec4 m_row3;
-				};
-				struct
-				{
 					float m_00, m_01, m_02, m_03;
 					float m_10, m_11, m_12, m_13;
 					float m_20, m_21, m_22, m_23;
@@ -519,13 +512,6 @@ namespace Me
 			};
 #pragma warning(pop)
 		public:
-			Mat4(Vec4 a_row0,Vec4 a_row1,Vec4 a_row2,Vec4 a_row3)
-			{
-				m_row0 = a_row0;
-				m_row1 = a_row1;
-				m_row2 = a_row2;
-				m_row3 = a_row3;
-			}
 			Mat4(
 				float a_00, float a_01, float a_02, float a_03,
 				float a_10, float a_11, float a_12, float a_13,

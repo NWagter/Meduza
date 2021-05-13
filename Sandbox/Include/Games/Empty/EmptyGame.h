@@ -6,6 +6,7 @@ namespace Me
 {
     class EntityManager;
     using Mesh = uint16_t;
+    using Texture = uint16_t;
 
     namespace Math
     {
@@ -24,6 +25,6 @@ public:
 
 private:
     void CreateObject(Me::Math::Vec3, Me::Math::Vec3, Me::EntityManager*, bool = false, bool = true);
-    void CreateObject(Me::Math::Vec3, Me::Math::Vec3,float, Me::EntityManager*, Me::Mesh, bool = true);
+    void CreateObject(Me::Math::Vec3, Me::Math::Vec3,float, Me::EntityManager*, Me::Mesh, Me::Texture, bool = true);
     bool m_spawnedDucks = false;
 };

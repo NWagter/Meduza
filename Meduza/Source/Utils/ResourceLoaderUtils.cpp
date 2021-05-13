@@ -2,6 +2,7 @@
 #include "Utils/ResourceLoaderUtils.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
+#include "Platform/General/TextureLibrary.h"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -173,9 +174,28 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
 
 		if (tex.source > -1) 
 		{
-			tinygltf::Texture &tex = model.textures[0];
-			tinygltf::Image &image = model.images[tex.source];
+			for(size_t i = 0; i < model.textures.size();i++)
+			{
+				tinygltf::Texture &tex = model.textures[i];
+				tinygltf::Image &image = model.images[tex.source];
 
+
+				if(image.uri != "")
+				{
+					std::string directory;
+					const size_t last_slash_idx = a_path.rfind('/');
+					if (std::string::npos != last_slash_idx)
+					{
+						directory = a_path.substr(0, last_slash_idx);
+					}
+
+					Me::Resources::TextureLibrary::CreateTexture(directory + "/"+ image.uri);
+				}
+				else
+				{
+					//Me::Resources::TextureLibrary::CreateTexture(image.image, image.width, image.height, a_path);
+				}
+			}
 		}
 	}
 	

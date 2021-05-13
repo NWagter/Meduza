@@ -67,12 +67,14 @@ void EmptyGame::UpdateGame(float)
             rotation.m_y = 180;
 
             Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
-            CreateObject(position, rotation, 5, eManager, suzanne, false); 
+
+            Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
+
+            CreateObject(position, rotation, 5, eManager, suzanne, suzanneTexture, false); 
             
             position.m_x = 10;
-            
             Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
-            CreateObject(position, rotation, 0.05f, eManager, duck, false);
+            CreateObject(position, rotation, 0.05f, eManager, duck, 0, false);
 
             m_spawnedDucks = true;
         }
@@ -118,9 +120,12 @@ void EmptyGame::CreateObject(Me::Math::Vec3 a_pos, Me::Math::Vec3 a_rot, Me::Ent
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);
     a_eManager->AddComponent<Me::TransformComponent>(cube, tComp);
 }
-void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation, float a_uniformScale, Me::EntityManager* a_eManager, Me::Mesh a_mesh, bool a_shouldRotate)
+void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation, float a_uniformScale, Me::EntityManager* a_eManager, Me::Mesh a_mesh, Me::Texture a_texture, bool a_shouldRotate)
 {
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
+
+    if(a_texture == 0)
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
 
     EntityID cube = a_eManager->CreateEntity();
 
@@ -138,6 +143,9 @@ void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation
     rComp->m_mesh = a_mesh;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
+
+    if(a_texture != 0)
+        rComp->m_texture = a_texture;
 
     a_eManager->AddComponent<RotateComponent>(cube, rotComp);
     a_eManager->AddComponent<Me::RenderComponent>(cube, rComp);

@@ -14,6 +14,7 @@
 #include <regex>
 
 static constexpr size_t MAX_TEXTURES = 1;
+static constexpr size_t RGBA_SIZE = 4;
 
 Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
 {
@@ -62,6 +63,89 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
     data->m_size = Math::Vec2(float(data->m_textureData->m_resource->GetDesc().Width), float(data->m_textureData->m_resource->GetDesc().Height));
 
     ME_CORE_LOG("Loaded %s with Succes! \n", data->m_textureData->m_filename.c_str());
+
+    return data;
+}
+
+const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height)
+{
+    TextureReturnData* data = new TextureReturnData();
+
+
+    if(true)
+    {
+        TextureData* textureData = new TextureData();
+        D3D12_RESOURCE_DESC textureDesc = {};
+        textureDesc.MipLevels = 1;
+        textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        textureDesc.Width = a_width;
+        textureDesc.Height = a_height;
+        textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+        textureDesc.DepthOrArraySize = 1;
+        textureDesc.SampleDesc.Count = 1;
+        textureDesc.SampleDesc.Quality = 0;
+        textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+
+        HRESULT hr = S_OK;
+
+        
+		CD3DX12_HEAP_PROPERTIES propDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+
+        hr = m_device->GetDevice()->CreateCommittedResource(
+            &propDefault,
+            D3D12_HEAP_FLAG_NONE,
+            &textureDesc,
+            D3D12_RESOURCE_STATE_COPY_DEST,
+            nullptr,
+            IID_PPV_ARGS(&textureData->m_resource));
+
+        if(hr != S_OK)
+        {
+            ME_GFX_ASSERT_M(false, "Failed to create Texture!");
+        }
+
+        const UINT64 uploadBufferSize = GetRequiredIntermediateSize(textureData->m_resource.Get(), 0, 1);
+        
+
+		CD3DX12_HEAP_PROPERTIES propUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+		CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
+
+        hr = m_device->GetDevice()->CreateCommittedResource(
+            &propUpload,
+            D3D12_HEAP_FLAG_NONE,
+            &buffer,
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            IID_PPV_ARGS(&textureData->m_uploadHeap));
+        
+        if(hr != S_OK)
+        {
+            ME_GFX_ASSERT_M(false, "Failed to create gpu buffer!");
+        }
+        
+
+        D3D12_SUBRESOURCE_DATA textureResourceData = {};
+        textureResourceData.pData = a_texture.data();
+        textureResourceData.RowPitch = a_width * RGBA_SIZE;
+        textureResourceData.SlicePitch = (textureResourceData.RowPitch * a_height);
+
+        UpdateSubresources(
+            m_cmd->GetList(),
+            textureData->m_resource.Get(),
+            textureData->m_uploadHeap.Get(),
+            0, 0, 1,
+            &textureResourceData);
+
+              
+        SRVOffset(&textureData->m_srvOffset, *textureData);
+
+        data->m_textureData = textureData;
+        
+        data->m_srvId = m_currentID;    
+        LoadToSRV(*data->m_textureData, data->m_srvId);
+    }
+    
+    ME_CORE_LOG("Loaded Binary texture with Succes! \n");
 
     return data;
 }

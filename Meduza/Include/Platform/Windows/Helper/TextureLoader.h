@@ -39,6 +39,7 @@ namespace Me
                 ~TextureLoader();
 
                 const TextureReturnData* LoadTexture(std::string);
+                const TextureReturnData* LoadTexture(const std::vector<unsigned char>, int, int);
 
                 inline SRV GetSRV(unsigned int a_id) {return m_srvs.at(a_id);}
             private:

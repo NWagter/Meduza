@@ -355,3 +355,12 @@ Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(s
 
 	return texture;
 }
+
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height)
+{
+	auto tData = m_textureLoader->LoadTexture(a_texture, a_width, a_height);
+
+	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
+
+	return texture;
+}

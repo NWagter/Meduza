@@ -63,6 +63,32 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
     return 0;
 }
 
+Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height,std::string a_name)
+{
+    Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_name));
+
+    if (ms_instance->m_textures[hashedId] != nullptr)
+    {
+        return hashedId;
+    }
+
+#ifdef PLATFORM_WINDOWS
+
+    auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
+
+    if(texture != nullptr)
+    {
+        ms_instance->m_textures[hashedId] = texture;
+        return hashedId;
+    }
+
+#elif PLATFORM_LINUX
+
+#endif
+
+    return 0;
+}
+
 Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
 {
     Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_texture));

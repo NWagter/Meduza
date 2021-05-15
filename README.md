@@ -61,3 +61,7 @@ Capable of Rendering 2D and 3D geometry, input events, ECS and basic Physics
 <p align="center">
   <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/DuckRendered.png" width="500"/>
 </p>
+
+<p align="center">
+  <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/Textured_GLTF_GLB_Loader.png" width="500"/>
+</p>

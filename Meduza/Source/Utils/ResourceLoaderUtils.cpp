@@ -193,7 +193,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
 				}
 				else
 				{
-					//Me::Resources::TextureLibrary::CreateTexture(image.image, image.width, image.height, a_path);
+					Me::Resources::TextureLibrary::CreateTexture(image.image, image.width, image.height, a_path);
 				}
 			}
 		}

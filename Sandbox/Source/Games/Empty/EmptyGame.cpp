@@ -24,6 +24,7 @@ EmptyGame::~EmptyGame()
 void EmptyGame::InitGame()
 {
     Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+    Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Lantern.glb");
     Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
 
     auto eManager = Me::EntityManager::GetEntityManager();
@@ -62,7 +63,7 @@ void EmptyGame::UpdateGame(float)
         {
             auto eManager = Me::EntityManager::GetEntityManager();
 
-            Me::Math::Vec3 position = Me::Math::Vec3(-10, 0, 25);
+            Me::Math::Vec3 position = Me::Math::Vec3(-20, 0, 25);
             Me::Math::Vec3 rotation = Me::Math::Vec3(0,0,0);   
             rotation.m_y = 180;
 
@@ -72,9 +73,19 @@ void EmptyGame::UpdateGame(float)
 
             CreateObject(position, rotation, 5, eManager, suzanne, suzanneTexture, false); 
             
-            position.m_x = 10;
+            position.m_x = 20;
             Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
-            CreateObject(position, rotation, 0.05f, eManager, duck, 0, false);
+            Me::Texture duckTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Duck.glb");
+
+            CreateObject(position, rotation, 0.05f, eManager, duck, duckTexture, false);
+
+            Me::Mesh lantern = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Lantern.glb");
+            Me::Texture LaternTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Lantern.glb");
+
+            position.m_x = 0;
+
+            CreateObject(position, rotation, 1.0f, eManager, lantern, LaternTexture, false);
+
 
             m_spawnedDucks = true;
         }

@@ -64,6 +64,14 @@ Capable of Rendering 2D and 3D geometry, input events, ECS and basic Physics
 
 3D Rendering with glb and glTF files and texture loading support
 
+Camera Controls
+- Movement : WASD ( forward, right)
+- Move Up : Space
+- Move Down : Shift
+- Rotate Yaw : Q and E
+
+Spawn Duck, Lantern and Suzanne ( Monkey Head) with space
+
 <p align="center">
   <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/Textured_GLTF_GLB_Loader.png" width="500"/>
 </p>

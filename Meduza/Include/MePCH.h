@@ -26,6 +26,8 @@
 #ifdef PLATFORM_WINDOWS
 
 #include <Windows.h>
+#include <imgui.h>
+#include <imgui_internal.h>
 
 #pragma warning(disable:4265)
 #include <wrl.h>

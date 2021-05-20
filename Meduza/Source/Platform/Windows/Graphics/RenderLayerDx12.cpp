@@ -342,6 +342,16 @@ Me::Renderer::Dx12::Device& Me::Renderer::Dx12::RenderLayerDx12::GetDevice()
 	return *m_device;
 }
 
+Me::Renderer::Dx12::Context& Me::Renderer::Dx12::RenderLayerDx12::GetContext()
+{
+	return *m_context;
+}
+
+Me::Renderer::Dx12::Descriptor& Me::Renderer::Dx12::RenderLayerDx12::GetSRV()
+{
+	return *m_srv;
+}
+
 Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
 	return new Me::Resources::Dx12::Mesh(a_vertices,a_indices, *m_device, GetCmd());

@@ -22,12 +22,17 @@ Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
-	ShowCursor(false);
+	ActiveCursor(false);
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 }
 
 Me::WindowsWindow::~WindowsWindow()
 {
+}
+
+void Me::WindowsWindow::ActiveCursor(bool a_active)
+{
+	ShowCursor(a_active);	
 }
 
 void Me::WindowsWindow::Peek()
@@ -87,9 +92,15 @@ LRESULT __stdcall Me::WindowsWindow::HandleMsgThunk(HWND a_hwnd, UINT a_msg, WPA
 	//Handle the messages!
 	return pWnd->HandleMsg(a_hwnd, a_msg, a_wParam, a_lParam);
 }
-
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam); // NOLINT
 LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
 {
+	// ImGui Input Handles
+	if (ImGui_ImplWin32_WndProcHandler(a_hwnd, a_msg, a_wParam, a_lParam) != 0)
+	{
+		return 1;
+	}
+
 	switch (a_msg)
 	{
 	case WM_CLOSE:

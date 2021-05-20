@@ -29,6 +29,7 @@ void Me::Event::EventSystem::Destroy()
 Me::Event::EventSystem::EventSystem(Window* a_window)
 {
     a_window->SetEventSystem(this);
+    m_window = a_window;
     m_mouse = new Input::Mouse();
     m_keyboard = new Input::Keyboard();
 }
@@ -37,6 +38,11 @@ Me::Event::EventSystem::~EventSystem()
 {
     delete m_mouse;
     delete m_keyboard;
+}
+
+void Me::Event::EventSystem::ShowCursor(bool a_show)
+{
+    m_window->ActiveCursor(a_show);
 }
 
 void Me::Event::EventSystem::Clear()

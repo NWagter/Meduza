@@ -15,6 +15,11 @@ Me::MacOsWindow::~MacOsWindow()
 {
 }
 
+void Me::MacOsWindow::ActiveCursor(bool)
+{
+	
+}
+
 void Me::MacOsWindow::Peek()
 {
 }

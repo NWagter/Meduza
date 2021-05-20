@@ -10,6 +10,11 @@ namespace Me {
 		class RenderLayer;
 	}
 
+	namespace Editor
+	{
+		class EditorRenderer;
+	}
+
 	class Meduza
 	{
 	public:
@@ -29,6 +34,7 @@ namespace Me {
 
 		bool m_isRunning;
 		Renderer::RenderLayer* m_renderLayer;
+		Editor::EditorRenderer* m_editor;
 		Window* m_window;
 	};
 }

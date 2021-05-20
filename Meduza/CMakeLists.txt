@@ -9,10 +9,13 @@ if(WIN32)
 	add_compile_definitions(PLATFORM_WINDOWS)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Windows/*.cpp
 	Source/Platform/Windows/Graphics/*.cpp
+	Source/Platform/Windows/Editor/*.cpp
 	Source/Platform/Windows/Resources/*.cpp	
 	Source/Platform/Windows/Helper/*.cpp
-	${PROJECT_SOURCE_DIR}/External/Win/DX12/src/*.cpp)	
-	file(GLOB EXTERNAL_INCLUDE ${PROJECT_SOURCE_DIR}/External/Win/DX12/Include)
+	${PROJECT_SOURCE_DIR}/External/Win/DX12/src/*.cpp	
+	${PROJECT_SOURCE_DIR}/External/Win/imgui/*.cpp)	
+	file(GLOB EXTERNAL_INCLUDE ${PROJECT_SOURCE_DIR}/External/Win/DX12/Include
+	${PROJECT_SOURCE_DIR}/External/Win/imgui)
 elseif(UNIX AND NOT APPLE)
 	add_compile_definitions(PLATFORM_LINUX)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Linux/*.cpp
@@ -28,6 +31,7 @@ elseif(APPLE)
 endif()
 
 file(GLOB PLATFORM_GENERAL_SOURCE
+	${PROJECT_SOURCE_DIR}/External/General/imgui/*.cpp
 	Source/Core/*.cpp
 	Source/Math/*.cpp
 
@@ -40,6 +44,8 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
+	Source/Platform/General/Editor/*.cpp
+	Source/Platform/General/Graphics/*.cpp
 	Source/Platform/General/Graphics/*.cpp
 	Source/Platform/General/Resources/*.cpp
 	Source/Platform/General/Events/*.cpp
@@ -47,7 +53,8 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Platform/General/FileSystem/*.cpp
 )
 
-file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General/Include)
+file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General/Include
+${PROJECT_SOURCE_DIR}/External/General/imgui)
 
 add_library(${PROJECT_NAME} 
 	${SOURCES}

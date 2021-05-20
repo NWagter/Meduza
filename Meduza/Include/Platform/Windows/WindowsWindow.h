@@ -34,6 +34,7 @@ namespace Me
 		WindowsWindow(int, int, const char*);
 		virtual ~WindowsWindow();
 
+		void ActiveCursor(bool) override;
 		void Peek() override;
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;

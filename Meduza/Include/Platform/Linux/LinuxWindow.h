@@ -17,6 +17,7 @@ namespace Me
 		LinuxWindow(int, int, const char*);
 		virtual ~LinuxWindow();
 
+		void ActiveCursor(bool) override;
 		void Peek() override;
 		void Quit() override;
 		void SetContext(Renderer::ContextBase*) override;

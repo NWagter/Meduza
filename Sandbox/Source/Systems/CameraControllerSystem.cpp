@@ -26,6 +26,12 @@ void CameraControllerSystem::OnUpdate(float a_dt)
         float rightMovment = 0 ;
         float upMovment = 0;
 
+
+        if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Enter))
+        {
+            Me::Event::EventSystem::GetEventSystem()->ShowCursor(true);
+        }
+
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::W))
         {
             forwardMovment++;

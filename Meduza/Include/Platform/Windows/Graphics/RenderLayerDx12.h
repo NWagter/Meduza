@@ -55,6 +55,8 @@ namespace Me
 
                 CommandList& GetCmd(int a_id = 0);
                 Device& GetDevice();
+                Context& GetContext();
+                Descriptor& GetSRV();
 
                 private:
                 void Populate();

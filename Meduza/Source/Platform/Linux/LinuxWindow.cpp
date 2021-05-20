@@ -33,6 +33,12 @@ Me::LinuxWindow::LinuxWindow(int a_w, int a_h, const char* a_title) : Window(a_w
 Me::LinuxWindow::~LinuxWindow()
 {
 }
+
+void Me::LinuxWindow::ActiveCursor(bool)
+{
+
+}
+
 void Me::LinuxWindow::Peek()
 {
 	XNextEvent(m_windowData->m_display, &m_windowData->m_event);

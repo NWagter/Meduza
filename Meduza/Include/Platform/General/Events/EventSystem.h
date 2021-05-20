@@ -23,6 +23,8 @@ namespace Me
 
             static EventSystem* GetEventSystem() {return ms_eventSystem;}
             
+            void ShowCursor(bool);
+
             bool KeyDown(KeyCode);
             bool KeyUp(KeyCode);
             bool MouseButtonDown(MouseButton);
@@ -45,6 +47,7 @@ namespace Me
             Input::Keyboard* m_keyboard;
 
             Me::Math::Vec2 m_screenSize;
+            Window* m_window;
 
         friend Window;
         friend WindowsWindow;

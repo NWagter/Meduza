@@ -18,6 +18,7 @@ namespace Me
 		Window(int, int, const char*);
 		virtual ~Window();
 
+		virtual void ActiveCursor(bool) = 0;
 		virtual void Peek() = 0;
 		virtual void Quit() = 0;
 		virtual void SetContext(Renderer::ContextBase*) = 0;

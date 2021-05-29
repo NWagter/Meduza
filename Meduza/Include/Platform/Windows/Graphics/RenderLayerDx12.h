@@ -45,6 +45,7 @@ namespace Me
                 virtual ~RenderLayerDx12();
 
                 void Clear(Colour) override;
+                void Populate() override;
                 void Present() override;
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
@@ -59,7 +60,6 @@ namespace Me
                 Descriptor& GetSRV();
 
                 private:
-                void Populate();
 
                 WindowsWindow* m_window = nullptr;
                 

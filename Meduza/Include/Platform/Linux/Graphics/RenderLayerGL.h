@@ -28,13 +28,14 @@ namespace Me
                 ~RenderLayerGL();
 
                 void Clear(Colour) override;
+                void Populate() override;    
                 void Present() override;                
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
                 Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
+                
             private:
-                void Populate();
                 LinuxWindow* m_window;
                 Context* m_context;
 

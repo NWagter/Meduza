@@ -164,10 +164,6 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
 {
-	GetCmd().SetViewPort(1);
-	Populate();
-
-
     m_context->SwapBuffers(GetCmd());
 }
 
@@ -294,6 +290,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 
 void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 {
+	GetCmd().SetViewPort(1);
+
 	auto cmd = &GetCmd();
 
 	unsigned int srvId = 0;

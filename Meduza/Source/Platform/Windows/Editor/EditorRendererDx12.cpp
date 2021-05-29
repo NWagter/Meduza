@@ -47,7 +47,7 @@ void Me::Editor::Dx12::EditorRendererDx12::Clear()
 	ImGui::NewFrame();
 }
 
-void Me::Editor::Dx12::EditorRendererDx12::Present()
+void Me::Editor::Dx12::EditorRendererDx12::Populate()
 {
 	ImGui::ShowDemoWindow();
 

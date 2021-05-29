@@ -17,6 +17,7 @@ namespace Me
             virtual ~RenderLayer() = default;
 
             virtual void Clear(Colour) = 0;
+            virtual void Populate() = 0;
             virtual void Present() = 0;
             virtual void Submit(RenderComponent&, TransformComponent&) = 0;
             virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;

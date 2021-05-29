@@ -106,7 +106,13 @@ void Me::Meduza::Present()
 {
 	if(m_renderLayer != nullptr)
 	{		
-		m_editor->Present();
+		m_renderLayer->Populate();
+		
+		if(m_editor != nullptr)
+		{
+			m_editor->Populate();
+		}
+
 		m_renderLayer->Present();
 		return;
 	}

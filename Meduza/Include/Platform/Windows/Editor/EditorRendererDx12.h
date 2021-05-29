@@ -25,7 +25,7 @@ namespace Me
                     EditorRendererDx12(Renderer::Dx12::RenderLayerDx12*);
 
                     void Clear() override;
-                    void Present() override;
+                    void Populate() override;
 
                 private:
                     ImGuiContext* m_imGuiContext;

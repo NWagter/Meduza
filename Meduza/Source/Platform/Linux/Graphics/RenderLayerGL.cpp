@@ -50,8 +50,6 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
-    Populate();
-
     m_context->SwapBuffers();
 }
 

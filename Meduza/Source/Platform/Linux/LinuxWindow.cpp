@@ -49,9 +49,9 @@ void Me::LinuxWindow::Quit()
 	
 }
 
-void Me::LinuxWindow::SetTitle(std::string)
+void Me::LinuxWindow::SetTitle(std::string a_title)
 {
-
+	XStoreName(m_windowData->m_display, m_windowData->m_window, a_title.c_str());
 } 
 
 void Me::LinuxWindow::SetContext(Renderer::ContextBase* a_context)

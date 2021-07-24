@@ -21,18 +21,28 @@
 
 Sandbox::Sandbox()
 {
-    new CursorSystem();
-    new PlayerSystem();
 
-#if Run_EmptyTest 
+#if Run_EmptyTest && PLATFORM_WINDOWS
     m_game = new EmptyGame();
 #elif Run_Chess
     m_game = new Chess::ChessGame();
 #elif Run_Physics
     m_game = new Physics::Physics2D();
 #endif
-    
+
+#if PLATFORM_LINUX
+    m_game = new BaseGame();
+#elif PLATFORM_WINDOWS
+
+    new CursorSystem();
+    new PlayerSystem();
+
+#endif
+
     SetName(m_game->GetGameName() + " | Meduza");
+
+    
+
 }
 
 Sandbox::~Sandbox()

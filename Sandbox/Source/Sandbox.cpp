@@ -4,19 +4,17 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 1
+#define Run_EmptyTest 0
 #define Run_Chess 0
 #define Run_Physics 0
+
+#include "Games/BaseGame.h"
 
 #if Run_EmptyTest
 #include "Games/Empty/EmptyGame.h"
 #elif Run_Chess
 #include "Games/Chess/ChessGame.h"
 #elif Run_Physics
-#include "Games/Physics2D/Physics2D.h"
-#endif
-
-#if PLATFORM_LINUX
 #include "Games/Physics2D/Physics2D.h"
 #endif
 
@@ -27,14 +25,19 @@ Sandbox::Sandbox()
 {
 
 #if Run_EmptyTest && PLATFORM_WINDOWS
+    new CursorSystem();
+    new PlayerSystem();
     m_game = new EmptyGame();
 #elif Run_Chess
+    new CursorSystem();
+    new PlayerSystem();
     m_game = new Chess::ChessGame();
 #elif Run_Physics
+    new CursorSystem();
+    new PlayerSystem();
     m_game = new Physics::Physics2D();
 #endif
 
-#if PLATFORM_LINUX
     m_game = new BaseGame();
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
@@ -66,21 +69,14 @@ Sandbox::Sandbox()
 
     auto camComp = new Me::CameraComponent();
     auto transCComp = new Me::TransformComponent();
-
-    camComp->m_size = Me::Math::Vec2(1920, 1080);
-    camComp->m_far = 1000;
-    camComp->m_near = 1;
+    
     camComp->m_cameraType = Me::CameraType::Orthographic;
+    camComp->m_near = 0.0f;
+    camComp->m_far = 100;
+    camComp->m_size = GetScreenSize();
 
     eManager->AddComponent(camEntt, camComp);
     eManager->AddComponent(camEntt, transCComp);
-
-#elif PLATFORM_WINDOWS
-
-    new CursorSystem();
-    new PlayerSystem();
-
-#endif
 
     SetName(m_game->GetGameName() + " | Meduza");
 

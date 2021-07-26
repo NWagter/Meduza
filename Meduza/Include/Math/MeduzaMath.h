@@ -962,7 +962,7 @@ namespace Me
 			Mat4 projection = Mat4::Identity();
 
 
-			float scale = 1 / std::tan(a_angleOfView * 0.5f * M_PI / 180);
+			float scale = 1 / std::tan(a_angleOfView * 0.5f * gs_pi / 180);
 			projection.m_mat[0][0] = scale;
 			projection.m_mat[1][1] = scale;
 			projection.m_mat[2][2] = -a_far / (a_far - a_near);

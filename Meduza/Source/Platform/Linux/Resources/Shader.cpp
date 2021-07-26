@@ -82,3 +82,21 @@ unsigned int Me::Resources::GL::Shader::GenerateShader()
 
 	return shaderProgram;
 }
+
+
+void Me::Resources::GL::Shader::SetVec3(const std::string &a_name, const Math::Vec3 a_vec3)
+{
+    glUniform3f(glGetUniformLocation(m_program, a_name.c_str()), a_vec3.m_x, a_vec3.m_y, a_vec3.m_z);
+}
+void Me::Resources::GL::Shader::SetVec4(const std::string &a_name, const Math::Vec4 a_vec4)
+{
+    glUniform4f(glGetUniformLocation(m_program, a_name.c_str()), a_vec4.m_x, a_vec4.m_y, a_vec4.m_z, a_vec4.m_w);
+}
+
+void Me::Resources::GL::Shader::SetMat4(const std::string &a_name, const Math::Mat4 a_mat4)
+{
+    Math::Mat4 glMat4 = a_mat4;
+    glMat4 = glMat4.ConvertGL();
+
+    glUniformMatrix4fv(glGetUniformLocation(m_program, a_name.c_str()), 1, GL_FALSE, &glMat4.m_mat[0][0]);
+}

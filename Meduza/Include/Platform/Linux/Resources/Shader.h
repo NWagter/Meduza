@@ -23,6 +23,10 @@ namespace Me
                 void Bind() override;
                 void UnBind() override;
 
+                void SetVec3(const std::string &, const Math::Vec3);
+                void SetVec4(const std::string &, const Math::Vec4);
+                void SetMat4(const std::string &a_name, const Math::Mat4);
+
             private:
                 Helper::GL::ShaderSources m_source;
             

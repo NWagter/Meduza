@@ -54,7 +54,7 @@ void Physics::Physics2D::SetupScene()
    
     if(shader == 0)
     {      
-        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
     }
 
     EntityID box2d2 = Me::EntityManager::CreateEntity();
@@ -63,7 +63,7 @@ void Physics::Physics2D::SetupScene()
     auto tC2 = new Me::TransformComponent();
     auto pC2 = new Me::Physics::PhysicsComponent();
 
-    rC2->m_colour = Me::Colours::BLACK;
+    rC2->m_colour = Me::Colours::RED;
     rC2->m_shader = shader;
     rC2->m_mesh = mesh;
 
@@ -93,7 +93,7 @@ void Physics::Physics2D::SpawnObjects()
    
     if(shader == 0)
     {      
-        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Default_Shader.glsl");
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
     }
 
     EntityID box2d = Me::EntityManager::CreateEntity();

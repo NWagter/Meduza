@@ -24,6 +24,14 @@ namespace Me
             class RenderLayerGL : public RenderLayer
             {
             public:
+
+                struct Renderable
+                {
+                    RenderComponent* m_renderComponent;
+                    Math::Mat4 m_modelMatrix;
+                };
+                
+
                 RenderLayerGL(Window*);
                 ~RenderLayerGL();
 
@@ -39,8 +47,9 @@ namespace Me
                 LinuxWindow* m_window;
                 Context* m_context;
 
-                std::vector<RenderComponent*> m_renderables;
+                std::vector<Renderable*> m_renderables;
                 Resources::GL::Shader* m_activeShader;
+                Math::Mat4* m_cameraMat;
             };
         }
     }

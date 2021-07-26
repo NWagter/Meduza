@@ -48,10 +48,17 @@ void Me::Resources::GL::Mesh::GenerateAttributes()
     unsigned int offset = 0;
     int attributeId = 0;
     unsigned int values = 3;
-    unsigned int stride = 5 * sizeof(float);
+    unsigned int stride = 8 * sizeof(float);
 
     glVertexAttribPointer(attributeId, values, GL_FLOAT, GL_FALSE, stride, (void*)(offset * sizeof(float)));
     glEnableVertexAttribArray(attributeId);
+
+    attributeId++;
+    offset = values;
+    values = 3;
+
+    glVertexAttribPointer(attributeId, values, GL_FLOAT, GL_FALSE, stride, (void*)(offset * sizeof(float)));
+    glEnableVertexAttribArray(attributeId); 
 
     attributeId++;
     offset = values;

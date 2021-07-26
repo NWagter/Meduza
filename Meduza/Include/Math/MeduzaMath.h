@@ -383,6 +383,14 @@ namespace Me
 				m_w = a_w;
 			}
 
+			inline Vec4(float a_vec4[4])
+			{
+				m_x = a_vec4[0];
+				m_y = a_vec4[1];
+				m_z = a_vec4[2];
+				m_w = a_vec4[3];
+			}
+
 			inline Vec4& operator=(const Vec4& a_rhs)
 			{
 				m_x = a_rhs[0];
@@ -522,6 +530,11 @@ namespace Me
 				m_10 = a_10; m_11 = a_11; m_12 = a_12; m_13 = a_13;
 				m_20 = a_20; m_21 = a_21; m_22 = a_22; m_23 = a_23;
 				m_30 = a_30; m_31 = a_31; m_32 = a_32; m_33 = a_33;			
+			}
+
+			Mat4()
+			{
+				*this = Identity();
 			}
 
 			inline float TriangleRule(	
@@ -732,6 +745,11 @@ namespace Me
 				return *this;
 			}
 
+			inline Mat4& ConvertGL()
+			{
+				return *this;
+			}
+
 		private:
 			inline void RotateX(float a_radians)
 			{
@@ -911,6 +929,48 @@ namespace Me
 			returnValue.m_z = MoveTowards(a_rhs.m_z, a_lhs.m_z, a_delta);
 
 			return returnValue;
+		}
+
+		inline Mat4 GetOrthographicMatrix(const float a_bottom, const float a_top, const float a_left, const float a_right, const float a_near, const float a_far)
+		{
+			Mat4 ortho = Mat4::Identity();
+
+			ortho.m_mat[0][0] = 2 / (a_right - a_left);
+			ortho.m_mat[0][1] = 0;
+			ortho.m_mat[0][2] = 0;
+			ortho.m_mat[0][3] = -(a_right + a_left) / (a_right - a_left);
+
+			ortho.m_mat[1][0] = 0;
+			ortho.m_mat[1][1] = 2 / (a_top - a_bottom);
+			ortho.m_mat[1][2] = 0;
+			ortho.m_mat[1][3] = -(a_top + a_bottom) / (a_top - a_bottom);
+
+			ortho.m_mat[2][0] = 0;
+			ortho.m_mat[2][1] = 0;
+			ortho.m_mat[2][2] = -2 / (a_far - a_near);
+			ortho.m_mat[2][3] = -(a_far + a_near) / (a_far - a_near);
+
+			ortho.m_mat[3][0] = 0;
+			ortho.m_mat[3][1] = 0;
+			ortho.m_mat[3][2] = 0;
+			ortho.m_mat[3][3] = 1;
+
+			return ortho;
+		}
+		inline Mat4 GetProjectionMatrix(const float a_angleOfView, const float a_near, const float a_far)
+		{
+			Mat4 projection = Mat4::Identity();
+
+
+			float scale = 1 / std::tan(a_angleOfView * 0.5f * M_PI / 180);
+			projection.m_mat[0][0] = scale;
+			projection.m_mat[1][1] = scale;
+			projection.m_mat[2][2] = -a_far / (a_far - a_near);
+			projection.m_mat[3][2] = -a_far * a_near / (a_far - a_near);
+			projection.m_mat[2][3] = -1;
+			projection.m_mat[3][3] = 0;
+
+			return projection;
 		}
 
 	}

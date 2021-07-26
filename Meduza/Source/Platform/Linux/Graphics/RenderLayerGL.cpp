@@ -30,6 +30,9 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     m_context = new Context();
     m_window->SetContext(m_context);
     m_activeShader = nullptr;
+
+    m_cameraMat = new Math::Mat4();
+
 }
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
 {
@@ -57,17 +60,32 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 {
     for (auto r : m_renderables)
     {
-		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(r->m_shader));
-        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(r->m_mesh));
-        auto t = static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(r->m_texture));
+        auto renderComp = r->m_renderComponent;
+		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(renderComp->m_shader));
+        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(renderComp->m_mesh));
+        auto t = static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(renderComp->m_texture));
 
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{
 			m_activeShader = s;
 			m_activeShader->Bind();
 		}
+
         glBindBuffer(GL_UNIFORM_BUFFER, m->GetVBO());
-        t->Bind();
+
+
+
+        if(m_cameraMat != nullptr)
+        {
+            m_activeShader->SetMat4("u_projection", *m_cameraMat);
+        }
+        m_activeShader->SetMat4("u_model", r->m_modelMatrix);
+
+        m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
+
+        if(t != nullptr)
+            t->Bind();
+
         glBindVertexArray(m->GetVAO());
 
         glEnable(GL_BLEND);
@@ -79,14 +97,34 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     
 }
 
-void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, TransformComponent&)
+void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)
 {
-    m_renderables.push_back(&a_renderable);
+    Renderable* r = new Renderable();
+    r->m_renderComponent = &a_renderable;
+    r->m_modelMatrix = a_trans.GetTransform();
+
+    m_renderables.push_back(r);
 }
 
-void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent&, TransformComponent&)
+void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)
 {
+    Math::Mat4 camMat = Math::Mat4::Identity();
+
+    if(a_cameraComp.m_cameraType == Me::CameraType::Orthographic)
+    {
+        camMat = Math::GetOrthographicMatrix(-a_cameraComp.m_size.m_y / 2, a_cameraComp.m_size.m_y / 2,
+            -a_cameraComp.m_size.m_x / 2 , a_cameraComp.m_size.m_x / 2,
+            a_cameraComp.m_near, a_cameraComp.m_far);
+    }
+    else
+    {
+        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_near, a_cameraComp.m_far);
+    }
     
+    Math::Mat4 trans = a_transComp.GetTransform();
+    Math::Mat4 camViewProjection = trans * camMat;
+    
+    m_cameraMat = &camViewProjection;
 }
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

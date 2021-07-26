@@ -16,6 +16,10 @@
 #include "Games/Physics2D/Physics2D.h"
 #endif
 
+#if PLATFORM_LINUX
+#include "Games/Physics2D/Physics2D.h"
+#endif
+
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
 
@@ -32,6 +36,45 @@ Sandbox::Sandbox()
 
 #if PLATFORM_LINUX
     m_game = new BaseGame();
+
+    auto eManager = Me::EntityManager::GetEntityManager(); 
+
+    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
+   
+    if(shader == 0)
+    {      
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
+    }
+
+    EntityID entt = Me::EntityManager::CreateEntity();
+
+    auto renderComp = new Me::RenderComponent();
+    auto transComp = new Me::TransformComponent();
+
+    renderComp->m_colour = Me::Colours::RED;
+    renderComp->m_shader = shader;
+    renderComp->m_mesh = mesh;
+
+    transComp->SetPosition(Me::Math::Vec3(0,0,0));
+    transComp->SetUniformScale(128);
+
+    eManager->AddComponent(entt, renderComp);
+    eManager->AddComponent(entt, transComp);
+
+    EntityID camEntt = Me::EntityManager::CreateEntity();
+
+    auto camComp = new Me::CameraComponent();
+    auto transCComp = new Me::TransformComponent();
+
+    camComp->m_size = Me::Math::Vec2(1920, 1080);
+    camComp->m_far = 1000;
+    camComp->m_near = 1;
+    camComp->m_cameraType = Me::CameraType::Orthographic;
+
+    eManager->AddComponent(camEntt, camComp);
+    eManager->AddComponent(camEntt, transCComp);
+
 #elif PLATFORM_WINDOWS
 
     new CursorSystem();
@@ -40,8 +83,6 @@ Sandbox::Sandbox()
 #endif
 
     SetName(m_game->GetGameName() + " | Meduza");
-
-    
 
 }
 

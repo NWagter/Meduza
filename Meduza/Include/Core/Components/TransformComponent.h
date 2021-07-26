@@ -16,6 +16,11 @@ namespace Me
             bool m_isStatic = false;
 
             //Getting
+            Math::Mat4 GetTransform()
+            {
+                return m_transform;
+            }
+
             Math::Vec3 GetPosition() 
             {
                 return m_transform.GetPosition();

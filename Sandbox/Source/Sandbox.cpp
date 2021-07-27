@@ -4,7 +4,7 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 0
+#define Run_EmptyTest 1
 #define Run_Chess 0
 #define Run_Physics 0
 
@@ -28,7 +28,7 @@ Sandbox::Sandbox()
     new CursorSystem();
     new PlayerSystem();
     m_game = new EmptyGame();
-#elif Run_Chess
+#elif Run_Chess && PLATFORM_WINDOWS
     new CursorSystem();
     new PlayerSystem();
     m_game = new Chess::ChessGame();
@@ -36,7 +36,7 @@ Sandbox::Sandbox()
     new CursorSystem();
     new PlayerSystem();
     m_game = new Physics::Physics2D();
-#endif
+#else
 
     m_game = new BaseGame();
 
@@ -77,6 +77,8 @@ Sandbox::Sandbox()
 
     eManager->AddComponent(camEntt, camComp);
     eManager->AddComponent(camEntt, transCComp);
+
+#endif
 
     SetName(m_game->GetGameName() + " | Meduza");
 

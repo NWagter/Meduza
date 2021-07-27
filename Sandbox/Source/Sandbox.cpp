@@ -42,7 +42,7 @@ Sandbox::Sandbox()
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
 
-    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Quad);
+    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
    
     if(shader == 0)
@@ -59,8 +59,8 @@ Sandbox::Sandbox()
     renderComp->m_shader = shader;
     renderComp->m_mesh = mesh;
 
-    transComp->SetPosition(Me::Math::Vec3(512.0f,512.0f,0.0f));
-    transComp->SetUniformScale(128.0f);
+    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,64.0f));
+    transComp->SetUniformScale(32.0f);
 
     eManager->AddComponent(entt, renderComp);
     eManager->AddComponent(entt, transComp);
@@ -70,9 +70,9 @@ Sandbox::Sandbox()
     auto camComp = new Me::CameraComponent();
     auto transCComp = new Me::TransformComponent();
     
-    camComp->m_cameraType = Me::CameraType::Orthographic;
-    camComp->m_near = 0.0f;
-    camComp->m_far = 100;
+    camComp->m_cameraType = Me::CameraType::Perspective;
+    camComp->m_near = 0.1f;
+    camComp->m_far = 1000;
     camComp->m_size = GetScreenSize();
 
     eManager->AddComponent(camEntt, camComp);

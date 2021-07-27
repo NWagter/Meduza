@@ -41,12 +41,13 @@ void Me::Resources::GL::Shader::UnBind()
 bool ShaderDebug(unsigned int a_shader, std::string a_type)
 {
     int success;
-    char infoLog[512];
+    std::vector<char> infoLog;
     glGetShaderiv(a_shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
-        glGetShaderInfoLog(a_shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::" << a_type.c_str() << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glGetShaderInfoLog(a_shader, 512, NULL, infoLog.data());
+        std::string log(infoLog.data());
+        std::cout << "ERROR::SHADER::" << a_type.c_str() << "::COMPILATION_FAILED\n" << log.c_str() << std::endl;
         return false;
     }
 
@@ -93,10 +94,10 @@ void Me::Resources::GL::Shader::SetVec4(const std::string &a_name, const Math::V
     glUniform4f(glGetUniformLocation(m_program, a_name.c_str()), a_vec4.m_x, a_vec4.m_y, a_vec4.m_z, a_vec4.m_w);
 }
 
-void Me::Resources::GL::Shader::SetMat4(const std::string &a_name, const Math::Mat4 a_mat4)
+void Me::Resources::GL::Shader::SetMat4(const std::string &a_name, const Math::Mat4 a_mat4, const bool a_transpose)
 {
     Math::Mat4 glMat4 = a_mat4;
     glMat4 = glMat4.ConvertGL();
 
-    glUniformMatrix4fv(glGetUniformLocation(m_program, a_name.c_str()), 1, GL_FALSE, &glMat4.m_mat[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(m_program, a_name.c_str()), 1, a_transpose, &glMat4.m_mat[0][0]);
 }

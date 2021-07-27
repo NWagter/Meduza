@@ -55,7 +55,7 @@ bool Me::Application::Run()
             fps = float(frameCount) / totalTime;
             frameCount = 0;
             totalTime = 0.f;
-            ME_CORE_LOG("FPS : %f \n", fps);
+            std::cout << "FPS : " << fps << std::endl;
         }
     };
 

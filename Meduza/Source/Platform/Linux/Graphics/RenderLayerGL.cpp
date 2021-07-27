@@ -74,23 +74,17 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glBindBuffer(GL_UNIFORM_BUFFER, m->GetVBO());
 
 
-
-        if(m_cameraMat != nullptr)
-        {
-            m_activeShader->SetMat4("u_projection", *m_cameraMat);
-        }
-        m_activeShader->SetMat4("u_model", r->m_modelMatrix);
-
+        m_activeShader->SetMat4("u_model", r->m_modelMatrix, true);
+        m_activeShader->SetMat4("u_projectionView", *m_cameraMat, true);
+        
         m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
 
-        if(t != nullptr)
-            t->Bind();
 
         glBindVertexArray(m->GetVAO());
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+        
         glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, m->GetIndicesSize(), 1);
         glBindVertexArray(0);
     }
@@ -102,6 +96,10 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     Renderable* r = new Renderable();
     r->m_renderComponent = &a_renderable;
     r->m_modelMatrix = a_trans.GetTransform();
+
+    r->m_modelMatrix.m_00 = a_trans.GetUniformedScale();
+    r->m_modelMatrix.m_11 = a_trans.GetUniformedScale();
+    r->m_modelMatrix.m_22 = a_trans.GetUniformedScale();
 
     m_renderables.push_back(r);
 }

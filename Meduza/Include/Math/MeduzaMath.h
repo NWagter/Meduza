@@ -938,21 +938,21 @@ namespace Me
 			ortho.m_mat[0][0] = 2 / (a_right - a_left);
 			ortho.m_mat[0][1] = 0;
 			ortho.m_mat[0][2] = 0;
-			ortho.m_mat[0][3] = -(a_right + a_left) / (a_right - a_left);
+			ortho.m_mat[0][3] = 0;
 
 			ortho.m_mat[1][0] = 0;
 			ortho.m_mat[1][1] = 2 / (a_top - a_bottom);
 			ortho.m_mat[1][2] = 0;
-			ortho.m_mat[1][3] = -(a_top + a_bottom) / (a_top - a_bottom);
+			ortho.m_mat[1][3] = 0;
 
 			ortho.m_mat[2][0] = 0;
 			ortho.m_mat[2][1] = 0;
 			ortho.m_mat[2][2] = -2 / (a_far - a_near);
-			ortho.m_mat[2][3] = -(a_far + a_near) / (a_far - a_near);
+			ortho.m_mat[2][3] = 0;
 
-			ortho.m_mat[3][0] = 0;
-			ortho.m_mat[3][1] = 0;
-			ortho.m_mat[3][2] = 0;
+			ortho.m_mat[3][0] = -(a_right + a_left) / (a_right - a_left);
+			ortho.m_mat[3][1] = -(a_top + a_bottom) / (a_top - a_bottom);
+			ortho.m_mat[3][2] = -(a_far + a_near) / (a_far - a_near);
 			ortho.m_mat[3][3] = 1;
 
 			return ortho;

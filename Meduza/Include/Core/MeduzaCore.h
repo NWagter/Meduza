@@ -66,6 +66,7 @@ namespace Me
         Vertex(float a_x, float a_y, float a_z, float a_u, float a_v)
         {
             m_vertexPos = Math::Vec3(a_x,a_y,a_z);
+            m_normals = Math::Vec3(0,-1,0);
             m_uvCoord = Math::Vec2(a_u, a_v);
         }
         

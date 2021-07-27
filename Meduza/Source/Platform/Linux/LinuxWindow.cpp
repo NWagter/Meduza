@@ -41,7 +41,7 @@ void Me::LinuxWindow::ActiveCursor(bool)
 
 void Me::LinuxWindow::Peek()
 {
-	XNextEvent(m_windowData->m_display, &m_windowData->m_event);
+	//XNextEvent(m_windowData->m_display, &m_windowData->m_event);
 }
 
 void Me::LinuxWindow::Quit()

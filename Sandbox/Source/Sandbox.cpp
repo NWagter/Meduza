@@ -59,7 +59,7 @@ Sandbox::Sandbox()
     renderComp->m_shader = shader;
     renderComp->m_mesh = mesh;
 
-    transComp->SetPosition(Me::Math::Vec3(10.0f,10.0f,0.0f));
+    transComp->SetPosition(Me::Math::Vec3(512.0f,512.0f,0.0f));
     transComp->SetUniformScale(128.0f);
 
     eManager->AddComponent(entt, renderComp);

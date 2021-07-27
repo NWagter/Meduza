@@ -250,11 +250,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		auto transMatrix = DirectX::XMMatrixTranslation(pos.m_x,pos.m_y,pos.m_z);
 		auto rotMatrix = DirectX::XMMatrixRotationZ(rot);
 		
-		auto ortho = DirectX::XMMatrixOrthographicLH(
-				a_cam.m_size.m_x, a_cam.m_size.m_y,
+		auto ortho = DirectX::XMMatrixOrthographicOffCenterLH(
+				0, a_cam.m_size.m_x, 0, a_cam.m_size.m_y,
 				a_cam.m_near, a_cam.m_far
 			);
-
+			
 		auto viewProjection = DirectX::XMMatrixTranspose((transMatrix * rotMatrix) * ortho);
 
 		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();

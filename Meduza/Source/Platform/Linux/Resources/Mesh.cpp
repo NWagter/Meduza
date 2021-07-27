@@ -29,14 +29,14 @@ void Me::Resources::GL::Mesh::GenerateBuffers()
 
     glBindVertexArray(m_vao);
 
-    int vertBytes = sizeof(m_vertices);
-    uint16_t indBytes = sizeof(m_indices);
+    //int vertBytes = sizeof(m_vertices);
+    //uint16_t indBytes = sizeof(m_indices);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, int(vertBytes * sizeof(Vertex)), m_vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), m_vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, uint16_t(indBytes * sizeof(uint16_t)), m_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(uint16_t), m_indices.data(), GL_STATIC_DRAW);
 
     GenerateAttributes();
 

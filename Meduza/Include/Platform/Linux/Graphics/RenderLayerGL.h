@@ -31,6 +31,10 @@ namespace Me
                     Math::Mat4 m_modelMatrix;
                 };
                 
+                struct Camera
+                {
+                    Math::Mat4 m_cameraMatrix;
+                };
 
                 RenderLayerGL(Window*);
                 ~RenderLayerGL();
@@ -49,7 +53,7 @@ namespace Me
 
                 std::vector<Renderable*> m_renderables;
                 Resources::GL::Shader* m_activeShader;
-                Math::Mat4* m_cameraMat;
+                Camera* m_camera;
             };
         }
     }

@@ -936,39 +936,26 @@ namespace Me
 			Mat4 ortho = Mat4::Identity();
 
 			ortho.m_mat[0][0] = 2 / (a_right - a_left);
-			ortho.m_mat[0][1] = 0;
-			ortho.m_mat[0][2] = 0;
-			ortho.m_mat[0][3] = 0;
-
-			ortho.m_mat[1][0] = 0;
 			ortho.m_mat[1][1] = 2 / (a_top - a_bottom);
-			ortho.m_mat[1][2] = 0;
-			ortho.m_mat[1][3] = 0;
+			ortho.m_mat[2][2] = 2 / (a_far - a_near);
 
-			ortho.m_mat[2][0] = 0;
-			ortho.m_mat[2][1] = 0;
-			ortho.m_mat[2][2] = -2 / (a_far - a_near);
-			ortho.m_mat[2][3] = 0;
-
-			ortho.m_mat[3][0] = -(a_right + a_left) / (a_right - a_left);
-			ortho.m_mat[3][1] = -(a_top + a_bottom) / (a_top - a_bottom);
-			ortho.m_mat[3][2] = -(a_far + a_near) / (a_far - a_near);
-			ortho.m_mat[3][3] = 1;
+			ortho.m_mat[0][3] = -(a_right + a_left) / (a_right - a_left);
+			ortho.m_mat[1][3] = -(a_top + a_bottom) / (a_top - a_bottom);
+			ortho.m_mat[2][3] = -(a_far + a_near) / (a_far - a_near);
 
 			return ortho;
 		}
-		inline Mat4 GetProjectionMatrix(const float a_angleOfView, const float a_near, const float a_far)
+		inline Mat4 GetProjectionMatrix(const float a_angleOfView, const float a_aspect, const float a_near, const float a_far)
 		{
 			Mat4 projection = Mat4::Identity();
+			
+			float tanHalfFOV= std::tan(a_angleOfView / 2);
 
-
-			float scale = 1 / std::tan(a_angleOfView * 0.5f * gs_pi / 180);
-			projection.m_mat[0][0] = scale;
-			projection.m_mat[1][1] = scale;
-			projection.m_mat[2][2] = -a_far / (a_far - a_near);
-			projection.m_mat[3][2] = -a_far * a_near / (a_far - a_near);
-			projection.m_mat[2][3] = -1;
-			projection.m_mat[3][3] = 0;
+			projection.m_mat[0][0] = 1 / (a_aspect * tanHalfFOV);
+			projection.m_mat[1][1] = 1 / (tanHalfFOV);
+			projection.m_mat[2][2] = -(a_far + a_near) / (a_far - a_near);
+			projection.m_mat[3][2] = 1;
+			projection.m_mat[2][3] = (2 * a_far * a_near) / (a_far - a_near);
 
 			return projection;
 		}

@@ -31,7 +31,7 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     m_window->SetContext(m_context);
     m_activeShader = nullptr;
 
-    m_cameraMat = new Math::Mat4();
+    m_camera = new Camera();
 
 }
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -75,8 +75,8 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
 
         m_activeShader->SetMat4("u_model", r->m_modelMatrix, true);
-        m_activeShader->SetMat4("u_projectionView", *m_cameraMat, true);
-        
+        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, true);
+
         m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
 
 
@@ -110,19 +110,20 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
 
     if(a_cameraComp.m_cameraType == Me::CameraType::Orthographic)
     {
-        camMat = Math::GetOrthographicMatrix(-a_cameraComp.m_size.m_y / 2, a_cameraComp.m_size.m_y / 2,
-            -a_cameraComp.m_size.m_x / 2 , a_cameraComp.m_size.m_x / 2,
+        camMat = Math::GetOrthographicMatrix(0, a_cameraComp.m_size.m_y,
+            0 , a_cameraComp.m_size.m_x,
             a_cameraComp.m_near, a_cameraComp.m_far);
     }
     else
     {
-        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_near, a_cameraComp.m_far);
+        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
+         a_cameraComp.m_near, a_cameraComp.m_far);
     }
     
     Math::Mat4 trans = a_transComp.GetTransform();
     Math::Mat4 camViewProjection = trans * camMat;
     
-    m_cameraMat = &camViewProjection;
+    m_camera->m_cameraMatrix = camViewProjection;
 }
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

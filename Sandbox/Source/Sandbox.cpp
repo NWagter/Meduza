@@ -42,7 +42,7 @@ Sandbox::Sandbox()
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
 
-    Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(Me::Primitives::Cube);
+    Me::Mesh mesh = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
    
     if(shader == 0)
@@ -59,7 +59,7 @@ Sandbox::Sandbox()
     renderComp->m_shader = shader;
     renderComp->m_mesh = mesh;
 
-    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,64.0f));
+    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,128.0f));
     transComp->SetUniformScale(32.0f);
 
     eManager->AddComponent(entt, renderComp);

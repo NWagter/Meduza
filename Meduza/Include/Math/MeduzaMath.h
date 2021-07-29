@@ -960,5 +960,19 @@ namespace Me
 			return projection;
 		}
 
+		inline Mat4 Transpose(const Mat4 a_matrix)
+		{
+			Mat4 transposed = a_matrix;
+
+			std::swap(transposed.m_m[1], transposed.m_m[4]);
+			std::swap(transposed.m_m[2], transposed.m_m[8]);
+			std::swap(transposed.m_m[3], transposed.m_m[12]);
+			std::swap(transposed.m_m[6], transposed.m_m[9]);
+			std::swap(transposed.m_m[7], transposed.m_m[13]);
+			std::swap(transposed.m_m[11], transposed.m_m[14]);
+
+			return transposed;
+		}
+
 	}
 }

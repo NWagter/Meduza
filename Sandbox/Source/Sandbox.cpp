@@ -87,8 +87,8 @@ Sandbox::Sandbox()
     camComp->m_far = 1000;
     camComp->m_size = screenSize;
 
-    eManager->AddComponent(camEntt, camComp);
-    eManager->AddComponent(camEntt, transCComp);
+    eManager->AddComponent<Me::CameraComponent>(camEntt, camComp);
+    eManager->AddComponent<Me::TransformComponent>(camEntt);
 
 #endif
 

@@ -758,8 +758,8 @@ namespace Me
 				Mat4 rot = Mat4::Identity();
 				
 				rot.m_11 = c;
-				rot.m_12 = s;
-				rot.m_21 = -s;
+				rot.m_12 = -s;
+				rot.m_21 = s;
 				rot.m_22 = c;
 
 				*this = rot * *this;
@@ -771,8 +771,8 @@ namespace Me
 				Mat4 rot = Mat4::Identity();
 				
 				rot.m_00 = c;
-				rot.m_02 = -s;
-				rot.m_20 = s;
+				rot.m_02 = s;
+				rot.m_20 = -s;
 				rot.m_22 = c;
 
 				*this = rot * *this;

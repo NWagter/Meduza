@@ -20,6 +20,8 @@
 
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
+#include "Systems/Rotator.h"
+#include "Components/RotateComponent.h"
 
 Sandbox::Sandbox()
 {
@@ -37,7 +39,7 @@ Sandbox::Sandbox()
     new PlayerSystem();
     m_game = new Physics::Physics2D();
 #else
-
+    new Rotator();
     m_game = new BaseGame();
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
@@ -56,6 +58,7 @@ Sandbox::Sandbox()
 
     auto renderComp = new Me::RenderComponent();
     auto transComp = new Me::TransformComponent();
+    auto rotComp = new RotateComponent();
 
     renderComp->m_colour = Me::Colours::WHITE;
     renderComp->m_shader = shader;
@@ -66,8 +69,11 @@ Sandbox::Sandbox()
     transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
     transComp->SetUniformScale(1.0f);
 
+    rotComp->m_rotateSpeed = 0.25f;
+
     eManager->AddComponent(entt, renderComp);
     eManager->AddComponent(entt, transComp);
+    eManager->AddComponent(entt, rotComp);
 
     EntityID camEntt = Me::EntityManager::CreateEntity();
 

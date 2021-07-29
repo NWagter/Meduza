@@ -59,7 +59,7 @@ float4 PS(VS_OUTPUT a_input) : SV_TARGET
 {
     float4 c = gDiffuseMap[a_input.textureId].Sample(gsamLinear, a_input.texC) * a_input.colour;
 
-    float3 ambient = float3(0.2f, 0.2f, 0.2f) * c.xyz;
+    float3 ambient = float3(0.4f, 0.4f, 0.4f) * c.xyz;
     float3 N = normalize(a_input.normal);
 
     float3 light = float3(1,0,-1);

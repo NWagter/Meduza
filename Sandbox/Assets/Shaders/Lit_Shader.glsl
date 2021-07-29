@@ -31,7 +31,7 @@ void main()
 {
     vec4 c = texture(u_texture, texC) * u_colour;
 
-    vec3 ambient = vec3(0.2f, 0.2f, 0.2f) * c.xyz;
+    vec3 ambient = vec3(0.4f, 0.4f, 0.4f) * c.xyz;
     vec3 N = normalize(normal);
 
     vec3 light = vec3(1,0,-1);

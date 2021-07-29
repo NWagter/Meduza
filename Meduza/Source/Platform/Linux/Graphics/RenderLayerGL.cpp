@@ -79,6 +79,10 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
         m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
 
+        if(t != nullptr)
+        {
+            t->Bind();
+        }
 
         glBindVertexArray(m->GetVAO());
 

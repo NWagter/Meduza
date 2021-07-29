@@ -49,7 +49,7 @@ Sandbox::Sandbox()
    
     if(shader == 0)
     {      
-        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.glsl");
     }
 
     EntityID entt = Me::EntityManager::CreateEntity();

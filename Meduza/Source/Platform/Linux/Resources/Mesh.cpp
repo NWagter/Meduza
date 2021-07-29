@@ -52,4 +52,18 @@ void Me::Resources::GL::Mesh::GenerateAttributes()
 
     glVertexAttribPointer(attributeId, values, GL_FLOAT, GL_FALSE, stride, (void*)(offset * sizeof(float)));
     glEnableVertexAttribArray(attributeId);
+
+    attributeId++;
+    offset += values;
+    values = 3;
+
+    glVertexAttribPointer(attributeId, values, GL_FLOAT, GL_FALSE, stride, (void*)(offset * sizeof(float)));
+    glEnableVertexAttribArray(attributeId);
+
+    attributeId++;
+    offset += values;
+    values = 2;
+
+    glVertexAttribPointer(attributeId, values, GL_FLOAT, GL_FALSE, stride, (void*)(offset * sizeof(float)));
+    glEnableVertexAttribArray(attributeId);
 }

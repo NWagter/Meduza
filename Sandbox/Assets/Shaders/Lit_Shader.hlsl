@@ -63,7 +63,7 @@ float4 PS(VS_OUTPUT a_input) : SV_TARGET
     float3 N = normalize(a_input.normal);
 
     float3 light = float3(1,0,-1);
-    float3 lightDir = normalize(light);   
+    float3 lightDir = normalize(light - a_input.posW);   
 
     float diff = max(dot(N, lightDir), 0.0f);
     float3 diffuse = float3(0.8f, 0.8f, 0.8f) * diff * (c.xyz);

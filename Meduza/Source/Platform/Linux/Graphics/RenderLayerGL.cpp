@@ -32,6 +32,7 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     m_activeShader = nullptr;
 
     m_camera = new Camera();
+    glEnable(GL_DEPTH_TEST);
 
 }
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -101,9 +102,9 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     r->m_renderComponent = &a_renderable;
     r->m_modelMatrix = a_trans.GetTransform();
 
-    r->m_modelMatrix.m_00 = a_trans.GetUniformedScale();
-    r->m_modelMatrix.m_11 = a_trans.GetUniformedScale();
-    r->m_modelMatrix.m_22 = a_trans.GetUniformedScale();
+    r->m_modelMatrix.m_00 *= a_trans.GetUniformedScale();
+    r->m_modelMatrix.m_11 *= a_trans.GetUniformedScale();
+    r->m_modelMatrix.m_22 *= a_trans.GetUniformedScale();
 
     m_renderables.push_back(r);
 }
@@ -120,7 +121,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     }
     else
     {
-        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
+        camMat = Math::GetProjectionMatrix((90.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
          a_cameraComp.m_near, a_cameraComp.m_far);
     }
     

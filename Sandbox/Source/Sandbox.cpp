@@ -65,7 +65,10 @@ Sandbox::Sandbox()
     renderComp->m_mesh = suzanne;
     renderComp->m_texture = suzanneTexture;
 
-    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,5.0f));
+    Me::Math::Vec2 screenSize = GetScreenSize();
+
+    transComp->SetPosition(Me::Math::Vec3(screenSize.m_x / 2, screenSize.m_y / 2, 64.0f));
+    //transComp->SetPosition(Me::Math::Vec3(0,0,5));
     transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
     transComp->SetUniformScale(1.0f);
 
@@ -80,10 +83,10 @@ Sandbox::Sandbox()
     auto camComp = new Me::CameraComponent();
     auto transCComp = new Me::TransformComponent();
     
-    camComp->m_cameraType = Me::CameraType::Perspective;
+    camComp->m_cameraType = Me::CameraType::Orthographic;
     camComp->m_near = 0.1f;
     camComp->m_far = 1000;
-    camComp->m_size = GetScreenSize();
+    camComp->m_size = screenSize;
 
     eManager->AddComponent(camEntt, camComp);
     eManager->AddComponent(camEntt, transCComp);

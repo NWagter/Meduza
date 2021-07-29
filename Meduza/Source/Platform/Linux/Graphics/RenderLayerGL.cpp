@@ -89,7 +89,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, m->GetIndicesSize(), 1);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, m->GetIndicesSize(), 1);
         glBindVertexArray(0);
     }
     

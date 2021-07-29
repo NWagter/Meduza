@@ -13,9 +13,11 @@ out vec3 normal;
 
 void main()
 {
-    gl_Position = u_projectionView * u_model * vec4(a_pos, 1.0);
+    vec3 fragPos = vec3(u_model * vec4(a_pos, 1.0));
+    gl_Position = u_projectionView * vec4(fragPos, 1.0);
+
     texC = a_texC;
-    normal = a_normal;
+    normal = mat3(transpose(inverse(u_model))) * a_normal;
 }
 
 #type Pixel

@@ -67,8 +67,7 @@ Sandbox::Sandbox()
 
     Me::Math::Vec2 screenSize = GetScreenSize();
 
-    transComp->SetPosition(Me::Math::Vec3(screenSize.m_x / 2, screenSize.m_y / 2, 64.0f));
-    //transComp->SetPosition(Me::Math::Vec3(0,0,5));
+    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,5.0f));
     transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
     transComp->SetUniformScale(1.0f);
 
@@ -83,7 +82,7 @@ Sandbox::Sandbox()
     auto camComp = new Me::CameraComponent();
     auto transCComp = new Me::TransformComponent();
     
-    camComp->m_cameraType = Me::CameraType::Orthographic;
+    camComp->m_cameraType = Me::CameraType::Perspective;
     camComp->m_near = 0.1f;
     camComp->m_far = 1000;
     camComp->m_size = screenSize;

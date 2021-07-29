@@ -77,7 +77,7 @@ void Me::Meduza::Clear()
 {
 	if(m_renderLayer != nullptr)
 	{		
-		m_renderLayer->Clear(Colours::AZURE_WHITE);
+		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
 		if(m_editor != nullptr)
 		{
 			m_editor->Clear();

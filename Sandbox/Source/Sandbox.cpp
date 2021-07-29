@@ -42,8 +42,10 @@ Sandbox::Sandbox()
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
 
-    Me::Mesh mesh = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
+    Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+    Me::Texture duckTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Duck.glb");
+
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.hlsl");
    
     if(shader == 0)
     {      
@@ -55,12 +57,13 @@ Sandbox::Sandbox()
     auto renderComp = new Me::RenderComponent();
     auto transComp = new Me::TransformComponent();
 
-    renderComp->m_colour = Me::Colours::RED;
+    renderComp->m_colour = Me::Colours::WHITE;
     renderComp->m_shader = shader;
-    renderComp->m_mesh = mesh;
+    renderComp->m_mesh = duck;
+    renderComp->m_texture = duckTexture;
 
-    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,128.0f));
-    transComp->SetUniformScale(32.0f);
+    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,512.0f));
+    transComp->SetUniformScale(1.0f);
 
     eManager->AddComponent(entt, renderComp);
     eManager->AddComponent(entt, transComp);

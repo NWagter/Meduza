@@ -75,8 +75,8 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glBindBuffer(GL_UNIFORM_BUFFER, m->GetVBO());
 
 
-        m_activeShader->SetMat4("u_model", r->m_modelMatrix, true);
-        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, true);
+        m_activeShader->SetMat4("u_model", r->m_modelMatrix, false);
+        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
 
         m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
 
@@ -100,7 +100,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 {
     Renderable* r = new Renderable();
     r->m_renderComponent = &a_renderable;
-    r->m_modelMatrix = a_trans.GetTransform();
+    r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
     r->m_modelMatrix.m_00 *= a_trans.GetUniformedScale();
     r->m_modelMatrix.m_11 *= a_trans.GetUniformedScale();
@@ -121,14 +121,13 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     }
     else
     {
-        camMat = Math::GetProjectionMatrix((90.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
+        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
          a_cameraComp.m_near, a_cameraComp.m_far);
     }
     
-    Math::Mat4 trans = a_transComp.GetTransform();
-    Math::Mat4 camViewProjection = trans * camMat;
+    Math::Mat4 camViewProjection = camMat;
     
-    m_camera->m_cameraMatrix = camViewProjection;
+    m_camera->m_cameraMatrix = Math::Transpose(camViewProjection);
 }
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

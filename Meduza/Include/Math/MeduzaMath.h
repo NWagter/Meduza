@@ -757,10 +757,8 @@ namespace Me
 				const float s = sin(a_radians);
 				Mat4 rot = Mat4::Identity();
 				
-				rot.m_11 = c;
-				rot.m_12 = -s;
-				rot.m_21 = s;
-				rot.m_22 = c;
+				rot.m_11 = c; rot.m_21 = -s;
+				rot.m_12 = s; rot.m_22 = c;
 
 				*this = rot * *this;
 			}	
@@ -770,10 +768,8 @@ namespace Me
 				const float s = sin(a_radians);
 				Mat4 rot = Mat4::Identity();
 				
-				rot.m_00 = c;
-				rot.m_02 = s;
-				rot.m_20 = -s;
-				rot.m_22 = c;
+				rot.m_00 = c;  rot.m_20 = s;
+				rot.m_02 = -s; rot.m_22 = c;				
 
 				*this = rot * *this;
 			}	
@@ -783,10 +779,8 @@ namespace Me
 				const float s = sin(a_radians);
 				Mat4 rot = Mat4::Identity();
 				
-				rot.m_00 = c;
-				rot.m_01 = -s;
-				rot.m_10 = s;
-				rot.m_11 = c;
+				rot.m_00 = c; rot.m_10 = -s;
+				rot.m_01 = s; rot.m_11 = c;
 
 				*this = rot * *this;
 			}
@@ -953,7 +947,8 @@ namespace Me
 
 			projection.m_mat[0][0] = 1 / (a_aspect * tanHalfFOV);
 			projection.m_mat[1][1] = 1 / (tanHalfFOV);
-			projection.m_mat[2][2] = -(a_far + a_near) / (a_far - a_near);
+			projection.m_mat[2][2] = (a_far + a_near) / (a_far - a_near);
+
 			projection.m_mat[3][2] = 1;
 			projection.m_mat[2][3] = (2 * a_far * a_near) / (a_far - a_near);
 

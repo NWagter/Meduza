@@ -10,14 +10,17 @@ uniform mat4 u_projectionView;
 
 out vec2 texC;
 out vec3 normal;
+out vec3 posW;
 
 void main()
 {
-    vec3 fragPos = vec3(u_model * vec4(a_pos, 1.0));
-    gl_Position = u_projectionView * vec4(fragPos, 1.0);
+    vec4 pos = u_model * vec4(a_pos, 1);
+    posW = pos.xyz;
+    
+    gl_Position = u_projectionView * pos;
 
     texC = a_texC;
-    normal = mat3(transpose(inverse(u_model))) * a_normal;
+    normal = mat3(u_model) * a_normal;
 }
 
 #type Pixel
@@ -25,6 +28,7 @@ void main()
 
 in vec2 texC;
 in vec3 normal;
+in vec3 posW;
 
 uniform vec4 u_colour;
 uniform sampler2D u_texture;
@@ -33,14 +37,14 @@ void main()
 {
     vec4 c = texture(u_texture, texC) * u_colour;
 
-    vec3 ambient = vec3(0.4f, 0.4f, 0.4f) * c.xyz;
-    vec3 N = normalize(normal);
+    vec3 norm = normalize(normal);
 
-    vec3 light = vec3(1,0,-1);
-    vec3 lightDir = normalize(light);   
+    vec3 ambient = vec3(0.4,0.4,0.4) * c.xyz;
 
-    float diff = max(dot(N, lightDir), 0.0f);
-    vec3 diffuse = vec3(0.8f, 0.8f, 0.8f) * diff * (c.xyz);
+    vec3 lightDir = normalize(vec3(1,0,-1) - posW);
 
-    gl_FragColor = vec4(ambient + diffuse, c.w);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * vec3(0.8,0.8,0.8);
+
+    gl_FragColor = vec4(ambient + diffuse, 1) * c;
 }

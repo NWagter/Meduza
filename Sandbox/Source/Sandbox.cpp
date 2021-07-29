@@ -4,7 +4,7 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 1
+#define Run_EmptyTest 0
 #define Run_Chess 0
 #define Run_Physics 0
 
@@ -45,11 +45,11 @@ Sandbox::Sandbox()
     Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
     Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
 
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.hlsl");
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/lit_Shader.hlsl");
    
     if(shader == 0)
     {      
-        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.glsl");
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/lit_Shader.glsl");
     }
 
     EntityID entt = Me::EntityManager::CreateEntity();

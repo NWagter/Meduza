@@ -43,7 +43,7 @@ Sandbox::Sandbox()
     auto eManager = Me::EntityManager::GetEntityManager(); 
 
     Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
-    Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColour.png");
+    Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
 
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Unlit_Shader.hlsl");
    

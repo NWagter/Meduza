@@ -43,9 +43,12 @@ Sandbox::Sandbox()
     m_game = new BaseGame();
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
-
-    Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
-    Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
+/*
+    Me::Mesh mesh = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
+    Me::Texture texture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
+*/ 
+    Me::Mesh mesh = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Avocado.glb");
+    Me::Texture texture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Avocado.glb");
 
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/lit_Shader.hlsl");
    
@@ -62,14 +65,14 @@ Sandbox::Sandbox()
 
     renderComp->m_colour = Me::Colours::WHITE;
     renderComp->m_shader = shader;
-    renderComp->m_mesh = suzanne;
-    renderComp->m_texture = suzanneTexture;
+    renderComp->m_mesh = mesh;
+    renderComp->m_texture = texture;
 
     Me::Math::Vec2 screenSize = GetScreenSize();
 
     transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,5.0f));
     transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
-    transComp->SetUniformScale(1.0f);
+    transComp->SetUniformScale(32.0f);
 
     rotComp->m_rotateSpeed = 0.25f;
 

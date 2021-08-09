@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#define GETRADIUS(a_degree) (a_degree * 3.141592654f / 180)
+
 namespace Me
 {
 	namespace Math
@@ -721,32 +723,27 @@ namespace Me
 
 			inline Vec3 GetScale()
 			{
-				Vec3 euler = Vec3(0,0,0);
-				
-				//Calc Euler
+				Vec3 scale = Vec3(m_00,m_11,m_22);
 
-				return euler;
+				return scale;
 			}
 
-			inline Mat4& SetScale(float)
+			inline Mat4& SetScale(float a_scale)
 			{
-				Mat4 temp = *this;
-				
-				//Calc Scale
+				//Calc Scale    
+				m_00 *= a_scale;
+				m_11 *= a_scale;
+				m_22 *= a_scale;
 
 				return *this;
 			}
-			inline Mat4& SetScale(Vec3)
+			inline Mat4& SetScale(Vec3 a_scale)
 			{
-				Mat4 temp = *this;
-				
-				//Calc Scale
+				//Calc Scale    
+				m_00 = a_scale.m_x;
+				m_11 = a_scale.m_y;
+				m_22 = a_scale.m_z;
 
-				return *this;
-			}
-
-			inline Mat4& ConvertGL()
-			{
 				return *this;
 			}
 
@@ -929,13 +926,20 @@ namespace Me
 		{
 			Mat4 ortho = Mat4::Identity();
 
-			ortho.m_mat[0][0] = 2 / (a_right - a_left);
-			ortho.m_mat[1][1] = 2 / (a_top - a_bottom);
-			ortho.m_mat[2][2] = 2 / (a_far - a_near);
+			float width = 1.0f / (a_right - a_left);
+			float height = 1.0f / (a_top - a_bottom);
+			float fRange = 1.0f / (a_far - a_near);
 
-			ortho.m_mat[0][3] = -(a_right + a_left) / (a_right - a_left);
-			ortho.m_mat[1][3] = -(a_top + a_bottom) / (a_top - a_bottom);
-			ortho.m_mat[2][3] = -(a_far + a_near) / (a_far - a_near);
+			ortho.m_mat[0][0] = width + width;
+			ortho.m_mat[0][3] = -(a_left + a_right) * width;
+
+			ortho.m_mat[1][1] = height + height;
+			ortho.m_mat[1][3] = -(a_top + a_bottom) * height;
+
+			ortho.m_mat[2][2] = fRange;
+			ortho.m_mat[2][3] = -fRange * a_near;
+
+			ortho.m_mat[3][3] = 1.0f;
 
 			return ortho;
 		}
@@ -943,14 +947,16 @@ namespace Me
 		{
 			Mat4 projection = Mat4::Identity();
 			
-			float tanHalfFOV= std::tan(a_angleOfView / 2);
+			float rad = GETRADIUS(a_angleOfView);
+			float tanHalfFOV = std::tan(rad * 0.5f);
 
 			projection.m_mat[0][0] = 1 / (a_aspect * tanHalfFOV);
 			projection.m_mat[1][1] = 1 / (tanHalfFOV);
+
 			projection.m_mat[2][2] = (a_far + a_near) / (a_far - a_near);
+			projection.m_mat[2][3] = (2 * a_far * a_near) / (a_far - a_near);
 
 			projection.m_mat[3][2] = 1;
-			projection.m_mat[2][3] = (2 * a_far * a_near) / (a_far - a_near);
 
 			return projection;
 		}

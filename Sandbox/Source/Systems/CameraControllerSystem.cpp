@@ -74,7 +74,7 @@ void CameraControllerSystem::OnUpdate(float a_dt)
 
 
         Me::Math::Vec3 forward = trans->GetForward() * (forwardMovment * 150);
-        Me::Math::Vec3 right = trans->GetRight() * (rightMovment * 150);
+        Me::Math::Vec3 right = trans->GetLeft() * (-rightMovment * 150);
         Me::Math::Vec3 up = trans->GetUp() * (upMovment * 150);
         Me::Math::Vec3 movement = forward + right + up;
 

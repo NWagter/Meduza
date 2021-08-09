@@ -24,16 +24,16 @@
             }
         ]
     },
-        {
-            "name": "(Windows) Launch",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/Sandbox/Sandbox.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/Sandbox",
-            "environment": [],
-            "externalConsole": true
-        }
+    {
+        "name": "(Windows) Launch",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/Sandbox/Sandbox.exe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/build/Sandbox",
+        "environment": [],
+        "externalConsole": true
+    }
     ]
 }

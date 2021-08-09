@@ -34,13 +34,13 @@ namespace Me
                 return m_uniformScale;
             }
 
-            Math::Vec3 GetRight()
+            Math::Vec3 GetLeft()
             {
                 Math::Vec3 right;
                 
                 right.m_x = m_transform.m_00;
-                right.m_y = m_transform.m_10;
-                right.m_z = m_transform.m_20;
+                right.m_y = m_transform.m_01;
+                right.m_z = m_transform.m_02;
 
                 return right.Normalize();
             }    
@@ -49,9 +49,9 @@ namespace Me
             {
                 Math::Vec3 up;
                 
-                up.m_x = m_transform.m_01;
+                up.m_x = m_transform.m_10;
                 up.m_y = m_transform.m_11;
-                up.m_z = m_transform.m_21;
+                up.m_z = m_transform.m_12;
 
                 return up.Normalize();
             }
@@ -60,9 +60,9 @@ namespace Me
             {
                 Math::Vec3 forward;
                 
-                forward.m_x = m_transform.m_02;
-                forward.m_y = m_transform.m_12;
-                forward.m_z = m_transform.m_22;
+                forward.m_x = -m_transform.m_20;
+                forward.m_y = -m_transform.m_21;
+                forward.m_z = -m_transform.m_22;
 
                 return forward.Normalize();
             }  

@@ -21,7 +21,11 @@
 #include "Systems/CursorSystem.h"
 #include "Systems/PlayerSystem.h"
 #include "Systems/Rotator.h"
+#include "Systems/MoveUpSystem.h"
+#include "Systems/MoveForwardSystem.h"
 #include "Components/RotateComponent.h"
+#include "Components/UpComponent.h"
+#include "Components/ForwardComponent.h"
 
 Sandbox::Sandbox()
 {
@@ -40,6 +44,8 @@ Sandbox::Sandbox()
     m_game = new Physics::Physics2D();
 #else
     new Rotator();
+    new MoveUpSystem();
+    new MoveForwardSystem();
     m_game = new BaseGame();
 
     auto eManager = Me::EntityManager::GetEntityManager(); 
@@ -62,6 +68,8 @@ Sandbox::Sandbox()
     auto renderComp = new Me::RenderComponent();
     auto transComp = new Me::TransformComponent();
     auto rotComp = new RotateComponent();
+    auto upComp = new UpComponent();
+    auto forwardComp = new ForwardComponent();
 
     renderComp->m_colour = Me::Colours::WHITE;
     renderComp->m_shader = shader;
@@ -70,15 +78,26 @@ Sandbox::Sandbox()
 
     Me::Math::Vec2 screenSize = GetScreenSize();
 
-    transComp->SetPosition(Me::Math::Vec3(0.0f,0.0f,5.0f));
-    transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
+    
+    transComp->SetPosition(Me::Math::Vec3(screenSize.m_x * 0.5f,screenSize.m_y * 0.5f,32.0f));
+    transComp->SetUniformScale(512.0f);
+    
+    
+    
+    transComp->SetPosition(Me::Math::Vec3(0.0f, 0.0f,10.0f));
     transComp->SetUniformScale(32.0f);
+    
+    transComp->SetRotationDegree(Me::Math::Vec3(0.0f,180.0f,0.0f));
 
     rotComp->m_rotateSpeed = 0.25f;
+    upComp->m_upSpeed = 10.0f;
+    forwardComp->m_forwardSpeed = 10.0f;
 
     eManager->AddComponent(entt, renderComp);
     eManager->AddComponent(entt, transComp);
-    eManager->AddComponent(entt, rotComp);
+    //eManager->AddComponent(entt, rotComp);
+    //eManager->AddComponent(entt, upComp);
+    eManager->AddComponent(entt, forwardComp);
 
     EntityID camEntt = Me::EntityManager::CreateEntity();
 

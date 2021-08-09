@@ -228,12 +228,13 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	auto scale = a_trans.GetUniformedScale();
 	auto rot = a_trans.GetRotation();
 
-	const DirectX::XMMATRIX p = DirectX::XMMatrixTranslation(pos.m_x, pos.m_y, pos.m_z);
-	const DirectX::XMMATRIX s = DirectX::XMMatrixScaling(scale, scale, scale);
-	const DirectX::XMMATRIX r = DirectX::XMMatrixRotationRollPitchYaw(rot.m_x, rot.m_y, rot.m_z);
-	const DirectX::XMMATRIX model = r * s * p;
+	Math::Mat4 model = Math::Mat4::Identity();
+	
+	model.SetPosition(pos);
+	model.Rotation(rot);
+	model.SetScale(scale);
 
-	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMatrixTranspose(model));
+	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMATRIX((model).m_m));
 
 	static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 
@@ -246,19 +247,19 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 	{
 		auto pos = a_trans.GetPosition();
 		auto rot = a_trans.GetRotation().m_z;
-			
-		auto transMatrix = DirectX::XMMatrixTranslation(pos.m_x,pos.m_y,pos.m_z);
-		auto rotMatrix = DirectX::XMMatrixRotationZ(rot);
+
+		Math::Mat4 view = Math::Mat4::Identity();
+		view.SetPosition(pos);
 		
-		auto ortho = DirectX::XMMatrixOrthographicOffCenterLH(
-				0, a_cam.m_size.m_x, 0, a_cam.m_size.m_y,
+		Math::Mat4 ortho = Math::GetOrthographicMatrix(
+				0, a_cam.m_size.m_y, 0, a_cam.m_size.m_x,
 				a_cam.m_near, a_cam.m_far
 			);
 			
-		auto viewProjection = DirectX::XMMatrixTranspose((transMatrix * rotMatrix) * ortho);
+		Math::Mat4 viewProjection = view * ortho;
 
 		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
-		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, viewProjection);
+		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(viewProjection.m_m));
 
 		m_camBuffer->CopyData(0, cBuffer);
 	}
@@ -267,17 +268,18 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		auto pos = a_trans.GetPosition();
 		auto rot = a_trans.GetRotation();
 			
-		auto transMatrix = DirectX::XMMatrixTranslation(-pos.m_x,-pos.m_y,-pos.m_z);
-		auto rotMatrix = DirectX::XMMatrixRotationRollPitchYaw(rot.m_pitch,rot.m_yaw,rot.m_roll);
+		Math::Mat4 view = Math::Mat4::Identity();
+		view.Rotation(rot);
+		view.SetPosition(pos);
 
 		// build projection and view matrix
-		DirectX::XMMATRIX projectionMat = DirectX::XMMatrixPerspectiveFovLH(45.0f*(3.14f/180.0f),
+		Math::Mat4 projection = Math::GetProjectionMatrix(45.0f,
 		a_cam.m_size.m_x / a_cam.m_size.m_y, a_cam.m_near, a_cam.m_far);
-
-		auto viewProjection = DirectX::XMMatrixTranspose((transMatrix * rotMatrix) * projectionMat);
+	
+		Math::Mat4 viewProjection =  projection * view;
 
 		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
-		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, viewProjection);
+		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(viewProjection.m_m));
 
 		m_camBuffer->CopyData(0, cBuffer);
 	}

@@ -97,7 +97,6 @@ void Me::Resources::GL::Shader::SetVec4(const std::string &a_name, const Math::V
 void Me::Resources::GL::Shader::SetMat4(const std::string &a_name, const Math::Mat4 a_mat4, const bool a_transpose)
 {
     Math::Mat4 glMat4 = a_mat4;
-    glMat4 = glMat4.ConvertGL();
 
     glUniformMatrix4fv(glGetUniformLocation(m_program, a_name.c_str()), 1, a_transpose, &glMat4.m_mat[0][0]);
 }

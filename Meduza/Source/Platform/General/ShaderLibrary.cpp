@@ -139,7 +139,7 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_vsPath, std:
 
 	ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
 
-	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vsPath.c_str());
 
 	return hashedId;
 

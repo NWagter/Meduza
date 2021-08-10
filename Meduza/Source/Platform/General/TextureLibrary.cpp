@@ -97,7 +97,7 @@ Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
         return hashedId;
     }
 
-    ME_GFX_LOG("Texture %s does not Exist!", a_texture.c_str());
+    ME_GFX_LOG("Texture %s does not Exist! \n", a_texture.c_str());
     return 0;
 }
 Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Texture a_texture)

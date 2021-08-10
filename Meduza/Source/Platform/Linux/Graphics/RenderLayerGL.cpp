@@ -100,11 +100,14 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 {
     Renderable* r = new Renderable();
     r->m_renderComponent = &a_renderable;
-    r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
-    r->m_modelMatrix.m_00 *= a_trans.GetUniformedScale();
-    r->m_modelMatrix.m_11 *= a_trans.GetUniformedScale();
-    r->m_modelMatrix.m_22 *= a_trans.GetUniformedScale();
+    Math::Mat4 model = Math::Mat4::Identity();
+
+    model.SetPosition(a_trans.GetPosition());
+    model.Rotation(a_trans.GetRotation());
+    model.SetScale(a_trans.GetUniformedScale());
+
+    r->m_modelMatrix = Math::Transpose(model);
 
     m_renderables.push_back(r);
 }

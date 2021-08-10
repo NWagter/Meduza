@@ -72,9 +72,6 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 			m_activeShader->Bind();
 		}
 
-        glBindBuffer(GL_UNIFORM_BUFFER, m->GetVBO());
-
-
         m_activeShader->SetMat4("u_model", r->m_modelMatrix, false);
         m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
 
@@ -85,14 +82,14 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
             t->Bind();
         }
 
-        glBindVertexArray(m->GetVAO());
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-        glDrawArraysInstanced(GL_LINES, 0, m->GetIndicesSize(), 1);
-        //glDrawElements(GL_TRIANGLES, m->GetVerticesSize(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        glBindVertexArray(m->GetVAO());
+        glDrawElements(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0);
+
+        //glBindVertexArray(0);
     }
     
 }
@@ -103,11 +100,16 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     r->m_renderComponent = &a_renderable;
     //r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
-    Math::Mat4 model = Math::Mat4::Identity();
+    Math::Mat4 pMat = Math::Mat4::Identity();
+    pMat.SetPosition(a_trans.GetPosition());
 
-    model.SetPosition(a_trans.GetPosition());
-    model.Rotation(a_trans.GetRotation());
+    Math::Mat4 rMat = Math::Mat4::Identity();
+    rMat.Rotation(a_trans.GetRotation());
 
+    Math::Mat4 sMat = Math::Mat4::Identity();
+    sMat.SetScale(a_trans.GetUniformedScale());
+
+    Math::Mat4 model = pMat * rMat * sMat;
     r->m_modelMatrix = Math::Transpose(model);
 
     m_renderables.push_back(r);
@@ -125,7 +127,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     }
     else
     {
-        camMat = Math::GetProjectionMatrix((45.0f*(3.14f/180.0f)), a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
+        camMat = Math::GetProjectionMatrix(45.0f, a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
          a_cameraComp.m_near, a_cameraComp.m_far);
     }
     

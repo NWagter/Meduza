@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 #define VA_ARGS(...) , ##__VA_ARGS__
 
 #define ME_ASSERT(assertion)\

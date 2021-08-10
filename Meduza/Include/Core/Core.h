@@ -81,10 +81,10 @@
 		std::terminate();\
 	}\
 }
-#define ME_LOG(...) printf("[Default LOG] " ##__VA_ARGS__)
-#define ME_CORE_LOG(...) printf("[CORE LOG] " ##__VA_ARGS__)
-#define ME_GAME_LOG(...) printf("[GAME LOG] " ##__VA_ARGS__)
-#define ME_GFX_LOG(...) printf("[GFX LOG]  " ##__VA_ARGS__)
+#define ME_LOG(...) printf("[DEFAULT Log] "); printf(__VA_ARGS__)
+#define ME_CORE_LOG(...)printf("[CORE Log] ");  printf(__VA_ARGS__)
+#define ME_GAME_LOG(...) printf("[GAME Log] ");  printf(__VA_ARGS__)
+#define ME_GFX_LOG(...) printf("[GFX Log] ");  printf(__VA_ARGS__)
 
 #else
 	#define ME_ASSERT(a) {if(!(a)){ }}

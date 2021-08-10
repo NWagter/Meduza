@@ -17,7 +17,7 @@ namespace Me
             }
             inline unsigned int GetIndicesSize() const
             {
-                unsigned int size = static_cast<unsigned int>(m_indices.size());
+                unsigned int size = static_cast<uint16_t>(m_indices.size());
 
                 return size;
             }

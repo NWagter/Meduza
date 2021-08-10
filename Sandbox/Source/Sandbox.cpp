@@ -95,9 +95,9 @@ Sandbox::Sandbox()
 
     eManager->AddComponent(entt, renderComp);
     eManager->AddComponent(entt, transComp);
-    //eManager->AddComponent(entt, rotComp);
+    eManager->AddComponent(entt, rotComp);
     //eManager->AddComponent(entt, upComp);
-    eManager->AddComponent(entt, forwardComp);
+    //eManager->AddComponent(entt, forwardComp);
 
     EntityID camEntt = Me::EntityManager::CreateEntity();
 

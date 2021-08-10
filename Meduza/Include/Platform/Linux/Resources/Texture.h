@@ -12,6 +12,7 @@ namespace Me
                 {
                 public:
                     Texture(std::string);
+                    Texture(const std::vector<unsigned char>, int, int);
                     virtual ~Texture();
 
                     void Reload() override;

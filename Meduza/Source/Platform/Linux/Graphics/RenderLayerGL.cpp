@@ -90,7 +90,8 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-        glDrawArraysInstanced(GL_TRIANGLES, 0, m->GetIndicesSize(), 1);
+        glDrawArraysInstanced(GL_LINES, 0, m->GetIndicesSize(), 1);
+        //glDrawElements(GL_TRIANGLES, m->GetVerticesSize(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
     
@@ -100,12 +101,12 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 {
     Renderable* r = new Renderable();
     r->m_renderComponent = &a_renderable;
+    //r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
     Math::Mat4 model = Math::Mat4::Identity();
 
     model.SetPosition(a_trans.GetPosition());
     model.Rotation(a_trans.GetRotation());
-    model.SetScale(a_trans.GetUniformedScale());
 
     r->m_modelMatrix = Math::Transpose(model);
 

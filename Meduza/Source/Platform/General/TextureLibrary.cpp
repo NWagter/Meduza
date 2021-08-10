@@ -84,6 +84,13 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
 
 #elif PLATFORM_LINUX
 
+    auto texture = new GL::Texture(a_texture, a_width, a_height);
+
+    if(texture != nullptr)
+    {
+        ms_instance->m_textures[hashedId] = texture;
+        return hashedId;
+    }
 #endif
 
     return 0;

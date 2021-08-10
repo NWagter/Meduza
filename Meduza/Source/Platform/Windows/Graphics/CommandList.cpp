@@ -105,8 +105,8 @@ void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12
 
 	D3D12_VERTEX_BUFFER_VIEW vBuffer = a_mesh->GetVertexBuffer();
 	m_cmdList->IASetVertexBuffers(0, 1, &vBuffer);
-	m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	//m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 	D3D12_INDEX_BUFFER_VIEW iBuffer = a_mesh->GetIndexBuffer();
 	m_cmdList->IASetIndexBuffer(&iBuffer);

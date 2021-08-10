@@ -673,19 +673,22 @@ namespace Me
 			inline Mat4& Rotation(Vec3 a_rotation)
 			{
 				Mat4 newRotMat = Mat4::Identity();
+				
 				newRotMat.RotateX(a_rotation.m_x);
 				newRotMat.RotateY(a_rotation.m_y);
 				newRotMat.RotateZ(a_rotation.m_z);
 
-				m_m[0] = newRotMat.m_m[0];
-				m_m[1] = newRotMat.m_m[1];
-				m_m[2] = newRotMat.m_m[2];
-				m_m[4] = newRotMat.m_m[4];
-				m_m[5] = newRotMat.m_m[5];
-				m_m[6] = newRotMat.m_m[6];
-				m_m[8] = newRotMat.m_m[8];
-				m_m[9] = newRotMat.m_m[9];
-				m_m[10] = newRotMat.m_m[10];
+				m_00 = newRotMat.m_00;
+				m_01 = newRotMat.m_01;
+				m_02 = newRotMat.m_02;
+
+				m_10 = newRotMat.m_10;
+				m_11 = newRotMat.m_11;
+				m_12 = newRotMat.m_12;
+
+				m_20 = newRotMat.m_20;
+				m_21 = newRotMat.m_21;
+				m_22 = newRotMat.m_22;
 
 				return *this;
 			} 

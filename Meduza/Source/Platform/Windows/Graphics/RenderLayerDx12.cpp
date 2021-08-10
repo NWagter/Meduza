@@ -225,14 +225,19 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
 	auto pos = a_trans.GetPosition();
-	auto scale = a_trans.GetUniformedScale();
 	auto rot = a_trans.GetRotation();
+	auto scale = a_trans.GetUniformedScale();
 
-	Math::Mat4 model = Math::Mat4::Identity();
-	
-	model.SetPosition(pos);
-	model.Rotation(rot);
-	model.SetScale(scale);
+	Math::Mat4 pMat = Math::Mat4::Identity();
+	pMat.SetPosition(pos);
+
+	Math::Mat4 rMat = Math::Mat4::Identity();
+	rMat.Rotation(rot);
+
+	Math::Mat4 sMat = Math::Mat4::Identity();
+	sMat.SetScale(scale);
+
+	Math::Mat4 model = pMat * rMat * sMat;
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMATRIX((model).m_m));
 

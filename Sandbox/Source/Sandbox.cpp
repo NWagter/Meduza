@@ -56,7 +56,7 @@ Sandbox::Sandbox()
     Me::Mesh mesh = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Avocado.glb");
     Me::Texture texture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Avocado.glb");
 
-    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/lit_Shader.hlsl");
+    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
    
     if(shader == 0)
     {      
@@ -79,10 +79,8 @@ Sandbox::Sandbox()
     Me::Math::Vec2 screenSize = GetScreenSize();
 
     
-    transComp->SetPosition(Me::Math::Vec3(screenSize.m_x * 0.5f,screenSize.m_y * 0.5f,32.0f));
-    transComp->SetUniformScale(512.0f);
-    
-    
+    //transComp->SetPosition(Me::Math::Vec3(screenSize.m_x * 0.5f,screenSize.m_y * 0.5f,32.0f));
+    //transComp->SetUniformScale(1024.0f);
     
     transComp->SetPosition(Me::Math::Vec3(0.0f, 0.0f,10.0f));
     transComp->SetUniformScale(32.0f);

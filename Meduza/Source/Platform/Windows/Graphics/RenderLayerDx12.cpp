@@ -273,9 +273,13 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		auto pos = a_trans.GetPosition();
 		auto rot = a_trans.GetRotation();
 			
-		Math::Mat4 view = Math::Mat4::Identity();
-		view.Rotation(rot);
-		view.SetPosition(pos);
+		Math::Mat4 pMat = Math::Mat4::Identity();
+		pMat.SetPosition(pos);
+
+		Math::Mat4 rMat = Math::Mat4::Identity();
+		rMat.Rotation(rot);
+
+		Math::Mat4 view = rMat * pMat;
 
 		// build projection and view matrix
 		Math::Mat4 projection = Math::GetProjectionMatrix(45.0f,

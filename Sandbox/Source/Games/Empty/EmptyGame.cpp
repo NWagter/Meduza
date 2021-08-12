@@ -53,6 +53,32 @@ void EmptyGame::InitGame()
             }
         }
     }
+
+    Me::Math::Vec3 position = Me::Math::Vec3(-20, 0, 25);
+    Me::Math::Vec3 rotation = Me::Math::Vec3(0,0,0);   
+    rotation.m_y = 180;
+
+    Me::Mesh suzanne = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Suzanne/Suzanne.gltf");
+
+    Me::Texture suzanneTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Suzanne/Suzanne_BaseColor.png");
+
+    CreateObject(position, rotation, 5, eManager, suzanne, suzanneTexture, false); 
+    
+    position.m_x = 20;
+    Me::Mesh duck = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Duck.glb");
+    Me::Texture duckTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Duck.glb");
+
+    CreateObject(position, rotation, 0.05f, eManager, duck, duckTexture, false);
+
+    Me::Mesh lantern = Me::Resources::MeshLibrary::CreateMesh("Assets/Models/Lantern.glb");
+    Me::Texture LaternTexture = Me::Resources::TextureLibrary::GetTexture("Assets/Models/Lantern.glb");
+
+    position.m_x = 0;
+
+    CreateObject(position, rotation, 1.0f, eManager, lantern, LaternTexture, false);
+
+
+    m_spawnedDucks = true;
 }
 
 void EmptyGame::UpdateGame(float)
@@ -107,6 +133,12 @@ void EmptyGame::CreateObject(Me::Math::Vec3 a_pos, Me::Math::Vec3 a_rot, Me::Ent
     Me::Shader mesh = Me::Resources::MeshLibrary::GetMeshIndex(meshId);
 
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
+
+    if(shader == 0)
+    {      
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.glsl");
+    }
+
     Me::Texture texture = Me::Resources::TextureLibrary::CreateTexture(textureFile);
 
     EntityID cube = a_eManager->CreateEntity();
@@ -135,8 +167,20 @@ void EmptyGame::CreateObject(Me::Math::Vec3 a_positon, Me::Math::Vec3 a_rotation
 {
     Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.hlsl");
 
+    if(shader == 0)
+    {      
+        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.glsl");
+    }
+
     if(a_texture == 0)
+    {
         shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+
+        if(shader == 0)
+        {      
+            return;
+        }
+    }
 
     EntityID cube = a_eManager->CreateEntity();
 

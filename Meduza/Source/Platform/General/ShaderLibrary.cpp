@@ -56,38 +56,33 @@ Me::Resources::ShaderLibrary::~ShaderLibrary()
 Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
+	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
+
+
+	if (ms_instance->m_shaders[hashedId] != nullptr)
+	{
+		return hashedId;
+	}
 
 	#ifdef PLATFORM_WINDOWS
 
 	if(ext != "hlsl")
 	{
-		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+		ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
 		return 0;
 	}
+	ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
+											*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
 
-	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
-		if (ms_instance->m_shaders[hashedId] != nullptr)
-		{
-			return hashedId;
-		}
+	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
 
-		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
-		 										*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
-
-		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
-
-		return hashedId;//GetShader(hashedId);
+	return hashedId;//GetShader(hashedId);
 	#elif PLATFORM_LINUX
+
 	if(ext != "glsl")
 	{
-		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+		ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
 		return 0;
-	}
-
-	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
-	if (ms_instance->m_shaders[hashedId] != nullptr)
-	{
-		return hashedId;
 	}
 
 	ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);

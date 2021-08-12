@@ -68,8 +68,11 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
 		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
 		{
-			m_activeShader = s;
-			m_activeShader->Bind();
+            if(s != nullptr)
+            {
+                m_activeShader = s;
+                m_activeShader->Bind();
+            }
 		}
 
         m_activeShader->SetMat4("u_model", r->m_modelMatrix, false);

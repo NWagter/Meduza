@@ -205,7 +205,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
 unsigned char * Me::Utils::Resources::ResourceLoaderUtils::LoadImage(std::string a_path,int *a_width, int *a_height, int *a_channels)
 {
     const char* file = a_path.c_str();
-	return stbi_load(file, a_width, a_height, a_channels, 0);
+	return stbi_load(file, a_width, a_height, a_channels, STBI_rgb_alpha);
 }
 
 void Me::Utils::Resources::ResourceLoaderUtils::FreeImage(void* a_data)

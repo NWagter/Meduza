@@ -24,6 +24,9 @@ namespace Me
 
 		void SetTitle(std::string) override; 
 		private:
+		
+		void HandleInput();
+
 		WindowData* m_windowData;
 	};
 }

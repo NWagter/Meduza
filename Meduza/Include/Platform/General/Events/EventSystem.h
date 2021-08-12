@@ -6,6 +6,7 @@ namespace Me
 {
     class Window;
     class WindowsWindow;
+    class LinuxWindow;
 
     namespace Event
     {
@@ -51,6 +52,7 @@ namespace Me
 
         friend Window;
         friend WindowsWindow;
+        friend LinuxWindow;
         };
 
     }    

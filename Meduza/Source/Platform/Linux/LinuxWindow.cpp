@@ -3,6 +3,8 @@
 
 #include "Platform/Linux/Context.h"
 
+#include "Platform/General/Events/EventSystem.h"
+
 Me::LinuxWindow::LinuxWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
 {
 
@@ -23,7 +25,11 @@ Me::LinuxWindow::LinuxWindow(int a_w, int a_h, const char* a_title) : Window(a_w
 									BlackPixel(m_windowData->m_display, m_windowData->m_screenHandle),
 									WhitePixel(m_windowData->m_display, m_windowData->m_screenHandle));
 
-	XSelectInput(m_windowData->m_display, m_windowData->m_window, ExposureMask | KeyPressMask);
+	XSelectInput(m_windowData->m_display, m_windowData->m_window, 
+		ExposureMask | KeyPressMask | KeyReleaseMask |
+		PointerMotionMask | ButtonPressMask | ButtonReleaseMask |
+		StructureNotifyMask);
+
 	XMapWindow(m_windowData->m_display, m_windowData->m_window);
 	XStoreName(m_windowData->m_display, m_windowData->m_window, m_title);
 	m_active = true;
@@ -41,7 +47,15 @@ void Me::LinuxWindow::ActiveCursor(bool)
 
 void Me::LinuxWindow::Peek()
 {
-	//XNextEvent(m_windowData->m_display, &m_windowData->m_event);
+	m_eventSystem->Clear();
+
+	while(XPending(m_windowData->m_display))
+	{
+		XNextEvent(m_windowData->m_display, &m_windowData->m_event);
+		HandleInput();
+	}
+	
+	
 }
 
 void Me::LinuxWindow::Quit()
@@ -58,4 +72,21 @@ void Me::LinuxWindow::SetContext(Renderer::ContextBase* a_context)
 {
 	m_context = a_context;
 	dynamic_cast<Renderer::GL::Context*>(m_context)->InitContext(*m_windowData, m_size.m_x, m_size.m_y);
+}
+
+void Me::LinuxWindow::HandleInput()
+{
+	KeySym key;
+	char input[255];
+
+	if(m_windowData->m_event.type == KeyPress && XLookupString(&m_windowData->m_event.xkey, input, 255, &key, 0) == 1)
+	{
+		Event::KeyCode keycode = static_cast<Event::KeyCode>(toupper(input[0]));
+		m_eventSystem->OnKeyEvent(keycode, Event::KeyState::KeyDown);
+	}
+	if(m_windowData->m_event.type == KeyRelease && XLookupString(&m_windowData->m_event.xkey, input, 255, &key, 0) == 1)
+	{
+		Event::KeyCode keycode = static_cast<Event::KeyCode>(toupper(input[0]));
+		m_eventSystem->OnKeyEvent(keycode, Event::KeyState::KeyUp);
+	}
 }

@@ -134,7 +134,15 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
          a_cameraComp.m_near, a_cameraComp.m_far);
     }
     
-    Math::Mat4 camViewProjection = camMat;
+    Math::Mat4 rMat = Math::Mat4::Identity();
+    rMat.Rotation(a_transComp.GetRotation());
+
+    Math::Mat4 pMat = Math::Mat4::Identity();
+    pMat.SetPosition(a_transComp.GetPosition());
+
+    Math::Mat4 view = rMat * pMat;
+
+    Math::Mat4 camViewProjection = camMat * view;
     
     m_camera->m_cameraMatrix = Math::Transpose(camViewProjection);
 }

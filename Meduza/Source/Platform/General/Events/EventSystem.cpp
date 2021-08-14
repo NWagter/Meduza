@@ -113,14 +113,8 @@ Me::Math::Vec2 Me::Event::EventSystem::ScreenSize()
     return m_screenSize;
 }
 
-// Engine Set
-
 void Me::Event::EventSystem::OnKeyEvent(KeyCode a_key, KeyState a_state)
 {
-    if(a_state == KeyState::KeyDown)
-    {
-        ME_CORE_LOG("KeyCode : %c \n", char(a_key));
-    }
     m_keyboard->SetState(a_key, a_state);
 }
 

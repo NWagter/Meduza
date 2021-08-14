@@ -90,7 +90,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         glBindVertexArray(m->GetVAO());
-        glDrawElements(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0);
+        glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
 
         //glBindVertexArray(0);
     }

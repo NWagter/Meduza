@@ -21,8 +21,7 @@ elseif(UNIX AND NOT APPLE)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Linux/*.cpp
 	Source/Platform/Linux/Graphics/*.cpp
 	Source/Platform/Linux/Resources/*.cpp	
-	Source/Platform/Linux/Helper/*.cpp
-	${PROJECT_SOURCE_DIR}/External/Linux/src/*.c)
+	Source/Platform/Linux/Helper/*.cpp)
 	file(GLOB EXTERNAL_INCLUDE ${PROJECT_SOURCE_DIR}/External/Linux/Include)
 elseif(APPLE)
 	add_compile_definitions(PLATFORM_APPLE)
@@ -32,6 +31,7 @@ endif()
 
 file(GLOB PLATFORM_GENERAL_SOURCE
 	${PROJECT_SOURCE_DIR}/External/General/imgui/*.cpp
+	${PROJECT_SOURCE_DIR}/External/General/src/*.c
 	Source/Core/*.cpp
 	Source/Math/*.cpp
 

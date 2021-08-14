@@ -47,6 +47,7 @@ namespace Me
             X = 88,
             Y = 89,
             Z = 90,
+
             Num0 = 34,
             Num1 = 35,
             Num2 = 36,
@@ -57,6 +58,7 @@ namespace Me
             Num7 = 41,
             Num8 = 42,
             Num9 = 43,
+            
             Space = 32,
             Enter = 13,
             Back = 8,
@@ -64,8 +66,12 @@ namespace Me
             Right = 39,
             Down = 40,
             Left = 37,
-            Shift = 16,
             Ctrl = 17,
+#ifdef PLATFORM_WINDOWS
+            Shift = 16,
+#elif PLATFORM_LINUX
+            Shift = 50,
+#endif
         };
 
         enum class KeyState

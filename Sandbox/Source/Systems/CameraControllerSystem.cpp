@@ -63,19 +63,19 @@ void CameraControllerSystem::OnUpdate(float a_dt)
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
         {
-            rotation.m_yaw += (10) * a_dt;
+            rotation.m_yaw -= (2) * a_dt;
         }
         else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::E))
         {
-            rotation.m_yaw -= (10) * a_dt;
+            rotation.m_yaw += (2) * a_dt;
         }
         
         Me::Math::Vec3 position = trans->GetPosition();
 
 
-        Me::Math::Vec3 forward = trans->GetForward() * (forwardMovment * 150);
-        Me::Math::Vec3 right = trans->GetLeft() * (-rightMovment * 150);
-        Me::Math::Vec3 up = trans->GetUp() * (upMovment * 150);
+        Me::Math::Vec3 forward = trans->GetForward() * (forwardMovment * 10);
+        Me::Math::Vec3 right = trans->GetLeft() * (-rightMovment * 10);
+        Me::Math::Vec3 up = trans->GetUp() * (upMovment * -10);
         Me::Math::Vec3 movement = forward + right + up;
 
         trans->Translate(movement * a_dt);

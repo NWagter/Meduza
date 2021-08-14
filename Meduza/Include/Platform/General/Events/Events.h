@@ -69,7 +69,9 @@ namespace Me
             Ctrl = 17,
 #ifdef PLATFORM_WINDOWS
             Shift = 16,
-#elif PLATFORM_LINUX
+#elif PLATFORM_LINUX 
+            Shift = 50,
+#elif PLATFORM_APPLE
             Shift = 50,
 #endif
         };

@@ -28,7 +28,7 @@ Me::LinuxWindow::LinuxWindow(int a_w, int a_h, const char* a_title) : Window(a_w
 	XSelectInput(m_windowData->m_display, m_windowData->m_window, 
 		ExposureMask | KeyPressMask | KeyReleaseMask |
 		PointerMotionMask | ButtonPressMask | ButtonReleaseMask |
-		StructureNotifyMask);
+		ShiftMask | StructureNotifyMask);
 
 	XMapWindow(m_windowData->m_display, m_windowData->m_window);
 	XStoreName(m_windowData->m_display, m_windowData->m_window, m_title);
@@ -72,17 +72,22 @@ void Me::LinuxWindow::SetContext(Renderer::ContextBase* a_context)
 
 void Me::LinuxWindow::HandleInput()
 {
-	KeySym key;
-	char input[255];
+	int key = XLookupKeysym(&m_windowData->m_event.xkey, 0);
 
-	if(m_windowData->m_event.type == KeyPress && XLookupString(&m_windowData->m_event.xkey, input, 255, &key, 0) == 1)
+	if(key > 255)
 	{
-		Event::KeyCode keycode = static_cast<Event::KeyCode>(toupper(input[0]));
+		key = m_windowData->m_event.xkey.keycode;
+	}
+
+	if(m_windowData->m_event.type == KeyPress)
+	{
+		Event::KeyCode keycode = static_cast<Event::KeyCode>(key);
 		m_eventSystem->OnKeyEvent(keycode, Event::KeyState::KeyDown);
 	}
-	if(m_windowData->m_event.type == KeyRelease && XLookupString(&m_windowData->m_event.xkey, input, 255, &key, 0) == 1)
+
+	if(m_windowData->m_event.type == KeyRelease)
 	{
-		Event::KeyCode keycode = static_cast<Event::KeyCode>(toupper(input[0]));
+		Event::KeyCode keycode = static_cast<Event::KeyCode>(key);
 		m_eventSystem->OnKeyEvent(keycode, Event::KeyState::KeyUp);
 	}
 }

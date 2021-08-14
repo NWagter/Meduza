@@ -47,15 +47,11 @@ void Me::LinuxWindow::ActiveCursor(bool)
 
 void Me::LinuxWindow::Peek()
 {
-	m_eventSystem->Clear();
-
 	while(XPending(m_windowData->m_display))
 	{
 		XNextEvent(m_windowData->m_display, &m_windowData->m_event);
 		HandleInput();
-	}
-	
-	
+	}	
 }
 
 void Me::LinuxWindow::Quit()

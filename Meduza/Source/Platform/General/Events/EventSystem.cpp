@@ -55,9 +55,10 @@ void Me::Event::EventSystem::Clear()
 
 bool Me::Event::EventSystem::KeyDown(KeyCode a_key)
 {
-    char key = toupper(char(a_key));    
+    char upperKey = toupper(char(a_key));    
+    char lowerKey = tolower(char(a_key));    
 
-    if(m_keyboard->State(KeyCode(key)) == KeyState::KeyDown)
+    if(m_keyboard->State(KeyCode(upperKey)) == KeyState::KeyDown || m_keyboard->State(KeyCode(lowerKey)) == KeyState::KeyDown)
     {
         return true;
     }
@@ -66,9 +67,10 @@ bool Me::Event::EventSystem::KeyDown(KeyCode a_key)
 }
 bool Me::Event::EventSystem::KeyUp(KeyCode a_key)
 {
-    char key = toupper(char(a_key));    
+    char upperKey = toupper(char(a_key));    
+    char lowerKey = tolower(char(a_key));    
 
-    if(m_keyboard->State(KeyCode(key)) == KeyState::KeyUp)
+    if(m_keyboard->State(KeyCode(upperKey)) == KeyState::KeyUp || m_keyboard->State(KeyCode(lowerKey)) == KeyState::KeyUp)
     {
         return true;
     }

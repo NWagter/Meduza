@@ -38,7 +38,7 @@ void Me::WindowsWindow::ActiveCursor(bool a_active)
 void Me::WindowsWindow::Peek()
 {
 	MSG msg;
-	m_eventSystem->Clear();
+	//m_eventSystem->Clear();
 
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
 	{

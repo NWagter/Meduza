@@ -82,7 +82,7 @@ jobs:
         
     - name: Install opengl
       if: contains(matrix.config.name, 'Ubuntu Latest GCC')
-      run: sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+      run: sudo apt-get update && sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
       
     - name: Download ccache
       id: ccache

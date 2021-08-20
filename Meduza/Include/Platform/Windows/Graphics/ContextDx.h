@@ -18,7 +18,7 @@ namespace Me
         Context(Window&, Device*);
         ~Context();
         
-        void SwapBuffers(CommandList&);
+        void SwapBuffer(CommandList&);
         void Resize(float,float) override;
 
         void CreateSwapchain();

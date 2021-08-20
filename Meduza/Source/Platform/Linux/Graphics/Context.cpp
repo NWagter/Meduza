@@ -54,7 +54,7 @@ void Me::Renderer::GL::Context::Resize(float a_w,float a_h)
 
 }
 
-void Me::Renderer::GL::Context::SwapBuffers()
+void Me::Renderer::GL::Context::SwapBuffer()
 {
     if(m_windowData == nullptr)
     {

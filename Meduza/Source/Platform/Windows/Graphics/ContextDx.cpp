@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/Windows/Graphics/Context.h"
+#include "Platform/Windows/Graphics/ContextDx.h"
 
 #include "Platform/Windows/Graphics/Device.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
@@ -34,7 +34,7 @@ Me::Renderer::Dx12::Context::~Context()
 	m_swapChain.ReleaseAndGetAddressOf();
 }
 
-void Me::Renderer::Dx12::Context::SwapBuffers(CommandList& a_cmd)
+void Me::Renderer::Dx12::Context::SwapBuffer(CommandList& a_cmd)
 {
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		GetCurrentBuffer(),

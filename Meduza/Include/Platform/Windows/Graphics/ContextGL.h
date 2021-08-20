@@ -1,8 +1,6 @@
 #pragma once
 #include "Platform/General/ContextBase.h"
 
-struct WindowData;
-
 namespace Me
 {
     namespace Renderer
@@ -15,16 +13,14 @@ namespace Me
                 Context(Window&);
                 ~Context();
 
-                void InitContext(WindowData&, float, float);
-
                 void Resize(float,float) override;
                 void SwapBuffer();
 
                 float m_width, m_height;
             private:
-                GLXContext m_glContext;
-                WindowData* m_windowData;
-                XVisualInfo* m_visualInfo;
+                HWND m_hwnd;
+                HDC m_hdc;
+                HGLRC m_renderContext;
             };
         }       
     }

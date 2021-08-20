@@ -4,7 +4,7 @@
 #include "Platform/Windows/Helper/Helper.h"
 
 #include "Platform/Windows/WindowsWindow.h"
-#include "Platform/Windows/Graphics/Context.h"
+#include "Platform/Windows/Graphics/ContextDx.h"
 
 #include "Platform/Windows/Graphics/Device.h"
 #include "Platform/Windows/Graphics/CommandList.h"
@@ -164,7 +164,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
 {
-    m_context->SwapBuffers(GetCmd());
+    m_context->SwapBuffer(GetCmd());
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)

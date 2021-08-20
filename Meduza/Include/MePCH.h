@@ -26,12 +26,15 @@
 #ifdef PLATFORM_WINDOWS
 
 #include <Windows.h>
+#include <wingdi.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 
 #pragma warning(disable:4265)
 #include <wrl.h>
 #pragma warning(default:4265)
+
+#include <glad/glad.h>
 
 #include <d3d12.h>
 #include <dxgi1_6.h>

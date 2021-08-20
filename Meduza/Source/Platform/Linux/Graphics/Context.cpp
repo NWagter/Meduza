@@ -1,10 +1,11 @@
 #include "MePCH.h"
-#include "Platform/Linux/Context.h"
+#include "Platform/Linux/Graphics/Context.h"
 
 #include "Platform/Linux/LinuxWindow.h"
 
-Me::Renderer::GL::Context::Context()
+Me::Renderer::GL::Context::Context(Window& a_window) : Me::Renderer::ContextBase(a_window)
 {
+    static_cast<LinuxWindow*>(&a_window)->SetContext(this);
 }
 
 Me::Renderer::GL::Context::~Context()

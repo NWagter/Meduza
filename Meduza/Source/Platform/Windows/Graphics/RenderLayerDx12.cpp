@@ -52,7 +52,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
     m_window = dynamic_cast<WindowsWindow*>(a_window);
 	
     m_device = new Device();
-    m_context = new Context(m_window->GetWindowHandle(), m_device);
+    m_context = new Context(*m_window, m_device);
 	m_window->SetContext(m_context);
 
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};

@@ -15,7 +15,7 @@ namespace Me
       class Context : public ContextBase
       {
       public:
-        Context(HWND, Device*);
+        Context(Window&, Device*);
         ~Context();
         
         void SwapBuffers(CommandList&);

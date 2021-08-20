@@ -2,7 +2,7 @@
 #include "Platform/Linux/Graphics/RenderLayerGL.h"
 
 #include "Platform/Linux/LinuxWindow.h"
-#include "Platform/Linux/Context.h"
+#include "Platform/Linux/Graphics/Context.h"
 
 #include "Platform/Linux/Resources/Mesh.h"
 #include "Platform/General/MeshLibrary.h"
@@ -27,8 +27,7 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     }
 
     m_window = dynamic_cast<LinuxWindow*>(a_window);
-    m_context = new Context();
-    m_window->SetContext(m_context);
+    m_context = new Context(*m_window);
     m_activeShader = nullptr;
 
     m_camera = new Camera();

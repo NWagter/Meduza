@@ -5,8 +5,9 @@
 #include "Platform/Windows/Graphics/Descriptor.h"
 #include "Platform/Windows/Graphics/CommandQueue.h"
 #include "Platform/Windows/Graphics/CommandList.h"
+#include "Platform/Windows/WindowsWindow.h"
 
-Me::Renderer::Dx12::Context::Context(HWND a_hwnd, Device* a_device)
+Me::Renderer::Dx12::Context::Context(Window& a_window, Device* a_device) : Me::Renderer::ContextBase(a_window)
 {
 #if defined(DEBUG)
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
@@ -14,13 +15,13 @@ Me::Renderer::Dx12::Context::Context(HWND a_hwnd, Device* a_device)
 	debugInterface->EnableDebugLayer();
 #endif
 
-    m_hwnd = a_hwnd;
+    m_hwnd = static_cast<WindowsWindow*>(&a_window)->GetWindowHandle();
     m_device = a_device;
 
     m_currentframeBufferIndex = 0;
 
 	RECT rect;
-	::GetClientRect(a_hwnd, &rect);
+	::GetClientRect(m_hwnd, &rect);
 
 
     m_width = float(rect.right - rect.left);

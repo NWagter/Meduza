@@ -26,7 +26,7 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
         return;
     }
 
-    m_window = dynamic_cast<LinuxWindow*>(a_window);
+    m_window = a_window;
     m_context = new Context(*m_window);
     m_activeShader = nullptr;
 

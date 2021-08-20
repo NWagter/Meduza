@@ -4,7 +4,7 @@
 
 namespace Me 
 {
-    class LinuxWindow;
+    class Window;
 
     namespace Resources
     {
@@ -48,7 +48,7 @@ namespace Me
                 Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
                 
             private:
-                LinuxWindow* m_window;
+                Window* m_window;
                 Context* m_context;
 
                 std::vector<Renderable*> m_renderables;

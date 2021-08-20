@@ -12,7 +12,7 @@ namespace Me
             class Context : public ContextBase
             {
             public:
-                Context();
+                Context(Window&);
                 ~Context();
 
                 void InitContext(WindowData&, float, float);

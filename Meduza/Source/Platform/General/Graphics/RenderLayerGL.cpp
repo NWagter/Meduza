@@ -159,5 +159,9 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
+#ifdef PLATFORM_Linux
     return new Resources::GL::Mesh(a_vertices, a_indices);
+#else
+    return nullptr;
+#endif
 }

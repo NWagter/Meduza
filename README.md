@@ -19,7 +19,7 @@ but what is currently planned is the following :
     - Geometry
       - :white_check_mark: Cubes
       - :white_check_mark: Spheres
-      - Planes
+      - :white_check_mark: Planes
     - Object Loading
       - Obj
       - :white_check_mark: glTF

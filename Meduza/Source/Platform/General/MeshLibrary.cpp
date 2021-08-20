@@ -44,6 +44,7 @@ Me::Resources::MeshLibrary::MeshLibrary(Renderer::RenderLayer& a_renderLayer)
 	ms_instance = this;
 	
 	CreateQuad();
+	CreatePlane();
 	CreateCube();
 	CreateSphere();
 }
@@ -181,6 +182,26 @@ void Me::Resources::MeshLibrary::CreateQuad()
 
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
 	Resources::MeshLibrary::CreateMesh(quadId, quadVertices, quadIndices);
+}
+
+void Me::Resources::MeshLibrary::CreatePlane()
+{
+	std::vector<Vertex> planeVertices = 
+	{
+		Vertex(-0.5f,  0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f), // top left,
+		Vertex(0.5f,  0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f) ,  // top right
+		Vertex(-0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f), // bottom left 
+		Vertex(0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f), // bottom right 
+	};
+
+	std::vector<uint16_t> planeIndices = 
+	{
+		0, 1, 3,
+		0, 3, 2
+	};
+
+	uint16_t planeId = static_cast<uint16_t>(Primitives::Plane);
+	Resources::MeshLibrary::CreateMesh(planeId, planeVertices, planeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateCube()

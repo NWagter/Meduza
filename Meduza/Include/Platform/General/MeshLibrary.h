@@ -33,6 +33,7 @@ namespace Me
             ~MeshLibrary();
 
             void CreateQuad();
+            void CreatePlane();
             void CreateCube();
             void CreateSphere();
             

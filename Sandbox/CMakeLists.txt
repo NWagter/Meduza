@@ -8,9 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB GAME_SOURCE
     Source/Games/*.cpp
+    Source/Games/Example/*.cpp
     Source/Components/*.cpp
     Source/Systems/*.cpp
-    Source/Games/Empty/*.cpp
 
     
     Source/Games/Chess/*.cpp

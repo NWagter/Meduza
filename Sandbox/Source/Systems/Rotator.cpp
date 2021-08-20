@@ -22,8 +22,7 @@ void Rotator::OnUpdate(float a_dt)
 
         Me::Math::Vec3 rotation = trans->GetRotation();
 
-        rotation.m_x += rot->m_rotateSpeed * a_dt;
-        rotation.m_z += rot->m_rotateSpeed * a_dt;
+        rotation.m_y += rot->m_rotateSpeed * a_dt;
 
         trans->SetRotationRadian(rotation);
     }

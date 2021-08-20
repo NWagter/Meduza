@@ -4,18 +4,18 @@
 
 #include "MeduzaIncluder.h"
 
-#define Run_EmptyTest 1
+#define Run_ExampleScene 1
 #define Run_Chess 0
 #define Run_Physics 0
 
 #include "Games/BaseGame.h"
 
-#if Run_EmptyTest
-#include "Games/Empty/EmptyGame.h"
-#elif Run_Chess
+#if Run_Chess
 #include "Games/Chess/ChessGame.h"
 #elif Run_Physics
 #include "Games/Physics2D/Physics2D.h"
+#elif Run_ExampleScene
+#include "Games/Example/ExampleScene.h"
 #endif
 
 #include "Systems/CursorSystem.h"
@@ -30,14 +30,7 @@
 Sandbox::Sandbox()
 {
 
-#if Run_EmptyTest
-
-#ifndef PLATFORM_LINUX
-    new CursorSystem();
-    new PlayerSystem();
-#endif
-    m_game = new EmptyGame();
-#elif Run_Chess
+#if Run_Chess
     new CursorSystem();
     new PlayerSystem();
     m_game = new Chess::ChessGame();
@@ -45,6 +38,8 @@ Sandbox::Sandbox()
     new CursorSystem();
     new PlayerSystem();
     m_game = new Physics::Physics2D();
+#elif Run_ExampleScene
+    m_game = new ExampleScene();
 #else
 
     m_game = new BaseGame();

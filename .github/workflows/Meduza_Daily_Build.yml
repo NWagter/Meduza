@@ -29,11 +29,6 @@ jobs:
                 os: ubuntu-latest,
                 cc: "gcc", cxx: "g++"
               }
-            - {
-                name: "macOS Latest Clang", artifact: "Meduza-MacOS.7z",
-                os: macos-latest,
-                cc: "clang", cxx: "clang++"
-              }
     steps:
     - uses: actions/checkout@v1
 

@@ -20,7 +20,7 @@ Me::Editor::EditorRenderer* Me::Editor::EditorRenderer::CreateEditor(Me::Rendere
 #ifdef PLATFORM_WINDOWS
             return new Dx12::EditorRendererDx12(static_cast<Renderer::Dx12::RenderLayerDx12*>(a_renderLayer));
 #else
-            ME_CORE_ASSERT_M("Can't open a dx12 editor on this platform!")
+            ME_CORE_ASSERT_M(false, "Can't open a dx12 editor on this platform!")
 #endif
             break;
         case Me::GFX_API::OpenGL:

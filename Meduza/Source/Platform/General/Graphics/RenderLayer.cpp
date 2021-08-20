@@ -22,7 +22,7 @@ Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::CreateRenderer(Me::Window*
 #ifdef PLATFORM_WINDOWS
             return new Dx12::RenderLayerDx12(a_window);
 #else
-            ME_CORE_ASSERT_M("This platform doesn't support DirectX12")
+            ME_CORE_ASSERT_M(false, "This platform doesn't support DirectX12")
             return nullptr;
 #endif
         break;

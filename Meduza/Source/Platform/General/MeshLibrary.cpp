@@ -8,7 +8,7 @@
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Mesh.h"
 #elif PLATFORM_LINUX
-#include "Platform/Linux/Graphics/RenderLayerGL.h"
+#include "Platform/General/Graphics/RenderLayerGL.h"
 #include "Platform/Linux/Resources/Mesh.h"
 #elif PLATFORM_APPLE
 

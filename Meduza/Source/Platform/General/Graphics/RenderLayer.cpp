@@ -4,9 +4,10 @@
 #ifdef PLATFORM_WINDOWS
 
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
+#include  "Platform/General/Graphics/RenderLayerGL.h"
 
 #elif PLATFORM_LINUX
-#include  "Platform/Linux/Graphics/RenderLayerGL.h"
+#include  "Platform/General/Graphics/RenderLayerGL.h"
 #elif PLATFORM_APPLE
 #endif
 

@@ -45,6 +45,21 @@ Sandbox::Sandbox()
     new CursorSystem();
     new PlayerSystem();
     m_game = new Physics::Physics2D();
+#else
+
+    m_game = new BaseGame();
+
+    auto eManager = Me::EntityManager::GetEntityManager();
+
+    auto cC = new Me::CameraComponent();
+    cC->m_cameraType = Me::CameraType::Perspective;
+    cC->m_near = 0.1f;
+    cC->m_far = 1000;
+    cC->m_size = Me::Event::EventSystem::GetEventSystem()->ScreenSize();
+
+    EntityID entCam = Me::EntityManager::CreateEntity();
+    eManager->AddComponent<Me::CameraComponent>(entCam, cC);
+    eManager->AddComponent<Me::TransformComponent>(entCam);
 #endif
 
     SetName(m_game->GetGameName() + " | Meduza");

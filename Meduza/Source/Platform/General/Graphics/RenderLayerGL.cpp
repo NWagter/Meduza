@@ -1,17 +1,25 @@
 #include "MePCH.h"
-#include "Platform/Linux/Graphics/RenderLayerGL.h"
 
-#include "Platform/Linux/LinuxWindow.h"
+#include "Platform/General/Graphics/RenderLayerGL.h"
+
+#ifdef PLATFORM_LINUX
 #include "Platform/Linux/Graphics/Context.h"
 
 #include "Platform/Linux/Resources/Mesh.h"
-#include "Platform/General/MeshLibrary.h"
 
 #include "Platform/Linux/Resources/Shader.h"
-#include "Platform/General/ShaderLibrary.h"
 
 
 #include "Platform/Linux/Resources/Texture.h"
+
+#elif PLATFORM_WINDOWS
+
+#include "Platform/Windows/Graphics/ContextGL.h"
+
+#endif
+
+#include "Platform/General/MeshLibrary.h"
+#include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
 
 #include "Core/Components/RenderComponent.h"
@@ -58,6 +66,8 @@ void Me::Renderer::GL::RenderLayerGL::Present()
 
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
+
+    #ifdef PLATFORM_LINUX
     for (auto r : m_renderables)
     {
         auto renderComp = r->m_renderComponent;
@@ -93,6 +103,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
         //glBindVertexArray(0);
     }
+    #endif
     
 }
 
@@ -148,5 +159,5 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
 
 Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
-    return new Resources::GL::Mesh(a_vertices, a_indices);
+    return nullptr; // new Resources::GL::Mesh(a_vertices, a_indices);
 }

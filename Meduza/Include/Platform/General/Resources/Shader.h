@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Platform/General/Resources/ShaderBase.h"
-#include "Platform/Linux/Helper/ShaderReader.h"
+#include "Platform/General/Helper/ShaderReader.h"
 
 namespace Me
 {

@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/Linux/Resources/Mesh.h"
+#include "Platform/General/Resources/Mesh.h"
 
 Me::Resources::GL::Mesh::Mesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
  : MeshBase(a_vertices, a_indices)

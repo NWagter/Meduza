@@ -2,12 +2,14 @@
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/FileSystem/FileSystem.h"
 
+#include "Platform/General/Graphics/RenderLayerGL.h"
+#include "Platform/General/Resources/Shader.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Shader.h"
 #elif PLATFORM_LINUX
-#include "Platform/General/Graphics/RenderLayerGL.h"
-#include "Platform/Linux/Resources/Shader.h"
+
 #elif PLATFORM_APPLE
 
 #endif
@@ -64,35 +66,63 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 		return hashedId;
 	}
 
-	#ifdef PLATFORM_WINDOWS
+	GFX_API api = Renderer::RenderLayer::GetAPI();
 
-	if(ext != "hlsl")
+	switch (api)
 	{
-		ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-		return 0;
+	case GFX_API::DX12:
+#ifdef PLATFORM_WINDOWS
+		if(ext != "hlsl")
+		{
+			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
+			return 0;
+		}
+		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
+												*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+#else
+		ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
+#endif
+		return hashedId;
+		break;
+	case GFX_API::OpenGL:
+		if(ext != "glsl")
+		{
+			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
+			return 0;
+		}
+
+		ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+		return hashedId;
+		break;
+	case GFX_API::Unknown:
+#ifdef PLATFORM_WINDOWS
+		if(ext != "hlsl")
+		{
+			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
+			return 0;
+		}
+		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
+												*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+#elif PLATFORM_LINUX
+		if(ext != "glsl")
+		{
+			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
+			return 0;
+		}
+
+		ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+#endif
+		return hashedId;
+		break;
 	}
-	ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
-											*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
-
-	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
-
-	return hashedId;//GetShader(hashedId);
-	#elif PLATFORM_LINUX
-
-	if(ext != "glsl")
-	{
-		ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-		return 0;
-	}
-
-	ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
-
-	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
-
-	return hashedId;
-	#elif PLATFORM_APPLE
-
-	#endif
     return 0;
 }
 
@@ -100,47 +130,75 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_vsPath, std:
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_vsPath);
 	
-	#ifdef PLATFORM_WINDOWS
-	if(ext != "hlsl")
-	{
-		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return 0;
-	}
 	std::string name = Files::FileSystem::GetFileName(a_vsPath);
 	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_vsPath));
-		if (ms_instance->m_shaders[hashedId] != nullptr)
+
+	if (ms_instance->m_shaders[hashedId] != nullptr)
+	{
+		return hashedId;
+	}
+
+	GFX_API api = Renderer::RenderLayer::GetAPI();
+
+	switch (api)
+	{
+	case GFX_API::DX12:
+#ifdef PLATFORM_WINDOWS
+		if(ext != "hlsl")
 		{
-			return hashedId;
+			ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+			return 0;
 		}
 
 		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_vsPath, a_psPath,
 		 										*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
 
 		ME_GFX_LOG("Loading of : %s was Succesfull! \n", name.c_str());
+#else
+		ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
+#endif
+		return hashedId;
+		break;
+	case GFX_API::OpenGL:
+		if(ext != "glsl")
+		{
+			ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+			return 0;
+		}
+
+		ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vsPath.c_str());
 
 		return hashedId;
-	#elif PLATFORM_LINUX
-	if(ext != "glsl")
-	{
-		ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
-		return 0;
-	}
+		break;
+	case GFX_API::Unknown:
+#ifdef PLATFORM_WINDOWS
+		if(ext != "hlsl")
+		{
+			ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+			return 0;
+		}
 
-	unsigned int hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_vsPath));
-	if (ms_instance->m_shaders[hashedId] != nullptr)
-	{
+		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_vsPath, a_psPath,
+		 										*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", name.c_str());
+#elif PLATFORM_LINUX
+		if(ext != "glsl")
+		{
+			ME_GFX_LOG("We can't load a file with the following extention : %s \n", ext.c_str());
+			return 0;
+		}
+
+		ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
+
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vsPath.c_str());
+
+#endif
 		return hashedId;
+		break;
 	}
-
-	ms_instance->m_shaders[hashedId] = new GL::Shader(a_vsPath, a_psPath);
-
-	ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_vsPath.c_str());
-
-	return hashedId;
-
-	#elif PLATFORM_APPLE
-
-	#endif
     return 0;
 }
 

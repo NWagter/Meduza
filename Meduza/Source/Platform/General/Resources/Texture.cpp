@@ -1,6 +1,6 @@
 #include "MePCH.h"
 
-#include "Platform/Linux/Resources/Texture.h"
+#include "Platform/General/Resources/Texture.h"
 
 #include "Utils/ResourceLoaderUtils.h"
 

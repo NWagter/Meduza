@@ -45,12 +45,12 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
 	Source/Platform/General/Editor/*.cpp
-	Source/Platform/General/Graphics/*.cpp
-	Source/Platform/General/Graphics/*.cpp
-	Source/Platform/General/Resources/*.cpp
 	Source/Platform/General/Events/*.cpp
 	Source/Platform/General/Events/Input/*.cpp
 	Source/Platform/General/FileSystem/*.cpp
+	Source/Platform/General/Graphics/*.cpp
+	Source/Platform/General/Helper/*.cpp
+	Source/Platform/General/Resources/*.cpp
 )
 
 file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General/Include

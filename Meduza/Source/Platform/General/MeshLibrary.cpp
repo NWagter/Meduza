@@ -4,12 +4,14 @@
 #include "Platform/General/FileSystem/FileSystem.h"
 #include "Utils/ResourceLoaderUtils.h"
 
+#include "Platform/General/Graphics/RenderLayerGL.h"
+#include "Platform/General/Resources/Mesh.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Mesh.h"
 #elif PLATFORM_LINUX
-#include "Platform/General/Graphics/RenderLayerGL.h"
-#include "Platform/Linux/Resources/Mesh.h"
+
 #elif PLATFORM_APPLE
 
 #endif
@@ -90,15 +92,32 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Verte
         return a_id;
     }
 
-#ifdef PLATFORM_WINDOWS
-	ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
-	return a_id;
-#elif PLATFORM_LINUX
-	ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
-	return a_id;
-#elif PLATFORM_APPLE
+	GFX_API api = Renderer::RenderLayer::GetAPI();
 
+	switch (api)
+	{
+	case GFX_API::DX12:
+	#ifdef PLATFORM_WINDOWS
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		return a_id;
+	#else
+		ME_CORE_ASSERT_M(false, "This platform doesn't support DX12!")
+	#endif
+		break;
+	case GFX_API::OpenGL:	
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		return a_id;
+		break;	
+	case GFX_API::Unknown:
+#ifdef PLATFORM_WINDOWS
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		return a_id;
+#elif PLATFORM_LINUX
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		return a_id;
 #endif
+		break;
+	}
 
     return 0;
 }

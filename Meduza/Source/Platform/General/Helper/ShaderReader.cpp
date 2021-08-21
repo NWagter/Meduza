@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/Linux/Helper/ShaderReader.h"
+#include "Platform/General/Helper/ShaderReader.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
 

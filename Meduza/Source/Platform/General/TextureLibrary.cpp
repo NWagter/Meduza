@@ -3,11 +3,17 @@
 
 #include "Platform/General/FileSystem/FileSystem.h"
 
+
+#include "Platform/General/Resources/Texture.h"
+#include "Platform/General/Graphics/RenderLayer.h"
+
 #ifdef PLATFORM_WINDOWS
+
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #include "Platform/Windows/Resources/Texture.h"
+
 #elif PLATFORM_LINUX
-#include "Platform/Linux/Resources/Texture.h"
+
 #endif
 
 Me::Resources::TextureLibrary* Me::Resources::TextureLibrary::ms_instance = nullptr;
@@ -38,27 +44,58 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
         return hashedId;
     }
 
+    GFX_API api = Renderer::RenderLayer::GetAPI();
+
+    switch (api)
+    {
+    case GFX_API::DX12:
+        {
 #ifdef PLATFORM_WINDOWS
+        auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture);
 
-    auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture);
-
-    if(texture != nullptr)
-    {
-        ms_instance->m_textures[hashedId] = texture;
-        return hashedId;
-    }
-
-#elif PLATFORM_LINUX
-
-    auto texture = new GL::Texture(a_texture);
-
-    if(texture != nullptr)
-    {
-        ms_instance->m_textures[hashedId] = texture;
-        return hashedId;
-    }
-
+        if(texture != nullptr)
+        {
+            ms_instance->m_textures[hashedId] = texture;
+            return hashedId;
+        }
+#else
+        ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
+        }
+        break;
+    case GFX_API::OpenGL:
+        {
+            auto texture = new GL::Texture(a_texture);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+        }
+        break;
+    case GFX_API::Unknown:
+#ifdef PLATFORM_WINDOWS
+        {
+            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+#elif PLATFORM_LINUX
+            auto texture = new GL::Texture(a_texture);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+#endif
+        }
+        break;
+    }
 
     return 0;
 }
@@ -72,26 +109,58 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
         return hashedId;
     }
 
+        GFX_API api = Renderer::RenderLayer::GetAPI();
+
+    switch (api)
+    {
+    case GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
+        {
+            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
 
-    auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
-
-    if(texture != nullptr)
-    {
-        ms_instance->m_textures[hashedId] = texture;
-        return hashedId;
-    }
-
-#elif PLATFORM_LINUX
-
-    auto texture = new GL::Texture(a_texture, a_width, a_height);
-
-    if(texture != nullptr)
-    {
-        ms_instance->m_textures[hashedId] = texture;
-        return hashedId;
-    }
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+#else
+            ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
+        }
+        break;
+    case GFX_API::OpenGL:
+        {
+            auto texture = new GL::Texture(a_texture, a_width, a_height);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+        }
+        break;
+    case GFX_API::Unknown:
+#ifdef PLATFORM_WINDOWS
+        {
+            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+#elif PLATFORM_LINUX
+            auto texture = new GL::Texture(a_texture, a_width, a_height);
+
+            if(texture != nullptr)
+            {
+                ms_instance->m_textures[hashedId] = texture;
+                return hashedId;
+            }
+#endif
+        }
+        break;
+    }
 
     return 0;
 }

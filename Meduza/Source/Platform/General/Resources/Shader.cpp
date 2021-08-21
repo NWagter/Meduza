@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/Linux/Resources/Shader.h"
+#include "Platform/General/Resources/Shader.h"
 
 Me::Resources::GL::Shader::Shader(std::string a_vShader, std::string a_pShader)
 {

@@ -75,8 +75,8 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
         }
         break;
     case GFX_API::Unknown:
-#ifdef PLATFORM_WINDOWS
         {
+#ifdef PLATFORM_WINDOWS
             auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture);
 
             if(texture != nullptr)
@@ -114,8 +114,8 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
     switch (api)
     {
     case GFX_API::DX12:
-#ifdef PLATFORM_WINDOWS
         {
+#ifdef PLATFORM_WINDOWS
             auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
 
             if(texture != nullptr)
@@ -140,8 +140,8 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
         }
         break;
     case GFX_API::Unknown:
-#ifdef PLATFORM_WINDOWS
         {
+#ifdef PLATFORM_WINDOWS
             auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
 
             if(texture != nullptr)

@@ -7,6 +7,9 @@ be no where near as optimal as a commercial game engine like Unity, Unreal etc.
 
 The focus for this project will be on the windows platform but cmake and git action (CI) is setup to support Linux and MacOS as well.
 
+
+https://user-images.githubusercontent.com/20346592/130362945-75e5cb1b-c2be-442c-8ddb-9474365587cc.mp4
+
 # What will it contain
 This project is in the early stages of development and does not contain a lot yet,
 but what is currently planned is the following :
@@ -76,6 +79,5 @@ Spawn Duck, Lantern and Suzanne ( Monkey Head) with space
   <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/Textured_GLTF_GLB_Loader.png" width="500"/>
 </p>
 
-https://user-images.githubusercontent.com/20346592/130362945-75e5cb1b-c2be-442c-8ddb-9474365587cc.mp4
 
 

@@ -7,13 +7,6 @@ namespace Me
     struct CameraComponent;
     struct TransformComponent;
 
-    enum class GFX_API
-    {
-        Unknown,
-        DX12,
-        OpenGL
-    };
-
     namespace Renderer
     {
         class RenderLayer

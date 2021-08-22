@@ -18,7 +18,7 @@ namespace Me {
 	class Meduza
 	{
 	public:
-		Meduza(int,int);
+		Meduza(int,int, GFX_API);
 		~Meduza();
 		
 		inline bool IsRunning() { return m_isRunning; }

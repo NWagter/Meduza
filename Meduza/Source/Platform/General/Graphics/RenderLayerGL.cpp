@@ -34,6 +34,8 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 
     m_camera = new Camera();
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT); 
 
 }
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -51,6 +53,8 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
                  a_colour.m_colour[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_activeShader = nullptr;
+
+    
 }
 
 void Me::Renderer::GL::RenderLayerGL::Present()

@@ -33,7 +33,7 @@
 #endif
 
 
-Me::Meduza::Meduza(int a_w, int a_h)
+Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 {
 	m_isRunning = true;
 
@@ -47,7 +47,7 @@ Me::Meduza::Meduza(int a_w, int a_h)
 
 	if(m_window != nullptr)
 	{
-		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, Me::GFX_API::OpenGL);
+		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, a_api);
 		m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
 
 		if(m_renderLayer == nullptr)

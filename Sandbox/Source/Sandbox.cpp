@@ -27,7 +27,7 @@
 #include "Components/UpComponent.h"
 #include "Components/ForwardComponent.h"
 
-Sandbox::Sandbox()
+Sandbox::Sandbox() : Me::Application(1280,720, Me::GFX_API::OpenGL)
 {
 
 #if Run_Chess
@@ -58,17 +58,14 @@ Sandbox::Sandbox()
 #endif
 
     SetName(m_game->GetGameName() + " | Meduza");
-
 }
 
 Sandbox::~Sandbox()
 {
-
 }
 
-
 void Sandbox::OnUpdate(float a_dt)
-{   
+{
     m_game->UpdateGame(a_dt);
 }
 
@@ -85,7 +82,7 @@ void Sandbox::OnClose()
 }
 
 //Create the game "Application"
-Me::Application* Me::CreateApplication()
+Me::Application *Me::CreateApplication()
 {
-	return new Sandbox();
+    return new Sandbox();
 }

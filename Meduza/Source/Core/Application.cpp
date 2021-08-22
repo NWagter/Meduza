@@ -13,9 +13,9 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/CameraComponent.h"
 
-Me::Application::Application(int a_w,int a_h)
+Me::Application::Application(int a_w,int a_h, int a_api)
 {
-    m_meduza = new Meduza(a_w,a_h);
+    m_meduza = new Meduza(a_w,a_h, static_cast<GFX_API>(a_api));
 }
 
 Me::Application::~Application()

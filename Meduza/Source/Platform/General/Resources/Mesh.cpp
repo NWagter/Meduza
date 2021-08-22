@@ -17,7 +17,7 @@ Me::Resources::GL::Mesh::~Mesh()
 void Me::Resources::GL::Mesh::SetMode(GLenum a_mode)
 {
     m_mode = a_mode;
-    glPolygonMode(GL_FRONT_AND_BACK, m_mode);
+    glPolygonMode(GL_FRONT, m_mode);
 }
 
 

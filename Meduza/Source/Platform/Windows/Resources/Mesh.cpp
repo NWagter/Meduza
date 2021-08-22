@@ -40,23 +40,35 @@ void Me::Resources::Dx12::Mesh::GenerateBuffers(Renderer::Dx12::Device& a_device
 
 	m_indexBufferByteSize = sizeof(int) * static_cast<int>(m_indices.size());
 
-	D3DCreateBlob(m_vertexBufferByteSize, &m_vertexBufferCPU);
-	CopyMemory(m_vertexBufferCPU->GetBufferPointer(), m_vertices.data(), m_vertexBufferByteSize);
+	HRESULT hr = S_OK;
 
-	D3DCreateBlob(m_indexBufferByteSize, &m_indexBufferCPU);
-	CopyMemory(m_indexBufferCPU->GetBufferPointer(), m_indices.data(), m_indexBufferByteSize);
-	
+	hr = D3DCreateBlob(m_vertexBufferByteSize, &m_vertexBufferCPU);
+
+	if(FAILED(hr))
+	{
+		ME_GFX_LOG("ERROR! \n");
+	}
+
 	m_vertexBufferGPU = Helper::Dx12::Helper::CreateBuffer(a_device.GetDevice(),
 		a_cmd.GetList(), m_vertices.data(), m_vertexBufferByteSize, m_vertexBufferUploader);
 
 	m_vertexBufferUploader.Get()->SetName(L"VertexBuffer Uploader");
 	m_vertexBufferGPU.Get()->SetName(L"GPU VertexBuffer");
 
+	
+
+	hr = D3DCreateBlob(m_indexBufferByteSize, &m_indexBufferCPU);
+	
+	if(FAILED(hr))
+	{
+		ME_GFX_LOG("ERROR! \n");
+	}
+
 	m_indexBufferGPU = Helper::Dx12::Helper::CreateBuffer(a_device.GetDevice(),
 		a_cmd.GetList(), m_indices.data(), m_indexBufferByteSize, m_indexBufferUploader);
 
-	m_vertexBufferUploader.Get()->SetName(L"IndexBuffer Uploader");
-	m_vertexBufferGPU.Get()->SetName(L"GPU IndexBuffer");
+	m_indexBufferUploader.Get()->SetName(L"IndexBuffer Uploader");
+	m_indexBufferGPU.Get()->SetName(L"GPU IndexBuffer");
 
 	m_indexFormat = DXGI_FORMAT_R16_UINT;
 

@@ -10,11 +10,12 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 {
 	Microsoft::WRL::ComPtr<ID3D12Resource> defaultBuffer;
 
-
 	CD3DX12_HEAP_PROPERTIES heapDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	CD3DX12_RESOURCE_DESC buffer = CD3DX12_RESOURCE_DESC::Buffer(a_byteSize);
 
-	a_device->CreateCommittedResource(
+	HRESULT hr = S_OK;
+
+	hr = a_device->CreateCommittedResource(
 		&heapDefault,
 		D3D12_HEAP_FLAG_NONE,
 		&buffer,
@@ -24,8 +25,13 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 
 	defaultBuffer->SetName(L"Default Buffer Resource Heap");
 
+	if(hr != S_OK)
+	{
+		ME_GFX_LOG("ERROR! \n");
+	}
+
 	CD3DX12_HEAP_PROPERTIES heapUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	a_device->CreateCommittedResource(
+	hr = a_device->CreateCommittedResource(
 		&heapUpload,
 		D3D12_HEAP_FLAG_NONE,
 		&buffer,
@@ -35,7 +41,10 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 
 	a_uploadBuffer->SetName(L"UploadBuffer Resource Heap");
 
-	
+	if(hr != S_OK)
+	{
+		ME_GFX_LOG("ERROR! \n");
+	}
 
 	D3D12_SUBRESOURCE_DATA subResourceData = {};
 	subResourceData.pData = a_initData;

@@ -75,3 +75,7 @@ Spawn Duck, Lantern and Suzanne ( Monkey Head) with space
 <p align="center">
   <img src="https://github.com/NWagter/Meduza/blob/master/.github/Images/Textured_GLTF_GLB_Loader.png" width="500"/>
 </p>
+
+https://user-images.githubusercontent.com/20346592/130362945-75e5cb1b-c2be-442c-8ddb-9474365587cc.mp4
+
+

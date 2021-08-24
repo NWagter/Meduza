@@ -50,9 +50,14 @@
 #endif
 
 #ifdef PLATFORM_LINUX
+
 #include <glad/glad.h>
 #include <X11/Xlib.h>
 #include <GL/glx.h>
+
+#include <imgui.h>
+#include <imgui_internal.h>
+
 #endif
 
 #ifdef PLATFORM_APPLE

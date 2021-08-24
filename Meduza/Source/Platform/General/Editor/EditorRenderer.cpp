@@ -6,6 +6,8 @@
 #include "Platform/General/Editor/EditorRendererGL.h"
 #include "Platform/General/Graphics/RenderLayerGL.h"
 
+#include "Platform/General/Editor/EditorWidget.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Editor/EditorRendererDx12.h"
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"

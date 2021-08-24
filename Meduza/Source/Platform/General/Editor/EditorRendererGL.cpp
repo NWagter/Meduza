@@ -20,12 +20,9 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer backends
 #ifdef PLATFORM_WINDOWS
@@ -50,6 +47,7 @@ void Me::Editor::GL::EditorRendererGL::Clear()
 #elif PLATFORM_LINUX
 
 #endif
+
 	ImGui::NewFrame();
 }
 
@@ -62,7 +60,6 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 
 	ImGui::EndFrame();
 
-    
 	ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

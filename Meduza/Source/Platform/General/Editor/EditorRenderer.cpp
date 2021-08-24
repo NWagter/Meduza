@@ -3,6 +3,9 @@
 #include "Platform/General/Editor/EditorRenderer.h"
 #include "Platform/General/Graphics/RenderLayer.h"
 
+#include "Platform/General/Editor/EditorRendererGL.h"
+#include "Platform/General/Graphics/RenderLayerGL.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Editor/EditorRendererDx12.h"
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
@@ -24,7 +27,11 @@ Me::Editor::EditorRenderer* Me::Editor::EditorRenderer::CreateEditor(Me::Rendere
 #endif
             break;
         case Me::GFX_API::OpenGL:
+#ifdef PLATFORM_WINDOWS
+            return new GL::EditorRendererGL(static_cast<Renderer::GL::RenderLayerGL*>(a_renderLayer));
+#else
             return nullptr;
+#endif
             break;
         case Me::GFX_API::Unknown:
 #ifdef PLATFORM_WINDOWS
@@ -35,8 +42,20 @@ Me::Editor::EditorRenderer* Me::Editor::EditorRenderer::CreateEditor(Me::Rendere
             return nullptr;
 #endif
             break;
-
     }
 
     return nullptr;
+}
+
+Me::Editor::EditorRenderer::~EditorRenderer()
+{
+    for(auto widget : m_editorWidgets)
+    {
+        delete widget;
+    }
+}
+
+void Me::Editor::EditorRenderer::AddWidget(EditorWidget& a_widget)
+{
+    m_editorWidgets.push_back(&a_widget);
 }

@@ -47,6 +47,7 @@ namespace Me
 
                 Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
                 
+                Window* GetWindow() {return m_window;}
             private:
                 Window* m_window;
                 Context* m_context;

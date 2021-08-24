@@ -22,7 +22,7 @@ Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 
-	ActiveCursor(false);
+	ActiveCursor(true);
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 }
 

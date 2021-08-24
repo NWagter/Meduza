@@ -29,12 +29,12 @@ namespace Me
         template<class C = BaseComponent>
 		std::map<EntityID, C*> GetComponents();
 
-
         void Update(float);
         
         std::vector<EntityID> GetEntities(EntityFilter);
         std::map<EntityID, std::set<ComponentID>> GetEntities() {return m_entities;}
         std::map<ComponentID, IComponentContainer*> GetContainers() {return m_containers;}
+        std::map<ComponentID, std::string> GetComponentNames() {return m_componentNames;}
         private:
         EntityManager();
         ~EntityManager();
@@ -43,6 +43,7 @@ namespace Me
         std::map<EntityID, std::set<ComponentID>> m_entities;
         std::vector<ECSSystem*> m_systems;
 		std::map<ComponentID, IComponentContainer*> m_containers;
+        std::map<ComponentID, std::string> m_componentNames;
 
         template<class C = BaseComponent>
 		ComponentContainer<C>* AddComponentContainer();	
@@ -101,6 +102,13 @@ namespace Me
         }
         auto comp = new C();
 
+        auto it = m_componentNames.find(C::s_componentID);
+        if(it == m_componentNames.end())
+        {
+            std::string compName = (std::string)typeid(C).name();
+            m_componentNames.insert(std::pair<ComponentID, std::string>(C::s_componentID, compName));
+        }
+
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
         container->AddComponent(a_entID, comp);
@@ -120,6 +128,13 @@ namespace Me
 
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
+
+        auto it = m_componentNames.find(C::s_componentID);
+        if(it == m_componentNames.end())
+        {
+            std::string compName = (std::string)typeid(C).name();
+            m_componentNames.insert(std::pair<ComponentID, std::string>(C::s_componentID, compName));
+        }
 
         container->AddComponent(a_entID, a_comp);
 

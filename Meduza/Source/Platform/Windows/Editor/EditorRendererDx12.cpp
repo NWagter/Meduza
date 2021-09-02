@@ -10,7 +10,8 @@
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
 
-#include "Platform/General/Editor/EntityHierarchy.h"
+#include "Platform/General/Editor/EditorEntityHierarchy.h"
+#include "Platform/General/Editor/EditorEntityEditor.h"
 
 
 Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::RenderLayerDx12* a_renderLayer)
@@ -43,6 +44,8 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	
 	EntityHierarchy* entHierarchy = new EntityHierarchy();
 	AddWidget(*entHierarchy);
+	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
+	AddWidget(*entEditor);
 }
 
 void Me::Editor::Dx12::EditorRendererDx12::Clear()

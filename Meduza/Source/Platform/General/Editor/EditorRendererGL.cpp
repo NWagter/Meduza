@@ -12,7 +12,8 @@
 
 #endif
 
-#include "Platform/General/Editor/EntityHierarchy.h"
+#include "Platform/General/Editor/EditorEntityHierarchy.h"
+#include "Platform/General/Editor/EditorEntityEditor.h"
 
 Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* a_renderLayer)
 {
@@ -35,6 +36,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     
 	EntityHierarchy* entHierarchy = new EntityHierarchy();
 	AddWidget(*entHierarchy);
+	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
+	AddWidget(*entEditor);
 }
 
 void Me::Editor::GL::EditorRendererGL::Clear()

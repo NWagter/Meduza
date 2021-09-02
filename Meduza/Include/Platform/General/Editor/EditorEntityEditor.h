@@ -8,16 +8,20 @@ namespace Me
 
     namespace Editor
     {
-        class EntityHierarchy : public EditorWidget
+        class EntityHierarchy;
+
+        class EntityEditor : public EditorWidget
         {
             public:
-                EntityHierarchy();
-                ~EntityHierarchy();
+                EntityEditor(EntityHierarchy&);
+                ~EntityEditor();
 
                 void Draw() override;
 
             private:
+                EntityHierarchy* m_hierarchy;
                 EntityID m_selectedEntity;
+                bool m_locked = false;
         };
     }
 }

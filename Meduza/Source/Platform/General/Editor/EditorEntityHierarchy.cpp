@@ -1,6 +1,6 @@
 #include "MePCH.h"
 
-#include "Platform/General/Editor/EntityHierarchy.h"
+#include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "ECS/EntityManager.h"
 #include "Core/Components/TransformComponent.h"
 
@@ -45,19 +45,14 @@ void Me::Editor::EntityHierarchy::Draw()
 
 		if(selected != m_selectedEntity)
 		{
-			ME_CORE_LOG("Selected Entity : %i \n", (int)selected);
 			m_selectedEntity = selected;
-		}	
-
-		if(m_selectedEntity > 0 && ent.first == m_selectedEntity)
-		{
-			auto filter = eManager->GetEntities()[m_selectedEntity];
-			auto names = eManager->GetComponentNames();
-			for(auto c : filter)
-			{
-				ImGui::LabelText("", names[c].c_str());
-			}
-		}	
+		}
+		
 	}
 	ImGui::End();
+}
+
+Me::EntityID Me::Editor::EntityHierarchy::GetSelected()
+{
+	return m_selectedEntity;
 }

@@ -19,6 +19,66 @@ Me::Editor::EntityEditor::~EntityEditor()
 
 }
 
+static void DrawVec3Prop(const std::string &a_label, Me::Math::Vec3& a_value, float a_resetValue = 0, float a_columnWidth = 100.0f)
+{
+    ImGui::PushID(a_label.c_str());
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, a_columnWidth);
+    ImGui::Text(a_label.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.0f, 0.0f});
+
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.15f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    
+    if(ImGui::Button("X", buttonSize))
+    {
+        a_value.m_x = a_resetValue;
+    }
+    ImGui::PopStyleColor(3);
+    ImGui::SameLine();
+    ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    
+    if(ImGui::Button("Y", buttonSize))
+    {
+        a_value.m_y = a_resetValue;
+    }
+    ImGui::PopStyleColor(3);
+    ImGui::SameLine();
+    ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.2f, 0.35f, 0.9f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
+    
+    if(ImGui::Button("Z", buttonSize))
+    {
+        a_value.m_z = a_resetValue;
+    }
+    ImGui::PopStyleColor(3);
+    ImGui::SameLine();
+    ImGui::DragFloat("##Z", &a_value.m_z, 0.1f, 0.0f, 0.0f, "%.2f");
+    ImGui::PopItemWidth();
+
+    ImGui::PopStyleVar();
+    ImGui::Columns(1);
+    ImGui::PopID();
+}
+
 void Me::Editor::EntityEditor::Draw()
 {    
 	auto eManager = EntityManager::GetEntityManager();
@@ -50,9 +110,9 @@ void Me::Editor::EntityEditor::Draw()
                     ImGui::Checkbox("Static", &isStatic);
                     tC->m_isStatic = isStatic;
 
-                    ImGui::InputFloat3("Position", tC->m_translation.m_xyz);
-                    ImGui::InputFloat3("Rotation", tC->m_rotation.m_xyz);
-                    ImGui::InputFloat3("Scale", tC->m_scale.m_xyz);
+                    DrawVec3Prop("Position", tC->m_translation);
+                    DrawVec3Prop("Rotation", tC->m_rotation);
+                    DrawVec3Prop("Scale", tC->m_scale);
                 }
             }
             if(c == RenderComponent::s_componentID)

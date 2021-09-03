@@ -105,8 +105,8 @@ Chess::ChessBoardComponent* Chess::ChessGame::CreateBoard()
          position.m_x = static_cast<float>(x * gs_tileSize);
          position.m_y = static_cast<float>(y * gs_tileSize);
          position.m_z = 2;
-         tComp->SetPosition(position);
-         tComp->SetUniformScale(static_cast<float>(gs_tileSize));
+         tComp->m_translation = position;
+         tComp->m_scale = Me::Math::Vec3(gs_tileSize);
 
          rComp->m_mesh = mesh;
          rComp->m_shader = shader;
@@ -168,13 +168,13 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
             pawnComp->m_pawnEntity = pawn;
 
-            Me::Math::Vec3 position = tComp->GetPosition();
+            Me::Math::Vec3 position = tComp->m_translation;
 
             position.m_x = static_cast<float>(x * gs_tileSize);
             position.m_y = static_cast<float>(y * gs_tileSize);
 
-            tComp->SetPosition(position);
-            tComp->SetUniformScale(static_cast<float>(gs_tileSize));
+            tComp->m_translation = position;
+            tComp->m_scale = Me::Math::Vec3(gs_tileSize);
             
             rComp->m_shader = shader;
             rComp->m_texture = texture;
@@ -203,13 +203,13 @@ void Chess::ChessGame::CreatePieces(ChessBoardComponent* a_board)
             pawnComp->m_boardPos = Me::Math::Vec2(x,y);
             pawnComp->m_pawnEntity = pawn;
             
-            Me::Math::Vec3 position = tComp->GetPosition();
+            Me::Math::Vec3 position = tComp->m_translation;
 
             position.m_x = static_cast<float>(x * gs_tileSize);
             position.m_y = static_cast<float>(y * gs_tileSize);
 
-            tComp->SetPosition(position);
-            tComp->SetUniformScale(static_cast<float>(gs_tileSize));
+            tComp->m_translation = position;
+            tComp->m_scale = Me::Math::Vec3(gs_tileSize);
             
             rComp->m_shader = shader;
             rComp->m_texture = texture;

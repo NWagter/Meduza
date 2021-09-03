@@ -72,8 +72,8 @@ void Physics::Physics2D::SetupScene()
     position2.m_x = static_cast<float>(0);
     position2.m_y = static_cast<float>(-128);
     position2.m_z = 2;
-    tC2->SetPosition(position2);
-    tC2->SetUniformScale(static_cast<float>(32));
+    tC2->m_translation = position2;
+    tC2->m_scale = Me::Math::Vec3(32);
     
     pC2->m_body->m_uniformScale = 32;
     pC2->m_gravity = false;
@@ -111,8 +111,8 @@ void Physics::Physics2D::SpawnObjects()
     position.m_y = static_cast<float>(128);
     position.m_z = 2;
 
-    tC->SetPosition(position);
-    tC->SetUniformScale(static_cast<float>(32));
+    tC->m_translation = position;
+    tC->m_scale = Me::Math::Vec3(32);
 
     pC->m_collisionType = Me::Physics::CollisionType::Block;
     pC->m_body->m_uniformScale = 32;
@@ -139,8 +139,8 @@ void Physics::Physics2D::SpawnObjects()
     position3.m_y = static_cast<float>(256);
     position3.m_z = 2;
 
-    tC3->SetPosition(position3);
-    tC3->SetUniformScale(static_cast<float>(32));
+    tC3->m_translation = position3;
+    tC3->m_scale = Me::Math::Vec3(32);
     
     pC3->m_collisionType = Me::Physics::CollisionType::Overlap;
     pC3->m_body->m_uniformScale = 32;

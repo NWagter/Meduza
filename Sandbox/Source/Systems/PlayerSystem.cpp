@@ -43,7 +43,7 @@ void PlayerSystem::OnUpdate(float a_dt)
     {          
         PlayerComponent* pC = std::get<PlayerComponent*>(compTuple);  
 
-        Me::Math::Vec3 camPos = pC->m_cameraTransform->GetPosition();
+        Me::Math::Vec3 camPos = pC->m_cameraTransform->m_translation;
 
         pC->m_cursorComponent->m_position = (Me::Math::Vec3(mousePos.m_x, mousePos.m_y, camPos.m_z) - camPos);
     }

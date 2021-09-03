@@ -756,6 +756,39 @@ namespace Me
 				return *this;
 			}
 
+            inline Math::Vec3 GetLeft()
+            {
+                Math::Vec3 right;
+                
+                right.m_x = m_00;
+                right.m_y = m_01;
+                right.m_z = m_02;
+
+                return right.Normalize();
+            }    
+
+            Math::Vec3 GetUp()
+            {
+                Math::Vec3 up;
+                
+                up.m_x = m_10;
+                up.m_y = m_11;
+                up.m_z = m_12;
+
+                return up.Normalize();
+            }
+
+            Math::Vec3 GetForward()
+            {
+                Math::Vec3 forward;
+                
+                forward.m_x = -m_20;
+                forward.m_y = -m_21;
+                forward.m_z = -m_22;
+
+                return forward.Normalize();
+            }  
+
 		private:
 			inline void RotateX(float a_radians)
 			{
@@ -790,6 +823,7 @@ namespace Me
 
 				*this = rot * *this;
 			}
+
 		};
 // =========== Operators
 

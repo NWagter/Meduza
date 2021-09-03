@@ -108,17 +108,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     r->m_renderComponent = &a_renderable;
     //r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
-    Math::Mat4 pMat = Math::Mat4::Identity();
-    pMat.SetPosition(a_trans.GetPosition());
-
-    Math::Mat4 rMat = Math::Mat4::Identity();
-    rMat.Rotation(a_trans.GetRotation());
-
-    Math::Mat4 sMat = Math::Mat4::Identity();
-    sMat.SetScale(a_trans.GetScale());
-
-    Math::Mat4 model = pMat * rMat * sMat;
-    r->m_modelMatrix = Math::Transpose(model);
+    r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
     m_renderables.push_back(r);
 }
@@ -140,10 +130,10 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     }
     
     Math::Mat4 rMat = Math::Mat4::Identity();
-    rMat.Rotation(a_transComp.GetRotation());
+    rMat.Rotation(a_transComp.m_rotation);
 
     Math::Mat4 pMat = Math::Mat4::Identity();
-    pMat.SetPosition(a_transComp.GetPosition());
+    pMat.SetPosition(a_transComp.m_translation);
 
     Math::Mat4 view = rMat * pMat;
 

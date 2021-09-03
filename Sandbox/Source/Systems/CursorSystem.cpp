@@ -26,7 +26,7 @@ void CursorSystem::OnCreate()
     rC->m_shader = shader;
     rC->m_texture = texture;
 
-    tC->SetUniformScale(8);
+    tC->m_scale = Me::Math::Vec3(8);
 
     eManager->AddComponent<CursorComponent>(entt, cC);
     eManager->AddComponent<Me::RenderComponent>(entt, rC);     
@@ -41,7 +41,7 @@ void CursorSystem::OnUpdate(float a_dt)
         CursorComponent* cC = std::get<CursorComponent*>(compTuple);
         Me::TransformComponent* tC = std::get<Me::TransformComponent*>(compTuple);
         
-        tC->SetPosition(cC->m_position);
+        tC->m_translation = cC->m_position;
 
     }
 }

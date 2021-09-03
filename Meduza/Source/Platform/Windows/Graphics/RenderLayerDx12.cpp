@@ -224,20 +224,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	iB.m_textureId = textureId;
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
-	auto pos = a_trans.GetPosition();
-	auto rot = a_trans.GetRotation();
-	auto scale = a_trans.GetScale();
 
-	Math::Mat4 pMat = Math::Mat4::Identity();
-	pMat.SetPosition(pos);
-
-	Math::Mat4 rMat = Math::Mat4::Identity();
-	rMat.Rotation(rot);
-
-	Math::Mat4 sMat = Math::Mat4::Identity();
-	sMat.SetScale(scale);
-
-	Math::Mat4 model = pMat * rMat * sMat;
+	Math::Mat4 model = a_trans.GetTransform();
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMATRIX((model).m_m));
 
@@ -250,8 +238,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 {
 	if(a_cam.m_cameraType == CameraType::Orthographic)
 	{
-		auto pos = a_trans.GetPosition();
-		auto rot = a_trans.GetRotation().m_z;
+		auto pos = a_trans.m_translation;
+		auto rot = a_trans.m_rotation.m_z;
 
 		Math::Mat4 view = Math::Mat4::Identity();
 		view.SetPosition(pos);
@@ -270,8 +258,8 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 	}
 	else if(a_cam.m_cameraType == CameraType::Perspective)
 	{
-		auto pos = a_trans.GetPosition();
-		auto rot = a_trans.GetRotation();
+		auto pos = a_trans.m_translation;
+		auto rot = a_trans.m_rotation;
 			
 		Math::Mat4 pMat = Math::Mat4::Identity();
 		pMat.SetPosition(pos);

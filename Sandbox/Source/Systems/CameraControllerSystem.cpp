@@ -59,7 +59,7 @@ void CameraControllerSystem::OnUpdate(float a_dt)
             upMovment--;
         }
 
-        Me::Math::Vec3 rotation = trans->GetRotation();
+        Me::Math::Vec3 rotation = trans->m_rotation;
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
         {
@@ -70,15 +70,17 @@ void CameraControllerSystem::OnUpdate(float a_dt)
             rotation.m_yaw += (2) * a_dt;
         }
         
-        Me::Math::Vec3 position = trans->GetPosition();
+        Me::Math::Vec3 position = trans->m_translation;
 
 
-        Me::Math::Vec3 forward = trans->GetForward() * (forwardMovment * 10);
-        Me::Math::Vec3 right = trans->GetLeft() * (-rightMovment * 10);
-        Me::Math::Vec3 up = trans->GetUp() * (upMovment * -10);
+        Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
+
+        Me::Math::Vec3 forward = transform.GetForward() * (forwardMovment * 10);
+        Me::Math::Vec3 right = transform.GetLeft() * (-rightMovment * 10);
+        Me::Math::Vec3 up = transform.GetUp() * (upMovment * -10);
         Me::Math::Vec3 movement = forward + right + up;
 
-        trans->Translate(movement * a_dt);
-        trans->SetRotationRadian(rotation);
+        trans->m_translation = trans->m_translation + (movement * a_dt);
+        trans->m_rotation = rotation;
     }
 }

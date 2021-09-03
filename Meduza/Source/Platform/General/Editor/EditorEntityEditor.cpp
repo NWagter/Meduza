@@ -2,9 +2,11 @@
 
 #include "Platform/General/Editor/EditorEntityEditor.h"
 #include "ECS/EntityManager.h"
-#include "Core/Components/TransformComponent.h"
 
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
+
+#include "Core/Components/TransformComponent.h"
+#include "Core/Components/RenderComponent.h"
 
 
 Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entHierarchy)
@@ -41,20 +43,25 @@ void Me::Editor::EntityEditor::Draw()
 
             if(c == TransformComponent::s_componentID)
             {    
-                auto trans = eManager->GetComponent<TransformComponent>(m_selectedEntity);
-                if(trans != nullptr)
+                auto tC = eManager->GetComponent<TransformComponent>(m_selectedEntity);
+                if(tC != nullptr)
                 {
-                    bool isStatic = trans->m_isStatic;
+                    bool isStatic = tC->m_isStatic;
                     ImGui::Checkbox("Static", &isStatic);
-                    trans->m_isStatic = isStatic;
+                    tC->m_isStatic = isStatic;
 
-                    Math::Vec3 pos = trans->GetPosition();
-                    ImGui::InputFloat3("Position", pos.m_xyz);
-                    trans->SetPosition(pos);
-
-                    Math::Vec3 scale = trans->GetScale();
-                    ImGui::InputFloat3("Scale", scale.m_xyz);
-                    trans->SetScale(scale);
+                    ImGui::InputFloat3("Position", tC->m_translation.m_xyz);
+                    ImGui::InputFloat3("Rotation", tC->m_rotation.m_xyz);
+                    ImGui::InputFloat3("Scale", tC->m_scale.m_xyz);
+                }
+            }
+            if(c == RenderComponent::s_componentID)
+            {    
+                auto rC = eManager->GetComponent<RenderComponent>(m_selectedEntity);
+                
+                if(rC != nullptr)
+                {   
+                    ImGui::ColorEdit4("Colour", rC->m_colour.m_colour);
                 }
             }
         }

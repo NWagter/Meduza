@@ -56,16 +56,16 @@ void ExampleScene::InitGame()
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
 
-    tComp->SetPosition(position);
-    tComp->SetRotationDegree(rotation);
-    tComp->SetUniformScale(1.0f);
+    tComp->m_translation = position;
+    tComp->m_rotation  = rotation;
+    tComp->m_scale = Me::Math::Vec3(1.0f);
 
     rComp->m_mesh = suzanne;
     rComp->m_shader = shader;
     rComp->m_colour = Me::Colours::WHITE;
     rComp->m_texture = suzanneTexture;
 
-    rotComp->m_rotateSpeed = 0.75f;
+    rotComp->m_rotateSpeed = 10.0f;
 
     eManager->AddComponent<Me::RenderComponent>(suzanneEntt, rComp);
     eManager->AddComponent<Me::TransformComponent>(suzanneEntt, tComp);
@@ -98,8 +98,8 @@ void ExampleScene::CreateFloor(Me::EntityManager& a_eManager)
 
     Me::Math::Vec3 pos = Me::Math::Vec3(0,-2,10);
 
-    tComp->SetPosition(pos);
-    tComp->SetUniformScale(10.0f);
+    tComp->m_translation = pos;
+    tComp->m_scale  = Me::Math::Vec3(10.0f);
 
     a_eManager.AddComponent<Me::RenderComponent>(cube, rComp);
     a_eManager.AddComponent<Me::TransformComponent>(cube, tComp);

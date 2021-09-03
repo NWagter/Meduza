@@ -228,7 +228,7 @@ void Me::Editor::EntityEditor::Draw()
                     ImGui::Checkbox("Static", &isStatic);
                     tC->m_isStatic = isStatic;
 
-                    DrawVec2Prop("Position", tC->m_translation);
+                    DrawVec3Prop("Position", tC->m_translation);
                     DrawVec3Prop("Rotation", tC->m_rotation);
                     DrawVec3Prop("Scale", tC->m_scale);
                 }

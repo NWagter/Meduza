@@ -209,6 +209,12 @@ namespace Me
 				m_y = a_y;
 				m_z = a_z;
 			}
+			inline Vec3(float a_value)
+			{
+				m_x = a_value;
+				m_y = a_value;
+				m_z = a_value;
+			}
 
 
 			inline Vec3& operator=(const Vec3& a_rhs)

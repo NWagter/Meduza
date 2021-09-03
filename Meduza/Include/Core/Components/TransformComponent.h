@@ -10,7 +10,7 @@ namespace Me
         private:
             Math::Mat4 m_transform = Math::Mat4::Identity();
             Math::Vec3 m_euler = Math::Vec3(0,0,0);
-            float m_uniformScale = 1;
+            Math::Vec3 m_scale = Math::Vec3(1,1,1);
 
         public:
             bool m_isStatic = false;
@@ -29,9 +29,9 @@ namespace Me
             {
                 return m_euler;
             }
-            float GetUniformedScale() 
+            Math::Vec3 GetScale() 
             { 
-                return m_uniformScale;
+                return m_scale;
             }
 
             Math::Vec3 GetLeft()
@@ -111,14 +111,23 @@ namespace Me
                 m_euler = newRot;
                 return GetRotation();
             }
-            float SetUniformScale(float a_scale)
+            Math::Vec3 SetUniformScale(float a_scale)
             {                
                 if(m_isStatic)
-                    return m_uniformScale;
+                    return m_scale;
 
-                m_uniformScale = a_scale;
+                m_scale = Math::Vec3(a_scale);
 
-                return m_uniformScale;
+                return m_scale;
+            }
+            Math::Vec3 SetScale(Math::Vec3 a_scale)
+            {                             
+                if(m_isStatic)
+                    return m_scale;
+
+                m_scale = a_scale;
+
+                return m_scale;                
             }
             
             static ComponentID s_componentID;

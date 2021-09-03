@@ -49,12 +49,12 @@ void Me::Editor::EntityEditor::Draw()
                     trans->m_isStatic = isStatic;
 
                     Math::Vec3 pos = trans->GetPosition();
-                    ImGui::InputFloat3("Pos", pos.m_xyz);
+                    ImGui::InputFloat3("Position", pos.m_xyz);
                     trans->SetPosition(pos);
 
-                    float scale = trans->GetUniformedScale();
-                    ImGui::InputFloat("uniformScale", &scale);
-                    trans->SetUniformScale(scale);
+                    Math::Vec3 scale = trans->GetScale();
+                    ImGui::InputFloat3("Scale", scale.m_xyz);
+                    trans->SetScale(scale);
                 }
             }
         }

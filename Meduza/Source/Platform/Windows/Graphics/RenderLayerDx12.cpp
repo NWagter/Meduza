@@ -226,7 +226,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 	auto pos = a_trans.GetPosition();
 	auto rot = a_trans.GetRotation();
-	auto scale = a_trans.GetUniformedScale();
+	auto scale = a_trans.GetScale();
 
 	Math::Mat4 pMat = Math::Mat4::Identity();
 	pMat.SetPosition(pos);

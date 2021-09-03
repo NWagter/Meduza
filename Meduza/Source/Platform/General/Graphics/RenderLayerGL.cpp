@@ -115,7 +115,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     rMat.Rotation(a_trans.GetRotation());
 
     Math::Mat4 sMat = Math::Mat4::Identity();
-    sMat.SetScale(a_trans.GetUniformedScale());
+    sMat.SetScale(a_trans.GetScale());
 
     Math::Mat4 model = pMat * rMat * sMat;
     r->m_modelMatrix = Math::Transpose(model);

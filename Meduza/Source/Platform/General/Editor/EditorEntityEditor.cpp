@@ -34,9 +34,29 @@ void Me::Editor::EntityEditor::Draw()
     {
         auto filter = eManager->GetEntities()[m_selectedEntity];
         auto names = eManager->GetComponentNames();
+        
         for(auto c : filter)
         {
             ImGui::LabelText("", names[c].c_str());
+
+            if(c == TransformComponent::s_componentID)
+            {    
+                auto trans = eManager->GetComponent<TransformComponent>(m_selectedEntity);
+                if(trans != nullptr)
+                {
+                    bool isStatic = trans->m_isStatic;
+                    ImGui::Checkbox("Static", &isStatic);
+                    trans->m_isStatic = isStatic;
+
+                    Math::Vec3 pos = trans->GetPosition();
+                    ImGui::InputFloat3("Pos", pos.m_xyz);
+                    trans->SetPosition(pos);
+
+                    float scale = trans->GetUniformedScale();
+                    ImGui::InputFloat("uniformScale", &scale);
+                    trans->SetUniformScale(scale);
+                }
+            }
         }
     }
 

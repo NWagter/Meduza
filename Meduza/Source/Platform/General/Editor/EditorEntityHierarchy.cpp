@@ -14,10 +14,13 @@ Me::Editor::EntityHierarchy::~EntityHierarchy()
 
 }
 
-bool DrawEnt(EntityID& a_selected, std::string a_tag)
+bool DrawEnt(EntityID& a_selected, EntityID a_ent, std::string a_tag)
 {
 	bool isSelected = false;
-	ImGui::Selectable(a_tag.c_str(), &isSelected);
+
+	ImGui::PushID(a_ent);
+	ImGui::Selectable(a_tag.c_str(), &isSelected);	
+	ImGui::PopID();
 
 	return isSelected;
 }
@@ -37,7 +40,7 @@ void Me::Editor::EntityHierarchy::Draw()
 	for(auto ent : eManager->GetEntities())
 	{
 		EntityID selected = m_selectedEntity; 
-		if(DrawEnt(selected, eManager->GetComponent<TagComponent>(ent.first)->m_tag))
+		if(DrawEnt(selected, ent.first, eManager->GetComponent<TagComponent>(ent.first)->m_tag))
 		{
 			m_selectedEntity = ent.first;
 		}	

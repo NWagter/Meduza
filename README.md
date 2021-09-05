@@ -7,8 +7,7 @@ be no where near as optimal as a commercial game engine like Unity, Unreal etc.
 
 The focus for this project will be on the windows platform but cmake and git action (CI) is setup to support Linux and MacOS as well.
 
-
-https://user-images.githubusercontent.com/20346592/130362945-75e5cb1b-c2be-442c-8ddb-9474365587cc.mp4
+https://user-images.githubusercontent.com/20346592/132136586-757379df-33f9-4fd6-b53d-8504ec8f08aa.mp4
 
 # What will it contain
 This project is in the early stages of development and does not contain a lot yet,

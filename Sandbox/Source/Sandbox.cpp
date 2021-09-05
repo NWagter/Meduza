@@ -27,7 +27,7 @@
 #include "Components/UpComponent.h"
 #include "Components/ForwardComponent.h"
 
-Sandbox::Sandbox() : Me::Application(1280,720, Me::GFX_API::OpenGL)
+Sandbox::Sandbox() : Me::Application(1280,720, Me::GFX_API::DX12)
 {
 
 #if Run_Chess

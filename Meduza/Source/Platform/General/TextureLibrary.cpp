@@ -182,7 +182,6 @@ Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Textur
 
     if (t == nullptr)
     {
-        ME_CORE_ASSERT_M(false ,"Texture does not exist!");
         return nullptr;
     }
 

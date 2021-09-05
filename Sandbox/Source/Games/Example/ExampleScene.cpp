@@ -28,11 +28,9 @@ void ExampleScene::InitGame()
 
     auto cC = new Me::CameraComponent();
     cC->m_cameraType = Me::CameraType::Perspective;
-    cC->m_near = 0.1f;
-    cC->m_far = 1000;
     cC->m_size = Me::Event::EventSystem::GetEventSystem()->ScreenSize();
 
-    EntityID entCam = Me::EntityManager::CreateEntity();
+    EntityID entCam = Me::EntityManager::CreateEntity("Camera");
     eManager->AddComponent<Me::CameraComponent>(entCam, cC);
     eManager->AddComponent<Me::TransformComponent>(entCam);
 
@@ -51,7 +49,7 @@ void ExampleScene::InitGame()
         shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.glsl");
     }
 
-    EntityID suzanneEntt = eManager->CreateEntity();
+    EntityID suzanneEntt = eManager->CreateEntity("Suzanne");
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
     RotateComponent* rotComp = new RotateComponent();
@@ -87,7 +85,7 @@ void ExampleScene::CreateFloor(Me::EntityManager& a_eManager)
         shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/Lit_Shader.glsl");
     }
 
-    EntityID cube = a_eManager.CreateEntity();
+    EntityID cube = a_eManager.CreateEntity("Floor");
     Me::RenderComponent* rComp = new Me::RenderComponent();
     Me::TransformComponent* tComp = new Me::TransformComponent();
 

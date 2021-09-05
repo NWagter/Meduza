@@ -212,7 +212,6 @@ Me::Resources::ShaderBase* Me::Resources::ShaderLibrary::GetShader(Me::Shader a_
     //Check if already exists
 	if (ms_instance->m_shaders[a_shader] == nullptr)
 	{
-		ME_GFX_LOG("Shader with id : %i doesn't exist", a_shader);
 		return nullptr;
 	}
 

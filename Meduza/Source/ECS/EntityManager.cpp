@@ -98,10 +98,15 @@ void Me::EntityManager::AddSystem(ECSSystem* a_system)
     }    
 }
 
-EntityID Me::EntityManager::CreateEntity()
+EntityID Me::EntityManager::CreateEntity(std::string a_tag)
 {
     m_entityId++;
     ms_entityManager->m_entities.insert(std::pair<EntityID, std::set<ComponentID>>(m_entityId,{}));
+
+    TagComponent* tag = new TagComponent();
+    tag->m_tag = a_tag;
+    ms_entityManager->AddComponent(m_entityId, tag);
+
     return m_entityId;
 }
 

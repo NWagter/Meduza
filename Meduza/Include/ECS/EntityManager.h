@@ -17,11 +17,14 @@ namespace Me
         inline static EntityManager* GetEntityManager() {return ms_entityManager;}
 
         static void AddSystem(ECSSystem*);
-        static EntityID CreateEntity();
+        static EntityID CreateEntity(std::string = "Empty Entity");
         static void DestroyEntity(EntityID);
 
         template<class C = BaseComponent>
-        bool AddComponent(const EntityID a_entID);
+        bool AddComponent(const EntityID a_entID);        
+        template<class C = BaseComponent>
+        bool RemoveComponent(const EntityID a_entID);
+
         template<class C = BaseComponent>
         bool AddComponent(const EntityID a_entID, C* a_comp);
         template<class C = BaseComponent>
@@ -34,7 +37,6 @@ namespace Me
         std::vector<EntityID> GetEntities(EntityFilter);
         std::map<EntityID, std::set<ComponentID>> GetEntities() {return m_entities;}
         std::map<ComponentID, IComponentContainer*> GetContainers() {return m_containers;}
-        std::map<ComponentID, std::string> GetComponentNames() {return m_componentNames;}
         private:
         EntityManager();
         ~EntityManager();
@@ -102,16 +104,29 @@ namespace Me
         }
         auto comp = new C();
 
-        auto it = m_componentNames.find(C::s_componentID);
-        if(it == m_componentNames.end())
-        {
-            std::string compName = (std::string)typeid(C).name();
-            m_componentNames.insert(std::pair<ComponentID, std::string>(C::s_componentID, compName));
-        }
-
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
         container->AddComponent(a_entID, comp);
+		RegisterEntity(a_entID);
+
+        return true;
+    }
+
+    template<class C>
+    bool EntityManager::RemoveComponent(const EntityID a_entID)
+    {
+        auto container = GetComponentContainer<C>();
+        if(container == nullptr)
+        {
+            return false;
+        }
+
+        container->RemoveComponent(a_entID);
+
+        auto ent = m_entities.find(a_entID);
+        ent->second.erase(C::s_componentID);
+        
+        UnRegisterEntity(a_entID);
 		RegisterEntity(a_entID);
 
         return true;
@@ -128,13 +143,6 @@ namespace Me
 
         auto ent = m_entities.find(a_entID);
         ent->second.insert(C::s_componentID);
-
-        auto it = m_componentNames.find(C::s_componentID);
-        if(it == m_componentNames.end())
-        {
-            std::string compName = (std::string)typeid(C).name();
-            m_componentNames.insert(std::pair<ComponentID, std::string>(C::s_componentID, compName));
-        }
 
         container->AddComponent(a_entID, a_comp);
 

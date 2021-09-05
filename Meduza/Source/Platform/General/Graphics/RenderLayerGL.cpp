@@ -1,6 +1,7 @@
 #include "MePCH.h"
 
 #include "Platform/General/Graphics/RenderLayerGL.h"
+#include "Platform/General/Window.h"
 
 #ifdef PLATFORM_LINUX
 #include "Platform/Linux/Graphics/Context.h"
@@ -78,6 +79,10 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
                 m_activeShader = s;
                 m_activeShader->Bind();
             }
+            else
+            {
+                continue;
+            }
 		}
 
         m_activeShader->SetMat4("u_model", r->m_modelMatrix, false);
@@ -91,13 +96,14 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         }
 
 
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         glBindVertexArray(m->GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
 
-        //glBindVertexArray(0);
+        glBindVertexArray(0);
+        t->UnBind();
     }
     
 }
@@ -119,8 +125,11 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
 
     if(a_cameraComp.m_cameraType == Me::CameraType::Orthographic)
     {
-        camMat = Math::GetOrthographicMatrix(0, a_cameraComp.m_size.m_y,
-            0 , a_cameraComp.m_size.m_x,
+        Me::Math::Vec2 size = m_window->GetSize();
+        float aspect = size.m_x / size.m_y;
+
+        camMat = Math::GetOrthographicMatrix(-a_cameraComp.m_orthoScale, a_cameraComp.m_orthoScale,
+            -a_cameraComp.m_orthoScale * aspect , a_cameraComp.m_orthoScale * aspect,
             a_cameraComp.m_near, a_cameraComp.m_far);
     }
     else

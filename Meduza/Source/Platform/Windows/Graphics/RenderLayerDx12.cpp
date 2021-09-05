@@ -244,8 +244,12 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		Math::Mat4 view = Math::Mat4::Identity();
 		view.SetPosition(pos);
 		
+        Me::Math::Vec2 size = m_window->GetSize();
+        float aspect = size.m_x / size.m_y;
+
 		Math::Mat4 ortho = Math::GetOrthographicMatrix(
-				0, a_cam.m_size.m_y, 0, a_cam.m_size.m_x,
+				-a_cam.m_orthoScale, a_cam.m_orthoScale,
+				 -a_cam.m_orthoScale * aspect,  a_cam.m_orthoScale * aspect,
 				a_cam.m_near, a_cam.m_far
 			);
 			

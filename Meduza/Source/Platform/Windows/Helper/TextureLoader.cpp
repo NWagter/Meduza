@@ -154,6 +154,7 @@ Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(st
 {
     TextureData* texture = new TextureData();
     texture->m_filename = Files::FileSystem::GetFileName(a_file);
+    texture->m_filePath = a_file;
 
 	auto path = std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(a_file);
     

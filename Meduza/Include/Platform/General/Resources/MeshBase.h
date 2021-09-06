@@ -6,7 +6,7 @@ namespace Me
         class MeshBase
         {
         public:
-            MeshBase(std::vector<Vertex>, std::vector<uint16_t>);
+            MeshBase(std::string, std::vector<Vertex>, std::vector<uint16_t>);
             virtual ~MeshBase();   
 
             unsigned int GetVerticesSize() const
@@ -24,7 +24,9 @@ namespace Me
             inline std::vector<Vertex> GetVertices() const { return m_vertices; }
             inline std::vector<uint16_t> GetIndices() const { return m_indices; }
 
+            inline std::string GetPath() const {return m_filePath;}
         protected:
+            std::string m_filePath;
             std::vector<Vertex> m_vertices;
             std::vector<uint16_t> m_indices;
 

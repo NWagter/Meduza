@@ -348,9 +348,9 @@ Me::Renderer::Dx12::Descriptor& Me::Renderer::Dx12::RenderLayerDx12::GetSRV()
 	return *m_srv;
 }
 
-Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
-	return new Me::Resources::Dx12::Mesh(a_vertices,a_indices, *m_device, GetCmd());
+	return new Me::Resources::Dx12::Mesh(a_path, a_vertices,a_indices, *m_device, GetCmd());
 }
 
 Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_path)
@@ -362,10 +362,10 @@ Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(s
 	return texture;
 }
 
-Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height)
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_file ,const std::vector<unsigned char> a_texture, int a_width, int a_height)
 {
 	auto tData = m_textureLoader->LoadTexture(a_texture, a_width, a_height);
-
+	tData->m_textureData->m_filename = a_file;
 	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
 
 	return texture;

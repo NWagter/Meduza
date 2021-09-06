@@ -4,7 +4,7 @@
 
 #include "Utils/ResourceLoaderUtils.h"
 
-Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0))
+Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0), a_textureFile)
 {
     glGenTextures(1, &m_texture);  
     glBindTexture(GL_TEXTURE_2D, m_texture);  
@@ -32,7 +32,7 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
     Me::Utils::Resources::ResourceLoaderUtils::FreeImage(data);
 }
 
-Me::Resources::GL::Texture::Texture(const std::vector<unsigned char> a_texture, int a_width, int a_height) : TextureBase(Math::Vec2(0,0))
+Me::Resources::GL::Texture::Texture(std::string a_file, const std::vector<unsigned char> a_texture, int a_width, int a_height) : TextureBase(Math::Vec2(0,0), a_file)
 {
     glGenTextures(1, &m_texture);  
     glBindTexture(GL_TEXTURE_2D, m_texture);  

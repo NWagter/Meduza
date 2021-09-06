@@ -27,6 +27,7 @@ namespace Me
                 unsigned int m_srvOffset = 0;
 
                 std::string m_filename;
+                std::string m_filePath;
 
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_resource = nullptr;
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_uploadHeap = nullptr;

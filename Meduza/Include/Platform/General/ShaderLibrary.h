@@ -17,7 +17,6 @@ namespace Me
             static void Destroy();
 
             static Shader CreateShader(std::string);
-            static Shader CreateShader(std::string, std::string);
             
             static ShaderBase* GetShader(std::string);
             static ShaderBase* GetShader(Shader);

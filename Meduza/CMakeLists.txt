@@ -42,6 +42,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/ECS/*.cpp
 	Source/Core/Systems/*.cpp
 	Source/Core/Components/*.cpp
+	Source/Core/Serialization/*.cpp
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
@@ -54,7 +55,8 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 )
 
 file(GLOB EXTERNAL_GENERAL ${PROJECT_SOURCE_DIR}/External/General/Include
-${PROJECT_SOURCE_DIR}/External/General/imgui)
+${PROJECT_SOURCE_DIR}/External/General/imgui
+${PROJECT_SOURCE_DIR}/External/General)
 
 add_library(${PROJECT_NAME} 
 	${SOURCES}

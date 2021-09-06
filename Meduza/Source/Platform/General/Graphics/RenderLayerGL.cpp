@@ -151,7 +151,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     m_camera->m_cameraMatrix = Math::Transpose(camViewProjection);
 }
 
-Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
-    return new Resources::GL::Mesh(a_vertices, a_indices);
+    return new Resources::GL::Mesh(a_path, a_vertices, a_indices);
 }

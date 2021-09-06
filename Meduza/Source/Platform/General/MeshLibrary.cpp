@@ -62,9 +62,9 @@ Me::Resources::MeshLibrary::~MeshLibrary()
 	ms_instance->m_meshes.clear();
 }
 
-Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
+Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_file)
 {
-	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_name));
+	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_file));
 
     if (ms_instance->m_meshes[meshId] != nullptr)
     {
@@ -74,18 +74,18 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_name)
 	std::vector<Vertex> vertices;
 	std::vector<uint16_t> indices;
 	
-	if(!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_name, vertices, indices))
+	if(!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_file, vertices, indices))
 	{
 		return 0;
 	}
 	
 	std::string name;
 
-	ME_CORE_LOG("Mesh : %s is loaded with success \n", a_name.c_str());
-    return CreateMesh(meshId, vertices, indices);
+	ME_CORE_LOG("Mesh : %s is loaded with success \n", a_file.c_str());
+    return CreateMesh(a_file, meshId, vertices, indices);
 }
 
-Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_path, uint16_t a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
     if (ms_instance->m_meshes[a_id] != nullptr)
     {
@@ -98,22 +98,22 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(uint16_t a_id, std::vector<Verte
 	{
 	case GFX_API::DX12:
 	#ifdef PLATFORM_WINDOWS
-		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_path, a_vertices, a_indices);
 		return a_id;
 	#else
 		ME_CORE_ASSERT_M(false, "This platform doesn't support DX12!")
 	#endif
 		break;
 	case GFX_API::OpenGL:	
-		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_path, a_vertices, a_indices);
 		return a_id;
 		break;	
 	case GFX_API::Unknown:
 #ifdef PLATFORM_WINDOWS
-		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->CreateMesh(a_path, a_vertices, a_indices);
 		return a_id;
 #elif PLATFORM_LINUX
-		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_vertices, a_indices);
+		ms_instance->m_meshes[a_id] = static_cast<Renderer::GL::RenderLayerGL*>(ms_instance->m_renderLayer)->CreateMesh(a_path, a_vertices, a_indices);
 		return a_id;
 #endif
 		break;
@@ -200,7 +200,7 @@ void Me::Resources::MeshLibrary::CreateQuad()
 	};
 
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
-	Resources::MeshLibrary::CreateMesh(quadId, quadVertices, quadIndices);
+	Resources::MeshLibrary::CreateMesh("", quadId, quadVertices, quadIndices);
 }
 
 void Me::Resources::MeshLibrary::CreatePlane()
@@ -220,7 +220,7 @@ void Me::Resources::MeshLibrary::CreatePlane()
 	};
 
 	uint16_t planeId = static_cast<uint16_t>(Primitives::Plane);
-	Resources::MeshLibrary::CreateMesh(planeId, planeVertices, planeIndices);
+	Resources::MeshLibrary::CreateMesh("", planeId, planeVertices, planeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateCube()
@@ -287,7 +287,7 @@ void Me::Resources::MeshLibrary::CreateCube()
 		};
 		
 		uint16_t cubeId = static_cast<uint16_t>(Primitives::Cube);
-		Resources::MeshLibrary::CreateMesh(cubeId, cubeVertices, cubeIndices);
+		Resources::MeshLibrary::CreateMesh("", cubeId, cubeVertices, cubeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateSphere()
@@ -381,7 +381,7 @@ void Me::Resources::MeshLibrary::CreateSphere()
 	}
 
 	uint16_t sphereId = static_cast<uint16_t>(Primitives::Sphere);
-	Resources::MeshLibrary::CreateMesh(sphereId, vertices, indices);
+	Resources::MeshLibrary::CreateMesh("", sphereId, vertices, indices);
 }
 
 #pragma endregion

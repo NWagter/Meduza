@@ -45,7 +45,7 @@ namespace Me
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
-                Resources::GL::Mesh* CreateMesh(std::vector<Vertex>, std::vector<uint16_t>);
+                Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
                 
                 Window* GetWindow() {return m_window;}
             private:

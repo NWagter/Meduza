@@ -20,7 +20,7 @@ namespace Me
             class Mesh : public MeshBase
             {
             public:
-                Mesh(std::vector<Vertex>, std::vector<uint16_t>, Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);
+                Mesh(std::string, std::vector<Vertex>, std::vector<uint16_t>, Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);
                 virtual ~Mesh();    
 
                 void GenerateBuffers(Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);

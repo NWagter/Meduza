@@ -100,7 +100,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
     return 0;
 }
 
-Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height,std::string a_name)
+Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height,std::string a_name, std::string a_file)
 {
     Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_name));
 
@@ -116,7 +116,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
     case GFX_API::DX12:
         {
 #ifdef PLATFORM_WINDOWS
-            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
+            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_file, a_texture, a_width, a_height);
 
             if(texture != nullptr)
             {
@@ -130,7 +130,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
         break;
     case GFX_API::OpenGL:
         {
-            auto texture = new GL::Texture(a_texture, a_width, a_height);
+            auto texture = new GL::Texture(a_file, a_texture, a_width, a_height);
 
             if(texture != nullptr)
             {
@@ -142,7 +142,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
     case GFX_API::Unknown:
         {
 #ifdef PLATFORM_WINDOWS
-            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_texture, a_width, a_height);
+            auto texture = dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer)->LoadTexture(a_file, a_texture, a_width, a_height);
 
             if(texture != nullptr)
             {

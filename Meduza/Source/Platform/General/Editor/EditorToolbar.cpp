@@ -8,6 +8,8 @@
 
 #include "Platform/General/ShaderLibrary.h"
 
+#include "Core/Serialization/Serializer.h"
+
 Me::Editor::EditorToolbar::EditorToolbar()
 {
 
@@ -33,10 +35,23 @@ void Me::Editor::EditorToolbar::Draw()
                     eManager->DestroyEntity(ent.first);
                 }
             }
+            if(ImGui::MenuItem("Save"))
+            {
+                Serialization::Serializer::GetInstance()->SerializeScene("test.xml");
+            }
+            if(ImGui::MenuItem("Load"))
+            {
+                Serialization::Serializer::GetInstance()->DeserializeScene("test.xml");
+            }
+            if(ImGui::MenuItem("Load MonkeyHead"))
+            {
+                Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadScene.xml");
+            }
             if(ImGui::MenuItem("Exit"))
             {
 
             }
+
             ImGui::EndMenu();
         }
 

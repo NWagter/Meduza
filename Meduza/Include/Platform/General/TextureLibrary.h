@@ -18,7 +18,7 @@ namespace Me
             static void Destroy();
 
             static Texture CreateTexture(std::string);
-            static Texture CreateTexture(const std::vector<unsigned char>, int, int, std::string);
+            static Texture CreateTexture(const std::vector<unsigned char>, int, int, std::string, std::string);
             
             static Texture GetTexture(std::string);
             static TextureBase* GetTexture(Texture);

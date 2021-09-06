@@ -1,13 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/Resources/Shader.h"
 
-Me::Resources::GL::Shader::Shader(std::string a_vShader, std::string a_pShader)
-{
-    m_source = Helper::GL::ShaderHelper::GetSources(a_vShader,a_pShader);
-    m_program = GenerateShader();
-}
-
-Me::Resources::GL::Shader::Shader(std::string a_shader)
+Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase(a_shader)
 {
     m_source = Helper::GL::ShaderHelper::GetSources(a_shader);
     m_program = GenerateShader();

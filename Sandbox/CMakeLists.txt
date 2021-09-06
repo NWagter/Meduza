@@ -7,20 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 file(GLOB GAME_SOURCE
-    Source/Games/*.cpp
-    Source/Games/Example/*.cpp
-    Source/Components/*.cpp
     Source/Systems/*.cpp
-
-    
-    Source/Games/Chess/*.cpp
-    Source/Components/Chess/*.cpp
-    Source/Systems/Chess/*.cpp
-
-    
-    Source/Games/Physics2D/*.cpp
-    Source/Components/Physics2D/*.cpp
-    Source/Systems/Physics2D/*.cpp
+    Source/Games/*.cpp
 )
 
 add_executable(${PROJECT_NAME} 

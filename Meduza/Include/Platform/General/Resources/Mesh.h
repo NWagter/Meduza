@@ -10,7 +10,7 @@ namespace Me
             class Mesh : public MeshBase
             {
             public:
-                Mesh(std::vector<Vertex>, std::vector<uint16_t>);
+                Mesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
                 virtual ~Mesh();
 
                 void SetMode(GLenum);

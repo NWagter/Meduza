@@ -23,6 +23,9 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
+
+#include <cereal/archives/xml.hpp>
+
 #ifdef PLATFORM_WINDOWS
 
 #include <Windows.h>

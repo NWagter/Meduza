@@ -13,7 +13,7 @@ namespace Me
         class ShaderBase
         {
         public:
-            ShaderBase();
+            ShaderBase(std::string);
 
             virtual ~ShaderBase();   
 
@@ -23,7 +23,10 @@ namespace Me
             virtual void Bind() = 0;
             virtual void UnBind() = 0;
 
+            inline std::string GetPath() const { return m_shaderPath;}
         protected:
+
+            std::string m_shaderPath;
 
         };
     }

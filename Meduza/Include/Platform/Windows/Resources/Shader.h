@@ -20,7 +20,6 @@ namespace Me
             class Shader : public ShaderBase
             {
             public:
-                Shader(std::string, std::string, Renderer::Dx12::RenderLayerDx12&);
                 Shader(std::string, Renderer::Dx12::RenderLayerDx12&);
                 void LoadShader();
 

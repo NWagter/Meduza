@@ -6,20 +6,7 @@
 #include "Platform/Windows/Graphics/Device.h"
 #include "Platform/Windows/Graphics/CommandList.h"
 
-Me::Resources::Dx12::Shader::Shader(std::string a_vsPath, std::string a_psPath, Renderer::Dx12::RenderLayerDx12& a_renderer)
-{
-    m_vertShader = a_vsPath;
-	m_pixShader = a_psPath;
-
-    auto r = &a_renderer;
-    if(r != nullptr)
-    {
-        m_renderLayer = r;
-        LoadShader();
-    }
-}
-
-Me::Resources::Dx12::Shader::Shader( std::string a_path, Renderer::Dx12::RenderLayerDx12& a_renderer)
+Me::Resources::Dx12::Shader::Shader( std::string a_path, Renderer::Dx12::RenderLayerDx12& a_renderer) : ShaderBase(a_path)
 {
     m_vertShader = a_path;
 	m_pixShader = a_path;

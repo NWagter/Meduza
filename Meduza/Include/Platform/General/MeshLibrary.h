@@ -17,7 +17,7 @@ namespace Me
             static void Destroy();
 
             static Mesh CreateMesh(std::string);
-            static Mesh CreateMesh(Mesh, std::vector<Vertex>, std::vector<uint16_t>);
+            static Mesh CreateMesh(std::string, Mesh, std::vector<Vertex>, std::vector<uint16_t>);
                     
             static Mesh GetMeshIndex(std::string);
             static Mesh GetMeshIndex(Primitives);

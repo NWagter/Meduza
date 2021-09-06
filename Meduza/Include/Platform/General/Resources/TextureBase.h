@@ -6,7 +6,7 @@ namespace Me
         class TextureBase
         {
         public:
-            TextureBase(const Math::Vec2);
+            TextureBase(const Math::Vec2, std::string);
 
             virtual ~TextureBase();   
 
@@ -14,9 +14,10 @@ namespace Me
             virtual void Unload() = 0;
 
             inline Math::Vec2 GetSize() const {return m_size;}
-
+            inline std::string GetPath() const {return m_filePath;}
         protected:
             Math::Vec2 m_size;
+            std::string m_filePath;
         };
     }
 }

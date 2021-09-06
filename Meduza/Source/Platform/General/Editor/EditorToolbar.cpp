@@ -39,12 +39,15 @@ void Me::Editor::EditorToolbar::Draw()
             }
             ImGui::EndMenu();
         }
+
+        bool createMesh = false;
+        Primitives primitive = Primitives::Cube;
+        Shader shader = 0;
+
         if(ImGui::BeginMenu("Create"))
         {
             if(ImGui::BeginMenu("3D Object"))
             {
-                bool createMesh = false;
-                Primitives primitive = Primitives::Cube;
                 if(ImGui::Button("Cube"))
                 {
                     createMesh = true;
@@ -67,26 +70,49 @@ void Me::Editor::EditorToolbar::Draw()
                 }
 
                 if(createMesh)
-                {
-                                        
-                    EntityID ent = eManager->CreateEntity();
-                    eManager->AddComponent<TransformComponent>(ent);
-
-                    auto rComp = new RenderComponent();
-                    rComp->m_mesh = Mesh(primitive);
-
-                    Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+                {              
+                    shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
                     if(shader == 0)
                     {      
                         shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.glsl");
                     }
+                }
 
-                    rComp->m_shader = shader;
+                ImGui::EndMenu();
+            }
+            if(ImGui::BeginMenu("2D Object"))
+            {
+                if(ImGui::Button("Quad"))
+                {
+                    createMesh = true;
+                    primitive = Primitives::Quad;
+                }                
 
-                    eManager->AddComponent(ent, rComp);
+                if(createMesh)
+                {              
+                    shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
+                    if(shader == 0)
+                    {      
+                        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
+                    }
                 }
                 ImGui::EndMenu();
             }
+
+            if(createMesh)
+            {
+                                    
+                EntityID ent = eManager->CreateEntity();
+                eManager->AddComponent<TransformComponent>(ent);
+
+                auto rComp = new RenderComponent();
+                rComp->m_mesh = Mesh(primitive);
+
+                rComp->m_shader = shader;
+
+                eManager->AddComponent(ent, rComp);
+            }
+
             ImGui::EndMenu();
         }
 

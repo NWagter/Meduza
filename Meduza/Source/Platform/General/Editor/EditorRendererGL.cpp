@@ -75,7 +75,7 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 	{
 		m_editorWidgets[i]->Draw();
 	}
-
+	
 	ImGui::EndFrame();
 
 	ImGui::Render();

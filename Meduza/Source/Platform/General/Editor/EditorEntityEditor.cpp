@@ -12,6 +12,8 @@
 
 #include "Platform/General/ShaderLibrary.h"
 
+#include "Platform/General/Events/EventSystem.h"
+
 
 Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entHierarchy)
 {
@@ -354,6 +356,14 @@ void Me::Editor::EntityEditor::Draw()
             rComp->m_shader = shader;
 
             eManager->AddComponent(m_selectedEntity, rComp);
+            ImGui::CloseCurrentPopup();
+        }
+        if(ImGui::MenuItem("Camera Component"))
+        {
+            auto cComp = new CameraComponent();
+            cComp->m_size = Event::EventSystem::GetEventSystem()->ScreenSize();
+
+            eManager->AddComponent(m_selectedEntity, cComp);
             ImGui::CloseCurrentPopup();
         }
 

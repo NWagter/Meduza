@@ -118,6 +118,8 @@ void Me::EntityManager::DestroyEntity(EntityID a_entID)
     {
         container.second->RemoveComponent(a_entID);
     }
+
+    ms_entityManager->m_entities.erase(a_entID);
 }
 
 void Me::EntityManager::RegisterEntity(EntityID a_entID)

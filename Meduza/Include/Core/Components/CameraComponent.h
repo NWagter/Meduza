@@ -18,6 +18,7 @@ namespace Me
             m_near = -0.1f;
             m_far = 1000;
             m_orthoScale = 10;
+            m_cameraType = CameraType::Orthographic;
         }
 
         Math::Vec2 m_size;

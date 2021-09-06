@@ -52,6 +52,7 @@ but what is currently planned is the following :
 # Libraries Used :
 - GLAD
 - ImGUI
+- Cereal
 
 # Project description
 

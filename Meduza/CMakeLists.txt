@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(WIN32)
 	add_compile_definitions(PLATFORM_WINDOWS)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Windows/*.cpp
+	Source/Platform/General/Editor/*.cpp
 	Source/Platform/Windows/Graphics/*.cpp
 	Source/Platform/Windows/Editor/*.cpp
 	Source/Platform/Windows/Resources/*.cpp	
@@ -44,7 +45,6 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
-	Source/Platform/General/Editor/*.cpp
 	Source/Platform/General/Events/*.cpp
 	Source/Platform/General/Events/Input/*.cpp
 	Source/Platform/General/FileSystem/*.cpp

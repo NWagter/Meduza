@@ -16,7 +16,6 @@
 
 
 #include "Platform/General/Graphics/RenderLayer.h"
-#include "Platform/General/Editor/EditorRenderer.h"
 
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"
@@ -26,6 +25,7 @@
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
+#include "Platform/General/Editor/EditorRenderer.h"
 #elif PLATFORM_LINUX
 #include "Platform/Linux/LinuxWindow.h"
 #elif PLATFORM_APPLE
@@ -48,8 +48,9 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	if(m_window != nullptr)
 	{
 		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, a_api);
+#ifdef PLATFORM_WINDOWS
 		m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
-
+#endif
 		if(m_renderLayer == nullptr)
 		{			
 			ME_CORE_ASSERT_M(false, "No Renderer Available!");
@@ -78,10 +79,13 @@ void Me::Meduza::Clear()
 	if(m_renderLayer != nullptr)
 	{		
 		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
+
+#ifdef PLATFORM_WINDOWS
 		if(m_editor != nullptr)
 		{
 			m_editor->Clear();
 		}
+#endif
 		return;
 	}
 
@@ -110,12 +114,13 @@ void Me::Meduza::Present()
 	if(m_renderLayer != nullptr)
 	{		
 		m_renderLayer->Populate();
-		
+
+#ifdef PLATFORM_WINDOWS		
 		if(m_editor != nullptr)
 		{
 			m_editor->Populate();
 		}
-
+#endif
 		m_renderLayer->Present();
 		return;
 	}

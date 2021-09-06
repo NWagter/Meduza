@@ -10,10 +10,12 @@ namespace Me {
 		class RenderLayer;
 	}
 
+#ifdef PLATFORM_WINDOWS
 	namespace Editor
 	{
 		class EditorRenderer;
 	}
+#endif
 
 	class Meduza
 	{
@@ -34,7 +36,10 @@ namespace Me {
 
 		bool m_isRunning;
 		Renderer::RenderLayer* m_renderLayer;
+
+#ifdef PLATFORM_WINDOWS
 		Editor::EditorRenderer* m_editor;
+#endif
 		Window* m_window;
 	};
 }

@@ -43,9 +43,13 @@ void Me::Editor::EditorToolbar::Draw()
             {
                 Serialization::Serializer::GetInstance()->DeserializeScene("test.xml");
             }
-            if(ImGui::MenuItem("Load MonkeyHead"))
+            if(ImGui::MenuItem("Load MonkeyHead (GL only!)"))
             {
                 Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadScene.xml");
+            }
+            if(ImGui::MenuItem("Load MonkeyHead (DX12 only!)"))
+            {
+                Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadSceneDX12.xml");
             }
             if(ImGui::MenuItem("Exit"))
             {

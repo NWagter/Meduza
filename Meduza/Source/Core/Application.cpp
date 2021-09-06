@@ -43,6 +43,7 @@ bool Me::Application::Run()
     {
         const float deltaSeconds = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
+        
         m_meduza->Update(deltaSeconds);
         Application::OnUpdate(deltaSeconds);
 

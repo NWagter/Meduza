@@ -2,6 +2,8 @@
 
 #include "Platform/General/Editor/EditorRenderer.h"
 
+struct ImGuiIO;
+
 namespace Me
 {
     namespace Renderer
@@ -23,6 +25,9 @@ namespace Me
 
                     void Clear() override;
                     void Populate() override;
+
+                private:
+                    ImGuiIO* m_imguiIO;
             };
         }
     }

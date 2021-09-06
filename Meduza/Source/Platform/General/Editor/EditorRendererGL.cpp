@@ -12,6 +12,7 @@
 
 #endif
 
+#include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
 
@@ -20,10 +21,20 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    m_imguiIO = &ImGui::GetIO();
 
+    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+    if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
 
     // Setup Platform/Renderer backends
 #ifdef PLATFORM_WINDOWS
@@ -34,6 +45,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 
     ImGui_ImplOpenGL3_Init("#version 330");
     
+	EditorToolbar* toolbar = new EditorToolbar();
+	AddWidget(*toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy();
 	AddWidget(*entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
@@ -56,6 +69,8 @@ void Me::Editor::GL::EditorRendererGL::Clear()
 
 void Me::Editor::GL::EditorRendererGL::Populate()
 {
+	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
+
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{
 		m_editorWidgets[i]->Draw();
@@ -65,4 +80,10 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 
 	ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+	}
 }

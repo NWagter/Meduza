@@ -10,6 +10,7 @@
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
 
+#include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
 
@@ -23,8 +24,18 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	m_imGuiContext = ImGui::CreateContext();
 	m_imGuiIO = &ImGui::GetIO();
 
+    m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
 	// Set font
 	m_imGuiIO->Fonts->AddFontDefault();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (m_imGuiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
     
     auto srv = a_renderLayer->GetSRV().GetHeap();
 
@@ -41,7 +52,9 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	
+
+	EditorToolbar* toolbar = new EditorToolbar();
+	AddWidget(*toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy();
 	AddWidget(*entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
@@ -57,6 +70,8 @@ void Me::Editor::Dx12::EditorRendererDx12::Clear()
 
 void Me::Editor::Dx12::EditorRendererDx12::Populate()
 {
+	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
+
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{
 		m_editorWidgets[i]->Draw();
@@ -69,4 +84,10 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_renderLayer->GetCmd().GetList());
+
+	
+	if (m_imGuiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+	}
 }

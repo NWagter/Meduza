@@ -126,7 +126,14 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
             auto shader = Resources::ShaderLibrary::GetShader(a_comp->m_shader);
             archive(cereal::make_nvp("Shader", shader->GetPath()));    
             auto texture = Resources::TextureLibrary::GetTexture(a_comp->m_texture);
-            archive(cereal::make_nvp("Texture", texture->GetPath()));  
+            if(texture != nullptr)
+            {
+                archive(cereal::make_nvp("Texture", texture->GetPath())); 
+            } 
+            else            
+            {
+                archive(cereal::make_nvp("Texture", ""));  
+            }
         });   
 
         CanSerialize<CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -214,8 +221,10 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
 
             std::string texturePath;
-            archive(cereal::make_nvp("Texture", texturePath));  
-            a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
+            archive(cereal::make_nvp("Texture", texturePath));
+            
+            if(!texturePath.empty())  
+                a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
 
             eManager->AddComponent(ent, a_comp);   
 

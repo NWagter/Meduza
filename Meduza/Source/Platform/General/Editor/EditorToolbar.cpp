@@ -37,11 +37,11 @@ void Me::Editor::EditorToolbar::Draw()
             }
             if(ImGui::MenuItem("Save"))
             {
-                Serialization::Serializer::GetInstance()->SerializeScene("test.xml");
+                Serialization::Serializer::GetInstance()->SerializeScene("Assets/Scenes/test.xml");
             }
             if(ImGui::MenuItem("Load"))
             {
-                Serialization::Serializer::GetInstance()->DeserializeScene("test.xml");
+                Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/test.xml");
             }
             if(ImGui::MenuItem("Load MonkeyHead (GL only!)"))
             {

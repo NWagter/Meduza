@@ -59,6 +59,7 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
 	Shader hashedId = Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_path));
+	std::string path = a_path;
 
 
 	if (ms_instance->m_shaders[hashedId] != nullptr)
@@ -75,12 +76,24 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 		if(ext != "hlsl")
 		{
 			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-			return 0;
+			
+			path = "Assets/Shaders/";
+			path.append(Files::FileSystem::GetFileName(a_path));
+			path.append(".hlsl");
+
+			std::ifstream tryPath (path);
+
+			if(!tryPath.is_open())
+			{
+				return 0;
+			}
+
+			tryPath.close();
 		}
-		ms_instance->m_shaders[hashedId] = new Dx12::Shader(a_path,
+		ms_instance->m_shaders[hashedId] = new Dx12::Shader(path,
 												*dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(ms_instance->m_renderLayer));
 
-		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", path.c_str());
 #else
 		ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
@@ -90,12 +103,24 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 		if(ext != "glsl")
 		{
 			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-			return 0;
+			
+			path = "Assets/Shaders/";
+			path.append(Files::FileSystem::GetFileName(a_path));
+			path.append(".glsl");
+
+			std::ifstream tryPath (path);
+
+			if(!tryPath.is_open())
+			{
+				return 0;
+			}
+
+			tryPath.close();
 		}
 
-		ms_instance->m_shaders[hashedId] = new GL::Shader(a_path);
+		ms_instance->m_shaders[hashedId] = new GL::Shader(path);
 
-		ME_GFX_LOG("Loading of : %s was Succesfull! \n", a_path.c_str());
+		ME_GFX_LOG("Loading of : %s was Succesfull! \n", path.c_str());
 		return hashedId;
 		break;
 	case GFX_API::Unknown:

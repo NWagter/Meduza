@@ -53,7 +53,7 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 
-	EditorToolbar* toolbar = new EditorToolbar();
+	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
 	AddWidget(*toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy();
 	AddWidget(*entHierarchy);

@@ -10,7 +10,8 @@ if(WIN32)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Windows/*.cpp
 	Source/Platform/General/Editor/*.cpp
 	Source/Platform/Windows/Graphics/*.cpp
-	Source/Platform/Windows/Editor/*.cpp
+	Source/Platform/Windows/Editor/*.cpp	
+	Source/Platform/Windows/FileSystem/*.cpp
 	Source/Platform/Windows/Resources/*.cpp	
 	Source/Platform/Windows/Helper/*.cpp
 	${PROJECT_SOURCE_DIR}/External/Win/DX12/src/*.cpp	

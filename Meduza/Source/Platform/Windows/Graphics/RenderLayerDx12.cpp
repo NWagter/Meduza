@@ -348,6 +348,11 @@ Me::Renderer::Dx12::Descriptor& Me::Renderer::Dx12::RenderLayerDx12::GetSRV()
 	return *m_srv;
 }
 
+Me::Window* Me::Renderer::Dx12::RenderLayerDx12::GetWindow()
+{
+	return static_cast<Window*>(m_window);
+}
+
 Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
 	return new Me::Resources::Dx12::Mesh(a_path, a_vertices,a_indices, *m_device, GetCmd());

@@ -59,6 +59,8 @@ namespace Me
                 Context& GetContext();
                 Descriptor& GetSRV();
 
+                Window* GetWindow();
+
                 private:
 
                 WindowsWindow* m_window = nullptr;

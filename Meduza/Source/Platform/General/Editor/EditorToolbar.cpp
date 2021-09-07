@@ -10,9 +10,17 @@
 
 #include "Core/Serialization/Serializer.h"
 
-Me::Editor::EditorToolbar::EditorToolbar()
-{
+#include "Platform/General/Window.h"
 
+#ifdef PLATFORM_WINDOWS
+#include "Platform/Windows/WindowsWindow.h"
+#include "Platform/Windows/FileSystem/FileSystem.h"
+#endif
+
+
+Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
+{
+    m_window = &a_window;
 }
 
 Me::Editor::EditorToolbar::~EditorToolbar()
@@ -37,11 +45,37 @@ void Me::Editor::EditorToolbar::Draw()
             }
             if(ImGui::MenuItem("Save"))
             {
-                Serialization::Serializer::GetInstance()->SerializeScene("Assets/Scenes/test.xml");
+                #ifdef PLATFORM_WINDOWS
+                std::string filePath = Files::Windows::FileSystem::SaveFile(
+                    "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
+                     static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
+
+                size_t pos = filePath.find("Assets"); //find location of word
+                filePath.erase(0,pos); //delete everything prior to location found
+                std::replace(filePath.begin(), filePath.end(), '\\', '/');
+
+                if(!filePath.empty())
+                {
+                    Serialization::Serializer::GetInstance()->SerializeScene(filePath);
+                }
+                #endif
             }
             if(ImGui::MenuItem("Load"))
             {
-                Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/test.xml");
+                #ifdef PLATFORM_WINDOWS
+                std::string filePath = Files::Windows::FileSystem::OpenFile(
+                    "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
+                     static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
+
+                size_t pos = filePath.find("Assets"); //find location of word
+                filePath.erase(0,pos); //delete everything prior to location found
+                std::replace(filePath.begin(), filePath.end(), '\\', '/');
+                
+                if(!filePath.empty())
+                {
+                    Serialization::Serializer::GetInstance()->DeserializeScene(filePath);
+                }
+                #endif
             }
             if(ImGui::MenuItem("Load MonkeyHead"))
             {

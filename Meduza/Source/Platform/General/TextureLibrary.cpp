@@ -150,7 +150,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
                 return hashedId;
             }
 #elif PLATFORM_LINUX
-            auto texture = new GL::Texture(a_texture, a_width, a_height);
+            auto texture = new GL::Texture(a_file, a_texture, a_width, a_height);
 
             if(texture != nullptr)
             {

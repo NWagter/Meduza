@@ -23,6 +23,7 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	IMGUI_CHECKVERSION();
 	m_imGuiContext = ImGui::CreateContext();
 	m_imGuiIO = &ImGui::GetIO();
+	m_imGuiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
 
     m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;

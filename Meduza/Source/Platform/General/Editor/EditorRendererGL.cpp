@@ -22,6 +22,7 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     m_imguiIO = &ImGui::GetIO();
+	m_imguiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
 
     m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;

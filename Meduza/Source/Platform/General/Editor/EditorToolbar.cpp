@@ -77,10 +77,6 @@ void Me::Editor::EditorToolbar::Draw()
                 }
                 #endif
             }
-            if(ImGui::MenuItem("Load MonkeyHead"))
-            {
-                Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadScene.xml");
-            }
             if(ImGui::MenuItem("Exit"))
             {
 

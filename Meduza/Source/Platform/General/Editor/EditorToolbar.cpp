@@ -61,7 +61,12 @@ void Me::Editor::EditorToolbar::Draw()
                 #endif
             }
             if(ImGui::MenuItem("Load"))
-            {
+            {                
+                for(auto ent: eManager->GetEntities())
+                {
+                    eManager->DestroyEntity(ent.first);
+                }
+
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::OpenFile(
                     "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
@@ -79,7 +84,7 @@ void Me::Editor::EditorToolbar::Draw()
             }
             if(ImGui::MenuItem("Exit"))
             {
-
+                m_window->Quit();
             }
 
             ImGui::EndMenu();

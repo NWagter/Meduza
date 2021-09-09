@@ -200,7 +200,7 @@ void Me::Resources::MeshLibrary::CreateQuad()
 	};
 
 	uint16_t quadId = static_cast<uint16_t>(Primitives::Quad);
-	Resources::MeshLibrary::CreateMesh("", quadId, quadVertices, quadIndices);
+	Resources::MeshLibrary::CreateMesh("Quad", quadId, quadVertices, quadIndices);
 }
 
 void Me::Resources::MeshLibrary::CreatePlane()
@@ -220,7 +220,7 @@ void Me::Resources::MeshLibrary::CreatePlane()
 	};
 
 	uint16_t planeId = static_cast<uint16_t>(Primitives::Plane);
-	Resources::MeshLibrary::CreateMesh("", planeId, planeVertices, planeIndices);
+	Resources::MeshLibrary::CreateMesh("Plane", planeId, planeVertices, planeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateCube()
@@ -287,7 +287,7 @@ void Me::Resources::MeshLibrary::CreateCube()
 		};
 		
 		uint16_t cubeId = static_cast<uint16_t>(Primitives::Cube);
-		Resources::MeshLibrary::CreateMesh("", cubeId, cubeVertices, cubeIndices);
+		Resources::MeshLibrary::CreateMesh("Cube", cubeId, cubeVertices, cubeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateSphere()
@@ -381,7 +381,7 @@ void Me::Resources::MeshLibrary::CreateSphere()
 	}
 
 	uint16_t sphereId = static_cast<uint16_t>(Primitives::Sphere);
-	Resources::MeshLibrary::CreateMesh("", sphereId, vertices, indices);
+	Resources::MeshLibrary::CreateMesh("Sphere", sphereId, vertices, indices);
 }
 
 #pragma endregion

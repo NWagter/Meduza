@@ -37,6 +37,24 @@ Me::EntityManager::~EntityManager()
     m_entities.clear();
 }
 
+bool Me::EntityManager::EntityExists(EntityID a_entity)
+{
+    auto entities = ms_entityManager->m_entities;
+    if(entities.size() <= 0)
+    {
+        return false;
+    }
+
+    auto it = entities.find(a_entity);
+
+    if(it == entities.end())
+    {
+        return false;
+    }
+
+    return true;
+}
+
 void Me::EntityManager::Update(float a_dt)
 {
     for(auto s : m_systems)

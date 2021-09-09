@@ -6,6 +6,14 @@ namespace Me
 {
     namespace Files
     {
+		enum class FileType : int
+		{
+			Model,
+			Texture,
+			Shader,
+			Scene
+		};
+
         namespace Windows
         {
             class FileSystem : public Files::FileSystem
@@ -13,6 +21,7 @@ namespace Me
                 public:
                     static std::string OpenFile(const char* a_filter, HWND a_hwnd);
                     static std::string SaveFile(const char* a_filter, HWND a_hwnd);
+                    static void GetFilesOfType(BrowseData& a_data, FileType a_type, std::string a_path = "Assets");
             };
         }
     }

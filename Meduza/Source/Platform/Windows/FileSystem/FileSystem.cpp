@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/Windows/FileSystem/FileSystem.h"
 
+#include <filesystem>
+
 std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND a_hwnd)
 {
 	char path[260];
@@ -62,4 +64,38 @@ std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND 
 	}
 
 	return std::string();
+}
+
+void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType a_type, std::string a_path)
+{
+	a_data.m_path = a_path;
+
+	for(auto& p : std::filesystem::directory_iterator(a_path))
+	{
+		std::string extention = GetFileExtention(p.path().string());
+
+		
+		std::string name = GetFileName(p.path().filename().string());
+		name.append(" (");
+		name.append(extention);
+		name.append(")");
+
+		if(a_type == Files::FileType::Model && (extention == "glb" || extention == "gltf"))
+		{
+			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+		}
+		if(a_type == Files::FileType::Texture && (extention == "png" || extention == "dds"))
+		{
+			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+		}
+		if(a_type == Files::FileType::Shader && (extention == "glsl" || extention == "hlsl"))
+		{
+			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+		}
+
+		if(p.is_directory())
+		{
+			GetFilesOfType(a_data, a_type, p.path().string());
+		}
+	}
 }

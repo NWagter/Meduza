@@ -84,6 +84,12 @@
         "xloctime": "cpp",
         "compare": "cpp",
         "forward_list": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "complex": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp",
+        "typeindex": "cpp",
+        "variant": "cpp",
+        "filesystem": "cpp"
     }
 }

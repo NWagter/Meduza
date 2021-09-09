@@ -10,16 +10,23 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/PhysicsComponent.h"
 
+#include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/ShaderLibrary.h"
+#include "Platform/General/Resources/MeshBase.h"
+#include "Platform/General/MeshLibrary.h"
+#include "Platform/General/Resources/TextureBase.h"
+#include "Platform/General/TextureLibrary.h"
 
 #include "Platform/General/Events/EventSystem.h"
 
 #include "Platform/General/Editor/EditorHelper.h"
 
+#include "Platform/Windows/FileSystem/FileSystem.h"
 
 Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entHierarchy)
 {
     m_hierarchy = &a_entHierarchy;
+    m_selectedEntity = -1;
 }
 
 Me::Editor::EntityEditor::~EntityEditor()
@@ -115,6 +122,112 @@ void Me::Editor::EntityEditor::Draw()
         DrawComponent<RenderComponent>(eManager, "Render Component", m_selectedEntity, [](auto& a_comp)
         {
             ImGui::ColorEdit4("Colour", a_comp.m_colour.m_colour);
+
+            
+            std::string currentMesh = Files::FileSystem::GetFileName(Resources::MeshLibrary::GetMesh(a_comp.m_mesh)->GetPath());
+            std::string currentShader = Files::FileSystem::GetFileName(Resources::ShaderLibrary::GetShader(a_comp.m_shader)->GetPath());
+            auto texture = Resources::TextureLibrary::GetTexture(a_comp.m_texture);
+
+            std::string currentTexture = "None";
+            if(texture != nullptr)
+            {
+                currentTexture = Files::FileSystem::GetFileName(texture->GetPath());
+            }
+            
+
+            std::string newModelPath = "";
+            Mesh primitive = 999999;
+
+            if (ImGui::BeginCombo("Model", currentMesh.c_str())) // The second parameter is the label previewed before opening the combo.
+            {
+                Files::BrowseData data = Files::BrowseData();
+                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Model);
+                
+
+                bool is_selected = false;
+
+                for(auto file : data.m_files)
+                {
+                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    {
+                        newModelPath = file.second;
+                    }
+                }
+                
+                if (ImGui::Selectable("Cube", &is_selected))
+                {
+                    primitive = (Mesh)Primitives::Cube;
+                }
+                if (ImGui::Selectable("Sphere", &is_selected))
+                {
+                    primitive = (Mesh)Primitives::Sphere;
+                }
+                if (ImGui::Selectable("Plane", &is_selected))
+                {
+                    primitive = (Mesh)Primitives::Plane;
+                }
+                if (ImGui::Selectable("Quad", &is_selected))
+                {
+                    primitive = (Mesh)Primitives::Quad;
+                }
+
+                ImGui::EndCombo();
+            }
+            if(!newModelPath.empty())
+            {
+                a_comp.m_mesh = Resources::MeshLibrary::CreateMesh(newModelPath);
+            }else if(primitive < 10)
+            {
+                a_comp.m_mesh = primitive;
+            }
+        
+            std::string newShaderPath = "";
+
+            if (ImGui::BeginCombo("Shader", currentShader.c_str())) // The second parameter is the label previewed before opening the combo.
+            {
+                Files::BrowseData data = Files::BrowseData();
+                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Shader);
+
+                bool is_selected = false;
+
+                for(auto file : data.m_files)
+                {
+                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    {
+                        newShaderPath = file.second;
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            if(!newShaderPath.empty())
+            {
+                a_comp.m_shader = Resources::ShaderLibrary::CreateShader(newShaderPath);
+            }
+            
+            std::string newTexturePath = "";
+
+            if (ImGui::BeginCombo("Texture", currentTexture.c_str())) // The second parameter is the label previewed before opening the combo.
+            {
+                Files::BrowseData data = Files::BrowseData();
+                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Texture);
+
+                bool is_selected = false;
+
+                for(auto file : data.m_files)
+                {
+                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    {
+                        newTexturePath = file.second;
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            if(!newTexturePath.empty())
+            {
+                a_comp.m_texture = Resources::TextureLibrary::CreateTexture(newTexturePath);
+            }
         });
 
         DrawComponent<CameraComponent>(eManager, "Camera Component", m_selectedEntity, [](auto& a_comp)
@@ -139,6 +252,8 @@ void Me::Editor::EntityEditor::Draw()
                         ImGui::SetItemDefaultFocus();
                     }
                 }
+                
+                
                 ImGui::EndCombo();
             }
 
@@ -160,7 +275,7 @@ void Me::Editor::EntityEditor::Draw()
         });
     }
 
-    if(ImGui::Button("Add Component"))
+    if(eManager->EntityExists(m_selectedEntity) && ImGui::Button("Add Component"))
     {
         ImGui::OpenPopup("AddComponent");
     }

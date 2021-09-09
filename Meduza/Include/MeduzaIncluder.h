@@ -14,6 +14,8 @@
 #include "ECS/EntityManager.h"
 #include "ECS/BaseComponent.h"
 #include "ECS/BaseSystem.h"
+///--------- ECS --------
+#include "Core/Serialization/Serializer.h"
 ///--- Base Components --
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"

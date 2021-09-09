@@ -16,6 +16,8 @@ namespace Me
         static void DestroyEntityManager();
         inline static EntityManager* GetEntityManager() {return ms_entityManager;}
 
+        static bool EntityExists(EntityID);
+
         static void AddSystem(ECSSystem*);
         static EntityID CreateEntity(std::string = "Empty Entity");
         static void DestroyEntity(EntityID);

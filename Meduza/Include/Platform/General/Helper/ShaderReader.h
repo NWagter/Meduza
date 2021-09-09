@@ -6,6 +6,7 @@ namespace Me
     {
         namespace GL
         {
+            
             struct ShaderSources
             {
                 std::string m_vertexSource;

@@ -34,15 +34,16 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	m_imguiIO->Fonts->AddFontDefault();
 	m_imguiIO->Fonts->AddFontFromFileTTF("Resources/Fonts/fontawesome-webfont.ttf", 12.0f, &config, s_ranges); // Merge icon font
 	
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	if(m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-
-	ImGuiStyle& style = ImGui::GetStyle();
-    if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
 
     // Setup Platform/Renderer backends
 #ifdef PLATFORM_WINDOWS
@@ -59,6 +60,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	AddWidget(*entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
 	AddWidget(*entEditor);
+
+	m_renderLayer = a_renderLayer;
 }
 
 void Me::Editor::GL::EditorRendererGL::Clear()
@@ -79,19 +82,22 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 {
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
+	Math::Vec2 size = m_renderLayer->GetWindow()->GetSize();
+	m_imguiIO->DisplaySize = ImVec2(size.m_x,size.m_y);
+
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{
 		m_editorWidgets[i]->Draw();
-	}
+	} 
 	
-	ImGui::EndFrame();
-
+	ImGui::ShowDemoWindow();
+	
 	ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
+	{            
 		ImGui::UpdatePlatformWindows();
 	}
 }

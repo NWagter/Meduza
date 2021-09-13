@@ -28,6 +28,7 @@ namespace Me
 
                 private:
                     ImGuiIO* m_imguiIO;
+                    Renderer::GL::RenderLayerGL* m_renderLayer;
             };
         }
     }

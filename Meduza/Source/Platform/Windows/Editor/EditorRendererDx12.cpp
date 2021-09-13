@@ -19,20 +19,27 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 {
     m_renderLayer = a_renderLayer;
     // Init ImGui
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	m_imGuiContext = ImGui::CreateContext();
-	m_imGuiIO = &ImGui::GetIO();
-	m_imGuiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    m_imguiIO = &ImGui::GetIO();	
+	m_imguiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
 
-    m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    m_imGuiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	
+	static ImWchar s_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	ImFontConfig config;
+	config.MergeMode = true;
 
-	// Set font
-	m_imGuiIO->Fonts->AddFontDefault();
+	m_imguiIO->Fonts->AddFontDefault();
+	m_imguiIO->Fonts->AddFontFromFileTTF("Resources/Fonts/fontawesome-webfont.ttf", 12.0f, &config, s_ranges); // Merge icon font
+	
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
 
 	ImGuiStyle& style = ImGui::GetStyle();
-	if (m_imGuiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
@@ -87,7 +94,7 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_renderLayer->GetCmd().GetList());
 
 	
-	if (m_imGuiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		ImGui::UpdatePlatformWindows();
 	}

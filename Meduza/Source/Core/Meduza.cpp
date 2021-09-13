@@ -11,6 +11,8 @@
 #include "Core/Systems/CameraSystem.h"
 #include "Core/Components/CameraComponent.h"
 
+#include "Core/Serialization/Serializer.h"
+
 #include "Core/Components/PhysicsComponent.h"
 #include "Physics/Systems/PhysicsSystem.h"
 
@@ -32,6 +34,7 @@
 #include "Platform/MacOS/MacOsWindow.h"
 #endif
 
+unsigned char Me::Meduza::ms_engineState = RUN_GAME;
 
 Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 {
@@ -39,8 +42,10 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 
 #ifdef PLATFORM_WINDOWS
 	m_window = new WindowsWindow(a_w, a_h, "Meduza | Windows");
+	ms_engineState = RUN_EDITOR;
 #elif PLATFORM_LINUX
 	m_window = new LinuxWindow(a_w, a_h, "Meduza | Linux");
+	ms_engineState = RUN_GAME;
 #elif PLATFORM_APPLE
 	m_window = new MacOsWindow(a_w, a_h, "Meduza | Apple");
 #endif
@@ -63,6 +68,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
+	m_serializer = new Serialization::Serializer();
 	
 	auto r = new RenderSystem(m_renderLayer);
 	auto c = new CameraSystem(m_renderLayer);
@@ -153,5 +159,10 @@ void Me::Meduza::Destroy()
 	if(m_renderLayer != nullptr)
 	{
 		delete m_renderLayer;
+	}	
+	
+	if(m_serializer != nullptr)
+	{
+		delete m_serializer;
 	}
 }

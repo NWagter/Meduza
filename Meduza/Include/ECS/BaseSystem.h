@@ -3,6 +3,10 @@
 #include "ECS/EntityTypes.h"
 #include "EntityManager.h"
 
+#define EXECUTE_INGAME 1
+#define EXECUTE_INEDITOR 2
+#define EXECUTE_ALL 4
+
 namespace Me
 {
     class BaseComponent;
@@ -20,6 +24,7 @@ namespace Me
         virtual void OnEntityDestroy(const EntityID& a_entity) = 0;
 
         std::vector<EntityID> m_entities;
+        unsigned char m_executeMask = EXECUTE_INGAME;
 
     private:
         bool m_OnCreated = false;

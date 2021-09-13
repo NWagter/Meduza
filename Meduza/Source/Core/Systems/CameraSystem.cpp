@@ -11,6 +11,7 @@
 Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 {
     m_renderLayer = a_renderLayer;
+    m_executeMask = EXECUTE_ALL;
 }
 
 void Me::CameraSystem::OnUpdate(float a_dt)

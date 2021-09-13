@@ -17,6 +17,8 @@
 #include "Platform/Windows/FileSystem/FileSystem.h"
 #endif
 
+#include "Core/Meduza.h"
+
 
 Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
 {
@@ -42,8 +44,29 @@ void Me::Editor::EditorToolbar::Draw()
                 {
                     eManager->DestroyEntity(ent.first);
                 }
+
+                #ifdef PLATFORM_WINDOWS
+                std::string filePath = Files::Windows::FileSystem::SaveFile(
+                    "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
+                     static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
+
+                size_t pos = filePath.find("Assets"); //find location of word
+                filePath.erase(0,pos); //delete everything prior to location found
+                std::replace(filePath.begin(), filePath.end(), '\\', '/');
+
+                if(!filePath.empty())
+                {
+                    Serialization::Serializer::GetInstance()->SerializeSceneAs(filePath);
+                }
+                #endif
             }
             if(ImGui::MenuItem("Save"))
+            {
+                #ifdef PLATFORM_WINDOWS
+                    Serialization::Serializer::GetInstance()->SerializeScene();
+                #endif
+            }
+            if(ImGui::MenuItem("Save as"))
             {
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::SaveFile(
@@ -56,17 +79,12 @@ void Me::Editor::EditorToolbar::Draw()
 
                 if(!filePath.empty())
                 {
-                    Serialization::Serializer::GetInstance()->SerializeScene(filePath);
+                    Serialization::Serializer::GetInstance()->SerializeScene();
                 }
                 #endif
             }
             if(ImGui::MenuItem("Load"))
-            {                
-                for(auto ent: eManager->GetEntities())
-                {
-                    eManager->DestroyEntity(ent.first);
-                }
-
+            {         
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::OpenFile(
                     "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
@@ -162,8 +180,30 @@ void Me::Editor::EditorToolbar::Draw()
 
                 eManager->AddComponent(ent, rComp);
             }
-
+            
             ImGui::EndMenu();
+        }
+        
+        float width = ImGui::GetWindowSize().x;
+        ImGui::SameLine(width * 0.5f);
+
+        if(Meduza::GetEngineState() & RUN_EDITOR)
+        {
+            if(ImGui::Button(ICON_FA_PLAY))
+            {            
+                Serialization::Serializer::GetInstance()->SerializeScene();
+                
+                Meduza::ms_engineState = RUN_GAME;
+            }
+        }
+        else if(Meduza::GetEngineState() & RUN_GAME)
+        {        
+            if(ImGui::Button(ICON_FA_PAUSE))
+            {                            
+                Meduza::ms_engineState = RUN_EDITOR;
+
+                Serialization::Serializer::GetInstance()->DeserializeScene();
+            }
         }
 
         ImGui::EndMainMenuBar();

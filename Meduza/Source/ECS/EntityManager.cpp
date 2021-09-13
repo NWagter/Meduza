@@ -4,6 +4,7 @@
 #include "ECS/BaseSystem.h"
 #include "ECS/BaseComponent.h"
 
+#include "Core/Meduza.h"
 
 static EntityID m_entityId = 0;
 
@@ -65,7 +66,20 @@ void Me::EntityManager::Update(float a_dt)
             s->m_OnCreated = true;
         }
 
-        s->OnUpdate(a_dt);
+        if(Meduza::GetEngineState() & RUN_GAME)
+        {
+            if(s->m_executeMask & (EXECUTE_INGAME | EXECUTE_ALL))
+            {
+                s->OnUpdate(a_dt);
+            }
+        }
+        else if(Meduza::GetEngineState() & RUN_EDITOR)
+        {           
+            if(s->m_executeMask & (EXECUTE_INEDITOR | EXECUTE_ALL))
+            {
+                s->OnUpdate(a_dt);
+            } 
+        }
     }
 }
 

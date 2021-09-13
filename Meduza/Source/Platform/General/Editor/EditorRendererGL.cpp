@@ -21,11 +21,18 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    m_imguiIO = &ImGui::GetIO();
+    m_imguiIO = &ImGui::GetIO();	
 	m_imguiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
 
     m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	
+	static ImWchar s_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	ImFontConfig config;
+	config.MergeMode = true;
+
+	m_imguiIO->Fonts->AddFontDefault();
+	m_imguiIO->Fonts->AddFontFromFileTTF("Resources/Fonts/fontawesome-webfont.ttf", 12.0f, &config, s_ranges); // Merge icon font
 	
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

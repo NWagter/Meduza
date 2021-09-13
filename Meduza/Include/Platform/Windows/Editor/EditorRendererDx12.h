@@ -29,7 +29,7 @@ namespace Me
 
                 private:
                     ImGuiContext* m_imGuiContext;
-		            ImGuiIO* m_imGuiIO;
+		            ImGuiIO* m_imguiIO;
 
                     Renderer::Dx12::RenderLayerDx12* m_renderLayer;
             };

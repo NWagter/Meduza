@@ -75,13 +75,12 @@ static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_funct
     return false;
 }
 
-bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
+bool Serialize(std::string a_path)
 {
-    EntityManager* eManager = EntityManager::GetEntityManager();
-
-    std::ofstream os(a_file.c_str());
+    std::ofstream os(a_path.c_str());
     cereal::XMLOutputArchive archive(os);
 
+    Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
     archive.setNextName("SceneData"); 
     archive.startNode();  
     archive(cereal::make_nvp("EntityAmount" , (uint64_t)eManager->GetEntities().size()));
@@ -96,12 +95,12 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
         archive(cereal::make_nvp("ComponentAmount" , (int)ent.second.size()));
 
         archive.startNode(); 
-        CanSerialize<TagComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::TagComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {  
             archive(cereal::make_nvp("Tag", a_comp->m_tag));
         });        
         
-        CanSerialize<TransformComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::TransformComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Translation", a_comp->m_translation.m_xyz));
             archive(cereal::make_nvp("Rotation", a_comp->m_rotation.m_xyz));
@@ -109,13 +108,13 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
             
         });   
 
-        CanSerialize<RenderComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::RenderComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour));   
 
             if(a_comp->m_mesh > 10)
             {
-                auto mesh = Resources::MeshLibrary::GetMesh(a_comp->m_mesh);  
+                auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);  
                 archive(cereal::make_nvp("Mesh", mesh->GetPath()));   
             }   
             else
@@ -123,9 +122,9 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
                 archive(cereal::make_nvp("Mesh", a_comp->m_mesh)); 
             }
 
-            auto shader = Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+            auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
             archive(cereal::make_nvp("Shader", shader->GetPath()));    
-            auto texture = Resources::TextureLibrary::GetTexture(a_comp->m_texture);
+            auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
             if(texture != nullptr)
             {
                 archive(cereal::make_nvp("Texture", texture->GetPath())); 
@@ -136,7 +135,7 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
             }
         });   
 
-        CanSerialize<CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Far", a_comp->m_far)); 
             archive(cereal::make_nvp("Near", a_comp->m_near)); 
@@ -147,15 +146,35 @@ bool Me::Serialization::Serializer::SerializeScene(std::string a_file)
 
         archive.finishNode();
     }
-    return false;
     
+    return true;
+}
+
+bool Me::Serialization::Serializer::SerializeScene()
+{
+    return Serialize(m_activeScene);    
+}
+
+bool Me::Serialization::Serializer::SerializeSceneAs(std::string a_file)
+{ 
+    ms_instance->m_activeScene = a_file;
+    return Serialize(a_file);    
 }
 
 bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 {
-    std::ifstream is(a_file.c_str());
+    std::string path = a_file;
+    if(path.empty())
+    {
+        path = ms_instance->m_activeScene;
+    }
+    else
+    {
+        ms_instance->m_activeScene = path;
+    }
 
-    is.open(a_file);
+    std::ifstream is(path.c_str());
+    is.open(path);
 
     if(!is.is_open())
     {
@@ -165,6 +184,12 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
     cereal::XMLInputArchive archive(is);
 
     EntityManager* eManager = EntityManager::GetEntityManager();
+             
+    for(auto ent: eManager->GetEntities())
+    {
+        eManager->DestroyEntity(ent.first);
+    }
+    
     int amount;
 
     archive.setNextName("SceneData"); 

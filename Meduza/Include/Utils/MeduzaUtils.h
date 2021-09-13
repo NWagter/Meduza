@@ -1,6 +1,10 @@
 #pragma once
 namespace Me
 {
+
+#define RUN_GAME 1
+#define RUN_EDITOR 2
+
     namespace Utils
     {
       class Utilities

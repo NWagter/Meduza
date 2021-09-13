@@ -12,11 +12,13 @@ namespace Me
                 Serializer(std::string = "");
                 ~Serializer();
 
-                bool SerializeScene(std::string);
-                bool DeserializeScene(std::string);
+                bool SerializeScene();
+                bool SerializeSceneAs(std::string);
+                bool DeserializeScene(std::string = "");
 
                 static Serializer* GetInstance() { return ms_instance;}
             private:
+                std::string m_activeScene;
                 static Serializer* ms_instance;
         };
     }

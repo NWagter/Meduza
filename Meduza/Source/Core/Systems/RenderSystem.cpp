@@ -11,6 +11,7 @@
 Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
 { 
     m_renderLayer = a_renderLayer;
+    m_executeMask = EXECUTE_ALL;
 }
 
 void Me::RenderSystem::OnUpdate(float)

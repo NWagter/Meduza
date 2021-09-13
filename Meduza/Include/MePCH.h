@@ -25,6 +25,7 @@
 #include <fstream>
 
 #include <cereal/archives/xml.hpp>
+#include <FontAwesome/FontAwesome.h>
 
 #ifdef PLATFORM_WINDOWS
 

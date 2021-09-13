@@ -13,6 +13,7 @@ enum class Components : uint16_t
     Render,
     Camera,
     Physics,
+    Editor,
 
     Game
 };

@@ -16,4 +16,9 @@ namespace Me
         
         static ComponentID s_componentID;
     };
+    
+    struct EditorComponent : public BaseComponent
+    {        
+        static ComponentID s_componentID;
+    };
 }

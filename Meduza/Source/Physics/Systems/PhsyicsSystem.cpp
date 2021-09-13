@@ -9,7 +9,7 @@
 
 Me::Physics::PhysicsSystem::PhysicsSystem()
 { 
-
+    m_executeMask = EXECUTE_INGAME;
 }
 
 void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)

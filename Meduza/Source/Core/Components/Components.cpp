@@ -7,6 +7,7 @@
 
 
 ComponentID Me::TagComponent::s_componentID = static_cast<ComponentID>(Components::Tag);
+ComponentID Me::EditorComponent::s_componentID = static_cast<ComponentID>(Components::Editor);
 ComponentID Me::TransformComponent::s_componentID = static_cast<ComponentID>(Components::Transform);
 ComponentID Me::RenderComponent::s_componentID = static_cast<ComponentID>(Components::Render);
 ComponentID Me::CameraComponent::s_componentID = static_cast<ComponentID>(Components::Camera);

@@ -6,6 +6,7 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
+#include "Core/Components/PhysicsComponent.h"
 
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/Resources/ShaderBase.h"
@@ -143,6 +144,12 @@ bool Serialize(std::string a_path)
             archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
             archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));           
         }); 
+        
+        CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));         
+        }); 
 
         archive.finishNode();
     }
@@ -265,7 +272,12 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;             
 
-
+        if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));  
+            eManager->AddComponent(ent, a_comp); 
+        })) compAmount--;   
         archive.finishNode();
     }
 

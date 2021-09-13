@@ -271,7 +271,13 @@ void Me::Editor::EntityEditor::Draw()
 
         DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)
         {
-
+            ImGui::Checkbox("Gravity", &a_comp.m_gravity);
+            bool open = ImGui::TreeNode("Body");
+            if(open)
+            {
+                ImGui::DragFloat("Mass", &a_comp.m_body->m_bodyMass);
+                ImGui::TreePop();
+            }
         });
     }
 
@@ -304,6 +310,12 @@ void Me::Editor::EntityEditor::Draw()
             cComp->m_size = Event::EventSystem::GetEventSystem()->ScreenSize();
 
             eManager->AddComponent(m_selectedEntity, cComp);
+            ImGui::CloseCurrentPopup();
+        }
+        if(ImGui::MenuItem("Physics Component"))
+        {
+            auto pComp = new Physics::PhysicsComponent();
+            eManager->AddComponent(m_selectedEntity, pComp);
             ImGui::CloseCurrentPopup();
         }
 

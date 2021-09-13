@@ -148,7 +148,8 @@ bool Serialize(std::string a_path)
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));         
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));   
+            archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));        
         }); 
 
         archive.finishNode();
@@ -231,7 +232,6 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--; 
         
-
         if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
@@ -274,10 +274,23 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
-            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));  
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));   
+            Physics::BodyType bodyType;  
+            archive(cereal::make_nvp("Body_Type", (Physics::BodyType)bodyType));  
+
+            if(bodyType == Physics::BodyType::Box2D)
+            {
+                a_comp->m_body = new Physics::BodyBox2D();
+            }
+            else if(bodyType == Physics::BodyType::Cirlce)
+            {
+                a_comp->m_body = new Physics::BodyCircle();
+            }
+
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));     
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;   
+        
         archive.finishNode();
     }
 

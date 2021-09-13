@@ -9,15 +9,15 @@ namespace Me
     {
         static constexpr float gs_Gravity = 9.8f;
 
-        enum class CollisionType
+        enum class CollisionType : uint16_t
         {
-            Overlap,
+            Overlap = 0,
             Block
         };
 
-        enum class BodyType
+        enum class BodyType : uint16_t
         {
-            Cirlce,
+            Cirlce = 0,
             Box2D
         };
         

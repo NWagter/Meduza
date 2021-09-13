@@ -276,6 +276,47 @@ void Me::Editor::EntityEditor::Draw()
             if(open)
             {
                 ImGui::DragFloat("Mass", &a_comp.m_body->m_bodyMass);
+
+                const char* bodies[] = {"Circle", "Box2D"};
+                int bodyType = (int)a_comp.m_body->m_bodyType;
+
+                Physics::BodyType newBodyType = (Physics::BodyType)bodyType;
+
+                if(ImGui::BeginCombo("BodyType", bodies[bodyType]))
+                {
+                    for(int i = 0; i < (sizeof(bodies)/sizeof(*bodies)); i++)
+                    {
+                        bool isSelected = bodies[bodyType] == bodies[i];
+
+                        if(ImGui::Selectable(bodies[i], isSelected))
+                        {
+                            newBodyType = (Physics::BodyType)i;
+                        }
+
+                        if(isSelected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+
+                if((int)newBodyType != bodyType)
+                {
+                    Physics::PhysicsBody* newBody;
+
+                    if(newBodyType == Physics::BodyType::Box2D)
+                    {
+                        newBody = new Physics::BodyBox2D();
+                    }
+                    if(newBodyType == Physics::BodyType::Cirlce)
+                    {
+                        newBody = new Physics::BodyCircle();
+                    }
+                    newBody->m_bodyMass = a_comp.m_body->m_bodyMass;
+
+                    a_comp.m_body = newBody;
+                }
                 ImGui::TreePop();
             }
         });

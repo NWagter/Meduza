@@ -191,12 +191,8 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
     cereal::XMLInputArchive archive(is);
 
-    EntityManager* eManager = EntityManager::GetEntityManager();
-             
-    for(auto ent: eManager->GetEntities())
-    {
-        eManager->DestroyEntity(ent.first);
-    }
+    EntityManager* eManager = EntityManager::GetEntityManager();             
+    eManager->CleanGame();
     
     int amount;
 

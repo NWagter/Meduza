@@ -40,10 +40,7 @@ void Me::Editor::EditorToolbar::Draw()
         {
             if(ImGui::MenuItem("New"))
             {
-                for(auto ent: eManager->GetEntities())
-                {
-                    eManager->DestroyEntity(ent.first);
-                }
+                eManager->CleanGame();
 
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::SaveFile(

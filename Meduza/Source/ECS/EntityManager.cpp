@@ -154,6 +154,20 @@ void Me::EntityManager::DestroyEntity(EntityID a_entID)
     ms_entityManager->m_entities.erase(a_entID);
 }
 
+void Me::EntityManager::CleanGame()
+{
+    auto list = ms_entityManager->m_entities;
+    for(auto ent : list)
+    {
+        if(ms_entityManager->GetComponent<EditorComponent>(ent.first) != nullptr)
+        {
+            continue;
+        }
+
+        ms_entityManager->DestroyEntity(ent.first);
+    }
+}
+
 void Me::EntityManager::RegisterEntity(EntityID a_entID)
 {
 	for (auto s : m_systems)

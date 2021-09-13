@@ -53,6 +53,10 @@ void Me::Editor::EntityHierarchy::Draw()
 
 	for(auto ent : eManager->GetEntities())
 	{
+		if(eManager->GetComponent<EditorComponent>(ent.first) != nullptr)
+		{
+			continue;
+		}
 		EntityID selected = m_selectedEntity;
 		bool shouldDelete = false; 
 		if(DrawEnt(selected, ent.first, eManager->GetComponent<TagComponent>(ent.first)->m_tag, shouldDelete))

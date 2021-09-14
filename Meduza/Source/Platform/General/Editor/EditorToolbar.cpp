@@ -76,7 +76,7 @@ void Me::Editor::EditorToolbar::Draw()
 
                 if(!filePath.empty())
                 {
-                    Serialization::Serializer::GetInstance()->SerializeScene();
+                    Serialization::Serializer::GetInstance()->SerializeSceneAs(filePath);
                 }
                 #endif
             }

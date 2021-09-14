@@ -1,8 +1,7 @@
 #include "MePCH.h"
 #include "Core/Scripting/ScriptSystem.h"
 #include "Core/Scripting/LuaScripting.h"
-
-#include "Core/Components/TransformComponent.h"
+#include "Core/Scripting/LuaFunctions.h"
 
 Me::Scripting::ScriptSystem::ScriptSystem()
 {
@@ -12,19 +11,6 @@ Me::Scripting::ScriptSystem::ScriptSystem()
 Me::Scripting::ScriptSystem::~ScriptSystem()
 {
     
-}
-
-static int wrap_SetLocation(lua_State* a_luaState)
-{
-    if(lua_gettop(a_luaState) != 4) return -1;
-
-    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
-
-    auto trans =  Me::EntityManager::GetEntityManager()->GetComponent<Me::TransformComponent>(ent);
-    trans->m_translation = Me::Math::Vec3(x,y,z);
 }
 
 void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
@@ -37,8 +23,12 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
 
         if(rC->m_luaScript != nullptr)
         {
+            if(!rC->m_functionsRegistered)
+            {
+                LuaFunctions::RegisterFunctions(rC->m_luaScript);
+            }
+            
             lua_getglobal(rC->m_luaScript, "OnUpdate");
-            lua_register(rC->m_luaScript, "_SetLocation", wrap_SetLocation);
     
             if(lua_isfunction(rC->m_luaScript, -1) )
             {

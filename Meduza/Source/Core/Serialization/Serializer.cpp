@@ -7,6 +7,7 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/PhysicsComponent.h"
+#include "Core/Scripting/ScriptComponent.h"
 
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/Resources/ShaderBase.h"
@@ -158,6 +159,11 @@ bool Serialize(std::string a_path)
             archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));        
         }); 
 
+        CanSerialize<Me::Scripting::ScriptComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("ScriptPath", a_comp->m_script));            
+        });   
+
         archive.finishNode();
     }
     
@@ -293,6 +299,14 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;   
         
+        if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {
+            archive(cereal::make_nvp("ScriptPath", a_comp->m_script));
+            a_comp->Init();
+            eManager->AddComponent(ent, a_comp);
+        })) compAmount--;
+
+
         archive.finishNode();
     }
 

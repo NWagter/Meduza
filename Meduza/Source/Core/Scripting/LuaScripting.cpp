@@ -16,12 +16,19 @@ Me::Scripting::LuaScripting::~LuaScripting()
     
 }
 
+static int MyFunc(lua_State* L)
+{
+    ME_LOG("Hello World ! \n");
+    return 0;
+}
+
 void Me::Scripting::LuaScripting::ExecuteScript(std::string a_string, float a_dt)
 {
     lua_State * L = luaL_newstate();
     luaL_openlibs(L);
-
     int state = luaL_dofile(L, a_string.c_str());
+
+    lua_register(L, "_Func", MyFunc);
     lua_getglobal(L, "OnUpdate");
     
     if(lua_isfunction(L, -1) )

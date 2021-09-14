@@ -346,6 +346,7 @@ void Me::Editor::EntityEditor::Draw()
             if(newScriptPath != a_comp.m_script)
             {
                 a_comp.m_script = newScriptPath;
+                a_comp.Init();
             }
         });
     }

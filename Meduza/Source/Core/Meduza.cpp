@@ -11,6 +11,8 @@
 #include "Core/Systems/CameraSystem.h"
 #include "Core/Components/CameraComponent.h"
 
+#include "Core/Systems/EditorCameraSystem.h"
+
 #include "Core/Serialization/Serializer.h"
 
 #include "Core/Components/PhysicsComponent.h"
@@ -73,6 +75,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	auto r = new RenderSystem(m_renderLayer);
 	auto c = new CameraSystem(m_renderLayer);
 	auto p = new Physics::PhysicsSystem();
+	auto eC = new Editor::EditorCameraSystem();
 }
 
 Me::Meduza::~Meduza()

@@ -1,24 +1,41 @@
-#include "PCH.h"
-#include "Systems/CameraControllerSystem.h"
+#include "MePCH.h"
+#include "Core/Systems/EditorCameraSystem.h"
 
-#include "MeduzaIncluder.h"
+#include "Core/Components/TransformComponent.h"
+#include "Core/Components/CameraComponent.h"
 
-CameraControllerSystem::CameraControllerSystem()
+#include "Platform/General/Events/EventSystem.h"
+
+Me::Editor::EditorCameraSystem::EditorCameraSystem()
 {
-
+    m_executeMask = EXECUTE_INEDITOR;
 }
 
-void CameraControllerSystem::OnCreate()
+Me::Editor::EditorCameraSystem::~EditorCameraSystem()
 {
-
+    
 }
 
-void CameraControllerSystem::OnUpdate(float a_dt)
+void Me::Editor::EditorCameraSystem::OnCreate()
+{
+    auto eManager = EntityManager::GetEntityManager();
+
+    EntityID editorCam = eManager->CreateEntity("Editor Camera");
+
+    auto cComp = new CameraComponent();
+    cComp->m_cameraType = CameraType::Perspective;
+    cComp->m_size = Event::EventSystem::GetEventSystem()->ScreenSize();
+
+    eManager->AddComponent<EditorComponent>(editorCam);
+    eManager->AddComponent<TransformComponent>(editorCam);
+    eManager->AddComponent(editorCam, cComp);
+}
+
+void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
 {
     for(auto& compTuple : m_components)
     {    
         Me::TransformComponent* trans = std::get<Me::TransformComponent*>(compTuple);
-
 
         float forwardMovment = 0;
         float rightMovment = 0 ;

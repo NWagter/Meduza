@@ -168,6 +168,21 @@ void Me::EntityManager::CleanGame()
     }
 }
 
+int Me::EntityManager::GetGameEntityAmount()
+{
+    int gameEntities = 0;
+    for(auto ent : ms_entityManager->GetEntities())
+    {        
+        if(ms_entityManager->GetComponent<Me::EditorComponent>(ent.first) != nullptr)
+        {
+            continue;
+        }
+        gameEntities++;
+    }
+
+    return gameEntities;
+}
+
 void Me::EntityManager::RegisterEntity(EntityID a_entID)
 {
 	for (auto s : m_systems)

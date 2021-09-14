@@ -21,7 +21,9 @@ namespace Me
         static void AddSystem(ECSSystem*);
         static EntityID CreateEntity(std::string = "Empty Entity");
         static void DestroyEntity(EntityID);
+
         static void CleanGame();
+        static int GetGameEntityAmount();
 
         template<class C = BaseComponent>
         bool AddComponent(const EntityID a_entID);        

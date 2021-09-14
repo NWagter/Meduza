@@ -84,11 +84,17 @@ bool Serialize(std::string a_path)
     Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
     archive.setNextName("SceneData"); 
     archive.startNode();  
-    archive(cereal::make_nvp("EntityAmount" , (uint64_t)eManager->GetEntities().size()));
+
+    archive(cereal::make_nvp("EntityAmount" , eManager->GetGameEntityAmount()));
     archive.finishNode();
 
     for (auto ent : eManager->GetEntities())
     {     
+        if(eManager->GetComponent<Me::EditorComponent>(ent.first) != nullptr)
+        {
+            continue;
+        }
+
         archive.setNextName("Entity"); 
         archive.startNode();    
         archive(cereal::make_nvp("EntityID" ,ent.first));

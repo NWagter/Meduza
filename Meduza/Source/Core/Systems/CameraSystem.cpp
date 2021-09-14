@@ -8,6 +8,8 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/TransformComponent.h"
 
+#include "Core/Meduza.h"
+
 Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 {
     m_renderLayer = a_renderLayer;
@@ -16,10 +18,27 @@ Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 
 void Me::CameraSystem::OnUpdate(float a_dt)
 {
-    for(auto& compTuple : m_components)
+    EntityManager* eManager = EntityManager::GetEntityManager();
+
+    for(int i = 0; i < m_entities.size(); i++)
     {
-        CameraComponent* cC = std::get<CameraComponent*>(compTuple);
-        TransformComponent* tC = std::get<TransformComponent*>(compTuple);
+        if(Meduza::GetEngineState() & RUN_GAME)
+        {
+            if(eManager->GetComponent<EditorComponent>(m_entities[i]) != nullptr)
+            {
+                continue;
+            }
+        }
+        else if(Meduza::GetEngineState() & RUN_EDITOR)
+        {
+            if(eManager->GetComponent<EditorComponent>(m_entities[i]) == nullptr)
+            {
+                continue;
+            }
+        }
+
+        CameraComponent* cC = std::get<CameraComponent*>(m_components[i]);
+        TransformComponent* tC = std::get<TransformComponent*>(m_components[i]);
         
         m_renderLayer->SetCamera(*cC, *tC);
     }

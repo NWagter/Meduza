@@ -16,17 +16,18 @@ Me::Scripting::LuaScripting::~LuaScripting()
     
 }
 
-void Me::Scripting::LuaScripting::ExecuteScript(std::string a_string)
+void Me::Scripting::LuaScripting::ExecuteScript(std::string a_string, float a_dt)
 {
     lua_State * L = luaL_newstate();
     luaL_openlibs(L);
 
     int state = luaL_dofile(L, a_string.c_str());
-    lua_getglobal(L, "Execute");
+    lua_getglobal(L, "OnUpdate");
     
     if(lua_isfunction(L, -1) )
     {
-        lua_pcall(L,0,0,0);
+        lua_pushnumber(L, a_dt);
+        lua_pcall(L,1,0,0);
     }
 
     lua_close(L);

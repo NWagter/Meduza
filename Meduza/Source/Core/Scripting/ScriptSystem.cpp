@@ -12,7 +12,7 @@ Me::Scripting::ScriptSystem::~ScriptSystem()
     
 }
 
-void Me::Scripting::ScriptSystem::OnUpdate(float)
+void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
 {
     auto luaScripting = LuaScripting::GetInstance();
 
@@ -22,7 +22,7 @@ void Me::Scripting::ScriptSystem::OnUpdate(float)
 
         if(!rC->m_script.empty())
         {
-            luaScripting->ExecuteScript(rC->m_script);
+            luaScripting->ExecuteScript(rC->m_script, a_dt);
         }
     }
 }

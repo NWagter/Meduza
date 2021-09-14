@@ -1,3 +1,3 @@
-function Execute()
-    print("[LUA] HelloWorld!")
+function OnUpdate(a_dt)
+  print("[LUA] HelloWorld!")
 end

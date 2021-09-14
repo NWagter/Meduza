@@ -10,7 +10,7 @@ namespace Me
                 LuaScripting();
                 ~LuaScripting();
 
-                void ExecuteScript(std::string);
+                void ExecuteScript(std::string, float);
 
                 static LuaScripting* GetInstance() {return ms_instance;}
             private:

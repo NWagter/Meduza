@@ -36,6 +36,9 @@
 #include "Platform/MacOS/MacOsWindow.h"
 #endif
 
+#include "Core/Scripting/LuaScripting.h"
+#include "Core/Scripting/ScriptSystem.h"
+
 unsigned char Me::Meduza::ms_engineState = RUN_GAME;
 
 Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
@@ -76,6 +79,9 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	auto c = new CameraSystem(m_renderLayer);
 	auto p = new Physics::PhysicsSystem();
 	auto eC = new Editor::EditorCameraSystem();
+
+	auto scripting = new Scripting::LuaScripting();
+	auto sS = new Scripting::ScriptSystem();
 }
 
 Me::Meduza::~Meduza()

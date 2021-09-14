@@ -92,6 +92,10 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 		{
 			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
 		}
+		if(a_type == Files::FileType::Script && (extention == "lua"))
+		{
+			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+		}
 
 		if(p.is_directory())
 		{

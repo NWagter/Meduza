@@ -9,6 +9,7 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/PhysicsComponent.h"
+#include "Core/Scripting/ScriptComponent.h"
 
 #include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/ShaderLibrary.h"
@@ -320,6 +321,33 @@ void Me::Editor::EntityEditor::Draw()
                 ImGui::TreePop();
             }
         });
+
+        DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [](auto& a_comp)
+        {
+            std::string newScriptPath = a_comp.m_script;
+
+            if (ImGui::BeginCombo("Script", a_comp.m_script.c_str())) // The second parameter is the label previewed before opening the combo.
+            {
+                bool is_selected;
+                Files::BrowseData data = Files::BrowseData();
+                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Script);
+
+                for(auto file : data.m_files)
+                {
+                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    {
+                        newScriptPath = file.second;
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+
+            if(newScriptPath != a_comp.m_script)
+            {
+                a_comp.m_script = newScriptPath;
+            }
+        });
     }
 
     if(eManager->EntityExists(m_selectedEntity) && ImGui::Button("Add Component"))
@@ -356,6 +384,12 @@ void Me::Editor::EntityEditor::Draw()
         if(ImGui::MenuItem("Physics Component"))
         {
             auto pComp = new Physics::PhysicsComponent();
+            eManager->AddComponent(m_selectedEntity, pComp);
+            ImGui::CloseCurrentPopup();
+        }
+        if(ImGui::MenuItem("Script Component"))
+        {
+            auto pComp = new Scripting::ScriptComponent();
             eManager->AddComponent(m_selectedEntity, pComp);
             ImGui::CloseCurrentPopup();
         }

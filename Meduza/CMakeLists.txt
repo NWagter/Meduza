@@ -44,6 +44,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Core/Systems/*.cpp
 	Source/Core/Components/*.cpp
 	Source/Core/Serialization/*.cpp
+	Source/Core/Scripting/*.cpp
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp
@@ -70,3 +71,5 @@ target_include_directories(Meduza PUBLIC
 		${EXTERNAL_INCLUDE}
 		${EXTERNAL_GENERAL}
 )
+
+target_link_libraries(${PROJECT_NAME} PUBLIC LuaLib)

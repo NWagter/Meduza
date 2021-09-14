@@ -11,7 +11,8 @@ namespace Me
 			Model,
 			Texture,
 			Shader,
-			Scene
+			Scene,
+            Script
 		};
 
         namespace Windows

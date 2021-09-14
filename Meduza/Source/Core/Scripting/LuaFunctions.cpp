@@ -7,7 +7,7 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_SetLocation", lua_SetLocation);
     lua_register(a_luaState, "_SetRotation", lua_SetRotation);
-    lua_register(a_luaState, "_SetScale", lua_SetRotation);
+    lua_register(a_luaState, "_SetScale", lua_SetScale);
 }
 
 int Me::Scripting::LuaFunctions::lua_SetLocation(lua_State* a_luaState)

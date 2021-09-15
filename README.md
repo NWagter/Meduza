@@ -43,6 +43,8 @@ but what is currently planned is the following :
     - Box Collision
     - Sphere Collision
   - Physics Bodies
+- Lua Scripting
+-   Translate, Rotate and Scaling Support
 
 
 # Graphics APIs :

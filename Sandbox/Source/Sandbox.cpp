@@ -7,13 +7,9 @@
 #include "MeduzaIncluder.h"
 
 
-#include "Systems/CameraControllerSystem.h"
-
 Sandbox::Sandbox() : Me::Application(1280,720, Me::GFX_API::OpenGL)
 {
-    m_game = new BaseGame();
-    new CameraControllerSystem();
-    
+    m_game = new BaseGame();    
 
     SetName(m_game->GetGameName() + " | Meduza");
 }

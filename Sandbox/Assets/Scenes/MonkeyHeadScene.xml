@@ -5,7 +5,7 @@
 	</SceneData>
 	<Entity>
 		<EntityID>1</EntityID>
-		<ComponentAmount>3</ComponentAmount>
+		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
 				<Tag>Camera</Tag>
@@ -37,6 +37,9 @@
 				<OrthoScale>10</OrthoScale>
 				<CameraType>1</CameraType>
 			</3>
+			<6>
+				<ScriptPath>Assets\Scripts\CameraMovement.lua</ScriptPath>
+			</6>
 		</value0>
 		<Entity>
 			<EntityID>2</EntityID>
@@ -76,7 +79,7 @@
 			</value0>
 			<Entity>
 				<EntityID>3</EntityID>
-				<ComponentAmount>4</ComponentAmount>
+				<ComponentAmount>3</ComponentAmount>
 				<value0>
 					<0>
 						<Tag>Suzanne</Tag>
@@ -89,7 +92,7 @@
 						</Translation>
 						<Rotation>
 							<value0>0</value0>
-							<value1>191.82191467285156</value1>
+							<value1>190</value1>
 							<value2>0</value2>
 						</Rotation>
 						<Scale>

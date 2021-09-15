@@ -44,15 +44,15 @@ but what is currently planned is the following :
     - Sphere Collision
   - Physics Bodies
 - Lua Scripting
-  - Transform
-    - Translate
-    - Rotate
-    - Set Location
-    - Set Rotation
-    - Set Scale
-  - Input
-    - GetKeyUp
-    - GetKeyDown
+  - :white_check_mark: Transform
+    - :white_check_mark: Translate
+    - :white_check_mark: Rotate
+    - :white_check_mark: Set Location
+    - :white_check_mark: Set Rotation
+    - :white_check_mark: Set Scale
+  - :white_check_mark: Input
+    - :white_check_mark: GetKeyUp
+    - :white_check_mark: GetKeyDown
 
 
 # Graphics APIs :

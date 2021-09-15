@@ -73,7 +73,7 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 	for(auto& p : std::filesystem::directory_iterator(a_path))
 	{
 		std::string extention = GetFileExtention(p.path().string());
-
+		std::string path = "";
 		
 		std::string name = GetFileName(p.path().filename().string());
 		name.append(" (");
@@ -82,19 +82,25 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 
 		if(a_type == Files::FileType::Model && (extention == "glb" || extention == "gltf"))
 		{
-			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+			path = p.path().string();
 		}
 		if(a_type == Files::FileType::Texture && (extention == "png" || extention == "dds"))
 		{
-			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+			path = p.path().string();
 		}
 		if(a_type == Files::FileType::Shader && (extention == "glsl" || extention == "hlsl"))
 		{
-			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+			path = p.path().string();
 		}
 		if(a_type == Files::FileType::Script && (extention == "lua"))
 		{
-			a_data.m_files.push_back(std::pair<std::string, std::string>(name, p.path().string()));
+			path = p.path().string();
+		}
+
+		if(!path.empty())
+		{
+			std::replace( path.begin(), path.end(), '\\', '/');
+			a_data.m_files.push_back(std::pair<std::string, std::string>(name, path));
 		}
 
 		if(p.is_directory())

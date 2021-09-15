@@ -38,7 +38,7 @@
 				<CameraType>1</CameraType>
 			</3>
 			<6>
-				<ScriptPath>Assets\Scripts\CameraMovement.lua</ScriptPath>
+				<ScriptPath>Assets/Scripts/CameraMovement.lua</ScriptPath>
 			</6>
 		</value0>
 		<Entity>

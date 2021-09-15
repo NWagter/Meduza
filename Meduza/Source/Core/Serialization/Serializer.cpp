@@ -276,21 +276,23 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             archive(cereal::make_nvp("Near", a_comp->m_near)); 
             archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
             archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
-            archive(cereal::make_nvp("CameraType", (CameraType)a_comp->m_cameraType)); 
+            int type = 0;
+            archive(cereal::make_nvp("CameraType", type)); 
+            a_comp->m_cameraType = (CameraType)type;
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;             
 
         if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));   
-            Physics::BodyType bodyType;  
-            archive(cereal::make_nvp("Body_Type", (Physics::BodyType)bodyType));  
+            int bodyType = 0;  
+            archive(cereal::make_nvp("Body_Type", bodyType));  
 
-            if(bodyType == Physics::BodyType::Box2D)
+            if((Physics::BodyType)bodyType == Physics::BodyType::Box2D)
             {
                 a_comp->m_body = new Physics::BodyBox2D();
             }
-            else if(bodyType == Physics::BodyType::Cirlce)
+            else if((Physics::BodyType)bodyType == Physics::BodyType::Cirlce)
             {
                 a_comp->m_body = new Physics::BodyCircle();
             }

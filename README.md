@@ -44,7 +44,15 @@ but what is currently planned is the following :
     - Sphere Collision
   - Physics Bodies
 - Lua Scripting
--   Translate, Rotate and Scaling Support
+  - Transform
+    - Translate
+    - Rotate
+    - Set Location
+    - Set Rotation
+    - Set Scale
+  - Input
+    - GetKeyUp
+    - GetKeyDown
 
 
 # Graphics APIs :

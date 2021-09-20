@@ -27,7 +27,7 @@ function OnUpdate(a_host, a_entity, a_dt)
         y = y + (moveSpeed * a_dt)        
     end
 
-    if _OnKeyDown(32) == 1 or _OnKeyDown(50) == 1 then
+    if _OnKeyDown(32) == 1 then
         z = z - (moveSpeed * a_dt)        
     elseif _OnKeyDown(16) == 1 then
         z = z + (moveSpeed * a_dt)        

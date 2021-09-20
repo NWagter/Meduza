@@ -12,6 +12,7 @@
 #include "Core/Components/CameraComponent.h"
 
 #include "Core/Systems/EditorCameraSystem.h"
+#include "AI/Systems/AgentMovementSystem.h"
 
 #include "Core/Serialization/Serializer.h"
 
@@ -79,6 +80,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	auto c = new CameraSystem(m_renderLayer);
 	auto p = new Physics::PhysicsSystem();
 	auto eC = new Editor::EditorCameraSystem();
+	auto a = new AI::AgentMovementSystem();
 
 	auto scripting = new Scripting::LuaScripting();
 	auto sS = new Scripting::ScriptSystem();

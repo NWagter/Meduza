@@ -40,6 +40,9 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Physics/*.cpp
 	Source/Physics/Systems/*.cpp
 
+	Source/AI/*.cpp
+	Source/AI/Systems/*.cpp
+
 	Source/ECS/*.cpp
 	Source/Core/Systems/*.cpp
 	Source/Core/Components/*.cpp

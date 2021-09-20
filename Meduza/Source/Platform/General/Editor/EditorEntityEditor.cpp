@@ -10,6 +10,7 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/PhysicsComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
+#include "AI/Components/AgentComponent.h"
 
 #include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/ShaderLibrary.h"
@@ -349,6 +350,14 @@ void Me::Editor::EntityEditor::Draw()
                 a_comp.Init();
             }
         });
+
+        DrawComponent<AI::AgentComponent>(eManager, "Agent Component", m_selectedEntity, [](auto& a_comp)
+        {
+            Helper::EditorHelper::DrawVec3Prop("TargetPosition", a_comp.m_targetLocation);
+
+            ImGui::DragFloat("AgentSpeed", &a_comp.m_agentSpeed);
+            ImGui::DragFloat("AgentStopdistance", &a_comp.m_stopDistance);
+        });
     }
 
     if(eManager->EntityExists(m_selectedEntity) && ImGui::Button("Add Component"))
@@ -392,6 +401,12 @@ void Me::Editor::EntityEditor::Draw()
         {
             auto pComp = new Scripting::ScriptComponent();
             eManager->AddComponent(m_selectedEntity, pComp);
+            ImGui::CloseCurrentPopup();
+        }
+        if(ImGui::MenuItem("Agent Component"))
+        {
+            auto aComp = new AI::AgentComponent();
+            eManager->AddComponent(m_selectedEntity, aComp);
             ImGui::CloseCurrentPopup();
         }
 

@@ -5,6 +5,7 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/PhysicsComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
+#include "AI/Components/AgentComponent.h"
 
 
 ComponentID Me::TagComponent::s_componentID = static_cast<ComponentID>(Components::Tag);
@@ -14,3 +15,4 @@ ComponentID Me::RenderComponent::s_componentID = static_cast<ComponentID>(Compon
 ComponentID Me::CameraComponent::s_componentID = static_cast<ComponentID>(Components::Camera);
 ComponentID Me::Physics::PhysicsComponent::s_componentID = static_cast<ComponentID>(Components::Physics);
 ComponentID Me::Scripting::ScriptComponent::s_componentID = static_cast<ComponentID>(Components::Scripting);
+ComponentID Me::AI::AgentComponent::s_componentID = static_cast<ComponentID>(Components::AgentComponent);

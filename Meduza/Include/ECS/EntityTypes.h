@@ -15,6 +15,7 @@ enum class Components : uint16_t
     Physics,
     Editor,
     Scripting,
-
+    AgentComponent,
+    
     Game
 };

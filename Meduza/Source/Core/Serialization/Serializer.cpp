@@ -8,6 +8,7 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Components/PhysicsComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
+#include "AI/Components/AgentComponent.h"
 
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/Resources/ShaderBase.h"
@@ -162,6 +163,13 @@ bool Serialize(std::string a_path)
         CanSerialize<Me::Scripting::ScriptComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("ScriptPath", a_comp->m_script));            
+        }); 
+
+        CanSerialize<Me::AI::AgentComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {                 
+            archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
+            archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));
+            archive(cereal::make_nvp("AgentStopDistance", a_comp->m_stopDistance));        
         });   
 
         archive.finishNode();
@@ -308,6 +316,13 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
+        if(CanDeserialize<Me::AI::AgentComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {
+            archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
+            archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));
+            archive(cereal::make_nvp("AgentStopDistance", a_comp->m_stopDistance));   
+            eManager->AddComponent(ent, a_comp);
+        })) compAmount--;
 
         archive.finishNode();
     }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ECS/BaseComponent.h"
-#include "ECS/EntityTypes.h"
 
 #include "Physics/Physics.h"
 

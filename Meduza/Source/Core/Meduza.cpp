@@ -3,22 +3,8 @@
 
 #include "ECS/EntityManager.h"
 
-#include "Core/Components/TransformComponent.h"
-
-#include "Core/Systems/RenderSystem.h"
-#include "Core/Components/RenderComponent.h"
-
-#include "Core/Systems/CameraSystem.h"
-#include "Core/Components/CameraComponent.h"
-
-#include "Core/Systems/EditorCameraSystem.h"
-#include "AI/Systems/AgentMovementSystem.h"
-
 #include "Core/Serialization/Serializer.h"
-
-#include "Core/Components/PhysicsComponent.h"
-#include "Physics/Systems/PhysicsSystem.h"
-
+#include "Core/Systems/SystemInitializer.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
@@ -75,12 +61,8 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
 	m_serializer = new Serialization::Serializer();
-	
-	auto r = new RenderSystem(m_renderLayer);
-	auto c = new CameraSystem(m_renderLayer);
-	auto p = new Physics::PhysicsSystem();
-	auto eC = new Editor::EditorCameraSystem();
-	auto a = new AI::AgentMovementSystem();
+
+	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 
 	auto scripting = new Scripting::LuaScripting();
 	auto sS = new Scripting::ScriptSystem();
@@ -175,5 +157,10 @@ void Me::Meduza::Destroy()
 	if(m_serializer != nullptr)
 	{
 		delete m_serializer;
+	}
+
+	if(m_systemInitializer != nullptr)
+	{
+		delete m_systemInitializer;
 	}
 }

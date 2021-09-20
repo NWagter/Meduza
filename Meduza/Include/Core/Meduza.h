@@ -2,6 +2,8 @@
 namespace Me {
 
 	class Window;
+	class SystemInitializer;
+
 	namespace Event
 	{
 		class EventSystem;
@@ -55,6 +57,7 @@ namespace Me {
 
 		Renderer::RenderLayer* m_renderLayer;
 		Serialization::Serializer* m_serializer;
+		SystemInitializer* m_systemInitializer;
 
 #ifdef PLATFORM_WINDOWS
 		Editor::EditorRenderer* m_editor;

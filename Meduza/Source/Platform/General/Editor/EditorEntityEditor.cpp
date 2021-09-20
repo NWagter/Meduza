@@ -8,9 +8,12 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
-#include "Core/Components/PhysicsComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
+
+#include "Physics/Components/PhysicsComponent.h"
+
 #include "AI/Components/AgentComponent.h"
+#include "AI/Components/NavSurfaceComponent.h"
 
 #include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/ShaderLibrary.h"
@@ -358,6 +361,20 @@ void Me::Editor::EntityEditor::Draw()
             ImGui::DragFloat("AgentSpeed", &a_comp.m_agentSpeed);
             ImGui::DragFloat("AgentStopdistance", &a_comp.m_stopDistance);
         });
+
+        DrawComponent<AI::NavSurfaceComponent>(eManager, "NavSurface Component", m_selectedEntity, [](auto& a_comp)
+        {
+            Math::Vec2 gS = a_comp.m_gridSize;
+            Math::Vec2 cS = a_comp.m_cellSize;
+
+            Helper::EditorHelper::DrawVec2Prop("GridSize", a_comp.m_gridSize);
+            Helper::EditorHelper::DrawVec2Prop("CellSize", a_comp.m_cellSize);
+
+            if(gS != a_comp.m_gridSize || cS != a_comp.m_cellSize)
+            {
+                a_comp.OnChange();
+            }
+        });
     }
 
     if(eManager->EntityExists(m_selectedEntity) && ImGui::Button("Add Component"))
@@ -407,6 +424,12 @@ void Me::Editor::EntityEditor::Draw()
         {
             auto aComp = new AI::AgentComponent();
             eManager->AddComponent(m_selectedEntity, aComp);
+            ImGui::CloseCurrentPopup();
+        }
+        if(ImGui::MenuItem("Nav Surface Component"))
+        {
+            auto nSComp = new AI::NavSurfaceComponent();
+            eManager->AddComponent(m_selectedEntity, nSComp);
             ImGui::CloseCurrentPopup();
         }
 

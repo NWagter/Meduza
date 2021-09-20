@@ -2,6 +2,7 @@
 #include "AI/Systems/AgentMovementSystem.h"
 
 #include "Core/Components/TransformComponent.h"
+#include "AI/Components/AgentComponent.h"
 
 Me::AI::AgentMovementSystem::AgentMovementSystem()
 {

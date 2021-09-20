@@ -2,7 +2,7 @@
 #include "Physics/Collision.h"
 
 #include "Physics/Physics.h"
-#include "Core/Components/PhysicsComponent.h"
+#include "Physics/Components/PhysicsComponent.h"
 
 bool Me::Physics::Collision::CheckCollision(PhysicsBody* a_self, PhysicsBody* a_other, CollisionData& a_data)
 {

@@ -1,7 +1,7 @@
 #include "MePCH.h"
 #include "Physics/Systems/PhysicsSystem.h"
 
-#include "Core/Components/PhysicsComponent.h"
+#include "Physics/Components/PhysicsComponent.h"
 #include "Core/Components/TransformComponent.h"
 
 #include "Physics/Physics.h"

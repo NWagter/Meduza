@@ -16,6 +16,7 @@ enum class Components : uint16_t
     Editor,
     Scripting,
     AgentComponent,
+    NavSurfaceComponent,
     
     Game
 };

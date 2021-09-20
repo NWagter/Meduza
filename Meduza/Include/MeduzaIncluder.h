@@ -22,7 +22,7 @@
 #include "Core/Components/CameraComponent.h"
 ///------ Physics -------
 #include "Physics/Physics.h"
-#include "Core/Components/PhysicsComponent.h"
+#include "Physics/Components/PhysicsComponent.h"
 ///------ Library -------
 #include "Platform/General/MeshLibrary.h"
 #include "Platform/General/ShaderLibrary.h"

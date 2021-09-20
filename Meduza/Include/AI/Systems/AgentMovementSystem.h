@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ECS/BaseSystem.h"
-#include "AI/Components/AgentComponent.h"
 
 namespace Me
 {    
@@ -10,6 +9,8 @@ namespace Me
 
     namespace AI
     {
+        struct AgentComponent;
+
         class AgentMovementSystem : public BaseSystem<TransformComponent, AgentComponent>
         {
             public:

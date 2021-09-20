@@ -1,9 +1,6 @@
 #pragma once
 
 #include "ECS/BaseComponent.h"
-#include "ECS/EntityTypes.h"
-
-#include "Core/MeduzaCore.h"
 
 namespace Me
 {

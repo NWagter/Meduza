@@ -271,7 +271,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, Tran
 		Math::Mat4 rMat = Math::Mat4::Identity();
 		rMat.Rotation(rot);
 
-		Math::Mat4 view = rMat * pMat;
+		Math::Mat4 view = rMat * pMat.Inverse();;
 
 		// build projection and view matrix
 		Math::Mat4 projection = Math::GetProjectionMatrix(45.0f,

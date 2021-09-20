@@ -60,7 +60,7 @@ int Me::Scripting::LuaFunctions::lua_Move(lua_State* a_luaState)
 
     Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
     Me::Math::Vec3 forward = transform.GetForward() * x;
-    Me::Math::Vec3 right = transform.GetLeft() * -y;
+    Me::Math::Vec3 right = transform.GetRight() * y;
     Me::Math::Vec3 up = transform.GetUp() * z;
 
     Me::Math::Vec3 movement = forward + right + up;

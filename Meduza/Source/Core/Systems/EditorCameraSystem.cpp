@@ -91,8 +91,8 @@ void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
         Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
 
         Me::Math::Vec3 forward = transform.GetForward() * (forwardMovment * 10);
-        Me::Math::Vec3 right = transform.GetLeft() * (-rightMovment * 10);
-        Me::Math::Vec3 up = transform.GetUp() * (upMovment * -10);
+        Me::Math::Vec3 right = transform.GetRight() * (rightMovment * 10);
+        Me::Math::Vec3 up = transform.GetUp() * (upMovment * 10);
         Me::Math::Vec3 movement = forward + right + up;
 
         trans->m_translation = trans->m_translation + (movement * a_dt);

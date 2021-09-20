@@ -625,6 +625,11 @@ namespace Me
 				temp.m_33 = TriangleRule(m_00, m_01, m_02,
 					m_10, m_11, m_12,
 					m_20, m_21, m_22);
+				
+				for(int i = 0; i < 16;i++)
+				{
+					m_m[i] = temp.m_m[i];
+				}
 
 				return *this;
 			}
@@ -756,7 +761,7 @@ namespace Me
 				return *this;
 			}
 
-            inline Math::Vec3 GetLeft()
+            inline Math::Vec3 GetRight()
             {
                 Math::Vec3 right;
                 
@@ -782,9 +787,9 @@ namespace Me
             {
                 Math::Vec3 forward;
                 
-                forward.m_x = -m_20;
-                forward.m_y = -m_21;
-                forward.m_z = -m_22;
+                forward.m_x = m_20;
+                forward.m_y = m_21;
+                forward.m_z = m_22;
 
                 return forward.Normalize();
             }  

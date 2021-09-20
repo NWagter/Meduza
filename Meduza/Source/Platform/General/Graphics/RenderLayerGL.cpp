@@ -144,7 +144,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     Math::Mat4 pMat = Math::Mat4::Identity();
     pMat.SetPosition(a_transComp.m_translation);
 
-    Math::Mat4 view = rMat * pMat;
+    Math::Mat4 view = rMat * pMat.Inverse();
 
     Math::Mat4 camViewProjection = camMat * view;
     

@@ -8,6 +8,7 @@ debug/
 release/
 Intermediate/
 Executable/
+Documentation/
 
 # Prerequisites
 *.d

@@ -2,6 +2,8 @@
 
 #include "ECS/BaseComponent.h"
 
+#include "AI/NavField.h"
+
 namespace Me
 {
     namespace AI
@@ -12,18 +14,25 @@ namespace Me
             Me::Math::Vec2 m_cellSize;
 
             bool m_generated;
+            bool m_printGrid;
 
             static ComponentID s_componentID;
 
             void OnChange()
             {
                 m_generated = false;
-                ME_LOG("Nav Surface Recalc! \n");
+            }
+
+            NavField* Generate()
+            {
+                m_generated = true;
+                return new NavField(m_gridSize, m_cellSize);
             }
 
             NavSurfaceComponent()
             {
                 m_generated = false;
+                m_printGrid = false;
             }
         };
         

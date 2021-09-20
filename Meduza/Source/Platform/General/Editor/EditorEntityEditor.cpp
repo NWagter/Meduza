@@ -369,6 +369,11 @@ void Me::Editor::EntityEditor::Draw()
 
             Helper::EditorHelper::DrawVec2Prop("GridSize", a_comp.m_gridSize);
             Helper::EditorHelper::DrawVec2Prop("CellSize", a_comp.m_cellSize);
+            
+            if(ImGui::Button("Print Grid"))
+            {
+                a_comp.m_printGrid = true;
+            }
 
             if(gS != a_comp.m_gridSize || cS != a_comp.m_cellSize)
             {

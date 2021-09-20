@@ -9,8 +9,11 @@
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Systems/CameraSystem.h"
 #include "Core/Systems/EditorCameraSystem.h"
-#include "AI/Systems/AgentMovementSystem.h"
+
 #include "Physics/Systems/PhysicsSystem.h"
+
+#include "AI/Systems/AgentMovementSystem.h"
+#include "AI/Systems/NavSurfaceSystem.h"
 
 Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLayer)
 {
@@ -20,6 +23,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::PhysicsSystem());
 	m_systems.push_back(new Editor::EditorCameraSystem());
 	m_systems.push_back(new AI::AgentMovementSystem());
+	m_systems.push_back(new AI::NavSurfaceSystem());
 }
 
 Me::SystemInitializer::~SystemInitializer()

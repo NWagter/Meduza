@@ -7,6 +7,10 @@ namespace Me
     class Window;
     class WindowsWindow;
     class LinuxWindow;
+    class MousePickingSystem;
+
+    struct CameraComponent;
+    struct TransformComponent;
 
     namespace Event
     {
@@ -41,6 +45,7 @@ namespace Me
             void OnKeyEvent(KeyCode, KeyState);
             void OnMouseEvent(MouseButton, MouseEvent);
             void OnMouseMove(Math::Vec2);
+            void SetMouseWorldSpace(CameraComponent, TransformComponent);
 
             static EventSystem* ms_eventSystem;
 
@@ -53,6 +58,7 @@ namespace Me
         friend Window;
         friend WindowsWindow;
         friend LinuxWindow;
+        friend MousePickingSystem;
         };
 
     }    

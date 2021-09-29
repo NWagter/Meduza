@@ -2,6 +2,10 @@
 
 namespace Me
 {
+    
+    struct CameraComponent;
+    struct TransformComponent;
+
     namespace Event
     {
         class EventSystem;
@@ -21,6 +25,7 @@ namespace Me
                 void Clear();
                 void SetState(MouseButton, MouseEvent);
                 void SetPosition(Math::Vec2);
+                void SetWorldSpace(CameraComponent, TransformComponent);
 
                 std::map<MouseButton, MouseEvent> m_mouse;
                 Math::Vec2 m_position;

@@ -35,6 +35,7 @@
 					<value1>720</value1>
 				</Size>
 				<OrthoScale>10</OrthoScale>
+				<CameraLayer>0</CameraLayer>
 				<CameraType>1</CameraType>
 			</3>
 			<6>

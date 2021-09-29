@@ -18,6 +18,10 @@ Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 
 void Me::CameraSystem::OnUpdate(float a_dt)
 {
+    int lowestLayer = -1;    
+    CameraComponent* camera = nullptr;
+    TransformComponent* transform = nullptr;
+
     EntityManager* eManager = EntityManager::GetEntityManager();
 
     for(int i = 0; i < m_entities.size(); i++)
@@ -40,6 +44,17 @@ void Me::CameraSystem::OnUpdate(float a_dt)
         CameraComponent* cC = std::get<CameraComponent*>(m_components[i]);
         TransformComponent* tC = std::get<TransformComponent*>(m_components[i]);
         
-        m_renderLayer->SetCamera(*cC, *tC);
+        if(cC->m_cameralayer < lowestLayer || lowestLayer == -1)
+        {
+            lowestLayer = cC->m_cameralayer;
+
+            camera = cC;
+            transform = tC;
+        }
+    }
+
+    if(camera != nullptr && transform != nullptr)
+    {    
+        m_renderLayer->SetCamera(*camera, *transform);
     }
 }

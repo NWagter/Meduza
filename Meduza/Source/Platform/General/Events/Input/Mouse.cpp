@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/General/Events/Input/Mouse.h"
 
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
 
 Me::Event::Input::Mouse::Mouse()
 {
@@ -53,4 +55,9 @@ void Me::Event::Input::Mouse::SetState(MouseButton a_button, MouseEvent a_event)
 void Me::Event::Input::Mouse::SetPosition(Math::Vec2 a_pos)
 {
     m_position = a_pos;
+}
+
+void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent a_camera, TransformComponent a_trans)
+{
+    
 }

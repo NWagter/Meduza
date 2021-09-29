@@ -272,6 +272,7 @@ void Me::Editor::EntityEditor::Draw()
 
             ImGui::DragFloat("Near", &a_comp.m_near);
             ImGui::DragFloat("Far", &a_comp.m_far);
+            ImGui::DragInt("Camera Layer", &a_comp.m_cameralayer);
         });
 
         DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)

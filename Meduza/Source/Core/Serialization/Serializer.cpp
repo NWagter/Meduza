@@ -153,7 +153,9 @@ bool Serialize(std::string a_path)
             archive(cereal::make_nvp("Near", a_comp->m_near)); 
             archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
             archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
-            archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));           
+            archive(cereal::make_nvp("CameraLayer", a_comp->m_cameralayer)); 
+            archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));     
+                  
         }); 
         
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -287,6 +289,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             archive(cereal::make_nvp("Near", a_comp->m_near)); 
             archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
             archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
+            archive(cereal::make_nvp("CameraLayer", a_comp->m_cameralayer)); 
             int type = 0;
             archive(cereal::make_nvp("CameraType", type)); 
             a_comp->m_cameraType = (CameraType)type;

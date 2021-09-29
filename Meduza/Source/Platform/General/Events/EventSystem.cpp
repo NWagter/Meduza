@@ -5,6 +5,9 @@
 #include "Platform/General/Events/Input/Mouse.h"
 #include "Platform/General/Events/Input/Keyboard.h"
 
+#include "Core/Components/CameraComponent.h"
+#include "Core/Components/TransformComponent.h"
+
 Me::Event::EventSystem* Me::Event::EventSystem::ms_eventSystem = nullptr;
 
 Me::Event::EventSystem* Me::Event::EventSystem::Create(Window* a_window)
@@ -125,4 +128,8 @@ void Me::Event::EventSystem::OnMouseEvent(MouseButton a_button, MouseEvent a_eve
 void Me::Event::EventSystem::OnMouseMove(Math::Vec2 a_pos)
 {
     m_mouse->SetPosition(a_pos);
+}
+void Me::Event::EventSystem::SetMouseWorldSpace(CameraComponent a_camera, TransformComponent a_trans)
+{
+    m_mouse->SetWorldSpace(a_camera, a_trans);
 }

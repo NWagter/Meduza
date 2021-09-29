@@ -26,6 +26,7 @@ namespace Me
         float m_far;
 
         CameraType m_cameraType;
+        int m_cameralayer;
         
         static ComponentID s_componentID;
     };

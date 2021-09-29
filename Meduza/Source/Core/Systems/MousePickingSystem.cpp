@@ -8,7 +8,7 @@
 
 Me::MousePickingSystem::MousePickingSystem()
 {
-
+    m_executeMask = EXECUTE_ALL;
 }
 
 void Me::MousePickingSystem::OnUpdate(float a_dt)

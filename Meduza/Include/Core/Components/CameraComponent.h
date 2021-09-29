@@ -18,6 +18,7 @@ namespace Me
             m_far = 1000;
             m_orthoScale = 10;
             m_cameraType = CameraType::Orthographic;
+            m_cameralayer = 0;
         }
 
         Math::Vec2 m_size;

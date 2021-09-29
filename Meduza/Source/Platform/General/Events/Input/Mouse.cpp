@@ -59,5 +59,6 @@ void Me::Event::Input::Mouse::SetPosition(Math::Vec2 a_pos)
 
 void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent a_camera, TransformComponent a_trans)
 {
-    
+    float x = (m_position.m_x * 2) / a_camera.m_size.m_x;
+    float y = (m_position.m_y * 2) / a_camera.m_size.m_y;
 }

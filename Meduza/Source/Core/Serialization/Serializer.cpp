@@ -161,8 +161,22 @@ bool Serialize(std::string a_path)
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));   
-            archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));        
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));
+            archive(cereal::make_nvp("Collision_Type", (int)a_comp->m_collisionType));   
+            archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));
+
+            switch (a_comp->m_body->m_bodyType)
+            {
+            case Me::Physics::BodyType::Cirlce:
+            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyCircle*>(a_comp->m_body)->m_radius));
+                break;
+            case Me::Physics::BodyType::Box2D:
+            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyBox2D*>(a_comp->m_body)->m_size.m_xy));
+                break;
+            case Me::Physics::BodyType::Box3D:
+            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyBox3D*>(a_comp->m_body)->m_size.m_xyz));
+                break;
+            }        
         }); 
 
         CanSerialize<Me::Scripting::ScriptComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -304,14 +318,28 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
             if((Physics::BodyType)bodyType == Physics::BodyType::Box2D)
             {
-                a_comp->m_body = new Physics::BodyBox2D();
+                Me::Math::Vec2 size;
+                archive(cereal::make_nvp("Body_Scale", size.m_xy)); 
+                a_comp->m_body = new Physics::BodyBox2D(size);
             }
             else if((Physics::BodyType)bodyType == Physics::BodyType::Cirlce)
             {
-                a_comp->m_body = new Physics::BodyCircle();
+                float radius;
+                archive(cereal::make_nvp("Body_Scale", radius)); 
+                a_comp->m_body = new Physics::BodyCircle(radius);
+            }
+            else if((Physics::BodyType)bodyType == Physics::BodyType::Box3D)
+            {
+                Me::Math::Vec3 size;
+                archive(cereal::make_nvp("Body_Scale", size.m_xyz));
+                a_comp->m_body = new Physics::BodyBox3D(size);
             }
 
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));     
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));  
+            int collisionType = 0;  
+            archive(cereal::make_nvp("Collision_Type", collisionType));
+            a_comp->m_collisionType = (Me::Physics::CollisionType)collisionType;
+
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;   
         

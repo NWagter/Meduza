@@ -18,11 +18,18 @@ namespace Me
         enum class BodyType : uint16_t
         {
             Cirlce = 0,
-            Box2D
+            Box2D,
+            Box3D
         };
         
 
         using PhysicsLayerID = uint16_t;
+
+        struct Ray
+        {
+            Math::Vec3 m_origin;
+            Math::Vec3 m_direction;
+        };
 
         struct CollisionData
         {
@@ -53,6 +60,10 @@ namespace Me
             Me::Math::Vec2 m_size = Me::Math::Vec2(1,1);
 
             BodyBox2D() : PhysicsBody(BodyType::Box2D) {}
+            BodyBox2D(Me::Math::Vec2 a_size) : PhysicsBody(BodyType::Box2D) 
+            {
+                m_size = a_size;
+            }
         };
 
         struct BodyCircle : public PhysicsBody
@@ -60,6 +71,22 @@ namespace Me
             float m_radius = 1.0f;
 
             BodyCircle() : PhysicsBody(BodyType::Cirlce){}
+            BodyCircle(float a_radius) : PhysicsBody(BodyType::Cirlce) 
+            {
+                m_radius = a_radius;
+            }
+        };
+    
+        struct BodyBox3D : public PhysicsBody
+        {
+            Me::Math::Vec3 m_size = Me::Math::Vec3(1,1,1);
+
+            BodyBox3D() : PhysicsBody(BodyType::Box3D) {}
+            
+            BodyBox3D(Me::Math::Vec3 a_size) : PhysicsBody(BodyType::Box3D)
+            {
+                m_size = a_size;
+            }
         };
     }
 }

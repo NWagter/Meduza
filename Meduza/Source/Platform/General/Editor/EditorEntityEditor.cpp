@@ -283,7 +283,7 @@ void Me::Editor::EntityEditor::Draw()
             {
                 ImGui::DragFloat("Mass", &a_comp.m_body->m_bodyMass);
 
-                const char* bodies[] = {"Circle", "Box2D"};
+                const char* bodies[] = {"Circle", "Box2D", "Box3D"};
                 int bodyType = (int)a_comp.m_body->m_bodyType;
 
                 Physics::BodyType newBodyType = (Physics::BodyType)bodyType;
@@ -319,11 +319,53 @@ void Me::Editor::EntityEditor::Draw()
                     {
                         newBody = new Physics::BodyCircle();
                     }
+                    if(newBodyType == Physics::BodyType::Box3D)
+                    {
+                        newBody = new Physics::BodyBox3D();
+                    }
                     newBody->m_bodyMass = a_comp.m_body->m_bodyMass;
 
                     a_comp.m_body = newBody;
                 }
+                
+                switch (a_comp.m_body->m_bodyType)
+                {
+                case Physics::BodyType::Box2D:                    
+                    Helper::EditorHelper::DrawVec2Prop("BodySize", static_cast<Physics::BodyBox2D*>(a_comp.m_body)->m_size);
+                    break;
+                case Physics::BodyType::Cirlce:                   
+                    ImGui::DragFloat("Radius", &static_cast<Physics::BodyCircle*>(a_comp.m_body)->m_radius);
+                    break;
+                
+                case Physics::BodyType::Box3D:                    
+                    Helper::EditorHelper::DrawVec3Prop("BodySize", static_cast<Physics::BodyBox3D*>(a_comp.m_body)->m_size);
+                    break;
+                }
+                
                 ImGui::TreePop();
+            }
+        
+
+            int collisionType = (int)a_comp.m_collisionType;
+            const char* collisionTypes[] = {"Overlap", "Block"};
+
+            if(ImGui::BeginCombo("CollisionType", collisionTypes[collisionType]))
+            {
+                for(int i = 0; i < (sizeof(collisionTypes)/sizeof(*collisionTypes)); i++)
+                {
+                    bool isSelected = collisionTypes[collisionType] == collisionTypes[i];
+
+                    if(ImGui::Selectable(collisionTypes[i], isSelected))
+                    {
+                        a_comp.m_collisionType = (Physics::CollisionType)i;
+                    }
+
+                    if(isSelected)
+                    {
+                        ImGui::SetItemDefaultFocus();
+                    }
+                }
+                ImGui::EndCombo();
             }
         });
 

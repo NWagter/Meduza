@@ -681,6 +681,18 @@ namespace Me
 				return *this;
 			}
 
+			inline Vec4 operator *(const Vec4& a_rhs)
+			{
+				Vec4 value;
+
+				value.m_x = a_rhs.m_x * m_00 + a_rhs.m_x * m_10 + a_rhs.m_x * m_20 + a_rhs.m_x * m_30;
+				value.m_y = a_rhs.m_y * m_01 + a_rhs.m_y * m_11 + a_rhs.m_y * m_21 + a_rhs.m_y * m_31;
+				value.m_z = a_rhs.m_z * m_02 + a_rhs.m_z * m_12 + a_rhs.m_z * m_22 + a_rhs.m_z * m_32;
+				value.m_w = a_rhs.m_w * m_03 + a_rhs.m_w * m_13 + a_rhs.m_w * m_23 + a_rhs.m_w * m_33;
+
+				return value;
+			}
+
 			inline Mat4& Rotation(Vec3 a_rotation)
 			{
 				Mat4 newRotMat = Mat4::Identity();
@@ -772,7 +784,7 @@ namespace Me
                 return right.Normalize();
             }    
 
-            Math::Vec3 GetUp()
+            inline Math::Vec3 GetUp()
             {
                 Math::Vec3 up;
                 
@@ -783,7 +795,7 @@ namespace Me
                 return up.Normalize();
             }
 
-            Math::Vec3 GetForward()
+            inline Math::Vec3 GetForward()
             {
                 Math::Vec3 forward;
                 
@@ -793,6 +805,8 @@ namespace Me
 
                 return forward.Normalize();
             }  
+
+			
 
 		private:
 			inline void RotateX(float a_radians)

@@ -33,15 +33,15 @@ bool Me::Physics::Collision::Box2DToBox2D(BodyBox2D* a_self, BodyBox2D* a_other,
 {
     // box2d to box2d collision check
     Math::Vec3 sPos = a_self->m_position;
-    float sSize = a_self->m_uniformScale;
+    Math::Vec2 sSize = a_self->m_size;
 
     Math::Vec3 oPos = a_other->m_position;
-    float oSize = a_other->m_uniformScale;
+    Math::Vec2 oSize = a_other->m_size;
 
-    if((sPos.m_x < oPos.m_x + oSize)
-        && (sPos.m_x + sSize > oPos.m_x)
-        && (sPos.m_y < oPos.m_y + oSize)
-        && (sPos.m_y + sSize > oPos.m_y))
+    if((sPos.m_x < oPos.m_x + oSize.m_x)
+        && (sPos.m_x + sSize.m_x > oPos.m_x)
+        && (sPos.m_y < oPos.m_y + oSize.m_y)
+        && (sPos.m_y + sSize.m_y > oPos.m_y))
     {
         
         a_data.m_hitNormal = (sPos - oPos).Normalize();

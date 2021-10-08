@@ -6,6 +6,11 @@ namespace Me
     struct CameraComponent;
     struct TransformComponent;
 
+    namespace Physics
+    {
+        struct Ray;
+    }
+
     namespace Event
     {
         class EventSystem;
@@ -19,6 +24,7 @@ namespace Me
 
                 MouseEvent State(MouseButton);
                 Math::Vec2 GetPosition();
+                Physics::Ray GetScreenRay();
 
 
             private:
@@ -29,6 +35,7 @@ namespace Me
 
                 std::map<MouseButton, MouseEvent> m_mouse;
                 Math::Vec2 m_position;
+                Physics::Ray* m_screenRay;
 
             friend EventSystem;
             };

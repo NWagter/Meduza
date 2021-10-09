@@ -61,12 +61,16 @@ void Me::Editor::EditorToolbar::Draw()
             }
             if(ImGui::MenuItem("Save"))
             {
+                Meduza::ms_engineState = RUN_EDITOR; 
+
                 #ifdef PLATFORM_WINDOWS
                     Serialization::Serializer::GetInstance()->SerializeScene();
                 #endif
             }
             if(ImGui::MenuItem("Save as"))
             {
+                Meduza::ms_engineState = RUN_EDITOR; 
+                
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::SaveFile(
                     "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
@@ -83,7 +87,9 @@ void Me::Editor::EditorToolbar::Draw()
                 #endif
             }
             if(ImGui::MenuItem("Load"))
-            {         
+            {        
+                Meduza::ms_engineState = RUN_EDITOR; 
+
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::OpenFile(
                     "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
@@ -194,7 +200,7 @@ void Me::Editor::EditorToolbar::Draw()
                 
                 Meduza::ms_engineState = RUN_GAME;
             }
-            
+
             if(ImGui::Button(ICON_FA_CAMERA))
             {
                 EntityFilter filter;

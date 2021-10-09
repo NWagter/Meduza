@@ -47,6 +47,7 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
 void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 {
     m_renderables.clear();
+    m_debugRenderables.clear();
     glViewport(0,0, m_context->m_width, m_context->m_height);
     glClearColor(a_colour.m_colour[0],
                  a_colour.m_colour[1],
@@ -105,6 +106,39 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glBindVertexArray(0);
         t->UnBind();
     }
+
+    for(auto r : m_debugRenderables)
+    {
+        auto renderComp = r->m_debugRenderComponent;        
+		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(renderComp->m_shader));
+        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(renderComp->m_mesh));
+
+        if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
+		{
+            if(s != nullptr)
+            {
+                m_activeShader = s;
+                m_activeShader->Bind();
+            }
+            else
+            {
+                continue;
+            }
+		}
+        
+        m_activeShader->SetMat4("u_model", r->m_modelMatrix, false);
+        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
+
+        m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_debugColour.m_colour));
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glBindVertexArray(m->GetVAO());
+        glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
+
+        glBindVertexArray(0);
+    }
     
 }
 
@@ -117,6 +151,17 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
     m_renderables.push_back(r);
+}
+
+void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_renderable, TransformComponent& a_trans)
+{
+    DebugRenderable* r = new DebugRenderable();
+    r->m_debugRenderComponent = &a_renderable;
+    //r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
+
+    r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
+
+    m_debugRenderables.push_back(r);
 }
 
 void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)

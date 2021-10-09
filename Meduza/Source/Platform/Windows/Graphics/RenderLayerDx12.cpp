@@ -234,6 +234,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 }
 
+void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent&, TransformComponent&)
+{
+
+}
+
 void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent& a_trans)
 {
 	if(a_cam.m_cameraType == CameraType::Orthographic)

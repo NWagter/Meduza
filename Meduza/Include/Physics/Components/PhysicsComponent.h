@@ -10,28 +10,22 @@ namespace Me
     {
         struct PhysicsComponent : public BaseComponent
         {
-            friend class PhysicsSystem;
-
-            private:
             std::vector<CollisionData> m_collided;
             std::vector<CollisionData> m_triggered;
-            public:
-            const std::vector<CollisionData>& GetCollisionData() {return m_collided;}
-            const std::vector<CollisionData>& GetTriggeredData() {return m_triggered;}
-            CollisionType m_collisionType;
-
-            PhysicsLayerID m_physicsLayerId;
             
-            PhysicsBody* m_body;
+            Math::Vec3 m_position = Math::Vec3(0,0,0);
+            Math::Vec3 m_rotation = Math::Vec3(0,0,0);
+
+            float m_bodyMass = 10.0f;
+            float m_gravityForce;
+
             bool m_gravity = true;
 
             static ComponentID s_componentID;
 
             PhysicsComponent()
             {
-                m_body = new BodyBox2D();
-                m_collisionType = CollisionType::Block;
-                m_physicsLayerId = 0;
+                m_gravityForce = gs_gravity;
             }
         };
     }

@@ -14,23 +14,18 @@ Me::Physics::PhysicsSystem::PhysicsSystem()
 
 void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 {
-
-    auto physicsObjects = EntityManager::GetEntityManager()->GetComponents<PhysicsComponent>();
-
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
-        TagComponent* tag = std::get<TagComponent*>(compTuple);
 
-        //Clear Collision Data at start and fill in the collision loop
         pC->m_collided.clear();
         pC->m_triggered.clear();
 
-        Math::Vec3 newPos = tC->m_translation;
-        Math::Vec3 newRot = tC->m_rotation;
-        bool applyGravity = true;
+        pC->m_position = tC->m_translation;
+        pC->m_rotation = tC->m_rotation;
 
+        /*
         for(auto ph : physicsObjects)
         {
             auto physicsComponent = ph.second;
@@ -45,7 +40,7 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 
             if(Collision::CheckCollision(pC->m_body, physicsComponent->m_body, data))
             {
-                data.m_physicsLayerId = physicsComponent->m_physicsLayerId;
+                data.m_collisionLayerID = physicsComponent->m_collisionLayerID;
 
                 //Add collisionData
                 if(pC->m_collisionType == CollisionType::Block)
@@ -56,7 +51,7 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
                     //Block Movement
                     if(std::abs(data.m_hitNormal.m_y) > 0.01f)
                     {
-                        float gravity = pC->m_body->m_gravity;
+                        float gravity = pC->m_body->m_gravityForce;
 
                         if(gravity < 0 && (data.m_hitNormal.m_y < 0))
                         {
@@ -84,10 +79,8 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 
         if(pC->m_gravity && applyGravity)
         {
-            newPos.m_y -= ((pC->m_body->m_bodyMass * pC->m_body->m_gravity) * a_dT);
+            newPos.m_y -= ((pC->m_bodyMass * pC->m_gravityForce) * a_dT);
         }
-
-        pC->m_body->m_position = tC->m_translation = newPos;
-        pC->m_body->m_rotation = tC->m_rotation = newRot;
+        */
     }
 }

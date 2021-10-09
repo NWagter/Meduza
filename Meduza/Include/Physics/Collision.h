@@ -2,25 +2,31 @@
 
 #include "Math/MeduzaMath.h"
 
+using ComponentID = uint64_t;
+
 namespace Me
 {
     namespace Physics
     {
         struct CollisionData;
-        struct PhysicsBody;
-        struct BodyBox2D;
-        struct BodyCircle;
+        struct PhysicsComponent;
+        struct ColliderComponent;
+        struct BoxCollider2DComponent;
+        struct BoxCollider3DComponent;
 
         class Collision
         {
         public:
-            static bool CheckCollision(PhysicsBody*, PhysicsBody*, CollisionData& a_data);
+
+            static bool CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data);
 
             // ==== 2D collision Checks
-            static bool Box2DToBox2D(BodyBox2D*, BodyBox2D*, CollisionData& a_data);
+            static bool Box2DToBox2D(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_colliders[2], CollisionData& a_data);
+/*
             static bool Box2DToCircle(BodyBox2D*, BodyCircle*, CollisionData& a_data);
             static bool CircleToBox2D(BodyCircle*, BodyBox2D*, CollisionData& a_data);
             static bool CircleToCircle(BodyCircle*, BodyCircle*, CollisionData& a_data);
-        };  
+*/ 
+        }; 
     }
 }

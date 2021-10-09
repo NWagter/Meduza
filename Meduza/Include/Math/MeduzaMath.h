@@ -44,6 +44,8 @@ namespace Me
 				m_y = static_cast<float>(a_y);
 			}
 
+			Vec2(const Vec3& a_rhs);
+
 			inline Vec2& operator=(const Vec2& a_rhs)
 			{
 				m_x = a_rhs[0];
@@ -52,6 +54,7 @@ namespace Me
 				return *this;
 			}
 			inline Vec2& operator=(const Vec3& a_rhs);
+
 			inline Vec2& operator+=(const Vec2& a_rhs)
 			{
 				m_x = m_x + a_rhs[0];
@@ -234,6 +237,15 @@ namespace Me
 
 				return *this;
 			}
+			
+			inline Vec3& operator+=(const Vec2& a_rhs)
+			{
+				m_x = m_x + a_rhs[0];
+				m_y = m_y + a_rhs[1];
+
+				return *this;
+			}
+
 			inline Vec3& operator-=(const Vec3& a_rhs)
 			{
 				m_x = m_x - a_rhs[0];
@@ -304,7 +316,17 @@ namespace Me
 				float z = m_z + a_rhs.m_z;
 
 				return Vec3(x, y, z);
+			}			
+			
+			inline Vec3 operator+(const Vec2& a_rhs)
+			{				
+				float x = m_x + a_rhs.m_x;
+				float y = m_y + a_rhs.m_y;
+				float z = m_z;
+
+				return Vec3(x,y,z);
 			}
+
 			inline Vec3 operator-(const Vec3& a_rhs)
 			{
 				float x = m_x - a_rhs.m_x;

@@ -10,11 +10,20 @@ enum class Components : uint16_t
 {
     Tag,
     Transform,
-    Render,
-    Camera,
-    Physics,
     Editor,
+
+    Render,
+    DebugRender,
+
+    Camera,
+
     Scripting,
+
+    Physics,
+    Collider,
+    BoxCollider2D,
+    BoxCollider3D,
+
     AgentComponent,
     NavSurfaceComponent,
     

@@ -10,10 +10,10 @@ namespace Me
     {        
         struct PhysicsComponent;
 
-        class PhysicsSystem : public BaseSystem<PhysicsComponent,TransformComponent>
+        class GravitySystem : public BaseSystem<PhysicsComponent,TransformComponent>
         {
         public:
-            PhysicsSystem();
+            GravitySystem();
             
         protected:
             void OnUpdate(float) override;

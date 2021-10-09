@@ -4,6 +4,7 @@ namespace Me
     class Window;
 
     struct RenderComponent;
+    struct DebugRenderComponent;
     struct CameraComponent;
     struct TransformComponent;
 
@@ -20,6 +21,7 @@ namespace Me
                 virtual void Populate() = 0;
                 virtual void Present() = 0;
                 virtual void Submit(RenderComponent&, TransformComponent&) = 0;
+                virtual void DebugSubmit(DebugRenderComponent&, TransformComponent&) = 0;
                 virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}

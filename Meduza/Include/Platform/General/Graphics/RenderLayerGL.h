@@ -30,6 +30,12 @@ namespace Me
                     RenderComponent* m_renderComponent;
                     Math::Mat4 m_modelMatrix;
                 };
+
+                struct DebugRenderable
+                {
+                    DebugRenderComponent* m_debugRenderComponent;
+                    Math::Mat4 m_modelMatrix;
+                };
                 
                 struct Camera
                 {
@@ -43,6 +49,7 @@ namespace Me
                 void Populate() override;    
                 void Present() override;                
                 void Submit(RenderComponent&, TransformComponent&) override;
+                void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
                 Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
@@ -53,6 +60,7 @@ namespace Me
                 Context* m_context;
 
                 std::vector<Renderable*> m_renderables;
+                std::vector<DebugRenderable*> m_debugRenderables;
                 Resources::GL::Shader* m_activeShader;
                 Camera* m_camera;
             };

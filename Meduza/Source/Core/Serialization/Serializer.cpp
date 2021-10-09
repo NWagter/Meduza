@@ -10,6 +10,8 @@
 #include "Core/Scripting/ScriptComponent.h"
 
 #include "Physics/Components/PhysicsComponent.h"
+#include "Physics/Components/BoxCollider2DComponent.h"
+#include "Physics/Components/BoxCollider3DComponent.h"
 
 #include "AI/Components/AgentComponent.h"
 
@@ -160,24 +162,24 @@ bool Serialize(std::string a_path)
         
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
-            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));
-            archive(cereal::make_nvp("Body_Gravity", a_comp->m_body->m_gravity));  
-            archive(cereal::make_nvp("Collision_Type", (int)a_comp->m_collisionType));   
-            archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
+            archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));     
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));    
+        }); 
 
-            switch (a_comp->m_body->m_bodyType)
-            {
-            case Me::Physics::BodyType::Cirlce:
-            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyCircle*>(a_comp->m_body)->m_radius));
-                break;
-            case Me::Physics::BodyType::Box2D:
-            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyBox2D*>(a_comp->m_body)->m_size.m_xy));
-                break;
-            case Me::Physics::BodyType::Box3D:
-            archive(cereal::make_nvp("Body_Scale", static_cast<Me::Physics::BodyBox3D*>(a_comp->m_body)->m_size.m_xyz));
-                break;
-            }        
+        CanSerialize<Me::Physics::BoxCollider2DComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));    
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));   
+        }); 
+        CanSerialize<Me::Physics::BoxCollider3DComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));  
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xyz)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
         }); 
 
         CanSerialize<Me::Scripting::ScriptComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -313,36 +315,33 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
-            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));   
-            int bodyType = 0;  
-            archive(cereal::make_nvp("Body_Type", bodyType));  
-
-            if((Physics::BodyType)bodyType == Physics::BodyType::Box2D)
-            {
-                Me::Math::Vec2 size;
-                archive(cereal::make_nvp("Body_Scale", size.m_xy)); 
-                a_comp->m_body = new Physics::BodyBox2D(size);
-            }
-            else if((Physics::BodyType)bodyType == Physics::BodyType::Cirlce)
-            {
-                float radius;
-                archive(cereal::make_nvp("Body_Scale", radius)); 
-                a_comp->m_body = new Physics::BodyCircle(radius);
-            }
-            else if((Physics::BodyType)bodyType == Physics::BodyType::Box3D)
-            {
-                Me::Math::Vec3 size;
-                archive(cereal::make_nvp("Body_Scale", size.m_xyz));
-                a_comp->m_body = new Physics::BodyBox3D(size);
-            }
-
-            archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));  
-            archive(cereal::make_nvp("Body_Gravity", a_comp->m_body->m_gravity));  
-            int collisionType = 0;  
-            archive(cereal::make_nvp("Collision_Type", collisionType));
-            a_comp->m_collisionType = (Me::Physics::CollisionType)collisionType;
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
+            archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));  
+            archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));  
 
             eManager->AddComponent(ent, a_comp); 
+        })) compAmount--;   
+
+        if(CanDeserialize<Physics::BoxCollider2DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy)); 
+
+            eManager->AddComponent(ent, a_comp); 
+            eManager->AddComponent<DebugRenderComponent>(ent);
+        })) compAmount--;   
+
+        if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xyz)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+
+            eManager->AddComponent(ent, a_comp); 
+            eManager->AddComponent<DebugRenderComponent>(ent);
         })) compAmount--;   
         
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)

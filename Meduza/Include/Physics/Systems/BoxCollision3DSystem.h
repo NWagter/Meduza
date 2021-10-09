@@ -9,11 +9,12 @@ namespace Me
     namespace Physics
     {        
         struct PhysicsComponent;
+        struct BoxCollider3DComponent;
 
-        class PhysicsSystem : public BaseSystem<PhysicsComponent,TransformComponent>
+        class BoxCollision3DSystem : public BaseSystem<PhysicsComponent, BoxCollider3DComponent>
         {
         public:
-            PhysicsSystem();
+            BoxCollision3DSystem();
             
         protected:
             void OnUpdate(float) override;

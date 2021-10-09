@@ -15,7 +15,7 @@ bool Me::Physics::Collision::CheckCollision(PhysicsComponent* a_physics[2], Coll
     
     for(int i = 0; i < 2;i++)
     {
-        switch (a_componentIds[i])
+        switch (static_cast<Components>(a_componentIds[i]))
         {
         case Components::BoxCollider2D:
             types[i] = BodyType::Box2D;

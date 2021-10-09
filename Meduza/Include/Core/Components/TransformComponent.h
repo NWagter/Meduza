@@ -33,6 +33,13 @@ namespace Me
                 return translationMat * rotationMat * scaleMat;
             }
             
+            void Reset() override
+            {
+                m_translation = Math::Vec3(0,0,0);
+                m_rotation = Math::Vec3(0,0,0);
+                m_scale = Math::Vec3(0,0,0);
+            }
+
             static ComponentID s_componentID;
     };
 }

@@ -20,6 +20,13 @@ namespace Me
             m_cameraType = CameraType::Orthographic;
             m_cameralayer = 0;
         }
+        void Reset() override
+        {
+            m_near = -0.1f;
+            m_far = 1000;
+            m_orthoScale = 10;
+            m_cameralayer = 0;
+        }
 
         Math::Vec2 m_size;
         float m_orthoScale;

@@ -21,6 +21,7 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
+        TagComponent* tag = std::get<TagComponent*>(compTuple);
 
         //Clear Collision Data at start and fill in the collision loop
         pC->m_collided.clear();
@@ -49,12 +50,19 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
                 //Add collisionData
                 if(pC->m_collisionType == CollisionType::Block)
                 {
+
                     pC->m_collided.push_back(data);
 
                     //Block Movement
                     if(std::abs(data.m_hitNormal.m_y) > 0.01f)
                     {
-                        if(data.m_hitNormal.m_y > 0.01f) // ground check
+                        float gravity = pC->m_body->m_gravity;
+
+                        if(gravity < 0 && (data.m_hitNormal.m_y < 0))
+                        {
+                            applyGravity = false;
+                        }
+                        else if(gravity > 0 && (data.m_hitNormal.m_y > 0)) // gravity check
                         {
                             applyGravity = false;
                         }
@@ -76,7 +84,7 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 
         if(pC->m_gravity && applyGravity)
         {
-            newPos.m_y -= ((pC->m_body->m_bodyMass * gs_Gravity) * a_dT);
+            newPos.m_y -= ((pC->m_body->m_bodyMass * pC->m_body->m_gravity) * a_dT);
         }
 
         pC->m_body->m_position = tC->m_translation = newPos;

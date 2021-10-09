@@ -278,10 +278,25 @@ void Me::Editor::EntityEditor::Draw()
         DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)
         {
             ImGui::Checkbox("Gravity", &a_comp.m_gravity);
+
+            bool shape2D = true;
+            if(a_comp.m_body->m_bodyType == Physics::BodyType::Box3D)
+            {
+                shape2D = false;
+            }
+            if(shape2D)
+            {
+                ImGui::DragFloat("GravityForce", &a_comp.m_body->m_gravity);
+            }
+
             bool open = ImGui::TreeNode("Body");
             if(open)
             {
                 ImGui::DragFloat("Mass", &a_comp.m_body->m_bodyMass);
+                if(a_comp.m_body->m_bodyMass < 0.0001f)
+                {
+                    a_comp.m_body->m_bodyMass = 0.0001f;
+                }
 
                 const char* bodies[] = {"Circle", "Box2D", "Box3D"};
                 int bodyType = (int)a_comp.m_body->m_bodyType;

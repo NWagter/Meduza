@@ -162,6 +162,7 @@ bool Serialize(std::string a_path)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
             archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));
+            archive(cereal::make_nvp("Body_Gravity", a_comp->m_body->m_gravity));  
             archive(cereal::make_nvp("Collision_Type", (int)a_comp->m_collisionType));   
             archive(cereal::make_nvp("Body_Type", (int)a_comp->m_body->m_bodyType));
 
@@ -336,6 +337,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             }
 
             archive(cereal::make_nvp("Body_Mass", a_comp->m_body->m_bodyMass));  
+            archive(cereal::make_nvp("Body_Gravity", a_comp->m_body->m_gravity));  
             int collisionType = 0;  
             archive(cereal::make_nvp("Collision_Type", collisionType));
             a_comp->m_collisionType = (Me::Physics::CollisionType)collisionType;

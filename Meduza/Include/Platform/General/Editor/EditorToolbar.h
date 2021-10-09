@@ -5,6 +5,7 @@
 namespace Me
 {
     class Window;
+    enum class CameraType : int;
 
     namespace Editor
     {
@@ -19,6 +20,7 @@ namespace Me
 
             private:
                 Window* m_window;
+                CameraType m_activeCameraType;
 
         };
     }

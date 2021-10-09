@@ -10,7 +10,7 @@ namespace Me
     {        
         struct PhysicsComponent;
 
-        class PhysicsSystem : public BaseSystem<PhysicsComponent,TransformComponent>
+        class PhysicsSystem : public BaseSystem<TagComponent, PhysicsComponent,TransformComponent>
         {
         public:
             PhysicsSystem();

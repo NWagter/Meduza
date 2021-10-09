@@ -7,7 +7,7 @@ namespace Me
 {
     namespace Physics
     {
-        static constexpr float gs_Gravity = 9.8f;
+        static constexpr float gs_gravity = 9.8f;
 
         enum class CollisionType : uint16_t
         {
@@ -46,12 +46,14 @@ namespace Me
             float m_uniformScale = 1;
 
             float m_bodyMass = 10.0f;
+            float m_gravity;
 
             BodyType m_bodyType;
 
             PhysicsBody(BodyType a_type)
             {
                 m_bodyType = a_type;
+                m_gravity = gs_gravity;
             }
         };
 

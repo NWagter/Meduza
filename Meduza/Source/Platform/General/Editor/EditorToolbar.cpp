@@ -5,6 +5,7 @@
 
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/RenderComponent.h"
+#include "Core/Components/CameraComponent.h"
 
 #include "Platform/General/ShaderLibrary.h"
 
@@ -23,6 +24,7 @@
 Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
 {
     m_window = &a_window;
+    m_activeCameraType = CameraType::Perspective;
 }
 
 Me::Editor::EditorToolbar::~EditorToolbar()
@@ -192,6 +194,40 @@ void Me::Editor::EditorToolbar::Draw()
                 
                 Meduza::ms_engineState = RUN_GAME;
             }
+            
+            if(ImGui::Button(ICON_FA_CAMERA))
+            {
+                EntityFilter filter;
+                filter.insert(CameraComponent::s_componentID);
+                filter.insert(EditorComponent::s_componentID);
+                auto entities = eManager->GetEntities(filter);
+
+                for(auto ent : entities)
+                {
+                    auto cameraComp = eManager->GetComponent<CameraComponent>(ent);
+                    auto transformComp = eManager->GetComponent<TransformComponent>(ent);
+                    
+                    if(m_activeCameraType == CameraType::Perspective)
+                    {
+                        m_activeCameraType = cameraComp->m_cameraType = CameraType::Orthographic;                        
+                    } 
+                    else
+                    {
+                        m_activeCameraType =cameraComp->m_cameraType = CameraType::Perspective;
+                    }
+
+                    transformComp->Reset();
+                    cameraComp->Reset();
+                }
+            }
+            
+            std::string cameraType = "Perspective";
+            if(m_activeCameraType == CameraType::Orthographic)
+            {
+                cameraType = "Orthographic";
+            }
+
+            ImGui::Text(cameraType.c_str());
         }
         else if(Meduza::GetEngineState() & RUN_GAME)
         {        

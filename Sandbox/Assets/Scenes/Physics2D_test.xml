@@ -4,7 +4,7 @@
 		<EntityAmount>3</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>14</EntityID>
+		<EntityID>26</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
@@ -43,8 +43,8 @@
 			</6>
 		</value0>
 		<Entity>
-			<EntityID>15</EntityID>
-			<ComponentAmount>5</ComponentAmount>
+			<EntityID>27</EntityID>
+			<ComponentAmount>6</ComponentAmount>
 			<value0>
 				<0>
 					<Tag>Quad_Red</Tag>
@@ -88,8 +88,8 @@
 					<CollisionType>1</CollisionType>
 					<CollisionLayer>0</CollisionLayer>
 					<CollisionScale>
-						<value0>1</value0>
-						<value1>1</value1>
+						<value0>1.0099999904632568</value0>
+						<value1>1.0099999904632568</value1>
 					</CollisionScale>
 					<CollisionOffset>
 						<value0>0</value0>
@@ -98,8 +98,8 @@
 				</9>
 			</value0>
 			<Entity>
-				<EntityID>16</EntityID>
-				<ComponentAmount>5</ComponentAmount>
+				<EntityID>28</EntityID>
+				<ComponentAmount>6</ComponentAmount>
 				<value0>
 					<0>
 						<Tag>Quad_Blue</Tag>
@@ -137,14 +137,14 @@
 					<7>
 						<Gravity>true</Gravity>
 						<Body_Gravity>9.8000001907348633</Body_Gravity>
-						<Body_Mass>10</Body_Mass>
+						<Body_Mass>0.80000001192092896</Body_Mass>
 					</7>
 					<9>
 						<CollisionType>1</CollisionType>
 						<CollisionLayer>0</CollisionLayer>
 						<CollisionScale>
-							<value0>1</value0>
-							<value1>1</value1>
+							<value0>1.0099999904632568</value0>
+							<value1>1.0099999904632568</value1>
 						</CollisionScale>
 						<CollisionOffset>
 							<value0>0</value0>

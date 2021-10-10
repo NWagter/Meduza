@@ -345,8 +345,8 @@ namespace Me
 			}
 			inline Vec3 operator/(const Vec3& a_rhs)
 			{
-				float x = m_x + a_rhs.m_x;
-				float y = m_y + a_rhs.m_y;
+				float x = m_x / a_rhs.m_x;
+				float y = m_y / a_rhs.m_y;
 				float z = m_z / a_rhs.m_z;
 
 				return Vec3(x, y, z);

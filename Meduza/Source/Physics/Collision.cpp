@@ -53,18 +53,17 @@ bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2],
 
 bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_colliders[2], CollisionData& a_data)
 {
-
     // box2d to box2d collision check
     Math::Vec3 sPos = a_physics[0]->m_position + a_colliders[0]->m_colliderOffset;
-    Math::Vec2 sSize = a_colliders[0]->m_colliderSize;
-
+    Math::Vec2 sHalfSize = a_colliders[0]->m_colliderSize / 2;
+    
     Math::Vec3 oPos = a_physics[1]->m_position + a_colliders[1]->m_colliderOffset;
-    Math::Vec2 oSize = a_colliders[1]->m_colliderSize;
+    Math::Vec2 oHalfSize = a_colliders[1]->m_colliderSize / 2;
 
-    if((sPos.m_x < oPos.m_x + oSize.m_x)
-        && (sPos.m_x + sSize.m_x > oPos.m_x)
-        && (sPos.m_y < oPos.m_y + oSize.m_y)
-        && (sPos.m_y + sSize.m_y > oPos.m_y))
+    if((sPos.m_x - sHalfSize.m_x <= oPos.m_x + oHalfSize.m_x 
+        && sPos.m_x + sHalfSize.m_x >= oPos.m_x - oHalfSize.m_x) &&
+        (sPos.m_y - sHalfSize.m_y <= oPos.m_y + oHalfSize.m_y 
+        && sPos.m_y + sHalfSize.m_y >= oPos.m_y - oHalfSize.m_y))
     {
         
         a_data.m_hitNormal = (sPos - oPos).Normalize();
@@ -79,17 +78,17 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
 bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_colliders[2], CollisionData& a_data)
 {
     Math::Vec3 sPos = a_physics[0]->m_position + a_colliders[0]->m_colliderOffset;
-    Math::Vec3 sSize = a_colliders[0]->m_colliderSize;
+    Math::Vec3 sHalfSize = a_colliders[0]->m_colliderSize / 2;
     
     Math::Vec3 oPos = a_physics[1]->m_position + a_colliders[1]->m_colliderOffset;
-    Math::Vec3 oSize = a_colliders[1]->m_colliderSize;
+    Math::Vec3 oHalfSize = a_colliders[1]->m_colliderSize / 2;
 
-    if((sPos.m_x < oPos.m_x + oSize.m_x)
-        && (sPos.m_x + sSize.m_x > oPos.m_x)
-        && (sPos.m_y < oPos.m_y + oSize.m_y)
-        && (sPos.m_y + sSize.m_y > oPos.m_y)
-        && (sPos.m_z < oPos.m_z + oSize.m_z)
-        && (sPos.m_z + sSize.m_z > oPos.m_z))
+    if((sPos.m_x - sHalfSize.m_x <= oPos.m_x + oHalfSize.m_x 
+        && sPos.m_x + sHalfSize.m_x >= oPos.m_x - oHalfSize.m_x) &&
+        (sPos.m_y - sHalfSize.m_y <= oPos.m_y + oHalfSize.m_y 
+        && sPos.m_y + sHalfSize.m_y >= oPos.m_y - oHalfSize.m_y) &&
+        (sPos.m_z - sHalfSize.m_z <= oPos.m_z + oHalfSize.m_z 
+        && sPos.m_z + sHalfSize.m_z >= oPos.m_z - oHalfSize.m_z)) 
     {
         a_data.m_hitNormal = (sPos - oPos).Normalize();
         return true;

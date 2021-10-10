@@ -234,6 +234,18 @@ void Me::Editor::EditorToolbar::Draw()
             }
 
             ImGui::Text(cameraType.c_str());
+
+            if(ImGui::Button(ICON_FA_BUG))
+            {
+                if(Meduza::GetDebugState() & DEBUG_OFF)
+                {
+                    Meduza::ms_engineDebugState = DEBUG_ON;
+                }
+                else
+                {
+                    Meduza::ms_engineDebugState = DEBUG_OFF;
+                }
+            }
         }
         else if(Meduza::GetEngineState() & RUN_GAME)
         {        

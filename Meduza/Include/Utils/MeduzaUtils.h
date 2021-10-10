@@ -5,6 +5,10 @@ namespace Me
 #define RUN_GAME 1
 #define RUN_EDITOR 2
 
+
+#define DEBUG_OFF 1
+#define DEBUG_ON 2
+
     namespace Utils
     {
       class Utilities

@@ -48,12 +48,14 @@ namespace Me {
 		Math::Vec2 GetScreenSize();
 
 		inline static unsigned char GetEngineState() { return ms_engineState;}
+		inline static unsigned char GetDebugState() { return ms_engineDebugState;}
 
 	private:
 		void Destroy();
 
 		bool m_isRunning;
 		static unsigned char ms_engineState;
+		static unsigned char ms_engineDebugState;
 
 		Renderer::RenderLayer* m_renderLayer;
 		Serialization::Serializer* m_serializer;

@@ -27,6 +27,7 @@
 #include "Core/Scripting/ScriptSystem.h"
 
 unsigned char Me::Meduza::ms_engineState = RUN_GAME;
+unsigned char Me::Meduza::ms_engineDebugState = DEBUG_OFF;
 
 Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 {

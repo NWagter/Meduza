@@ -450,6 +450,13 @@ void Me::Editor::EntityEditor::Draw()
             eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
             ImGui::CloseCurrentPopup();
         }
+        if(ImGui::MenuItem("Box3D Component"))
+        {
+            auto pComp = new Physics::BoxCollider3DComponent();
+            eManager->AddComponent(m_selectedEntity, pComp);
+            eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
+            ImGui::CloseCurrentPopup();
+        }
         if(ImGui::MenuItem("Script Component"))
         {
             auto pComp = new Scripting::ScriptComponent();

@@ -20,6 +20,7 @@ namespace Me
                 unsigned int GetVBO() const { return m_vbo; }
                 unsigned int GetVAO() const { return m_vao; }
                 unsigned int GetIBO() const { return m_ibo; }
+
             private:
                 unsigned int m_vbo;
                 unsigned int m_ibo;

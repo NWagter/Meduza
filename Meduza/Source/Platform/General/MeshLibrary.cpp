@@ -226,68 +226,68 @@ void Me::Resources::MeshLibrary::CreatePlane()
 void Me::Resources::MeshLibrary::CreateCube()
 {
 	std::vector<Vertex> cubeVertices = 
-		{
-			// Front
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f),
-			// Back
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f),
-			// Top
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f),
-			// Bot
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f),
-			// Left
-			Vertex(-0.5f, -0.5f, 0.5f, -1.0f,  0.0f, 0.0f, 0.0f, 1.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, -1.0f,  0.0f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, -1.0f,  0.0f, 0.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, -0.5f, -1.0f,  0.0f, 0.0f, 1.0f, 1.0f),
-			// Right
-			Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f)
-		};
-		
-		std::vector<uint16_t> cubeIndices = 
-		{
-			// front face
-			0, 1, 2, // first triangle
-			0, 2, 3, // second triangle
+	{
+		// Front
+		Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f),
+		Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f),
+		Vertex(0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f),
+		Vertex(0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f),
+		// Back
+		Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f),
+		Vertex(0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f),
+		Vertex(0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f),
+		Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f),
+		// Top
+		Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f),
+		Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f),
+		Vertex(0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f),
+		Vertex(0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f),
+		// Bot
+		Vertex(-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f),
+		Vertex(0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f),
+		Vertex(0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f),
+		Vertex(-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f),
+		// Left
+		Vertex(-0.5f, -0.5f, 0.5f, -1.0f,  0.0f, 0.0f, 0.0f, 1.0f),
+		Vertex(-0.5f, 0.5f, 0.5f, -1.0f,  0.0f, 0.0f, 0.0f, 0.0f),
+		Vertex(-0.5f, 0.5f, -0.5f, -1.0f,  0.0f, 0.0f, 1.0f, 0.0f),
+		Vertex(-0.5f, -0.5f, -0.5f, -1.0f,  0.0f, 0.0f, 1.0f, 1.0f),
+		// Right
+		Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+		Vertex(0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f),
+		Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f),
+		Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f)
+	};
+	
+	std::vector<uint16_t> cubeIndices = 
+	{
+		// front face
+		0, 1, 2, // first triangle
+		0, 2, 3, // second triangle
 
-			// Back face
-			4, 5, 6, // first triangle
-			4, 6, 7, // second triangle
+		// Back face
+		4, 5, 6, // first triangle
+		4, 6, 7, // second triangle
 
-			// Top face
-			8, 9, 10, // first triangle
-			8, 10, 11, // second triangle
+		// Top face
+		8, 9, 10, // first triangle
+		8, 10, 11, // second triangle
 
-			// Bot face
-			12, 13, 14, // first triangle
-			12, 14, 15, // second triangle
+		// Bot face
+		12, 13, 14, // first triangle
+		12, 14, 15, // second triangle
 
-			// Left face
-			16, 17, 18, // first triangle
-			16, 18, 19, // second triangle
+		// Left face
+		16, 17, 18, // first triangle
+		16, 18, 19, // second triangle
 
-			// Right face
-			20, 21, 22, // first triangle
-			20, 22, 23, // second triangle
-		};
-		
-		uint16_t cubeId = static_cast<uint16_t>(Primitives::Cube);
-		Resources::MeshLibrary::CreateMesh("Cube", cubeId, cubeVertices, cubeIndices);
+		// Right face
+		20, 21, 22, // first triangle
+		20, 22, 23, // second triangle
+	};
+	
+	uint16_t cubeId = static_cast<uint16_t>(Primitives::Cube);
+	Resources::MeshLibrary::CreateMesh("Cube", cubeId, cubeVertices, cubeIndices);
 }
 
 void Me::Resources::MeshLibrary::CreateSphere()
@@ -383,5 +383,4 @@ void Me::Resources::MeshLibrary::CreateSphere()
 	uint16_t sphereId = static_cast<uint16_t>(Primitives::Sphere);
 	Resources::MeshLibrary::CreateMesh("Sphere", sphereId, vertices, indices);
 }
-
 #pragma endregion

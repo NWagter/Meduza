@@ -16,6 +16,7 @@
 #include "Physics/Systems/BoxCollision2DSystem.h"
 #include "Physics/Systems/Box2DDebugRenderSystem.h"
 #include "Physics/Systems/BoxCollision3DSystem.h"
+#include "Physics/Systems/Box3DDebugRenderSystem.h"
 
 #include "AI/Systems/AgentMovementSystem.h"
 #include "AI/Systems/NavSurfaceSystem.h"
@@ -27,6 +28,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	
 	m_systems.push_back(new RenderSystem(&a_renderLayer));
 	m_systems.push_back(new Box2DDebugRenderSystem(&a_renderLayer));
+	m_systems.push_back(new Box3DDebugRenderSystem(&a_renderLayer));
 	m_systems.push_back(new CameraSystem(&a_renderLayer));
     
 	m_systems.push_back(new MousePickingSystem());

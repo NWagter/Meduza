@@ -21,6 +21,7 @@ namespace Me
 
                 return size;
             }
+
             inline std::vector<Vertex> GetVertices() const { return m_vertices; }
             inline std::vector<uint16_t> GetIndices() const { return m_indices; }
 

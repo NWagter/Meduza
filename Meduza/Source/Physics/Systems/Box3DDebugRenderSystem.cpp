@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Physics/Systems/Box2DDebugRenderSystem.h"
+#include "Physics/Systems/Box3DDebugRenderSystem.h"
 
 #include "ECS/EntityManager.h"
 
@@ -9,7 +9,7 @@
 #include "Core/Components/TransformComponent.h"
 
 #include "Physics/Physics.h"
-#include "Physics/Components/BoxCollider2DComponent.h"
+#include "Physics/Components/BoxCollider3DComponent.h"
 
 #include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/MeshLibrary.h"
@@ -18,7 +18,7 @@
 
 #include "Core/Meduza.h"
 
-Me::Box2DDebugRenderSystem::Box2DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer)
+Me::Box3DDebugRenderSystem::Box3DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer)
 { 
     m_renderLayer = a_renderLayer;
     m_executeMask = EXECUTE_INEDITOR;
@@ -26,13 +26,13 @@ Me::Box2DDebugRenderSystem::Box2DDebugRenderSystem(Renderer::RenderLayer* a_rend
     m_debugColour = Colours::MAGENTA;
     m_debugColour.m_colour[3] = 0.4f;
 
-    m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
+    m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Cube);
 
     m_debugShader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
 
 }
 
-void Me::Box2DDebugRenderSystem::OnUpdate(float)
+void Me::Box3DDebugRenderSystem::OnUpdate(float)
 {
     if(Meduza::GetDebugState() & DEBUG_OFF)
     {
@@ -42,7 +42,7 @@ void Me::Box2DDebugRenderSystem::OnUpdate(float)
     for(auto& compTuple : m_components)
     {
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
-        Physics::BoxCollider2DComponent* bC = std::get<Physics::BoxCollider2DComponent*>(compTuple);
+        Physics::BoxCollider3DComponent* bC = std::get<Physics::BoxCollider3DComponent*>(compTuple);
         DebugRenderComponent* dR = std::get<DebugRenderComponent*>(compTuple);
         
 
@@ -56,10 +56,8 @@ void Me::Box2DDebugRenderSystem::OnUpdate(float)
 
         TransformComponent trans = *tC;
 
-        trans.m_translation.m_x += bC->m_colliderOffset.m_x;
-        trans.m_translation.m_y += bC->m_colliderOffset.m_y;
-        trans.m_scale.m_x = bC->m_colliderSize.m_x;
-        trans.m_scale.m_y = bC->m_colliderSize.m_y;
+        trans.m_translation += bC->m_colliderOffset;
+        trans.m_scale = bC->m_colliderSize;
 
         m_renderLayer->DebugSubmit(*dR, trans);
     }

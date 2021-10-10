@@ -20,7 +20,6 @@ void Me::Resources::GL::Mesh::SetMode(GLenum a_mode)
     glPolygonMode(GL_FRONT, m_mode);
 }
 
-
 void Me::Resources::GL::Mesh::GenerateBuffers()
 {
     glGenVertexArrays(1, &m_vao);

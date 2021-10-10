@@ -66,6 +66,8 @@ void Me::Renderer::GL::RenderLayerGL::Present()
 
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
+    glEnable(GL_DEPTH_TEST);
+
     for (auto r : m_renderables)
     {
         auto renderComp = r->m_renderComponent;
@@ -107,8 +109,11 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         t->UnBind();
     }
 
+
     for(auto r : m_debugRenderables)
     {
+        glDisable(GL_DEPTH_TEST);
+
         auto renderComp = r->m_debugRenderComponent;        
 		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(renderComp->m_shader));
         auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(renderComp->m_mesh));

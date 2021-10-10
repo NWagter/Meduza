@@ -4,7 +4,7 @@
 		<EntityAmount>3</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>5</EntityID>
+		<EntityID>14</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
@@ -43,8 +43,8 @@
 			</6>
 		</value0>
 		<Entity>
-			<EntityID>6</EntityID>
-			<ComponentAmount>3</ComponentAmount>
+			<EntityID>15</EntityID>
+			<ComponentAmount>6</ComponentAmount>
 			<value0>
 				<0>
 					<Tag>Floor</Tag>
@@ -77,10 +77,29 @@
 					<Shader>Assets/Shaders/Lit_Shader.glsl</Shader>
 					<Texture>Assets/Textures/DefaultTex.png</Texture>
 				</3>
+				<7>
+					<Gravity>false</Gravity>
+					<Body_Gravity>9.8000001907348633</Body_Gravity>
+					<Body_Mass>10</Body_Mass>
+				</7>
+				<10>
+					<CollisionType>1</CollisionType>
+					<CollisionLayer>0</CollisionLayer>
+					<CollisionScale>
+						<value0>10</value0>
+						<value1>0.0099999997764825821</value1>
+						<value2>10</value2>
+					</CollisionScale>
+					<CollisionOffset>
+						<value0>0</value0>
+						<value1>0</value1>
+						<value2>0</value2>
+					</CollisionOffset>
+				</10>
 			</value0>
 			<Entity>
-				<EntityID>7</EntityID>
-				<ComponentAmount>3</ComponentAmount>
+				<EntityID>16</EntityID>
+				<ComponentAmount>6</ComponentAmount>
 				<value0>
 					<0>
 						<Tag>Suzanne</Tag>
@@ -88,7 +107,7 @@
 					<1>
 						<Translation>
 							<value0>0</value0>
-							<value1>0</value1>
+							<value1>2.4000000953674316</value1>
 							<value2>10</value2>
 						</Translation>
 						<Rotation>
@@ -113,6 +132,25 @@
 						<Shader>Assets/Shaders/Lit_Shader.glsl</Shader>
 						<Texture>Assets/Models/Suzanne/Suzanne_BaseColor.png</Texture>
 					</3>
+					<7>
+						<Gravity>true</Gravity>
+						<Body_Gravity>9.8000001907348633</Body_Gravity>
+						<Body_Mass>0.60000002384185791</Body_Mass>
+					</7>
+					<10>
+						<CollisionType>1</CollisionType>
+						<CollisionLayer>0</CollisionLayer>
+						<CollisionScale>
+							<value0>2.5</value0>
+							<value1>2</value1>
+							<value2>2</value2>
+						</CollisionScale>
+						<CollisionOffset>
+							<value0>0</value0>
+							<value1>0</value1>
+							<value2>0</value2>
+						</CollisionOffset>
+					</10>
 				</value0>
 			</Entity>
 		</Entity>

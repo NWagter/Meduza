@@ -24,6 +24,8 @@ enum class Components : uint16_t
     ColliderTag,
     BoxCollider2D,
     BoxCollider3D,
+    CircleCollider,
+    SphereCollider,
 
     AgentComponent,
     NavSurfaceComponent,

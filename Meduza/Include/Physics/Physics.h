@@ -18,6 +18,7 @@ namespace Me
         enum class BodyType : uint16_t
         {
             Cirlce = 0,
+            Sphere,
             Box2D,
             Box3D
         };

@@ -5,7 +5,7 @@
 #include "Physics/Collision.h"
 
 #include "Physics/Components/PhysicsComponent.h"
-#include "Physics/Components/BoxCollider2DComponent.h"
+#include "Physics/Components/ColliderComponent.h"
 
 Me::Physics::CollisionSystem::CollisionSystem()
 {
@@ -26,6 +26,7 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         ColliderTagComponent* bC = std::get<ColliderTagComponent*>(compTuple);
+        TagComponent* tC = std::get<TagComponent*>(compTuple);
 
         for(auto e : entities)
         {
@@ -58,6 +59,10 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 //Add collisionData
                 if(bC->m_collider->m_collisionType == CollisionType::Block)
                 {
+                    if(tC->m_tag == "Sphere")
+                    {
+                        ME_LOG("HIT! \n");
+                    }
                     pC->m_collided.push_back(data);
                 }
                 else

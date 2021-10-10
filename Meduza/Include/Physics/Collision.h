@@ -13,6 +13,7 @@ namespace Me
         struct ColliderComponent;
         struct BoxCollider2DComponent;
         struct BoxCollider3DComponent;
+        struct SphereColliderComponent;
 
         class Collision
         {
@@ -20,10 +21,11 @@ namespace Me
 
             static bool AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data);
 
-            // ==== 2D collision Checks
+            // ==== AABB collision Checks
             static bool AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_colliders[2], CollisionData& a_data);
             static bool AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_colliders[2], CollisionData& a_data);
-
+            static bool AABB_Box3DToSphere(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_boxColl, SphereColliderComponent* a_sphereColl, CollisionData& a_data);
+            static bool AABB_SphereToBox3D(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereColl, BoxCollider3DComponent* a_boxColl, CollisionData& a_data);
 /*          
 
             static bool Box2DToCircle(BodyBox2D*, BodyCircle*, CollisionData& a_data);

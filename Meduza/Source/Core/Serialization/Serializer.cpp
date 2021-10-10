@@ -12,6 +12,7 @@
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 #include "Physics/Components/BoxCollider3DComponent.h"
+#include "Physics/Components/SphereColliderComponent.h"
 
 #include "AI/Components/AgentComponent.h"
 
@@ -179,6 +180,13 @@ bool Serialize(std::string a_path)
             archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
             archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));  
             archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xyz)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+        }); 
+        CanSerialize<Me::Physics::SphereColliderComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));  
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_radius)); 
             archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
         }); 
 
@@ -349,7 +357,22 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
 
-        })) compAmount--;   
+        })) compAmount--; 
+
+        if(CanDeserialize<Physics::SphereColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {          
+            archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+            archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_radius)); 
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+
+            eManager->AddComponent(ent, a_comp); 
+            eManager->AddComponent<DebugRenderComponent>(ent);
+
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+            eManager->AddComponent(ent, cTag);
+
+        })) compAmount--;     
         
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {

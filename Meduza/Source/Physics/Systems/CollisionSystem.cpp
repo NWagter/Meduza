@@ -59,10 +59,6 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 //Add collisionData
                 if(bC->m_collider->m_collisionType == CollisionType::Block)
                 {
-                    if(tC->m_tag == "Sphere")
-                    {
-                        ME_LOG("HIT! \n");
-                    }
                     pC->m_collided.push_back(data);
                 }
                 else

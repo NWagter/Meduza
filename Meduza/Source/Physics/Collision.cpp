@@ -61,6 +61,16 @@ bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2],
     {
         return AABB_SphereToBox3D(a_physics, static_cast<SphereColliderComponent*>(a_colliders[0]), static_cast<BoxCollider3DComponent*>(a_colliders[1]), a_data);
     }
+    if(types[0] == BodyType::Sphere && types[1] == BodyType::Sphere)
+    {
+        SphereColliderComponent* colliders[2] =
+        {
+            static_cast<SphereColliderComponent*>(a_colliders[0]),
+            static_cast<SphereColliderComponent*>(a_colliders[1])
+        };
+
+        return SphereToSphere(a_physics, colliders, a_data);
+    }
 
     return false;
 }
@@ -126,7 +136,7 @@ bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], 
 
     if(distance <= a_sphereColl->m_radius)
     {
-        a_data.m_hitNormal = (spherePos - sPos).Normalize();
+        a_data.m_hitNormal = (sPos - spherePos).Normalize();
     }
 
     return distance <= a_sphereColl->m_radius;
@@ -139,9 +149,9 @@ bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], 
 
     Math::Vec3 spherePos = a_physics[0]->m_position + a_sphereColl->m_colliderOffset;
 
-    float x = std::max(sPos.m_x, std::min(spherePos.m_x, sPos.m_x + sHalfSize.m_x));
-    float y = std::max(sPos.m_y, std::min(spherePos.m_y, sPos.m_y + sHalfSize.m_y));
-    float z = std::max(sPos.m_z, std::min(spherePos.m_z, sPos.m_z + sHalfSize.m_z));
+    float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, sPos.m_x + sHalfSize.m_x));
+    float y = std::max(sPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, sPos.m_y + sHalfSize.m_y));
+    float z = std::max(sPos.m_z - sHalfSize.m_z, std::min(spherePos.m_z, sPos.m_z + sHalfSize.m_z));
         
     float distance = Math::Distance(Math::Vec3(x,y,z), spherePos);
 
@@ -151,6 +161,22 @@ bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], 
     }
 
     return distance <= a_sphereColl->m_radius;
+}
+
+bool Me::Physics::Collision::SphereToSphere(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereCollider[2], CollisionData& a_data)
+{
+    Math::Vec3 sPos = a_physics[0]->m_position + a_sphereCollider[0]->m_colliderOffset;
+    Math::Vec3 oPos = a_physics[1]->m_position + a_sphereCollider[1]->m_colliderOffset;
+
+    float distance = Math::Distance(sPos, oPos);    
+    float rad = a_sphereCollider[0]->m_radius + a_sphereCollider[1]->m_radius;
+
+    if(distance <= rad)
+    {
+        a_data.m_hitNormal = (sPos - oPos).Normalize();
+    }
+
+    return distance <= rad;
 }
 
 

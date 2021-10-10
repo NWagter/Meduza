@@ -22,6 +22,7 @@ ComponentID Me::CameraComponent::s_componentID = static_cast<ComponentID>(Compon
 
 ComponentID Me::Physics::PhysicsComponent::s_componentID = static_cast<ComponentID>(Components::Physics);
 ComponentID Me::Physics::ColliderComponent::s_componentID = static_cast<ComponentID>(Components::Collider);
+ComponentID Me::Physics::ColliderTagComponent::s_componentID = static_cast<ComponentID>(Components::ColliderTag);
 ComponentID Me::Physics::BoxCollider2DComponent::s_componentID = static_cast<ComponentID>(Components::BoxCollider2D);
 ComponentID Me::Physics::BoxCollider3DComponent::s_componentID = static_cast<ComponentID>(Components::BoxCollider3D);
 ComponentID Me::Scripting::ScriptComponent::s_componentID = static_cast<ComponentID>(Components::Scripting);

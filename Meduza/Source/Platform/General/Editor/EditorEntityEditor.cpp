@@ -319,7 +319,7 @@ void Me::Editor::EntityEditor::Draw()
             }
         }); 
         
-        DrawComponent<Physics::BoxCollider3DComponent>(eManager, "Box2DCollider Component", m_selectedEntity, [](auto& a_comp)
+        DrawComponent<Physics::BoxCollider3DComponent>(eManager, "Box3DCollider Component", m_selectedEntity, [](auto& a_comp)
         {
             Helper::EditorHelper::DrawVec3Prop("ColliderScale", a_comp.m_colliderSize);
             Helper::EditorHelper::DrawVec3Prop("ColliderOffset", a_comp.m_colliderOffset);
@@ -445,16 +445,24 @@ void Me::Editor::EntityEditor::Draw()
         }
         if(ImGui::MenuItem("Box2D Component"))
         {
-            auto pComp = new Physics::BoxCollider2DComponent();
-            eManager->AddComponent(m_selectedEntity, pComp);
+            auto cComp = new Physics::BoxCollider2DComponent();
+            eManager->AddComponent(m_selectedEntity, cComp);
             eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
+
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(cComp);
+            eManager->AddComponent(m_selectedEntity, cTag);
+
             ImGui::CloseCurrentPopup();
         }
         if(ImGui::MenuItem("Box3D Component"))
         {
-            auto pComp = new Physics::BoxCollider3DComponent();
-            eManager->AddComponent(m_selectedEntity, pComp);
+            auto cComp = new Physics::BoxCollider3DComponent();
+            eManager->AddComponent(m_selectedEntity, cComp);
             eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
+
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(cComp);
+            eManager->AddComponent(m_selectedEntity, cTag);
+
             ImGui::CloseCurrentPopup();
         }
         if(ImGui::MenuItem("Script Component"))

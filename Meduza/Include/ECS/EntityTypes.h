@@ -21,6 +21,7 @@ enum class Components : uint16_t
 
     Physics,
     Collider,
+    ColliderTag,
     BoxCollider2D,
     BoxCollider3D,
 

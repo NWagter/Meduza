@@ -13,9 +13,8 @@
 
 #include "Physics/Systems/PhysicsSystem.h"
 #include "Physics/Systems/GravitySystem.h"
-#include "Physics/Systems/BoxCollision2DSystem.h"
+#include "Physics/Systems/CollisionSystem.h"
 #include "Physics/Systems/Box2DDebugRenderSystem.h"
-#include "Physics/Systems/BoxCollision3DSystem.h"
 #include "Physics/Systems/Box3DDebugRenderSystem.h"
 
 #include "AI/Systems/AgentMovementSystem.h"
@@ -37,8 +36,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new AI::NavSurfaceSystem());
 
 	m_systems.push_back(new Physics::PhysicsSystem()); //Clears and set Body correct
-    m_systems.push_back(new Physics::BoxCollision2DSystem());
-    m_systems.push_back(new Physics::BoxCollision3DSystem());
+    m_systems.push_back(new Physics::CollisionSystem());
     m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision
 }
 

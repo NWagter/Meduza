@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Physics/Systems/BoxCollision2DSystem.h"
+#include "Physics/Systems/CollisionSystem.h"
 
 #include "Physics/Physics.h"
 #include "Physics/Collision.h"
@@ -7,25 +7,25 @@
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 
-Me::Physics::BoxCollision2DSystem::BoxCollision2DSystem()
+Me::Physics::CollisionSystem::CollisionSystem()
 {
 
 }
 
-void Me::Physics::BoxCollision2DSystem::OnUpdate(float a_dt)
+void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
 {
     EntityFilter filter;
     filter.insert(PhysicsComponent::s_componentID);
-    filter.insert(BoxCollider2DComponent::s_componentID);
+    filter.insert(ColliderTagComponent::s_componentID);
 
     auto entities = EntityManager::GetEntityManager()->GetEntities(filter);
     auto physicsObjects = EntityManager::GetEntityManager()->GetComponents<PhysicsComponent>();
-    auto box2DComponents = EntityManager::GetEntityManager()->GetComponents<BoxCollider2DComponent>();
+    auto colliderComponents = EntityManager::GetEntityManager()->GetComponents<ColliderTagComponent>();
     
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
-        BoxCollider2DComponent* bC = std::get<BoxCollider2DComponent*>(compTuple);
+        ColliderTagComponent* bC = std::get<ColliderTagComponent*>(compTuple);
 
         for(auto e : entities)
         {
@@ -42,21 +42,21 @@ void Me::Physics::BoxCollision2DSystem::OnUpdate(float a_dt)
 
             ColliderComponent* listBox2D[2] = 
             {
-                bC, box2DComponents[e]
+                bC->m_collider, colliderComponents[e]->m_collider
             };
 
             ComponentID components[2] =
             {
-                bC->s_componentID,
-                box2DComponents[e]->s_componentID
+                bC->m_collider->GetColliderComponentID(),
+                colliderComponents[e]->m_collider->GetColliderComponentID()
             };
 
             if(Collision::AABB_CheckCollision(listPhysics, listBox2D, components, data))
             {
-                data.m_collisionLayerID = box2DComponents[e]->m_collisionLayer;
+                data.m_collisionLayerID = colliderComponents[e]->m_collider->m_collisionLayer;
 
                 //Add collisionData
-                if(bC->m_collisionType == CollisionType::Block)
+                if(bC->m_collider->m_collisionType == CollisionType::Block)
                 {
                     pC->m_collided.push_back(data);
                 }

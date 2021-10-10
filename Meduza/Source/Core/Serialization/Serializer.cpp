@@ -331,6 +331,9 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
             eManager->AddComponent(ent, a_comp); 
             eManager->AddComponent<DebugRenderComponent>(ent);
+            
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+            eManager->AddComponent(ent, cTag);
         })) compAmount--;   
 
         if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
@@ -342,6 +345,10 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
             eManager->AddComponent(ent, a_comp); 
             eManager->AddComponent<DebugRenderComponent>(ent);
+
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+            eManager->AddComponent(ent, cTag);
+
         })) compAmount--;   
         
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)

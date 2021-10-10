@@ -44,7 +44,7 @@
 		</value0>
 		<Entity>
 			<EntityID>27</EntityID>
-			<ComponentAmount>6</ComponentAmount>
+			<ComponentAmount>7</ComponentAmount>
 			<value0>
 				<0>
 					<Tag>Quad_Red</Tag>
@@ -84,7 +84,7 @@
 					<Body_Gravity>9.8000001907348633</Body_Gravity>
 					<Body_Mass>10</Body_Mass>
 				</7>
-				<9>
+				<10>
 					<CollisionType>1</CollisionType>
 					<CollisionLayer>0</CollisionLayer>
 					<CollisionScale>
@@ -95,11 +95,11 @@
 						<value0>0</value0>
 						<value1>0</value1>
 					</CollisionOffset>
-				</9>
+				</10>
 			</value0>
 			<Entity>
 				<EntityID>28</EntityID>
-				<ComponentAmount>6</ComponentAmount>
+				<ComponentAmount>7</ComponentAmount>
 				<value0>
 					<0>
 						<Tag>Quad_Blue</Tag>
@@ -139,7 +139,7 @@
 						<Body_Gravity>9.8000001907348633</Body_Gravity>
 						<Body_Mass>0.80000001192092896</Body_Mass>
 					</7>
-					<9>
+					<10>
 						<CollisionType>1</CollisionType>
 						<CollisionLayer>0</CollisionLayer>
 						<CollisionScale>
@@ -150,7 +150,7 @@
 							<value0>0</value0>
 							<value1>0</value1>
 						</CollisionOffset>
-					</9>
+					</10>
 				</value0>
 			</Entity>
 		</Entity>

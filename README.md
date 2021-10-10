@@ -41,7 +41,7 @@ but what is currently planned is the following :
     - Circle Collision
   - 3D Physics
     - :white_check_mark: Box Collision
-    - Sphere Collision
+    - :white_check_mark: Sphere Collision
   - Physics Bodies
 - Lua Scripting
   - :white_check_mark: Transform

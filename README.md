@@ -37,10 +37,10 @@ but what is currently planned is the following :
   - :white_check_mark: Keyboard
 - Physics
   - 2D Phsyics
-    - Box2D Collision
+    - :white_check_mark: Box2D Collision
     - Circle Collision
   - 3D Physics
-    - Box Collision
+    - :white_check_mark: Box Collision
     - Sphere Collision
   - Physics Bodies
 - Lua Scripting

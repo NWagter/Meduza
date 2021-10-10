@@ -234,18 +234,6 @@ void Me::Editor::EditorToolbar::Draw()
             }
 
             ImGui::Text(cameraType.c_str());
-
-            if(ImGui::Button(ICON_FA_BUG))
-            {
-                if(Meduza::GetDebugState() & DEBUG_OFF)
-                {
-                    Meduza::ms_engineDebugState = DEBUG_ON;
-                }
-                else
-                {
-                    Meduza::ms_engineDebugState = DEBUG_OFF;
-                }
-            }
         }
         else if(Meduza::GetEngineState() & RUN_GAME)
         {        
@@ -254,6 +242,18 @@ void Me::Editor::EditorToolbar::Draw()
                 Meduza::ms_engineState = RUN_EDITOR;
 
                 Serialization::Serializer::GetInstance()->DeserializeScene();
+            }
+        }        
+
+        if(ImGui::Button(ICON_FA_BUG))
+        {
+            if(Meduza::GetDebugState() & DEBUG_OFF)
+            {
+                Meduza::ms_engineDebugState = DEBUG_ON;
+            }
+            else
+            {
+                Meduza::ms_engineDebugState = DEBUG_OFF;
             }
         }
 

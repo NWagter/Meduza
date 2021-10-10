@@ -21,7 +21,7 @@
 Me::Box2DDebugRenderSystem::Box2DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer)
 { 
     m_renderLayer = a_renderLayer;
-    m_executeMask = EXECUTE_INEDITOR;
+    m_executeMask = EXECUTE_ALL;
 
     m_debugColour = Colours::MAGENTA;
     m_debugColour.m_colour[3] = 0.4f;

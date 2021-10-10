@@ -29,6 +29,9 @@ void Me::Physics::BoxCollision2DSystem::OnUpdate(float a_dt)
 
         for(auto e : entities)
         {
+            if(pC == physicsObjects[e])
+                continue;
+                
             CollisionData data;
             data.m_entity = e;
             
@@ -48,7 +51,7 @@ void Me::Physics::BoxCollision2DSystem::OnUpdate(float a_dt)
                 box2DComponents[e]->s_componentID
             };
 
-            if(Collision::CheckCollision(listPhysics, listBox2D, components, data))
+            if(Collision::AABB_CheckCollision(listPhysics, listBox2D, components, data))
             {
                 data.m_collisionLayerID = box2DComponents[e]->m_collisionLayer;
 

@@ -10,7 +10,7 @@ BaseGame::BaseGame()
 
 void BaseGame::InitGame()
 {
-    Me::Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/Physics2D_test.xml");
+    Me::Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadScene.xml");
 }
 
 void BaseGame::UpdateGame(float)

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<SceneData>
-		<EntityAmount>3</EntityAmount>
+		<EntityAmount>4</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>20</EntityID>
+		<EntityID>32</EntityID>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<0>
@@ -40,11 +40,11 @@
 			</5>
 		</value0>
 		<Entity>
-			<EntityID>21</EntityID>
-			<ComponentAmount>7</ComponentAmount>
+			<EntityID>33</EntityID>
+			<ComponentAmount>8</ComponentAmount>
 			<value0>
 				<0>
-					<Tag>Empty Entity</Tag>
+					<Tag>SadnessDestroyer</Tag>
 				</0>
 				<1>
 					<Translation>
@@ -82,7 +82,7 @@
 					<Body_Mass>0.10000000149011612</Body_Mass>
 				</7>
 				<11>
-					<CollisionType>1</CollisionType>
+					<CollisionType>0</CollisionType>
 					<CollisionLayer>0</CollisionLayer>
 					<CollisionScale>
 						<value0>1</value0>
@@ -95,13 +95,16 @@
 						<value2>0</value2>
 					</CollisionOffset>
 				</11>
+				<6>
+					<ScriptPath>Assets/Scripts/DestroySadBox.lua</ScriptPath>
+				</6>
 			</value0>
 			<Entity>
-				<EntityID>22</EntityID>
+				<EntityID>34</EntityID>
 				<ComponentAmount>7</ComponentAmount>
 				<value0>
 					<0>
-						<Tag>Empty Entity</Tag>
+						<Tag>SadBox</Tag>
 					</0>
 					<1>
 						<Translation>
@@ -139,7 +142,7 @@
 						<Body_Mass>10</Body_Mass>
 					</7>
 					<11>
-						<CollisionType>1</CollisionType>
+						<CollisionType>0</CollisionType>
 						<CollisionLayer>0</CollisionLayer>
 						<CollisionScale>
 							<value0>1</value0>
@@ -153,6 +156,60 @@
 						</CollisionOffset>
 					</11>
 				</value0>
+				<Entity>
+					<EntityID>35</EntityID>
+					<ComponentAmount>7</ComponentAmount>
+					<value0>
+						<0>
+							<Tag>SadBox</Tag>
+						</0>
+						<1>
+							<Translation>
+								<value0>1</value0>
+								<value1>-2.2000000476837158</value1>
+								<value2>0</value2>
+							</Translation>
+							<Rotation>
+								<value0>0</value0>
+								<value1>0</value1>
+								<value2>0</value2>
+							</Rotation>
+							<Scale>
+								<value0>1</value0>
+								<value1>1</value1>
+								<value2>1</value2>
+							</Scale>
+						</1>
+						<3>
+							<Colour>
+								<value0>0.99999850988388062</value0>
+								<value1>0.91176468133926392</value1>
+								<value2>1</value2>
+								<value3>1</value3>
+							</Colour>
+							<Mesh>3</Mesh>
+							<Shader>Assets/Shaders/LitColour_Shader.glsl</Shader>
+							<Texture>
+								<value0></value0>
+							</Texture>
+						</3>
+						<7>
+							<Gravity>false</Gravity>
+							<Body_Gravity>9.8000001907348633</Body_Gravity>
+							<Body_Mass>10</Body_Mass>
+						</7>
+						<13>
+							<CollisionType>0</CollisionType>
+							<CollisionLayer>0</CollisionLayer>
+							<CollisionScale>0.5</CollisionScale>
+							<CollisionOffset>
+								<value0>0</value0>
+								<value1>0</value1>
+								<value2>0</value2>
+							</CollisionOffset>
+						</13>
+					</value0>
+				</Entity>
 			</Entity>
 		</Entity>
 	</Entity>

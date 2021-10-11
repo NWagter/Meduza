@@ -9,6 +9,9 @@ namespace Me
             public:
                 static void RegisterFunctions(lua_State*);
 
+                static int lua_DestroyEnt(lua_State*);
+
+                // Transform
                 static int lua_Translate(lua_State*);
                 static int lua_Rotate(lua_State*);
 
@@ -20,6 +23,10 @@ namespace Me
 
                 static int lua_OnKeyUp(lua_State*);
                 static int lua_OnKeyDown(lua_State*);
+
+                // Collision
+                static int lua_OnTriggerEntityName(lua_State*);
+                static int lua_OnCollisionEntityName(lua_State*);
         };
     }
 }

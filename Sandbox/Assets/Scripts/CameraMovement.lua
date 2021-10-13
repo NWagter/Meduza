@@ -1,10 +1,18 @@
-local moveSpeed = 20
-local rotateSpeed = 2
+local moveSpeed
+local rotateSpeed
+
+local tCameraSettings
 
 -- W = 87
 -- S = 83
 -- A = 65
 -- D = 68
+
+function OnStart(a_host, a_entity)
+    print("Camera Start!")
+    moveSpeed = 20
+    rotateSpeed = 2
+end
 
 function OnUpdate(a_host, a_entity, a_dt)
 
@@ -41,4 +49,8 @@ function OnUpdate(a_host, a_entity, a_dt)
 
     _Move(a_entity, x, y ,z)
     _Rotate(a_entity, 0, yaw ,0)
+end
+
+function OnStop(a_host, a_entity)
+    print("Camera Stop!")
 end

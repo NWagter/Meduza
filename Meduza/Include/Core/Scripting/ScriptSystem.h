@@ -14,6 +14,7 @@ namespace Me
                 ~ScriptSystem();
 
             protected:
+                void OnStart() override;
                 void OnUpdate(float) override;
 
         };

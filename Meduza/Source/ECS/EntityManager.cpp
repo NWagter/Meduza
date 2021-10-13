@@ -68,18 +68,33 @@ void Me::EntityManager::Update(float a_dt)
 
         if(Meduza::GetEngineState() & RUN_GAME)
         {
+            if(!m_started)
+            {
+                s->OnStart();
+            }
+
             if(s->m_executeMask & (EXECUTE_INGAME | EXECUTE_ALL))
             {
                 s->OnUpdate(a_dt);
             }
         }
         else if(Meduza::GetEngineState() & RUN_EDITOR)
-        {           
+        {      
+
             if(s->m_executeMask & (EXECUTE_INEDITOR | EXECUTE_ALL))
             {
                 s->OnUpdate(a_dt);
             } 
         }
+    }
+
+    if(m_started && Meduza::GetEngineState() & RUN_EDITOR)
+    {
+        m_started = false;
+    }
+    else if(!m_started &&Meduza::GetEngineState() & RUN_GAME)
+    {
+        m_started = true;
     }
 }
 

@@ -46,6 +46,7 @@ namespace Me
         EntityManager();
         ~EntityManager();
         static EntityManager* ms_entityManager;
+        bool m_started = false;
 
         std::map<EntityID, std::set<ComponentID>> m_entities;
         std::vector<ECSSystem*> m_systems;

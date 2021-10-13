@@ -19,6 +19,7 @@ namespace Me
 
     protected:
         virtual void OnCreate() {}
+        virtual void OnStart() {}
         virtual void OnUpdate(float) = 0;
         virtual void OnEntityCreated(const EntityID& a_entity) = 0;
         virtual void OnEntityDestroy(const EntityID& a_entity) = 0;

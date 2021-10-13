@@ -377,7 +377,6 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             archive(cereal::make_nvp("ScriptPath", a_comp->m_script));
-            a_comp->Init();
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 

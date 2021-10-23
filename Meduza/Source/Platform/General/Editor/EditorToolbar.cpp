@@ -73,7 +73,7 @@ void Me::Editor::EditorToolbar::Draw()
                 
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::SaveFile(
-                    "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
+                    "Meduza Scene \0*.scene*\0Scene\0*.scene\0",
                      static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
 
                 size_t pos = filePath.find("Assets"); //find location of word
@@ -92,7 +92,7 @@ void Me::Editor::EditorToolbar::Draw()
 
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::OpenFile(
-                    "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
+                    "Meduza Scene \0*.scene*\0Scene\0*.scene\0",
                      static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
 
                 size_t pos = filePath.find("Assets"); //find location of word
@@ -171,6 +171,28 @@ void Me::Editor::EditorToolbar::Draw()
                 }
                 ImGui::EndMenu();
             }
+            
+            if(ImGui::BeginMenu("Prefab"))
+            {
+                if(ImGui::Button("Load"))
+                {
+                #ifdef PLATFORM_WINDOWS
+                    std::string filePath = Files::Windows::FileSystem::OpenFile(
+                        "Meduza Prefab \0*.prefab*\0Prefab\0*.prefab\0",
+                        static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
+
+                    size_t pos = filePath.find("Assets"); //find location of word
+                    filePath.erase(0,pos); //delete everything prior to location found
+                    std::replace(filePath.begin(), filePath.end(), '\\', '/');
+                    
+                    if(!filePath.empty())
+                    {
+                        Serialization::Serializer::GetInstance()->DeserializeEntity(filePath);
+                    }
+                #endif
+                }
+                ImGui::EndMenu();
+            }
 
             if(createMesh)
             {
@@ -188,7 +210,7 @@ void Me::Editor::EditorToolbar::Draw()
             
             ImGui::EndMenu();
         }
-        
+
         float width = ImGui::GetWindowSize().x;
         ImGui::SameLine(width * 0.5f);
 

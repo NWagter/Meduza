@@ -21,6 +21,8 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
 
     lua_register(a_luaState, "_OnTriggerEntityName", lua_OnTriggerEntityName);
     lua_register(a_luaState, "_OnCollisionEntityName", lua_OnCollisionEntityName);
+
+    lua_register(a_luaState, "_InstantiatePrefab", lua_InstantiatePrefab);
 }
 
 int Me::Scripting::LuaFunctions::lua_DestroyEnt(lua_State* a_luaState)
@@ -243,4 +245,26 @@ int Me::Scripting::LuaFunctions::lua_OnCollisionEntityName(lua_State* a_luaState
     lua_pushnumber(a_luaState, 0); 
 
     return -1;
+}
+
+int Me::Scripting::LuaFunctions::lua_InstantiatePrefab(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 4) return -1;
+
+    
+    std::string path = lua_tostring(a_luaState, 1);
+    float x = lua_tonumber(a_luaState, 2);
+    float y = lua_tonumber(a_luaState, 3);
+    float z = lua_tonumber(a_luaState, 4);
+
+    size_t pos = path.find("Assets"); //find location of word
+    path.erase(0,pos); //delete everything prior to location found
+    std::replace(path.begin(), path.end(), '\\', '/');
+
+    EntityID newEntity = Serialization::Serializer::GetInstance()->DeserializeEntity(path);
+
+    auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(newEntity);
+    trans->m_translation = Math::Vec3(x,y,z);
+
+    return 1;
 }

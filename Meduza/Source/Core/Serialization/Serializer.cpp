@@ -84,7 +84,7 @@ static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_funct
     return false;
 }
 
-bool Serialize(std::string a_path)
+bool SerializeSceneA(std::string a_path)
 {
     std::ofstream os(a_path.c_str());
     cereal::XMLOutputArchive archive(os);
@@ -208,15 +208,130 @@ bool Serialize(std::string a_path)
     return true;
 }
 
+bool SerializeEntityA(std::string a_path, EntityID a_entity)
+{
+    std::ofstream os(a_path.c_str());
+    cereal::XMLOutputArchive archive(os);
+
+    Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
+    archive.setNextName("PrefabData"); 
+    archive.startNode();  
+
+    EntityFilter filter = eManager->GetEntities().at(a_entity);
+   
+    archive.setNextName("Entity"); 
+    archive.startNode();    
+    archive(cereal::make_nvp("EntityName", eManager->GetComponent<Me::TagComponent>(a_entity)->m_tag));
+    archive.setNextName("Components"); 
+    archive(cereal::make_nvp("ComponentAmount" , (int)filter.size()));
+
+    archive.startNode(); 
+    CanSerialize<Me::TagComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {  
+        archive(cereal::make_nvp("Tag", a_comp->m_tag));
+    });        
+    
+    CanSerialize<Me::TransformComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Translation", a_comp->m_translation.m_xyz));
+        archive(cereal::make_nvp("Rotation", a_comp->m_rotation.m_xyz));
+        archive(cereal::make_nvp("Scale", a_comp->m_scale.m_xyz));
+        
+    });   
+
+    CanSerialize<Me::RenderComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour));   
+
+        if(a_comp->m_mesh > 10)
+        {
+            auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);  
+            archive(cereal::make_nvp("Mesh", mesh->GetPath()));   
+        }   
+        else
+        {
+            archive(cereal::make_nvp("Mesh", a_comp->m_mesh)); 
+        }
+
+        auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+        archive(cereal::make_nvp("Shader", shader->GetPath()));    
+        auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
+        if(texture != nullptr)
+        {
+            archive(cereal::make_nvp("Texture", texture->GetPath())); 
+        } 
+        else            
+        {
+            archive(cereal::make_nvp("Texture", ""));  
+        }
+    });   
+
+    CanSerialize<Me::CameraComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Far", a_comp->m_far)); 
+        archive(cereal::make_nvp("Near", a_comp->m_near)); 
+        archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
+        archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
+        archive(cereal::make_nvp("CameraLayer", a_comp->m_cameralayer)); 
+        archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));     
+                
+    }); 
+    
+    CanSerialize<Me::Physics::PhysicsComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
+        archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));     
+        archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));    
+    }); 
+
+    CanSerialize<Me::Physics::BoxCollider2DComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));    
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));   
+    }); 
+    CanSerialize<Me::Physics::BoxCollider3DComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));  
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xyz)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+    }); 
+    CanSerialize<Me::Physics::SphereColliderComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));  
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_radius)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+    }); 
+
+    CanSerialize<Me::Scripting::ScriptComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("ScriptPath", a_comp->m_script));            
+    }); 
+
+    CanSerialize<Me::AI::AgentComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {                 
+        archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
+        archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));
+        archive(cereal::make_nvp("AgentStopDistance", a_comp->m_stopDistance));        
+    });   
+
+    archive.finishNode();
+    
+    return true;
+}
+
 bool Me::Serialization::Serializer::SerializeScene()
 {
-    return Serialize(m_activeScene);    
+    return SerializeSceneA(m_activeScene);    
 }
 
 bool Me::Serialization::Serializer::SerializeSceneAs(std::string a_file)
 { 
     ms_instance->m_activeScene = a_file;
-    return Serialize(a_file);    
+    return SerializeSceneA(a_file);    
 }
 
 bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
@@ -392,4 +507,171 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
     }
 
     return false;    
+}
+
+bool Me::Serialization::Serializer::SerializeEntity(std::string a_path, EntityID a_entityId)
+{
+    return SerializeEntityA(a_path, a_entityId);
+}
+
+EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
+{
+    std::string path = a_file;
+
+    std::ifstream is(a_file.c_str());
+    is.open(a_file);
+
+    if(!is.is_open())
+    {
+        return 0;
+    }
+
+    cereal::XMLInputArchive archive(is);
+
+    EntityManager* eManager = EntityManager::GetEntityManager();
+
+    int compAmount = 0;
+
+    archive.setNextName("PrefabData"); 
+    archive.startNode();  
+    
+    archive.setNextName("Entity"); 
+    archive.startNode();    
+
+    std::string name;
+    archive(cereal::make_nvp("EntityName" , name));
+    archive(cereal::make_nvp("ComponentAmount", compAmount));
+    archive.startNode(); 
+    
+    EntityID ent;
+
+    if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        std::string tag;
+        archive(cereal::make_nvp("Tag", tag));
+        ent = eManager->CreateEntity(tag);
+        eManager->AddComponent(ent, a_comp);
+    })) compAmount--;
+
+    if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("Translation" , a_comp->m_translation.m_xyz));
+        archive(cereal::make_nvp("Rotation" , a_comp->m_rotation.m_xyz));
+        archive(cereal::make_nvp("Scale" , a_comp->m_scale.m_xyz));  
+        eManager->AddComponent(ent, a_comp);
+    })) compAmount--; 
+    
+    if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
+        std::string shaderPath;
+
+        std::string mesh;
+        archive(cereal::make_nvp("Mesh", mesh));
+
+        if(!Files::FileSystem::GetFileExtention(mesh).empty())
+        {                
+            a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+        }
+        else
+        {
+            a_comp->m_mesh = (Mesh)std::stoi(mesh);
+        }
+
+        archive(cereal::make_nvp("Shader", shaderPath));    
+        a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+
+        std::string texturePath;
+        archive(cereal::make_nvp("Texture", texturePath));
+        
+        if(!texturePath.empty())  
+            a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
+
+        eManager->AddComponent(ent, a_comp);   
+
+    })) compAmount--;
+
+    if(CanDeserialize<CameraComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Far", a_comp->m_far)); 
+        archive(cereal::make_nvp("Near", a_comp->m_near)); 
+        archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
+        archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
+        archive(cereal::make_nvp("CameraLayer", a_comp->m_cameralayer)); 
+        int type = 0;
+        archive(cereal::make_nvp("CameraType", type)); 
+        a_comp->m_cameraType = (CameraType)type;
+        eManager->AddComponent(ent, a_comp); 
+    })) compAmount--;             
+
+    if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
+        archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));  
+        archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));  
+
+        eManager->AddComponent(ent, a_comp); 
+    })) compAmount--;   
+
+    if(CanDeserialize<Physics::BoxCollider2DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy)); 
+
+        eManager->AddComponent(ent, a_comp); 
+        eManager->AddComponent<DebugRenderComponent>(ent);
+        
+        Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+        eManager->AddComponent(ent, cTag);
+    })) compAmount--;   
+
+    if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xyz)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+
+        eManager->AddComponent(ent, a_comp); 
+        eManager->AddComponent<DebugRenderComponent>(ent);
+
+        Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+        eManager->AddComponent(ent, cTag);
+
+    })) compAmount--; 
+
+    if(CanDeserialize<Physics::SphereColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {          
+        archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
+        archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_radius)); 
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xyz)); 
+
+        eManager->AddComponent(ent, a_comp); 
+        eManager->AddComponent<DebugRenderComponent>(ent);
+
+        Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+        eManager->AddComponent(ent, cTag);
+
+    })) compAmount--;     
+    
+    if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("ScriptPath", a_comp->m_script));
+        eManager->AddComponent(ent, a_comp);
+    })) compAmount--;
+
+    if(CanDeserialize<Me::AI::AgentComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
+        archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));
+        archive(cereal::make_nvp("AgentStopDistance", a_comp->m_stopDistance));   
+        eManager->AddComponent(ent, a_comp);
+    })) compAmount--;
+
+    archive.finishNode();
+
+    return ent;
 }

@@ -4,6 +4,7 @@
 
 namespace Me
 {
+    class Window;
     using EntityID = uint64_t;
 
     namespace Editor
@@ -11,7 +12,7 @@ namespace Me
         class EntityHierarchy : public EditorWidget
         {
             public:
-                EntityHierarchy();
+                EntityHierarchy(Window& a_window);
                 ~EntityHierarchy();
 
                 void Draw() override;
@@ -20,6 +21,7 @@ namespace Me
                 EntityID GetSelected();
             private:
                 EntityID m_selectedEntity;
+                Window* m_window;
         };
     }
 }

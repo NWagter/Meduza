@@ -27,6 +27,8 @@ namespace Me
                 // Collision
                 static int lua_OnTriggerEntityName(lua_State*);
                 static int lua_OnCollisionEntityName(lua_State*);
+
+                static int lua_InstantiatePrefab(lua_State*);
         };
     }
 }

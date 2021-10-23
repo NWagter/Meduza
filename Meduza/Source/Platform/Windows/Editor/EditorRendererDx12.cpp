@@ -63,7 +63,7 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 
 	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
 	AddWidget(*toolbar);
-	EntityHierarchy* entHierarchy = new EntityHierarchy();
+	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());
 	AddWidget(*entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
 	AddWidget(*entEditor);

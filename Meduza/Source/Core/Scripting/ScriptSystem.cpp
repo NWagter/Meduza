@@ -20,20 +20,23 @@ void Me::Scripting::ScriptSystem::OnStart()
         ScriptComponent* rC = std::get<ScriptComponent*>(m_components[i]);
         rC->Init();
 
-        if(rC->m_luaScript != nullptr)
+        for(auto lScript : rC->m_luastates)
         {
-            if(!rC->m_functionsRegistered)
+            if(lScript != nullptr)
             {
-                LuaFunctions::RegisterFunctions(rC->m_luaScript);
-            }  
+                if(!rC->m_functionsRegistered)
+                {
+                    LuaFunctions::RegisterFunctions(lScript);
+                }  
 
-            lua_getglobal(rC->m_luaScript, "OnStart");
-    
-            if(lua_isfunction(rC->m_luaScript, -1) )
-            {
-                lua_pushlightuserdata(rC->m_luaScript, this);
-                lua_pushnumber(rC->m_luaScript, (uint64_t)m_entities[i]);
-                lua_pcall(rC->m_luaScript,2,0,0);
+                lua_getglobal(lScript, "OnStart");
+        
+                if(lua_isfunction(lScript, -1) )
+                {
+                    lua_pushlightuserdata(lScript, this);
+                    lua_pushnumber(lScript, (uint64_t)m_entities[i]);
+                    lua_pcall(lScript,2,0,0);
+                }
             }
         }
     }
@@ -47,16 +50,22 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
     {
         ScriptComponent* rC = std::get<ScriptComponent*>(m_components[i]);
 
-        if(rC->m_luaScript != nullptr)
-        {            
-            lua_getglobal(rC->m_luaScript, "OnUpdate");
+        for(auto lScript : rC->m_luastates)
+        {
+            if(lScript == nullptr)
+            {  
+                continue;
+            }
+
+                      
+            lua_getglobal(lScript, "OnUpdate");
     
-            if(lua_isfunction(rC->m_luaScript, -1) )
+            if(lua_isfunction(lScript, -1) )
             {
-                lua_pushlightuserdata(rC->m_luaScript, this);
-                lua_pushnumber(rC->m_luaScript, (uint64_t)m_entities[i]);
-                lua_pushnumber(rC->m_luaScript, a_dt);
-                lua_pcall(rC->m_luaScript,3,0,0);
+                lua_pushlightuserdata(lScript, this);
+                lua_pushnumber(lScript, (uint64_t)m_entities[i]);
+                lua_pushnumber(lScript, a_dt);
+                lua_pcall(lScript,3,0,0);
             }
         }
     }

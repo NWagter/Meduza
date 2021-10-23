@@ -191,8 +191,14 @@ bool SerializeSceneA(std::string a_path)
         }); 
 
         CanSerialize<Me::Scripting::ScriptComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
-        {          
-            archive(cereal::make_nvp("ScriptPath", a_comp->m_script));            
+        {                      
+            archive(cereal::make_nvp("ScriptAmount", (int)a_comp->m_scripts.size()));  
+
+            for(size_t i = 0; i < a_comp->m_scripts.size();i++)
+            {
+                std::string scriptPath = "ScriptPath" + std::to_string(i);
+                archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]));  
+            }          
         }); 
 
         CanSerialize<Me::AI::AgentComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -307,8 +313,14 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     }); 
 
     CanSerialize<Me::Scripting::ScriptComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
-    {          
-        archive(cereal::make_nvp("ScriptPath", a_comp->m_script));            
+    {                      
+        archive(cereal::make_nvp("ScriptAmount", (int)a_comp->m_scripts.size()));  
+
+        for(size_t i = 0; i < a_comp->m_scripts.size();i++)
+        {
+            std::string scriptPath = "ScriptPath" + std::to_string(i);
+            archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]));  
+        }            
     }); 
 
     CanSerialize<Me::AI::AgentComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
@@ -491,7 +503,17 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
-            archive(cereal::make_nvp("ScriptPath", a_comp->m_script));
+            size_t size;
+            archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
+
+            for(size_t i = 0; i < size; i++)
+            {
+                std::string scriptPath = "ScriptPath" + std::to_string(i);
+                std::string script;
+                archive(cereal::make_nvp(scriptPath.c_str(), script));    
+                a_comp->AddScript(script);
+            }  
+            
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
@@ -659,7 +681,17 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     
     if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
-        archive(cereal::make_nvp("ScriptPath", a_comp->m_script));
+        size_t size;
+        archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
+
+        for(size_t i = 0; i < size; i++)
+        {
+            std::string scriptPath = "ScriptPath" + std::to_string(i);
+            std::string script;
+            archive(cereal::make_nvp(scriptPath.c_str(), script));  
+            a_comp->AddScript(script);
+        }  
+
         eManager->AddComponent(ent, a_comp);
     })) compAmount--;
 

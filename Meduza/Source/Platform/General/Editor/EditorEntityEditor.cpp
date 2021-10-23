@@ -406,28 +406,52 @@ void Me::Editor::EntityEditor::Draw()
         }); 
         DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [](auto& a_comp)
         {
-            std::string newScriptPath = a_comp.m_script;
-
-            if (ImGui::BeginCombo("Script", a_comp.m_script.c_str())) // The second parameter is the label previewed before opening the combo.
+            size_t size = a_comp.m_scripts.size();
+            std::vector<size_t> itemsToRemove;
+            for(size_t i = 0; i < size; i++)
             {
-                bool is_selected;
-                Files::BrowseData data = Files::BrowseData();
-                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Script);
+                std::string fileName = Files::FileSystem::GetFileName(a_comp.m_scripts[i]);
+                ImGui::PushID(fileName.c_str());
 
-                for(auto file : data.m_files)
+                std::string newScriptPath = a_comp.m_scripts[i];
+                if (ImGui::BeginCombo(("##" + fileName).c_str(), fileName.c_str())) // The second parameter is the label previewed before opening the combo.
                 {
-                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    bool is_selected;
+                    Files::BrowseData data = Files::BrowseData();
+                    Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Script);
+
+                    for(auto file : data.m_files)
                     {
-                        newScriptPath = file.second;
+                        if (ImGui::Selectable(Files::FileSystem::GetFileName(file.first).c_str(), &is_selected))
+                        {
+                            newScriptPath = file.second;
+                        }
                     }
+
+                    ImGui::EndCombo();
                 }
 
-                ImGui::EndCombo();
+                if(newScriptPath != a_comp.m_scripts[i])
+                {
+                    a_comp.m_scripts[i] = newScriptPath;
+                }
+                
+                ImGui::SameLine();
+                if(ImGui::Button("X"))
+                {
+                    itemsToRemove.push_back(i);
+                }
+                ImGui::PopID();
             }
 
-            if(newScriptPath != a_comp.m_script)
+            if(ImGui::Button("Add New Script"))
             {
-                a_comp.m_script = newScriptPath;
+                a_comp.AddScript();
+            }
+
+            for(auto i : itemsToRemove)
+            {
+                a_comp.RemoveScript(i);
             }
         });
 
@@ -527,8 +551,18 @@ void Me::Editor::EntityEditor::Draw()
         }
         if(ImGui::MenuItem("Script Component"))
         {
-            auto pComp = new Scripting::ScriptComponent();
-            eManager->AddComponent(m_selectedEntity, pComp);
+            auto sC = eManager->GetComponent<Scripting::ScriptComponent>(m_selectedEntity);
+            if(sC == nullptr)
+            {
+                auto pComp = new Scripting::ScriptComponent();
+                pComp->AddScript();
+                eManager->AddComponent(m_selectedEntity, pComp);
+            }
+            else
+            {
+                sC->AddScript();
+            }
+
             ImGui::CloseCurrentPopup();
         }
         if(ImGui::MenuItem("Agent Component"))

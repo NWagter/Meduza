@@ -4,11 +4,11 @@
 		<EntityAmount>4</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>32</EntityID>
-		<ComponentAmount>3</ComponentAmount>
+		<EntityID>12</EntityID>
+		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
-				<Tag>New Entity</Tag>
+				<Tag>Camera</Tag>
 			</0>
 			<1>
 				<Translation>
@@ -38,10 +38,14 @@
 				<CameraLayer>0</CameraLayer>
 				<CameraType>1</CameraType>
 			</5>
+			<6>
+				<ScriptAmount>1</ScriptAmount>
+				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
+			</6>
 		</value0>
 		<Entity>
-			<EntityID>33</EntityID>
-			<ComponentAmount>8</ComponentAmount>
+			<EntityID>13</EntityID>
+			<ComponentAmount>7</ComponentAmount>
 			<value0>
 				<0>
 					<Tag>SadnessDestroyer</Tag>
@@ -95,12 +99,9 @@
 						<value2>0</value2>
 					</CollisionOffset>
 				</11>
-				<6>
-					<ScriptPath>Assets/Scripts/DestroySadBox.lua</ScriptPath>
-				</6>
 			</value0>
 			<Entity>
-				<EntityID>34</EntityID>
+				<EntityID>14</EntityID>
 				<ComponentAmount>7</ComponentAmount>
 				<value0>
 					<0>
@@ -157,7 +158,7 @@
 					</11>
 				</value0>
 				<Entity>
-					<EntityID>35</EntityID>
+					<EntityID>15</EntityID>
 					<ComponentAmount>7</ComponentAmount>
 					<value0>
 						<0>

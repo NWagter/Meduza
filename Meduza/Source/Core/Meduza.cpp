@@ -1,4 +1,5 @@
 #include "MePCH.h"
+
 #include "Core/Meduza.h"
 
 #include "ECS/EntityManager.h"
@@ -65,8 +66,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 
-	auto scripting = new Scripting::LuaScripting();
-	auto sS = new Scripting::ScriptSystem();
+	m_luaScripting = new Scripting::LuaScripting();
 }
 
 Me::Meduza::~Meduza()
@@ -144,6 +144,7 @@ void Me::Meduza::Destroy()
 	Resources::ShaderLibrary::Destroy();
 	Resources::MeshLibrary::Destroy();
 	Event::EventSystem::Destroy();
+	Serialization::Serializer::DestroySerializer();
 
 	if(m_window != nullptr)
 	{
@@ -154,14 +155,22 @@ void Me::Meduza::Destroy()
 	{
 		delete m_renderLayer;
 	}	
-	
-	if(m_serializer != nullptr)
+
+	if(m_editor != nullptr)
 	{
-		delete m_serializer;
+		delete m_editor;
+	}
+
+	if (m_luaScripting != nullptr)
+	{
+		delete m_luaScripting;
 	}
 
 	if(m_systemInitializer != nullptr)
 	{
 		delete m_systemInitializer;
 	}
+
+	EntityManager::DestroyEntityManager();
 }
+

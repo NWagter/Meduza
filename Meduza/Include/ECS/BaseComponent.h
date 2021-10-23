@@ -7,6 +7,7 @@ namespace Me
     struct BaseComponent
     {
         virtual void Reset(){}
+        virtual ~BaseComponent() {}
         static ComponentID s_componentID;
     };
 

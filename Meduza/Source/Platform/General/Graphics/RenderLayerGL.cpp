@@ -36,18 +36,43 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     m_camera = new Camera();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glAlphaFunc(GL_GREATER, 0.1);
+    glEnable(GL_ALPHA_TEST);
     glCullFace(GL_FRONT); 
 
 }
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
 {
+    for(auto r : m_renderables)
+    {
+        delete r;
+    }
+    m_renderables.clear();
 
+    for(auto r : m_debugRenderables)
+    {
+        delete r;
+    }
+    m_debugRenderables.clear();
+
+    delete m_context;
+    delete m_camera;
 }
 
 void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 {
+    for(auto r : m_renderables)
+    {
+        delete r;
+    }
     m_renderables.clear();
+
+    for(auto r : m_debugRenderables)
+    {
+        delete r;
+    }
     m_debugRenderables.clear();
+
     glViewport(0,0, m_context->m_width, m_context->m_height);
     glClearColor(a_colour.m_colour[0],
                  a_colour.m_colour[1],

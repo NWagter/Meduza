@@ -35,7 +35,20 @@ Me::EntityManager::EntityManager()
 
 Me::EntityManager::~EntityManager()
 {
+    for(auto e : m_entities)
+    {
+        DestroyEntity(e.first);
+    }
     m_entities.clear();
+    
+    for(auto cC : m_containers)
+    {        
+        if(cC.second != nullptr)
+        {
+            delete cC.second;
+        }
+    }
+    m_containers.clear();
 }
 
 bool Me::EntityManager::EntityExists(EntityID a_entity)
@@ -56,8 +69,25 @@ bool Me::EntityManager::EntityExists(EntityID a_entity)
     return true;
 }
 
+void Me::EntityManager::DestroyEntities()
+{
+    for(auto entId : m_entitiesToDestroy)
+    {
+        ms_entityManager->UnRegisterEntity(entId);
+
+        for(auto container : ms_entityManager->m_containers)
+        {
+            container.second->RemoveComponent(entId);
+        }
+
+        ms_entityManager->m_entities.erase(entId);
+    }
+}
+
 void Me::EntityManager::Update(float a_dt)
 {
+    DestroyEntities();
+
     for(auto s : m_systems)
     {
         if(!s->m_OnCreated)
@@ -159,14 +189,7 @@ EntityID Me::EntityManager::CreateEntity(std::string a_tag)
 
 void Me::EntityManager::DestroyEntity(EntityID a_entID)
 {
-    ms_entityManager->UnRegisterEntity(a_entID);
-
-    for(auto container : ms_entityManager->m_containers)
-    {
-        container.second->RemoveComponent(a_entID);
-    }
-
-    ms_entityManager->m_entities.erase(a_entID);
+    ms_entityManager->m_entitiesToDestroy.push_back(a_entID);
 }
 
 void Me::EntityManager::CleanGame()

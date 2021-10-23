@@ -10,7 +10,15 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "variables": []
+      "variables": [],
+      "args": [
+        "/Zi", // Generates complete debugging information
+        "/MDd", // Use /MDd or /MTd to define _DEBUG and allow _CrtDumpMemoryLeaks()
+        "cl",
+        "/EHsc",
+        "/W4",
+        "/D_DEBUG"
+      ]
     },
     {
       "name": "x64-Release",
@@ -22,7 +30,15 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "variables": [],
+      "args": [
+        "/Zi", // Generates complete debugging information
+        "/MDd", // Use /MDd or /MTd to define _DEBUG and allow _CrtDumpMemoryLeaks()
+        "cl",
+        "/EHsc",
+        "/W4",
+        "/D_DEBUG"
+      ]
     }
   ]
 }

@@ -42,6 +42,12 @@ Me::Serialization::Serializer::Serializer(std::string a_file)
     ms_instance = this;
 }
 
+void Me::Serialization::Serializer::DestroySerializer()
+{
+    delete ms_instance;
+    ms_instance = nullptr;
+}
+
 Me::Serialization::Serializer::~Serializer()
 {
 
@@ -65,8 +71,6 @@ static void CanSerialize(Me::EntityManager* a_eManager, EntityID a_entity, cerea
 template<typename T, typename FUNCTION>
 static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_function)
 {
-    auto comp = new T();
-
     if(a_archive.getNodeName() == nullptr)
     {
         return false;
@@ -74,6 +78,8 @@ static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_funct
 
     if(std::to_string(T::s_componentID) == a_archive.getNodeName())
     {
+        auto comp = new T();
+        
         a_archive.startNode(); 
         a_function(comp);
         a_archive.finishNode();
@@ -690,7 +696,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
             std::string script;
             archive(cereal::make_nvp(scriptPath.c_str(), script));  
             a_comp->AddScript(script);
-        }  
+        } 
 
         eManager->AddComponent(ent, a_comp);
     })) compAmount--;

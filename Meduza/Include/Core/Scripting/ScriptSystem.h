@@ -17,6 +17,8 @@ namespace Me
                 void OnStart() override;
                 void OnUpdate(float) override;
 
+                void Start(ScriptComponent*, EntityID);
+
         };
     }
 }

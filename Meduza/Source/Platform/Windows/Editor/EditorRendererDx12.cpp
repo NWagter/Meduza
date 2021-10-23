@@ -62,11 +62,11 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	ImGui::StyleColorsDark();
 
 	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
-	AddWidget(*toolbar);
+	AddWidget(toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());
-	AddWidget(*entHierarchy);
+	AddWidget(entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
-	AddWidget(*entEditor);
+	AddWidget(entEditor);
 }
 
 void Me::Editor::Dx12::EditorRendererDx12::Clear()

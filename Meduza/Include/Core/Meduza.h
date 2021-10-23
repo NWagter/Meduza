@@ -1,4 +1,5 @@
 #pragma once
+
 namespace Me {
 
 	class Window;
@@ -14,6 +15,11 @@ namespace Me {
 	namespace Renderer
 	{
 		class RenderLayer;
+	}
+
+	namespace Scripting
+	{
+		class LuaScripting;
 	}
 
 	namespace Serialization
@@ -60,6 +66,7 @@ namespace Me {
 		Renderer::RenderLayer* m_renderLayer;
 		Serialization::Serializer* m_serializer;
 		SystemInitializer* m_systemInitializer;
+		Scripting::LuaScripting* m_luaScripting;
 
 #ifdef PLATFORM_WINDOWS
 		Editor::EditorRenderer* m_editor;

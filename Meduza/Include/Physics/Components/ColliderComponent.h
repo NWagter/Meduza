@@ -22,7 +22,7 @@ namespace Me
         };
 
         struct ColliderTagComponent : public BaseComponent
-        {
+        {            
             ColliderComponent* m_collider;
 
             static ComponentID s_componentID;

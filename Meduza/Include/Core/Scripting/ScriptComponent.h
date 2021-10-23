@@ -17,12 +17,7 @@ namespace Me
 
             void Init()
             {
-                for(auto lS : m_luastates)
-                {
-                    if(lS != nullptr)
-                        delete lS;
-                }
-                m_luastates.clear();
+                Destroy();
 
                 for(size_t i = 0; i < m_scripts.size(); i++)
                 {
@@ -38,6 +33,22 @@ namespace Me
                     m_luastates.push_back(luaState);
                 }
             }
+            void Destroy()
+            {
+                for(auto lS : m_luastates)
+                {
+                    lua_getglobal(lS, "OnDestroy");
+            
+                    if(lua_isfunction(lS, -1) )
+                    {
+                        lua_pcall(lS,0,0,0);
+                    }
+
+                    lua_close(lS);
+                }
+
+                m_luastates.clear();
+            }
             void AddScript(std::string a_script = "")
             {
                 m_scripts.push_back(a_script);
@@ -45,6 +56,11 @@ namespace Me
             void RemoveScript(size_t a_id)
             {
                 m_scripts.erase(m_scripts.begin() + a_id);
+            }
+            
+            ~ScriptComponent()
+            {
+                Destroy();
             }
         
         };

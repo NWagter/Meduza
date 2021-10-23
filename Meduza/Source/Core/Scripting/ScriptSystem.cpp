@@ -18,27 +18,7 @@ void Me::Scripting::ScriptSystem::OnStart()
     for(int i =0; i < m_entities.size(); i++)
     {
         ScriptComponent* rC = std::get<ScriptComponent*>(m_components[i]);
-        rC->Init();
-
-        for(auto lScript : rC->m_luastates)
-        {
-            if(lScript != nullptr)
-            {
-                if(!rC->m_functionsRegistered)
-                {
-                    LuaFunctions::RegisterFunctions(lScript);
-                }  
-
-                lua_getglobal(lScript, "OnStart");
-        
-                if(lua_isfunction(lScript, -1) )
-                {
-                    lua_pushlightuserdata(lScript, this);
-                    lua_pushnumber(lScript, (uint64_t)m_entities[i]);
-                    lua_pcall(lScript,2,0,0);
-                }
-            }
-        }
+        Start(rC, m_entities[i]);
     }
 }
 
@@ -49,6 +29,11 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
     for(int i =0; i < m_entities.size(); i++)
     {
         ScriptComponent* rC = std::get<ScriptComponent*>(m_components[i]);
+
+        if(!rC->m_scripts.empty() && rC->m_luastates.empty())
+        {
+            Start(rC, m_entities[i]);
+        }
 
         for(auto lScript : rC->m_luastates)
         {
@@ -69,4 +54,29 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
             }
         }
     }
+}
+
+void Me::Scripting::ScriptSystem::Start(ScriptComponent* a_scriptComponent, EntityID a_entId)
+{
+    a_scriptComponent->Init();
+
+    for(auto lScript : a_scriptComponent->m_luastates)
+    {
+        if(lScript != nullptr)
+        {
+            if(!a_scriptComponent->m_functionsRegistered)
+            {
+                LuaFunctions::RegisterFunctions(lScript);
+            }  
+
+            lua_getglobal(lScript, "OnStart");
+    
+            if(lua_isfunction(lScript, -1) )
+            {
+                lua_pushlightuserdata(lScript, this);
+                lua_pushnumber(lScript, (uint64_t)a_entId);
+                lua_pcall(lScript,2,0,0);
+            }
+        }
+    }   
 }

@@ -15,12 +15,12 @@ namespace Me
         {
             public:
                 static EditorRenderer* CreateEditor(Renderer::RenderLayer*);
-                ~EditorRenderer();
+                virtual ~EditorRenderer();
 
                 virtual void Clear() = 0;
                 virtual void Populate() = 0;
 
-                void AddWidget(EditorWidget&);
+                void AddWidget(EditorWidget* const);
 
             protected:
                 std::vector<EditorWidget*> m_editorWidgets;

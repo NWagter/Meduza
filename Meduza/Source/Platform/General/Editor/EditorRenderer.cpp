@@ -55,9 +55,10 @@ Me::Editor::EditorRenderer::~EditorRenderer()
     {
         delete widget;
     }
+    m_editorWidgets.clear();
 }
 
-void Me::Editor::EditorRenderer::AddWidget(EditorWidget& a_widget)
+void Me::Editor::EditorRenderer::AddWidget(EditorWidget* const a_widget)
 {
-    m_editorWidgets.push_back(&a_widget);
+    m_editorWidgets.push_back(a_widget);
 }

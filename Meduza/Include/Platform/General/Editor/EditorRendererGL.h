@@ -22,6 +22,7 @@ namespace Me
             {
                 public:
                     EditorRendererGL(Renderer::GL::RenderLayerGL*);
+                    ~EditorRendererGL();
 
                     void Clear() override;
                     void Populate() override;

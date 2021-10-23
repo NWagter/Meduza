@@ -11,6 +11,8 @@
 #include "Core/Systems/EditorCameraSystem.h"
 #include "Core/Systems/MousePickingSystem.h"
 
+#include "Core/Scripting/ScriptSystem.h"
+
 #include "Physics/Systems/PhysicsSystem.h"
 #include "Physics/Systems/GravitySystem.h"
 #include "Physics/Systems/CollisionSystem.h"
@@ -33,6 +35,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new CameraSystem(&a_renderLayer));
     
 	m_systems.push_back(new MousePickingSystem());
+	m_systems.push_back(new Scripting::ScriptSystem());
 	m_systems.push_back(new Editor::EditorCameraSystem());
 	m_systems.push_back(new AI::AgentMovementSystem());
 	m_systems.push_back(new AI::NavSurfaceSystem());

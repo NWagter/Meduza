@@ -22,7 +22,16 @@ namespace Me
     {
         public:
         ComponentContainer() {}
-        ~ComponentContainer() override {}
+        ~ComponentContainer() override 
+        {
+            for(auto c : m_components)
+            {
+                if(c.second != nullptr)
+                {
+                    delete c.second;
+                }
+            }
+        }
 
         private:
         bool AddComponent(EntityID a_entId, C* a_component);
@@ -63,7 +72,10 @@ namespace Me
             return false;
         }
 
+        auto component = m_components.at(a_entId);
+
 		m_components.erase(comp);
+        delete component;
 
 		return true;
 	}

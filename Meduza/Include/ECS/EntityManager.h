@@ -37,6 +37,7 @@ namespace Me
         template<class C = BaseComponent>
 		std::map<EntityID, C*> GetComponents();
 
+        void DestroyEntities();
         void Update(float);
         
         std::vector<EntityID> GetEntities(EntityFilter);
@@ -48,7 +49,10 @@ namespace Me
         static EntityManager* ms_entityManager;
         bool m_started = false;
 
-        std::map<EntityID, std::set<ComponentID>> m_entities;
+        std::map<EntityID, std::set<ComponentID>> m_entities;        
+
+        std::vector<EntityID> m_entitiesToDestroy;
+
         std::vector<ECSSystem*> m_systems;
 		std::map<ComponentID, IComponentContainer*> m_containers;
         std::map<ComponentID, std::string> m_componentNames;

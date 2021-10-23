@@ -12,7 +12,7 @@ namespace Me
         {
             public:
                 Serializer(std::string = "");
-                ~Serializer();
+                static void DestroySerializer();
 
                 bool SerializeScene();
                 bool SerializeSceneAs(std::string);
@@ -23,6 +23,7 @@ namespace Me
 
                 static Serializer* GetInstance() { return ms_instance;}
             private:
+                ~Serializer();
                 std::string m_activeScene;
                 static Serializer* ms_instance;
         };

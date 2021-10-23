@@ -21,23 +21,23 @@ function OnUpdate(a_host, a_entity, a_dt)
     z = 0
     yaw = 0
 
-    if _OnKeyDown(87) == 1 then
+    if _OnKeyDown(65) == 1 then
         x = x + (moveSpeed * a_dt)
-    elseif _OnKeyDown(83) == 1 then
+    elseif _OnKeyDown(68) == 1 then
         x = x - (moveSpeed * a_dt)
         
     end   
 
-    if _OnKeyDown(65) == 1 then
+    if _OnKeyDown(32) == 1 then
         y = y - (moveSpeed * a_dt)
         
-    elseif _OnKeyDown(68) == 1 then
+    elseif _OnKeyDown(16) == 1 then
         y = y + (moveSpeed * a_dt)        
     end
 
-    if _OnKeyDown(32) == 1 then
+    if _OnKeyDown(87) == 1 then
         z = z - (moveSpeed * a_dt)        
-    elseif _OnKeyDown(16) == 1 then
+    elseif _OnKeyDown(83) == 1 then
         z = z + (moveSpeed * a_dt)        
     end
       

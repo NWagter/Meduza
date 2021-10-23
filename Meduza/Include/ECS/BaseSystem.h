@@ -112,7 +112,7 @@ namespace Me
         auto it = std::find(m_entities.begin(), m_entities.end(), a_entity);
         
         int index = std::distance(m_entities.begin(), it);
-        
+
         m_components.erase(m_components.begin() + index);
         m_entities.erase(m_entities.begin() + index);
     }

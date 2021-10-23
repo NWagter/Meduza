@@ -55,13 +55,18 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     ImGui_ImplOpenGL3_Init("#version 330");
     
 	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
-	AddWidget(*toolbar);
+	AddWidget(toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());
-	AddWidget(*entHierarchy);
+	AddWidget(entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
-	AddWidget(*entEditor);
+	AddWidget(entEditor);
 
 	m_renderLayer = a_renderLayer;
+}
+
+Me::Editor::GL::EditorRendererGL::~EditorRendererGL()
+{
+
 }
 
 void Me::Editor::GL::EditorRendererGL::Clear()

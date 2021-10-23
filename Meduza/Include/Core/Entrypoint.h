@@ -10,6 +10,9 @@ int main()
 
     delete app;
 
+#ifdef PLATFORM_WINDOWS
 	_CrtDumpMemoryLeaks();
+#endif
+
     return 0;
 }

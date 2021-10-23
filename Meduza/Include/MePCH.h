@@ -47,11 +47,18 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
+
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+
 #ifdef _DEBUG
 #include <dxgidebug.h>
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define new DEBUG_NEW
 #endif
 
 #endif
+
 
 #ifdef PLATFORM_LINUX
 
@@ -76,12 +83,6 @@
 #include "Utils/MeduzaUtils.h"
 #include "Platform/General/Events/Events.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#ifdef _DEBUG
-    #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-    #define new DEBUG_NEW
-#endif
 
 extern "C" {
       #include <lua.h>

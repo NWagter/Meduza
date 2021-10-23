@@ -156,11 +156,12 @@ void Me::Meduza::Destroy()
 		delete m_renderLayer;
 	}	
 
+#ifdef PLATFORM_WINDOWS
 	if(m_editor != nullptr)
 	{
 		delete m_editor;
 	}
-
+#endif
 	if (m_luaScripting != nullptr)
 	{
 		delete m_luaScripting;

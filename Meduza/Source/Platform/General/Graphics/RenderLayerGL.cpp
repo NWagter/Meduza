@@ -35,7 +35,6 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 
     m_camera = new Camera();
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     glAlphaFunc(GL_GREATER, 0.1);
     glEnable(GL_ALPHA_TEST);
     glCullFace(GL_FRONT); 
@@ -117,6 +116,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
 
         m_activeShader->SetVec4("u_colour", Math::Vec4(renderComp->m_colour.m_colour));
+        m_activeShader->SetVec4("u_uv", Math::Vec4(renderComp->m_textureCoords.m_xyzw));
 
         if(t != nullptr)
         {

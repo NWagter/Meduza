@@ -7,13 +7,17 @@ layout(location = 2) in vec2 a_texC;
 
 uniform mat4 u_model;
 uniform mat4 u_projectionView;
+uniform vec4 u_uv;
 
 out vec2 texC;
 
 void main()
 {
     gl_Position = u_projectionView * u_model * vec4(a_pos, 1.0);
-    texC = a_texC;
+
+    vec2 tCoord = vec2(u_uv.x + (u_uv.z * a_texC.x),
+			            u_uv.y + (u_uv.w * a_texC.y));
+    texC = tCoord;
 }
 
 #type Pixel

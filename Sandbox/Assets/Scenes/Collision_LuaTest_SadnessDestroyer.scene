@@ -80,6 +80,12 @@
 				<Texture>
 					<value0></value0>
 				</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
 			</3>
 			<7>
 				<Gravity>true</Gravity>
@@ -138,6 +144,12 @@
 				<Texture>
 					<value0></value0>
 				</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
 			</3>
 			<7>
 				<Gravity>false</Gravity>
@@ -196,6 +208,12 @@
 				<Texture>
 					<value0></value0>
 				</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
 			</3>
 			<7>
 				<Gravity>false</Gravity>

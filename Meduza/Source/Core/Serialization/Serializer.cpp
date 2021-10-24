@@ -34,11 +34,6 @@ Me::Serialization::Serializer::Serializer(std::string a_file)
         ME_CORE_ASSERT_M(false, "Can only have one instance of Serializer!")
     }
 
-    if(!a_file.empty())
-    {
-
-    }
-
     ms_instance = this;
 }
 
@@ -78,7 +73,6 @@ static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_funct
 
     if(std::to_string(T::s_componentID) == a_archive.getNodeName())
     {
-        ME_CORE_LOG("Deserialize : %s \n", a_archive.getNodeName());
         auto comp = new T();
         
         a_archive.startNode(); 
@@ -155,6 +149,7 @@ bool SerializeSceneA(std::string a_path)
             {
                 archive(cereal::make_nvp("Texture", ""));  
             }
+            archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
         });   
 
         CanSerialize<Me::CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -278,6 +273,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
         {
             archive(cereal::make_nvp("Texture", ""));  
         }
+        archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
     });   
 
     CanSerialize<Me::CameraComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
@@ -397,9 +393,6 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         archive(cereal::make_nvp("ComponentAmount", compAmount));
         archive.startNode(); 
         
-        
-        ME_CORE_LOG("Deserialize Entity : %i \n", (int)entId);
-        
         EntityID ent = eManager->CreateEntity();
 
         if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
@@ -443,6 +436,8 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             
             if(!texturePath.empty())  
                 a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
+
+            archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
 
             eManager->AddComponent(ent, a_comp);   
 
@@ -542,6 +537,9 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         archive.finishNode();
     }
 
+        
+        
+    ME_CORE_LOG("Finish Deserialize Scene \n");
     return false;    
 }
 
@@ -623,6 +621,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         if(!texturePath.empty())  
             a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
 
+        archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
         eManager->AddComponent(ent, a_comp);   
 
     })) compAmount--;

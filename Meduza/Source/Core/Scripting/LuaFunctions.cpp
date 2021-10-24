@@ -7,6 +7,9 @@
 #include "Core/Scripting/ScriptComponent.h"
 #include "Platform/General/FileSystem/FileSystem.h"
 
+#include "Platform/General/TextureLibrary.h"
+#include "Platform/General/Resources/TextureBase.h"
+
 
 void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
 {
@@ -21,6 +24,9 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
     lua_register(a_luaState, "_SetRotation", lua_SetRotation);
     lua_register(a_luaState, "_SetScale", lua_SetScale);
 
+    lua_register(a_luaState, "_FlipX", lua_FlipX);
+    lua_register(a_luaState, "_FlipY", lua_FlipY);
+
     
     lua_register(a_luaState, "_OnKeyUp", lua_OnKeyUp);
     lua_register(a_luaState, "_OnKeyDown", lua_OnKeyDown);
@@ -30,6 +36,9 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
 
     lua_register(a_luaState, "_InstantiatePrefab", lua_InstantiatePrefab);
     lua_register(a_luaState, "_CallFunction", lua_CallFunction);
+
+    
+    lua_register(a_luaState, "_SetUV", lua_SetUV);
 }
 
 int Me::Scripting::LuaFunctions::lua_DestroyEnt(lua_State* a_luaState)
@@ -197,6 +206,34 @@ int Me::Scripting::LuaFunctions::lua_SetScale(lua_State* a_luaState)
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_scale = Math::Vec3(x,y,z);
+
+    return 0;
+}
+
+int Me::Scripting::LuaFunctions::lua_FlipX(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 1) return -1;
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+
+    auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
+    auto scale = trans->m_scale;
+    scale.m_x = -scale.m_x;
+    trans->m_scale = scale;
+
+    return 0;
+}
+
+int Me::Scripting::LuaFunctions::lua_FlipY(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 1) return -1;
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+
+    auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
+    auto scale = trans->m_scale;
+    scale.m_y = -scale.m_y;
+    trans->m_scale = scale;
 
     return 0;
 }
@@ -379,6 +416,27 @@ int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)
     if(lua_isfunction(lScript, -1) )
     {
         lua_pcall(lScript,0,0,0);
+    }
+
+    return 1;
+}
+
+int Me::Scripting::LuaFunctions::lua_SetUV(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 5) return -1;
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+    float x = lua_tonumber(a_luaState, 2);
+    float y = lua_tonumber(a_luaState, 3);
+    float z = lua_tonumber(a_luaState, 4);
+    float w = lua_tonumber(a_luaState, 5);
+
+    auto rC =  EntityManager::GetEntityManager()->GetComponent<RenderComponent>(ent);
+    
+    if(rC != nullptr && rC->m_texture > 0)
+    {
+        Math::Vec2 size = Resources::TextureLibrary::GetTexture(rC->m_texture)->GetSize();
+        rC->m_textureCoords = Animation::GetUV(Math::Vec4(x,y,z,w), size);
     }
 
     return 1;

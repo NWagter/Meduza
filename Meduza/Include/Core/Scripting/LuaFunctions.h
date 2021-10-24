@@ -23,6 +23,9 @@ namespace Me
                 static int lua_SetLocation(lua_State*);
                 static int lua_SetRotation(lua_State*);
                 static int lua_SetScale(lua_State*);
+                static int lua_FlipX(lua_State*);
+                static int lua_FlipY(lua_State*);
+
 
                 static int lua_OnKeyUp(lua_State*);
                 static int lua_OnKeyDown(lua_State*);
@@ -33,6 +36,8 @@ namespace Me
 
                 static int lua_InstantiatePrefab(lua_State*);
                 static int lua_CallFunction(lua_State*);
+
+                static int lua_SetUV(lua_State*);
         };
     }
 }

@@ -21,7 +21,9 @@ namespace Me
             private:
                 EntityHierarchy* m_hierarchy;
                 EntityID m_selectedEntity;
+
                 bool m_locked = false;
+
         };
     }
 }

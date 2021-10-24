@@ -112,6 +112,8 @@ void OnColliderAdded(EntityID a_ent, Me::EntityManager* a_eManager, Me::Physics:
     }
 }
 
+static Me::Math::Vec4 s_uv = Me::Math::Vec4(0,0,0,0);
+
 void Me::Editor::EntityEditor::Draw()
 {    
 	auto eManager = EntityManager::GetEntityManager();
@@ -122,6 +124,11 @@ void Me::Editor::EntityEditor::Draw()
     
     if(!m_locked)
     {
+        if(m_selectedEntity != m_hierarchy->GetSelected())
+        {
+            s_uv == Math::Vec4(0,0,0,0);
+        }
+
         m_selectedEntity = m_hierarchy->GetSelected();
     }
 
@@ -259,6 +266,25 @@ void Me::Editor::EntityEditor::Draw()
             {
                 a_comp.m_texture = Resources::TextureLibrary::CreateTexture(newTexturePath);
             }
+
+            if(a_comp.m_texture > 0)
+            {           
+                if(s_uv == Math::Vec4(0,0,0,0))
+                {
+                    Math::Vec2 size = Resources::TextureLibrary::GetTexture(a_comp.m_texture)->GetSize();
+                    s_uv = Math::Vec4(0, 0, size.m_x, size.m_y);
+                }
+
+                Helper::EditorHelper::DrawVec4Prop("TextureRect", s_uv);
+
+                if(ImGui::Button("Apply TextureRect"))
+                {
+                    Math::Vec2 size = Resources::TextureLibrary::GetTexture(a_comp.m_texture)->GetSize();
+                    a_comp.m_textureCoords = Animation::GetUV(s_uv, size);
+                }
+            }
+
+        
         });
 
         DrawComponent<CameraComponent>(eManager, "Camera Component", m_selectedEntity, [](auto& a_comp)

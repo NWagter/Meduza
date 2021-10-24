@@ -5,6 +5,7 @@ project (Meduza)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
 if(WIN32)
 	add_compile_definitions(PLATFORM_WINDOWS)
 	file(GLOB PLATFORM_SOURCE Source/Platform/Windows/*.cpp

@@ -82,6 +82,8 @@ void Me::EntityManager::DestroyEntities()
 
         ms_entityManager->m_entities.erase(entId);
     }
+
+    m_entitiesToDestroy.clear();
 }
 
 void Me::EntityManager::Update(float a_dt)

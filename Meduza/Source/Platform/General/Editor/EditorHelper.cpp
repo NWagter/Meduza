@@ -106,8 +106,10 @@ void Me::Editor::Helper::EditorHelper::DrawVec3Prop(const std::string &a_label, 
     ImGui::Columns(1);
     ImGui::PopID();
 }
-void Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, Me::Math::Vec4& a_value, float a_resetValue, float a_columnWidth)
+bool Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, Me::Math::Vec4& a_value, float a_resetValue, float a_columnWidth)
 {
+    bool changed = false;
+
     ImGui::PushID(a_label.c_str());
     ImGui::Columns(2);
     ImGui::SetColumnWidth(0, a_columnWidth);
@@ -130,7 +132,10 @@ void Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, 
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f");
+    if(ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -144,7 +149,10 @@ void Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, 
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f");
+    if(ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -158,7 +166,10 @@ void Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, 
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##Z", &a_value.m_z, 0.1f, 0.0f, 0.0f, "%.2f");
+    if(ImGui::DragFloat("##Z", &a_value.m_z, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -172,10 +183,15 @@ void Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, 
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##W", &a_value.m_w, 0.1f, 0.0f, 0.0f, "%.2f");
+    if(ImGui::DragFloat("##W", &a_value.m_w, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
 
     ImGui::PopStyleVar();
     ImGui::Columns(1);
     ImGui::PopID();
+
+    return changed;
 }

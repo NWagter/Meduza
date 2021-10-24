@@ -78,6 +78,7 @@ static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_funct
 
     if(std::to_string(T::s_componentID) == a_archive.getNodeName())
     {
+        ME_CORE_LOG("Deserialize : %s \n", a_archive.getNodeName());
         auto comp = new T();
         
         a_archive.startNode(); 
@@ -214,6 +215,7 @@ bool SerializeSceneA(std::string a_path)
             archive(cereal::make_nvp("AgentStopDistance", a_comp->m_stopDistance));        
         });   
 
+        archive.finishNode();        
         archive.finishNode();
     }
     
@@ -337,6 +339,8 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     });   
 
     archive.finishNode();
+    archive.finishNode();
+    archive.finishNode();
     
     return true;
 }
@@ -393,13 +397,16 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         archive(cereal::make_nvp("ComponentAmount", compAmount));
         archive.startNode(); 
         
-        EntityID ent;
+        
+        ME_CORE_LOG("Deserialize Entity : %i \n", (int)entId);
+        
+        EntityID ent = eManager->CreateEntity();
 
         if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             std::string tag;
             archive(cereal::make_nvp("Tag", tag));
-            ent = eManager->CreateEntity(tag);
+            a_comp->m_tag = tag;
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
@@ -461,7 +468,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));  
 
             eManager->AddComponent(ent, a_comp); 
-        })) compAmount--;   
+        })) compAmount;   
 
         if(CanDeserialize<Physics::BoxCollider2DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
@@ -475,7 +482,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
-        })) compAmount--;   
+        })) compAmount -= 3;   
 
         if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
@@ -490,7 +497,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
 
-        })) compAmount--; 
+        })) compAmount -= 3;
 
         if(CanDeserialize<Physics::SphereColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
@@ -505,7 +512,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
 
-        })) compAmount--;     
+        })) compAmount -= 3;    
         
         if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
@@ -531,6 +538,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
+        archive.finishNode();    
         archive.finishNode();
     }
 
@@ -710,6 +718,8 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     })) compAmount--;
 
     archive.finishNode();
+    archive.finishNode();
+    archive.finishNode(); 
 
     return ent;
 }

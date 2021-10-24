@@ -87,7 +87,8 @@ void Me::Editor::EntityHierarchy::Draw()
 		}
 		EntityID selected = m_selectedEntity;
 		bool shouldDelete = false; 
-		if(DrawEnt(selected, ent.first, eManager->GetComponent<TagComponent>(ent.first)->m_tag, shouldDelete, m_window))
+		TagComponent* tagComp = eManager->GetComponent<TagComponent>(ent.first);
+		if(tagComp != nullptr && DrawEnt(selected, ent.first, tagComp->m_tag, shouldDelete, m_window))
 		{
 			m_selectedEntity = ent.first;
 		}	

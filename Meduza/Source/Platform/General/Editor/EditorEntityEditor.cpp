@@ -126,7 +126,7 @@ void Me::Editor::EntityEditor::Draw()
     {
         if(m_selectedEntity != m_hierarchy->GetSelected())
         {
-            s_uv == Math::Vec4(0,0,0,0);
+            s_uv = Math::Vec4(0,0,0,0);
         }
 
         m_selectedEntity = m_hierarchy->GetSelected();
@@ -272,7 +272,20 @@ void Me::Editor::EntityEditor::Draw()
                 if(s_uv == Math::Vec4(0,0,0,0))
                 {
                     Math::Vec2 size = Resources::TextureLibrary::GetTexture(a_comp.m_texture)->GetSize();
-                    s_uv = Math::Vec4(0, 0, size.m_x, size.m_y);
+                    Math::Vec4 tC = a_comp.m_textureCoords;
+                    float y = 0;
+                    if(tC.m_y != 0)
+                    {
+                        y = (tC.m_y * size.m_y) - 0.5f;
+                    }
+                    float w = size.m_y;
+                    if(tC.m_w != 1)
+                    {
+                        w = (tC.m_w * size.m_y) + 0.5f;
+                    }
+
+
+                    s_uv = Math::Vec4(tC.m_x * size.m_x, y, tC.m_z * size.m_x, w);
                 }
 
                 Helper::EditorHelper::DrawVec4Prop("TextureRect", s_uv);

@@ -1,4 +1,4 @@
-local left = false
+local left = true
 local time = 1
 
 function OnUpdate(a_host, a_entity, a_dt)
@@ -16,8 +16,10 @@ function OnUpdate(a_host, a_entity, a_dt)
     if time < 0 then
         if left == true then
             left = false
+            _FlipX(a_entity)
         else
             left = true
+            _FlipX(a_entity)
         end
 
         time = 2

@@ -241,54 +241,36 @@ void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent&, Tra
 
 void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent& a_trans)
 {
+	Math::Mat4 camMat = Math::Mat4::Identity();
 	if(a_cam.m_cameraType == CameraType::Orthographic)
-	{
-		auto pos = a_trans.m_translation;
-		auto rot = a_trans.m_rotation.m_z;
-
-		Math::Mat4 view = Math::Mat4::Identity();
-		view.SetPosition(pos);
-		
+	{		
         Me::Math::Vec2 size = m_window->GetSize();
         float aspect = size.m_x / size.m_y;
 
-		Math::Mat4 ortho = Math::GetOrthographicMatrix(
-				-a_cam.m_orthoScale, a_cam.m_orthoScale,
-				 -a_cam.m_orthoScale * aspect,  a_cam.m_orthoScale * aspect,
-				a_cam.m_near, a_cam.m_far
-			);
-			
-		Math::Mat4 viewProjection = view * ortho;
-
-		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
-		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(viewProjection.m_m));
-
-		m_camBuffer->CopyData(0, cBuffer);
+        camMat = Math::GetOrthographicMatrix(-a_cam.m_orthoScale, a_cam.m_orthoScale,
+            -a_cam.m_orthoScale * aspect , a_cam.m_orthoScale * aspect,
+            a_cam.m_near, a_cam.m_far);
 	}
 	else if(a_cam.m_cameraType == CameraType::Perspective)
 	{
-		auto pos = a_trans.m_translation;
-		auto rot = a_trans.m_rotation;
-			
-		Math::Mat4 pMat = Math::Mat4::Identity();
-		pMat.SetPosition(pos);
-
-		Math::Mat4 rMat = Math::Mat4::Identity();
-		rMat.Rotation(rot);
-
-		Math::Mat4 view = rMat * pMat.Inverse();;
-
-		// build projection and view matrix
-		Math::Mat4 projection = Math::GetProjectionMatrix(45.0f,
-		a_cam.m_size.m_x / a_cam.m_size.m_y, a_cam.m_near, a_cam.m_far);
-	
-		Math::Mat4 viewProjection =  projection * view;
-
-		Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
-		DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(viewProjection.m_m));
-
-		m_camBuffer->CopyData(0, cBuffer);
+        camMat = Math::GetProjectionMatrix(45.0f, a_cam.m_size.m_x / a_cam.m_size.m_y,
+         a_cam.m_near, a_cam.m_far);
 	}
+    
+    Math::Mat4 rMat = Math::Mat4::Identity();
+    rMat.Rotation(a_trans.m_rotation);
+
+    Math::Mat4 pMat = Math::Mat4::Identity();
+    pMat.SetPosition(a_trans.m_translation);
+
+    Math::Mat4 view = rMat * pMat.Inverse();
+
+    Math::Mat4 camViewProjection = camMat * view;
+
+	Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
+	DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(camViewProjection.m_m));
+
+	m_camBuffer->CopyData(0, cBuffer);
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Populate()

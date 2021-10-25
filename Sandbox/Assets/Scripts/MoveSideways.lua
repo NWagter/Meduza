@@ -7,7 +7,7 @@ function OnUpdate(a_host, a_entity, a_fDT)
 
     xSpeed = 5
 
-    if left == true then
+    if bLeft == true then
         xSpeed = -5
     else
         xSpeed = 5

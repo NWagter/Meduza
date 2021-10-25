@@ -188,6 +188,7 @@ void Me::Resources::Dx12::Shader::CreatePSO()
 	psoDesc.SampleMask = 0xffffffff;
 	CD3DX12_RASTERIZER_DESC rDesc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	rDesc.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
+	rDesc.CullMode = D3D12_CULL_MODE_NONE;
 	psoDesc.RasterizerState = rDesc;
 
 	D3D12_BLEND_DESC blendDesc = CD3DX12_BLEND_DESC(D3D12_DEFAULT);

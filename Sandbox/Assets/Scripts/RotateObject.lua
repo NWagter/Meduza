@@ -1,6 +1,6 @@
-local yRotSpeed = 50
+local fYRotSpeed = 50
 
-function OnUpdate(a_host, a_entity, a_dt)
+function OnUpdate(a_host, a_entity, a_fDT)
 
-    _Rotate(a_entity, 0, yRotSpeed * a_dt, 0)
+    _Rotate(a_entity, 0, fYRotSpeed * a_fDT, 0)
 end

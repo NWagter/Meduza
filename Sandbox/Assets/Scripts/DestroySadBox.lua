@@ -4,7 +4,7 @@ function OnStart(a_host, a_entity)
     sName = "SadBox"
 end
 
-function OnUpdate(a_host, a_entity, a_dt)
+function OnUpdate(a_host, a_entity, a_fDT)
 
     local ent = _OnTriggerEntityName(a_entity, sName)
     if ent ~= 0 then

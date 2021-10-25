@@ -1,5 +1,5 @@
-local moveSpeed
-local rotateSpeed
+local fMoveSpeed
+local fRotateSpeed
 
 local tCameraSettings
 
@@ -10,43 +10,43 @@ local tCameraSettings
 
 function OnStart(a_host, a_entity)
     print("Camera Start!")
-    moveSpeed = 20
-    rotateSpeed = 2
+    fMoveSpeed = 20
+    fRotateSpeed = 2
 end
 
-function OnUpdate(a_host, a_entity, a_dt)
+function OnUpdate(a_host, a_entity, a_fDT)
 
-    x = 0
-    y = 0
-    z = 0
-    yaw = 0
+    fX = 0
+    fY = 0
+    fZ = 0
+    fYaw = 0
 
     if _OnKeyDown(65) == 1 then
-        x = x - (moveSpeed * a_dt)
+        fX = fX - (fMoveSpeed * a_fDT)
     elseif _OnKeyDown(68) == 1 then
-        x = x + (moveSpeed * a_dt)
+        fX = fX + (fMoveSpeed * a_fDT)
     end   
 
     if _OnKeyDown(16) == 1 then
-        y = y - (moveSpeed * a_dt) 
+        fY = fY - (fMoveSpeed * a_fDT) 
     elseif _OnKeyDown(32) == 1 then
-        y = y + (moveSpeed * a_dt)        
+        fY = fY + (fMoveSpeed * a_fDT)        
     end
 
     if _OnKeyDown(87) == 1 then
-        z = z + (moveSpeed * a_dt)        
+        fZ = fZ + (fMoveSpeed * a_fDT)        
     elseif _OnKeyDown(83) == 1 then
-        z = z - (moveSpeed * a_dt)        
+        fZ = fZ - (fMoveSpeed * a_fDT)        
     end
       
     if _OnKeyDown(69) == 1 then
-        yaw = yaw + (rotateSpeed * a_dt)        
+        fYaw = fYaw + (fRotateSpeed * a_fDT)        
     elseif _OnKeyDown(81) == 1 then
-        yaw = yaw - (rotateSpeed * a_dt)        
+        fYaw = fYaw - (fRotateSpeed * a_fDT)        
     end
 
-    _Move(a_entity, x, y ,z)
-    _Rotate(a_entity, 0, yaw ,0)
+    _Move(a_entity, fX, fY , fZ)
+    _Rotate(a_entity, 0, fYaw ,0)
 end
 
 function OnStop(a_host, a_entity)

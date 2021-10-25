@@ -1,9 +1,9 @@
-local left = true
-local time = 1
+local bLeft = true
+local fTime = 1
 
-function OnUpdate(a_host, a_entity, a_dt)
+function OnUpdate(a_host, a_entity, a_fDT)
 
-    time = time - a_dt
+    fTime = fTime - a_fDT
 
     xSpeed = 5
 
@@ -13,18 +13,18 @@ function OnUpdate(a_host, a_entity, a_dt)
         xSpeed = 5
     end
 
-    if time < 0 then
-        if left == true then
-            left = false
+    if fTime < 0 then
+        if bLeft == true then
+            bLeft = false
             _FlipX(a_entity)
         else
-            left = true
+            bLeft = true
             _FlipX(a_entity)
         end
 
-        time = 2
+        fTime = 2
     end
 
 
-    _Translate(a_entity, xSpeed * a_dt, 0, 0)
+    _Translate(a_entity, xSpeed * a_fDT, 0, 0)
 end

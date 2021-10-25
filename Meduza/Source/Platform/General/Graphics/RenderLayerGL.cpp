@@ -35,11 +35,15 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 
     m_camera = new Camera();
     glEnable(GL_DEPTH_TEST);
-    glAlphaFunc(GL_GREATER, 0.1);
-    glEnable(GL_ALPHA_TEST);
+    glEnable(GL_BLEND);
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glAlphaFunc(GL_GREATER, 0.6f);
+    
     glCullFace(GL_FRONT); 
 
 }
+
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
 {
     for(auto r : m_renderables)
@@ -91,9 +95,12 @@ void Me::Renderer::GL::RenderLayerGL::Present()
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_ALPHA_TEST);
 
     for (auto r : m_renderables)
     {
+        glEnable(GL_CULL_FACE);
+
         auto renderComp = r->m_renderComponent;
 		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(renderComp->m_shader));
         auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(renderComp->m_mesh));
@@ -120,12 +127,13 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
         if(t != nullptr)
         {
+            if(renderComp->m_mesh == (Mesh)Primitives::Quad)
+            {
+                glDisable(GL_CULL_FACE);
+            }
+
             t->Bind();
         }
-
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         glBindVertexArray(m->GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
@@ -134,6 +142,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         t->UnBind();
     }
 
+    glDisable(GL_ALPHA_TEST);
 
     for(auto r : m_debugRenderables)
     {

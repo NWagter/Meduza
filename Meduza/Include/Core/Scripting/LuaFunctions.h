@@ -17,6 +17,7 @@ namespace Me
                 static int lua_Rotate(lua_State*);
 
                 static int lua_GetLocation(lua_State*);
+                static int lua_GetDistance(lua_State*);
 
                 static int lua_Move(lua_State*);
                 

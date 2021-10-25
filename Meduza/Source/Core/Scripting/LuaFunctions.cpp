@@ -17,8 +17,12 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
     lua_register(a_luaState, "_GetEntityByName", lua_GetEntityByName);
 
     lua_register(a_luaState, "_Translate", lua_Translate);
+
     lua_register(a_luaState, "_SetLocation", lua_SetLocation);
     lua_register(a_luaState, "_GetLocation", lua_GetLocation);
+
+    lua_register(a_luaState, "__GetDistance", lua_GetDistance);
+
     lua_register(a_luaState, "_Move", lua_Move);
     lua_register(a_luaState, "_Rotate", lua_Rotate);
     lua_register(a_luaState, "_SetRotation", lua_SetRotation);
@@ -79,6 +83,8 @@ int Me::Scripting::LuaFunctions::lua_GetEntityByName(lua_State* a_luaState)
         }
     }
 
+    lua_pushnumber(a_luaState, 0); 
+
     return 0;
 }
 
@@ -138,6 +144,25 @@ int Me::Scripting::LuaFunctions::lua_GetLocation(lua_State* a_luaState)
 
     luaL_getmetatable(a_luaState, "VectorMetaTable");
     lua_setmetatable(a_luaState, -2);
+
+    return 1;
+}
+
+int Me::Scripting::LuaFunctions::lua_GetDistance(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 2) return -1;
+
+    EntityID entA = (EntityID)lua_tonumber(a_luaState, 1);
+    EntityID entB = (EntityID)lua_tonumber(a_luaState, 2);
+
+    
+    auto transA =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(entA);
+    auto transB =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(entB);
+
+    float distance = Math::Distance(transA->m_translation, transB->m_translation);
+
+    
+    lua_pushnumber(a_luaState, distance); 
 
     return 1;
 }
@@ -308,7 +333,7 @@ int Me::Scripting::LuaFunctions::lua_OnTriggerEntityName(lua_State* a_luaState)
         }
     }
 
-    lua_pushnumber(a_luaState, 0); 
+    lua_pushnumber(a_luaState, -1); 
 
     return -1;
 }
@@ -318,7 +343,7 @@ int Me::Scripting::LuaFunctions::lua_OnCollisionEntityName(lua_State* a_luaState
     if(lua_gettop(a_luaState) != 2) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    const char* name = lua_tostring(a_luaState, 2);
+    std::string name = lua_tostring(a_luaState, 2);
 
     EntityFilter filter;
     filter.insert(TagComponent::s_componentID);
@@ -332,7 +357,7 @@ int Me::Scripting::LuaFunctions::lua_OnCollisionEntityName(lua_State* a_luaState
     {
         TagComponent* t = eManager->GetComponent<TagComponent>(e);
 
-        if(t->m_tag.c_str() == name)
+        if(t->m_tag == name)
         {            
             Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(e);
 
@@ -347,7 +372,7 @@ int Me::Scripting::LuaFunctions::lua_OnCollisionEntityName(lua_State* a_luaState
         }
     }
 
-    lua_pushnumber(a_luaState, 0); 
+    lua_pushnumber(a_luaState, -1); 
 
     return -1;
 }
@@ -383,11 +408,12 @@ int Me::Scripting::LuaFunctions::lua_InstantiatePrefab(lua_State* a_luaState)
 
 int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 3) return -1;
+    if(lua_gettop(a_luaState) != 4) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
     std::string script = lua_tostring(a_luaState, 2);
     std::string function = lua_tostring(a_luaState, 3);
+    EntityID entFrom = (EntityID)lua_tonumber(a_luaState, 4);
 
     auto sC =  EntityManager::GetEntityManager()->GetComponent<ScriptComponent>(ent);
     
@@ -415,7 +441,8 @@ int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)
 
     if(lua_isfunction(lScript, -1) )
     {
-        lua_pcall(lScript,0,0,0);
+        lua_pushnumber(lScript, (uint64_t)entFrom);
+        lua_pcall(lScript,1,0,0);
     }
 
     return 1;

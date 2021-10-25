@@ -32,11 +32,12 @@ namespace Me
         void ClearRTV();
         void CreateRTV(Descriptor&);
         void Resize(int, int);
+        Math::Vec2 Resize();
 
         inline DXGI_FORMAT GetFormat() { return m_backBufferFormat; }
         inline HWND GetHWND() const { return m_hwnd; }
         inline unsigned int GetCurrentFrameIndex() const { return m_currentframeBufferIndex; }
-
+        inline bool GetResize() {return m_resize;}
         float m_width, m_height;
       private:
         bool m_resize = false;

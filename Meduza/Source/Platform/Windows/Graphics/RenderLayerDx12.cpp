@@ -165,6 +165,17 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
 {
     m_context->SwapBuffer(GetCmd());
+
+	
+
+	if (m_context->GetResize())
+	{
+
+		Math::Vec2 size = m_context->Resize();
+		
+		GetCmd().SetViewAndScissor(size.m_x, size.m_y);
+		m_dsBuffer->SetBuffer(*m_device, GetCmd(), (int)size.m_x, (int)size.m_y);
+	}
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)

@@ -51,11 +51,6 @@ void Me::Renderer::Dx12::Context::SwapBuffer(CommandList& a_cmd)
 	m_currentframeBufferIndex = (m_currentframeBufferIndex + 1) % 3;
 
 	m_queue->Flush();
-
-	if (m_resize)
-	{
-		Resize(m_width,m_height);
-	}
 }
 
 void Me::Renderer::Dx12::Context::Resize(float a_x, float a_y)
@@ -63,11 +58,14 @@ void Me::Renderer::Dx12::Context::Resize(float a_x, float a_y)
 	if (!m_resize)
 	{
         m_width = a_x;
-        m_width = a_y;
+        m_height = a_y;
 		m_resize = true;
 		return;
 	}
+}
 
+Me::Math::Vec2 Me::Renderer::Dx12::Context::Resize()
+{
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
 	m_swapChain.Get()->GetDesc1(&swapChainDesc);
 
@@ -82,6 +80,8 @@ void Me::Renderer::Dx12::Context::Resize(float a_x, float a_y)
 	m_currentframeBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
 	m_resize = false;
+
+	return Math::Vec2(m_width,m_height);
 }
 
 void Me::Renderer::Dx12::Context::ClearRTV()

@@ -52,9 +52,10 @@ Me::Renderer::GL::Context::~Context()
     
 }
 
-void Me::Renderer::GL::Context::Resize(float, float)
+void Me::Renderer::GL::Context::Resize(float a_width, float a_height)
 {
-
+    m_width = a_width;
+    m_height = a_height;
 }
 
 void Me::Renderer::GL::Context::SwapBuffer()

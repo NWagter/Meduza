@@ -7,6 +7,8 @@
 
 Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
 {
+	m_eventSystem = nullptr;
+	m_context = nullptr;
 	m_active = true;
 
 	ME_LOG("Window Created : %s \n", m_title);
@@ -105,6 +107,25 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	case WM_CLOSE:
 	{
 		PostQuitMessage(0);
+		break;
+	}
+	case WM_SIZE :
+	{ 
+
+		int width = LOWORD(a_lParam);
+		int height = HIWORD(a_lParam);
+		if(m_context != nullptr)
+		{
+			m_context->Resize(width,height);
+		}
+		break;
+	}
+	case WM_KILLFOCUS: 
+	{
+		if(m_eventSystem != nullptr)
+		{
+			m_eventSystem->Clear();
+		}
 		break;
 	}
 // ---- Mouse

@@ -39,5 +39,6 @@ namespace Me
 		Event::EventSystem* m_eventSystem;
 
 	friend Event::EventSystem;
+	friend Renderer::ContextBase;
 	};
 }

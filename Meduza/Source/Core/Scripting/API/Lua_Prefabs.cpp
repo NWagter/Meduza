@@ -1,0 +1,39 @@
+#include "MePCH.h"
+#include "Core/Scripting/API/Lua_Prefabs.h"
+
+#include "MeduzaIncluder.h"
+
+
+void Me::Scripting::Lua_API::Lua_Prefabs::RegisterPrefabsFunctions(lua_State* a_luaState)
+{
+    lua_register(a_luaState, "_InstantiatePrefab", lua_InstantiatePrefab);
+}
+
+int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaState)
+{
+    if(lua_gettop(a_luaState) != 4) return -1;
+
+    
+    std::string path = lua_tostring(a_luaState, 1);
+    float x = lua_tonumber(a_luaState, 2);
+    float y = lua_tonumber(a_luaState, 3);
+    float z = lua_tonumber(a_luaState, 4);
+
+    size_t pos = path.find("Assets"); //find location of word
+    path.erase(0,pos); //delete everything prior to location found
+    std::replace(path.begin(), path.end(), '\\', '/');
+
+    EntityID newEntity = Serialization::Serializer::GetInstance()->DeserializeEntity(path);
+
+    auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(newEntity);
+    
+    if(trans == nullptr)
+    {
+        return -1;
+    }
+
+    trans->m_translation = Math::Vec3(x,y,z);
+
+    lua_pushnumber(a_luaState, (uint64_t)newEntity); 
+    return 1;
+}

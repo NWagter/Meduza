@@ -10,7 +10,7 @@ namespace Me
     {        
         struct PhysicsComponent;
 
-        class GravitySystem : public BaseSystem<PhysicsComponent,TransformComponent>
+        class GravitySystem : public BaseSystem<PhysicsComponent>
         {
         public:
             GravitySystem();

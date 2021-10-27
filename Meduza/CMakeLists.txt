@@ -49,6 +49,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Core/Components/*.cpp
 	Source/Core/Serialization/*.cpp
 	Source/Core/Scripting/*.cpp
+	Source/Core/Scripting/API/*.cpp
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp

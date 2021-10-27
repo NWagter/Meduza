@@ -348,6 +348,7 @@ void Me::Editor::EntityEditor::Draw()
                 ImGui::DragFloat("GravityForce", &a_comp.m_gravityForce);
             }
             ImGui::DragFloat("BodyMass", &a_comp.m_bodyMass);
+            ImGui::DragFloat("Friction", &a_comp.m_friction);
 
         });
 

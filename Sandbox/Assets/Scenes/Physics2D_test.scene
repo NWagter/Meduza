@@ -91,6 +91,7 @@
 				<Gravity>false</Gravity>
 				<Body_Gravity>9.8000001907348633</Body_Gravity>
 				<Body_Mass>10</Body_Mass>
+				<Body_Friction>10.0</Body_Friction>
 			</7>
 			<10>
 				<CollisionType>1</CollisionType>
@@ -153,6 +154,7 @@
 				<Gravity>true</Gravity>
 				<Body_Gravity>9.8000001907348633</Body_Gravity>
 				<Body_Mass>0.80000001192092896</Body_Mass>
+				<Body_Friction>10.0</Body_Friction>
 			</7>
 			<10>
 				<CollisionType>1</CollisionType>

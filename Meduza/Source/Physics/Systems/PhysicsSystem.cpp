@@ -22,6 +22,8 @@ void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
         pC->m_collided.clear();
         pC->m_triggered.clear();
 
+        tC->m_translation += pC->m_velocity * a_dT;
+
         pC->m_position = tC->m_translation;
         pC->m_rotation = tC->m_rotation;
     }

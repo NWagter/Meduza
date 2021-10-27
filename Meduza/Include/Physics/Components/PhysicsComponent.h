@@ -16,7 +16,10 @@ namespace Me
             Math::Vec3 m_position = Math::Vec3(0,0,0);
             Math::Vec3 m_rotation = Math::Vec3(0,0,0);
 
-            float m_bodyMass = 10.0f;
+            Math::Vec3 m_velocity = Math::Vec3(0,0,0);
+
+            float m_bodyMass = 1.0f;
+            float m_friction = 10.0f;
             float m_gravityForce;
 
             bool m_gravity = true;

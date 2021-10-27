@@ -17,7 +17,6 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
-        TransformComponent* tC = std::get<TransformComponent*>(compTuple);
         
         bool applyGravity = true;
 
@@ -38,9 +37,46 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
             }
         }
 
+        float xVel = 0;
+        float yVel = 0;
+        float zVel = 0;
+
         if(pC->m_gravity && applyGravity)
         {
-            tC->m_translation.m_y -= ((pC->m_bodyMass * pC->m_gravityForce) * a_dt);
+            yVel -= ((pC->m_bodyMass * pC->m_gravityForce) * a_dt);
         }
+        else
+        {
+            pC->m_velocity.m_y = 0;
+        }
+
+        if(pC->m_velocity.m_x < -0.1f)
+        {
+            xVel += (pC->m_bodyMass * pC->m_friction) * a_dt;
+        }
+        else if(pC->m_velocity.m_x > 0.1f)
+        {
+            xVel -= (pC->m_bodyMass * pC->m_friction) * a_dt;
+        }
+        else
+        {
+            pC->m_velocity.m_x = 0;
+        }
+
+        
+        if(pC->m_velocity.m_z < -0.1f)
+        {
+            zVel += (pC->m_bodyMass * pC->m_friction) * a_dt;
+        }
+        else if(pC->m_velocity.m_z > 0.1f)
+        {
+            zVel -= (pC->m_bodyMass * pC->m_friction) * a_dt;
+        }
+        else
+        {
+            pC->m_velocity.m_z = 0;
+        }
+
+        pC->m_velocity += Math::Vec3(xVel, yVel, zVel);
     }
 }

@@ -47,15 +47,46 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_GetVelocity(lua_State* a_luaState)
 
 int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    Me::Math::Vec3 force;
+    EntityID ent;
 
-    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    if(lua_gettop(a_luaState) == 4)
+    {
+        ent = (EntityID)lua_tonumber(a_luaState, 1);
+        force.m_x = lua_tonumber(a_luaState, 2);
+        force.m_y = lua_tonumber(a_luaState, 3);
+        force.m_z = lua_tonumber(a_luaState, 4);
+    }
+    else if(lua_gettop(a_luaState) == 2)
+    {        
+        ent = (EntityID)lua_tonumber(a_luaState, 1);
+        if(lua_istable(a_luaState, 2))
+        {
+            lua_pushstring(a_luaState, "x");
+            lua_gettable(a_luaState, 2);
+            force.m_x = lua_tonumber(a_luaState, -1);
+
+            lua_pushstring(a_luaState, "y");
+            lua_gettable(a_luaState, 2);
+            force.m_y = lua_tonumber(a_luaState, -1);
+
+            lua_pushstring(a_luaState, "z");
+            lua_gettable(a_luaState, 2);
+            force.m_z = lua_tonumber(a_luaState, -1);
+        }
+    }
+    else
+    {
+        return -1;
+    }
+    
 
     auto physicsComp =  EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
-    physicsComp->m_velocity += Me::Math::Vec3(x,y,z);
+    physicsComp->m_velocity += force;
+    {
+        /* code */
+    }
+    
 
     return 1;
 }

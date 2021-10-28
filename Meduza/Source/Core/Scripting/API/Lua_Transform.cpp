@@ -81,20 +81,46 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_GetLocation(lua_State* a_luaState
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    EntityID ent;
+    Me::Math::Vec3 move;
 
-    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    if(lua_gettop(a_luaState) == 4)
+    {
+        ent = (EntityID)lua_tonumber(a_luaState, 1);
+        move.m_x = lua_tonumber(a_luaState, 2);
+        move.m_y = lua_tonumber(a_luaState, 3);
+        move.m_z = lua_tonumber(a_luaState, 4);
+    }
+    else if(lua_gettop(a_luaState) == 2)
+    {        
+        ent = (EntityID)lua_tonumber(a_luaState, 1);
+
+        if(lua_istable(a_luaState, 2))
+        {
+            lua_pushstring(a_luaState, "x");
+            lua_gettable(a_luaState, 2);
+            move.m_x = lua_tonumber(a_luaState, -1);
+
+            lua_pushstring(a_luaState, "y");
+            lua_gettable(a_luaState, 2);
+            move.m_y = lua_tonumber(a_luaState, -1);
+
+            lua_pushstring(a_luaState, "z");
+            lua_gettable(a_luaState, 2);
+            move.m_z = lua_tonumber(a_luaState, -1);
+        }
+    }
+    else
+    {
+        return -1;
+    }
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-
     Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
     
-    Me::Math::Vec3 right = transform.GetRight() * x;
-    Me::Math::Vec3 up = transform.GetUp() * y;
-    Me::Math::Vec3 forward = transform.GetForward() * z;
+    Me::Math::Vec3 right = transform.GetRight() * move.m_x;
+    Me::Math::Vec3 up = transform.GetUp() * move.m_y;
+    Me::Math::Vec3 forward = transform.GetForward() * move.m_z;
 
     Me::Math::Vec3 movement = forward + right + up;
     trans->m_translation = trans->m_translation + (movement);

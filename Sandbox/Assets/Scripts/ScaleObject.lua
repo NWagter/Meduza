@@ -2,10 +2,8 @@ local vScale;
 local bShouldScaleUp = false
 
 function OnStart(a_host, a_entity)
-  vScale = _CreateVector3()
-  vScale.x = 1;
-  vScale.y = 1;
-  vScale.z = 1;
+  print("Created Vec 1,1,1")
+  vScale = _CreateVector3(1,1,1)
 end
 
 function OnUpdate(a_host, a_entity, a_fDT)

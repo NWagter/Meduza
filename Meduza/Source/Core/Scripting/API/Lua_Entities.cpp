@@ -6,8 +6,7 @@
 void Me::Scripting::Lua_API::Lua_Entities::RegisterEntityFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_DestroyEnt", lua_DestroyEnt);
-    lua_register(a_luaState, "_GetEntityByName", lua_GetEntityByName);
-    
+    lua_register(a_luaState, "_GetEntityByName", lua_GetEntityByName); 
 }
 
 int Me::Scripting::Lua_API::Lua_Entities::lua_DestroyEnt(lua_State* a_luaState)

@@ -5,27 +5,8 @@
 
 void Me::Scripting::Lua_API::Lua_Math::RegisterMathFunctions(lua_State* a_luaState)
 {
-    lua_register(a_luaState, "_CreateVector2", lua_CreateVector2);
     lua_register(a_luaState, "_CreateVector3", lua_CreateVector3);
     lua_register(a_luaState, "_GetDistance", lua_GetDistance);
-}
-
-int Me::Scripting::Lua_API::Lua_Math::lua_CreateVector2(lua_State* a_luaState)
-{
-    lua_newtable(a_luaState);
-
-    lua_pushstring(a_luaState, "x");
-    lua_pushnumber(a_luaState, 0);
-    lua_settable(a_luaState, -2);
-    
-    lua_pushstring(a_luaState, "y");
-    lua_pushnumber(a_luaState, 0);
-    lua_settable(a_luaState, -2);
-
-    luaL_getmetatable(a_luaState, "Vector2");
-    lua_setmetatable(a_luaState, -2);
-
-    return 1;
 }
 
 int Me::Scripting::Lua_API::Lua_Math::lua_CreateVector3(lua_State* a_luaState)
@@ -44,7 +25,7 @@ int Me::Scripting::Lua_API::Lua_Math::lua_CreateVector3(lua_State* a_luaState)
     lua_pushnumber(a_luaState, 0);
     lua_settable(a_luaState, -3);
 
-    luaL_getmetatable(a_luaState, "Vector2");
+    luaL_getmetatable(a_luaState, "Vector3");
     lua_setmetatable(a_luaState, -2);
     return 1;
 }

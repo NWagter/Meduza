@@ -1,23 +1,32 @@
-local fScale = 1
-local bShouldScaleUp = 0
+local vScale;
+local bShouldScaleUp = false
+
+function OnStart(a_host, a_entity)
+  vScale = _CreateVector3()
+  vScale.x = 1;
+  vScale.y = 1;
+  vScale.z = 1;
+end
 
 function OnUpdate(a_host, a_entity, a_fDT)
-    _SetLocation(a_entity, 0, 0, 10)
-    _SetRotation(a_entity, 0, 180, 0)      
+       
+  if bShouldScaleUp then
+      vScale.x = vScale.x + a_fDT
+      vScale.y = vScale.y + a_fDT
+      vScale.z = vScale.z + a_fDT
+  else
+      vScale.x = vScale.x - a_fDT
+      vScale.y = vScale.y - a_fDT
+      vScale.z = vScale.z - a_fDT
+  end
 
-    if bShouldScaleUp == 1 then
-      scale = fScale + a_fDT
-    elseif bShouldScaleUp == 0 then
-      scale = fScale - a_fDT
+    if vScale.x > 4 then
+      bShouldScaleUp = false
+    elseif vScale.x < 1 then
+      bShouldScaleUp = true
     end
 
-    if fScale > 4 then
-      bShouldScaleUp = 0
-    elseif fScale < 1 then
-      bShouldScaleUp = 1
-    end
 
-
-    _SetScale(a_entity, fScale, fScale, fScale)
+    _SetScale(a_entity, vScale)
 
   end

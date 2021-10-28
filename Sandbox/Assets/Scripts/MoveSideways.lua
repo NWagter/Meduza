@@ -4,7 +4,7 @@ local fTime = 1
 function OnUpdate(a_host, a_entity, a_fDT)
 
     fTime = fTime - a_fDT
-
+    vMovement = _CreateVector3()
     xSpeed = 5
 
     if bLeft == true then
@@ -25,6 +25,6 @@ function OnUpdate(a_host, a_entity, a_fDT)
         fTime = 2
     end
 
-
-    _Translate(a_entity, xSpeed * a_fDT, 0, 0)
+    vMovement.x = xSpeed * a_fDT
+    _Translate(a_entity, vMovement)
 end

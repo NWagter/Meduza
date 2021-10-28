@@ -2,6 +2,7 @@
 #include "Core/Scripting/API/Lua_Transform.h"
 
 #include "MeduzaIncluder.h"
+#include "Core/Scripting/API/Lua_APIHelper.h"
 
 void Me::Scripting::Lua_API::Lua_Transform::RegisterTransformFunctions(lua_State* a_luaState)
 {
@@ -21,30 +22,32 @@ void Me::Scripting::Lua_API::Lua_Transform::RegisterTransformFunctions(lua_State
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_Translate(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
-
+    if(lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
+    
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Math::Vec3 translation = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    trans->m_translation += Math::Vec3(x,y,z);
+    trans->m_translation += translation;
 
     return 0;
 }
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_Rotate(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    if(lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Math::Vec3 rotation = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    trans->m_rotation += Math::Vec3(x,y,z);
+    trans->m_rotation += rotation;
 
     return 0;
 }
@@ -81,39 +84,13 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_GetLocation(lua_State* a_luaState
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
 {
-    EntityID ent;
-    Me::Math::Vec3 move;
-
-    if(lua_gettop(a_luaState) == 4)
-    {
-        ent = (EntityID)lua_tonumber(a_luaState, 1);
-        move.m_x = lua_tonumber(a_luaState, 2);
-        move.m_y = lua_tonumber(a_luaState, 3);
-        move.m_z = lua_tonumber(a_luaState, 4);
-    }
-    else if(lua_gettop(a_luaState) == 2)
-    {        
-        ent = (EntityID)lua_tonumber(a_luaState, 1);
-
-        if(lua_istable(a_luaState, 2))
-        {
-            lua_pushstring(a_luaState, "x");
-            lua_gettable(a_luaState, 2);
-            move.m_x = lua_tonumber(a_luaState, -1);
-
-            lua_pushstring(a_luaState, "y");
-            lua_gettable(a_luaState, 2);
-            move.m_y = lua_tonumber(a_luaState, -1);
-
-            lua_pushstring(a_luaState, "z");
-            lua_gettable(a_luaState, 2);
-            move.m_z = lua_tonumber(a_luaState, -1);
-        }
-    }
-    else
+    if(lua_gettop(a_luaState) != 2)
     {
         return -1;
     }
+          
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+    Me::Math::Vec3 move = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
@@ -130,45 +107,48 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_SetLocation(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
-
+    if(lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
+    
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Math::Vec3 translation = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    trans->m_translation = Math::Vec3(x,y,z);
+    trans->m_translation = translation;
 
     return 0;
 }
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_SetRotation(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    if(lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Math::Vec3 euler = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    trans->m_rotation = Math::Vec3(x,y,z);
+    trans->m_rotation = euler;
 
     return 0;
 }
 
 int Me::Scripting::Lua_API::Lua_Transform::lua_SetScale(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    if(lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Math::Vec3 scale = Lua_Helper::GetVector(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    trans->m_scale = Math::Vec3(x,y,z);
+    trans->m_scale = scale;
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #include "Core/Scripting/API/Lua_Physics.h"
 
 #include "MeduzaIncluder.h"
+#include "Core/Scripting/API/Lua_APIHelper.h"
 
 #include "Physics/Components/ColliderComponent.h"
 #include "Physics/Components/PhysicsComponent.h"
@@ -47,46 +48,16 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_GetVelocity(lua_State* a_luaState)
 
 int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
 {
-    Me::Math::Vec3 force;
-    EntityID ent;
-
-    if(lua_gettop(a_luaState) == 4)
-    {
-        ent = (EntityID)lua_tonumber(a_luaState, 1);
-        force.m_x = lua_tonumber(a_luaState, 2);
-        force.m_y = lua_tonumber(a_luaState, 3);
-        force.m_z = lua_tonumber(a_luaState, 4);
-    }
-    else if(lua_gettop(a_luaState) == 2)
-    {        
-        ent = (EntityID)lua_tonumber(a_luaState, 1);
-        if(lua_istable(a_luaState, 2))
-        {
-            lua_pushstring(a_luaState, "x");
-            lua_gettable(a_luaState, 2);
-            force.m_x = lua_tonumber(a_luaState, -1);
-
-            lua_pushstring(a_luaState, "y");
-            lua_gettable(a_luaState, 2);
-            force.m_y = lua_tonumber(a_luaState, -1);
-
-            lua_pushstring(a_luaState, "z");
-            lua_gettable(a_luaState, 2);
-            force.m_z = lua_tonumber(a_luaState, -1);
-        }
-    }
-    else
-    {
+    if(lua_gettop(a_luaState) != 2) 
+    { 
         return -1;
-    }
-    
+    }    
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+    Me::Math::Vec3 force = Lua_Helper::GetVector(a_luaState, 2);
 
     auto physicsComp =  EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
-    physicsComp->m_velocity += force;
-    {
-        /* code */
-    }
-    
+    physicsComp->m_velocity += force;    
 
     return 1;
 }

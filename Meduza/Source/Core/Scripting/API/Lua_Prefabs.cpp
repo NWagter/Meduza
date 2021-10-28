@@ -2,6 +2,7 @@
 #include "Core/Scripting/API/Lua_Prefabs.h"
 
 #include "MeduzaIncluder.h"
+#include "Core/Scripting/API/Lua_APIHelper.h"
 
 
 void Me::Scripting::Lua_API::Lua_Prefabs::RegisterPrefabsFunctions(lua_State* a_luaState)
@@ -11,13 +12,10 @@ void Me::Scripting::Lua_API::Lua_Prefabs::RegisterPrefabsFunctions(lua_State* a_
 
 int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 4) return -1;
+    if(lua_gettop(a_luaState) != 2) return -1;
 
-    
     std::string path = lua_tostring(a_luaState, 1);
-    float x = lua_tonumber(a_luaState, 2);
-    float y = lua_tonumber(a_luaState, 3);
-    float z = lua_tonumber(a_luaState, 4);
+    Me::Math::Vec3 location = Lua_Helper::GetVector(a_luaState, 2);
 
     size_t pos = path.find("Assets"); //find location of word
     path.erase(0,pos); //delete everything prior to location found
@@ -32,7 +30,7 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
         return -1;
     }
 
-    trans->m_translation = Math::Vec3(x,y,z);
+    trans->m_translation = location;
 
     lua_pushnumber(a_luaState, (uint64_t)newEntity); 
     return 1;

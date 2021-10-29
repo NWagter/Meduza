@@ -48,9 +48,6 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
             pC->m_velocity.m_y = 0;
         }
 
-        Math::Vec3 vel = pC->m_velocity;
-        Math::Vec3 drag = (vel.Inverse() * pC->m_drag) * a_dt;
-
-        pC->m_velocity += Math::Vec3(drag.m_x, yVel, drag.m_z);
+        pC->m_velocity += Math::Vec3(0, yVel, 0);
     }
 }

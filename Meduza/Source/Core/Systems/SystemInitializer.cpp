@@ -15,6 +15,8 @@
 
 #include "Physics/Systems/PhysicsSystem.h"
 #include "Physics/Systems/GravitySystem.h"
+#include "Physics/Systems/FluidDragSystem.h"
+
 #include "Physics/Systems/CollisionSystem.h"
 #include "Physics/Systems/Box2DDebugRenderSystem.h"
 #include "Physics/Systems/Box3DDebugRenderSystem.h"
@@ -42,7 +44,9 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 
 	m_systems.push_back(new Physics::PhysicsSystem()); //Clears and set Body correct
     m_systems.push_back(new Physics::CollisionSystem());
+	m_systems.push_back(new Physics::FluidDragSystem()); //Check for drag behaviour
     m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision
+    
 }
 
 Me::SystemInitializer::~SystemInitializer()

@@ -375,6 +375,15 @@ namespace Me
 
 				return *this;
 			}
+
+			inline Vec3& Inverse()
+			{
+				m_x = -m_x;
+				m_y = -m_y;
+				m_z = -m_z;
+				
+				return *this;
+			}
 		};
 
 		class Vec4

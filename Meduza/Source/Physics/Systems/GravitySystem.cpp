@@ -37,9 +37,7 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
             }
         }
 
-        float xVel = 0;
         float yVel = 0;
-        float zVel = 0;
 
         if(pC->m_gravity && applyGravity)
         {
@@ -50,33 +48,9 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
             pC->m_velocity.m_y = 0;
         }
 
-        if(pC->m_velocity.m_x < -0.1f)
-        {
-            xVel += (pC->m_bodyMass * pC->m_friction) * a_dt;
-        }
-        else if(pC->m_velocity.m_x > 0.1f)
-        {
-            xVel -= (pC->m_bodyMass * pC->m_friction) * a_dt;
-        }
-        else
-        {
-            pC->m_velocity.m_x = 0;
-        }
+        Math::Vec3 vel = pC->m_velocity;
+        Math::Vec3 drag = (vel.Inverse() * pC->m_drag) * a_dt;
 
-        
-        if(pC->m_velocity.m_z < -0.1f)
-        {
-            zVel += (pC->m_bodyMass * pC->m_friction) * a_dt;
-        }
-        else if(pC->m_velocity.m_z > 0.1f)
-        {
-            zVel -= (pC->m_bodyMass * pC->m_friction) * a_dt;
-        }
-        else
-        {
-            pC->m_velocity.m_z = 0;
-        }
-
-        pC->m_velocity += Math::Vec3(xVel, yVel, zVel);
+        pC->m_velocity += Math::Vec3(drag.m_x, yVel, drag.m_z);
     }
 }

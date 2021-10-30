@@ -13,6 +13,8 @@ Me::Physics::FluidDragSystem::FluidDragSystem()
 
 void Me::Physics::FluidDragSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("FluidDragSystem");
+    
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);

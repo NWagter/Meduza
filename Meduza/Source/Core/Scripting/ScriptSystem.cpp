@@ -24,6 +24,8 @@ void Me::Scripting::ScriptSystem::OnStart()
 
 void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("ScriptingSystem");
+
     auto luaScripting = LuaScripting::GetInstance();
 
     for(int i =0; i < m_entities.size(); i++)

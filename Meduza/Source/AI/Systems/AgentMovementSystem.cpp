@@ -16,6 +16,7 @@ Me::AI::AgentMovementSystem::~AgentMovementSystem()
 
 void Me::AI::AgentMovementSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("AgentMovementSystem");
 
     for(int i = 0; i < m_entities.size(); i++)
     {

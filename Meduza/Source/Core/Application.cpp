@@ -41,6 +41,7 @@ bool Me::Application::Run()
 
     while(m_meduza->IsRunning())
     {
+        ME_PROFILE_FRAME("MainThread");
         const float deltaSeconds = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
         

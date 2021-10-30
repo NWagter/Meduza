@@ -78,3 +78,4 @@ target_include_directories(Meduza PUBLIC
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC LuaLib)
+target_link_libraries(${PROJECT_NAME} PUBLIC Optick)

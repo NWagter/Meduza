@@ -79,6 +79,7 @@
 
 #include "Core/Core.h"
 #include "Core/MeduzaCore.h"
+#include "Core/MeduzaProfiler.h"
 
 #include "Utils/MeduzaUtils.h"
 #include "Platform/General/Events/Events.h"

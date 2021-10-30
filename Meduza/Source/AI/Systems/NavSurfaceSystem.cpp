@@ -23,6 +23,8 @@ Me::AI::NavSurfaceSystem::~NavSurfaceSystem()
 
 void Me::AI::NavSurfaceSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("NavSurfaceSystem");
+    
     for(int i = 0; i < m_entities.size(); i++)
     {
         auto navC = std::get<NavSurfaceComponent*>(m_components[i]);

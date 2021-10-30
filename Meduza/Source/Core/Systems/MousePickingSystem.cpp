@@ -15,6 +15,8 @@ Me::MousePickingSystem::MousePickingSystem()
 
 void Me::MousePickingSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("MousePickingSystem");
+
     int lowestLayer = -1;
     Event::EventSystem* eventSystem = Event::EventSystem::GetEventSystem();
     EntityManager* eManager = EntityManager::GetEntityManager();

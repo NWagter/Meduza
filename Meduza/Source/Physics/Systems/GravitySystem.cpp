@@ -14,6 +14,8 @@ Me::Physics::GravitySystem::GravitySystem()
 
 void Me::Physics::GravitySystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("GravitySystem");
+    
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);

@@ -18,6 +18,8 @@ Me::CameraSystem::CameraSystem(Renderer::RenderLayer* a_renderLayer)
 
 void Me::CameraSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("Camera");
+    
     int lowestLayer = -1;    
     CameraComponent* camera = nullptr;
     TransformComponent* transform = nullptr;

@@ -14,6 +14,8 @@ Me::Physics::CollisionSystem::CollisionSystem()
 
 void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("CollisionSystem");
+    
     EntityFilter filter;
     filter.insert(PhysicsComponent::s_componentID);
     filter.insert(ColliderTagComponent::s_componentID);

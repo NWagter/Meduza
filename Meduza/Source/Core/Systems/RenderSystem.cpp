@@ -19,6 +19,8 @@ Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)
 
 void Me::RenderSystem::OnUpdate(float)
 {
+    ME_PROFILE_FUNC("RenderSystem");
+
     for(auto& compTuple : m_components)
     {
         RenderComponent* rC = std::get<RenderComponent*>(compTuple);

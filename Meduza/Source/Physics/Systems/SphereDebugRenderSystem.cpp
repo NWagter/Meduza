@@ -39,6 +39,8 @@ void Me::SphereDebugRenderSystem::OnUpdate(float)
         return;
     }
 
+    ME_PROFILE_FUNC("SphereDebugRenderSystem");
+
     for(auto& compTuple : m_components)
     {
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);

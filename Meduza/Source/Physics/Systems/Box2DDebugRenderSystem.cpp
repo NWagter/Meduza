@@ -33,11 +33,13 @@ Me::Box2DDebugRenderSystem::Box2DDebugRenderSystem(Renderer::RenderLayer* a_rend
 }
 
 void Me::Box2DDebugRenderSystem::OnUpdate(float)
-{
+{    
     if(Meduza::GetDebugState() & DEBUG_OFF)
     {
         return;
     }
+    
+    ME_PROFILE_FUNC("Box2DDebugRenderSystem");
 
     for(auto& compTuple : m_components)
     {

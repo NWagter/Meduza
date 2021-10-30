@@ -14,6 +14,8 @@ Me::Physics::PhysicsSystem::PhysicsSystem()
 
 void Me::Physics::PhysicsSystem::OnUpdate(float a_dT)
 {
+    ME_PROFILE_FUNC("PhysicsSystem");
+    
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);

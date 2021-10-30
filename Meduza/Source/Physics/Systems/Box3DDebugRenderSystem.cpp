@@ -39,6 +39,8 @@ void Me::Box3DDebugRenderSystem::OnUpdate(float)
         return;
     }
 
+    ME_PROFILE_FUNC("Box3DDebugRenderSystem");    
+
     for(auto& compTuple : m_components)
     {
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);

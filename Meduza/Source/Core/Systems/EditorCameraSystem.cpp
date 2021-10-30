@@ -18,6 +18,8 @@ Me::Editor::EditorCameraSystem::~EditorCameraSystem()
 
 void Me::Editor::EditorCameraSystem::OnCreate()
 {
+    ME_PROFILE_FUNC("EditorCamera");
+
     auto eManager = EntityManager::GetEntityManager();
 
     EntityID editorCam = eManager->CreateEntity("Editor Camera");

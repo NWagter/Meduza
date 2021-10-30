@@ -1,7 +1,11 @@
 #pragma once
 
-#include <optick.h>
-#define ME_ENABLE_PROFILING 1
+#ifdef PLATFORM_WINDOWS
+    #include <optick.h>
+    #define ME_ENABLE_PROFILING 1
+#else
+    #define ME_ENABLE_PROFILING 0
+#endif
 
 #if ME_ENABLE_PROFILING
 

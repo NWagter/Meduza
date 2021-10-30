@@ -342,11 +342,7 @@ void Me::Editor::EntityEditor::Draw()
 
         DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)
         {
-            ImGui::Checkbox("Gravity", &a_comp.m_gravity);            
-            if(a_comp.m_gravity)
-            {
-                ImGui::DragFloat("GravityForce", &a_comp.m_gravityForce);
-            }
+            ImGui::Checkbox("Gravity", &a_comp.m_gravity);      
             ImGui::DragFloat("BodyMass", &a_comp.m_bodyMass);
             ImGui::DragFloat("Drag", &a_comp.m_drag);
 

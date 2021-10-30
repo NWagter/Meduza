@@ -24,13 +24,11 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
         {
             if(std::abs(blockData.m_hitNormal.m_y) > 0.01f)
             {
-                float gravity = pC->m_gravityForce;
-
-                if(gravity < 0 && (blockData.m_hitNormal.m_y < 0))
+                if(gs_gravity < 0 && (blockData.m_hitNormal.m_y < 0))
                 {
                     applyGravity = false;
                 }
-                else if(gravity > 0 && (blockData.m_hitNormal.m_y > 0)) // gravity check
+                else if(gs_gravity > 0 && (blockData.m_hitNormal.m_y > 0)) // gravity check
                 {
                     applyGravity = false;
                 }
@@ -41,7 +39,7 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
 
         if(pC->m_gravity && applyGravity)
         {
-            yVel -= ((pC->m_bodyMass * pC->m_gravityForce) * a_dt);
+            yVel -= ((pC->m_bodyMass * gs_gravity) * a_dt);
         }
         else
         {

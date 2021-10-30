@@ -166,7 +166,6 @@ bool SerializeSceneA(std::string a_path)
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
-            archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));     
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));    
             archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));  
         }); 
@@ -290,8 +289,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     
     CanSerialize<Me::Physics::PhysicsComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
     {          
-        archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
-        archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));     
+        archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
         archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass)); 
         archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));     
     }); 
@@ -460,8 +458,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
-            archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
-            archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));  
+            archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass)); 
             archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));   
 
@@ -645,7 +642,6 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
-        archive(cereal::make_nvp("Body_Gravity", a_comp->m_gravityForce));  
         archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));
         archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));    
 

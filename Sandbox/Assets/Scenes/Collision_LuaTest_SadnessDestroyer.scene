@@ -4,7 +4,7 @@
 		<EntityAmount>4</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>12</EntityID>
+		<EntityID>37</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
@@ -45,8 +45,8 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>13</EntityID>
-		<ComponentAmount>7</ComponentAmount>
+		<EntityID>38</EntityID>
+		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<0>
 				<Tag>SadnessDestroyer</Tag>
@@ -89,9 +89,8 @@
 			</3>
 			<7>
 				<Gravity>true</Gravity>
-				<Body_Gravity>9.8000001907348633</Body_Gravity>
-				<Body_Mass>0.10000000149011612</Body_Mass>
-				<Body_Drag>10.0</Body_Drag>
+				<Body_Mass>10</Body_Mass>
+				<Body_Drag>10</Body_Drag>
 			</7>
 			<11>
 				<CollisionType>0</CollisionType>
@@ -107,10 +106,14 @@
 					<value2>0</value2>
 				</CollisionOffset>
 			</11>
+			<6>
+				<ScriptAmount>1</ScriptAmount>
+				<ScriptPath0>Assets/Scripts/DestroySadBox.lua</ScriptPath0>
+			</6>
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>14</EntityID>
+		<EntityID>39</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<0>
@@ -154,9 +157,8 @@
 			</3>
 			<7>
 				<Gravity>false</Gravity>
-				<Body_Gravity>9.8000001907348633</Body_Gravity>
 				<Body_Mass>10</Body_Mass>
-				<Body_Drag>1.0</Body_Drag>
+				<Body_Drag>1</Body_Drag>
 			</7>
 			<11>
 				<CollisionType>0</CollisionType>
@@ -175,7 +177,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>15</EntityID>
+		<EntityID>40</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<0>
@@ -219,9 +221,8 @@
 			</3>
 			<7>
 				<Gravity>false</Gravity>
-				<Body_Gravity>9.8000001907348633</Body_Gravity>
 				<Body_Mass>10</Body_Mass>
-				<Body_Drag>1.0</Body_Drag>
+				<Body_Drag>1</Body_Drag>
 			</7>
 			<13>
 				<CollisionType>0</CollisionType>

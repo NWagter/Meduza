@@ -8,6 +8,7 @@ namespace Me
     namespace Physics
     {
         static constexpr float gs_gravity = 9.8f;
+        static constexpr float gs_dragExponent = 1.5f;
 
         enum class CollisionType : uint16_t
         {

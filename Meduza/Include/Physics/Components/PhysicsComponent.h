@@ -20,16 +20,11 @@ namespace Me
 
             float m_bodyMass = 1.0f;
             float m_drag = 1.0f;
-            float m_gravityForce;
 
             bool m_gravity = true;
 
             static ComponentID s_componentID;
 
-            PhysicsComponent()
-            {
-                m_gravityForce = gs_gravity;
-            }
         };
     }
 }

@@ -4,7 +4,7 @@
 		<EntityAmount>3</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>1</EntityID>
+		<EntityID>41</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
@@ -45,7 +45,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>2</EntityID>
+		<EntityID>42</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<0>
@@ -87,9 +87,8 @@
 			</3>
 			<7>
 				<Gravity>false</Gravity>
-				<Body_Gravity>9.8000001907348633</Body_Gravity>
 				<Body_Mass>10</Body_Mass>
-				<Body_Drag>10.0</Body_Drag>
+				<Body_Drag>10</Body_Drag>
 			</7>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -108,7 +107,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>3</EntityID>
+		<EntityID>43</EntityID>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<0>

@@ -19,7 +19,7 @@ void Me::Physics::FluidDragSystem::OnUpdate(float a_dt)
         
         Math::Vec3 velocity = pC->m_velocity;
         float vel = velocity.Lenght();
-        float drag = pC->m_drag * std::pow(vel, 1.2f);
+        float drag = pC->m_drag * std::pow(vel, gs_dragExponent);
 
         if(vel == 0)
         {

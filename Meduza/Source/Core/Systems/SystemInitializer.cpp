@@ -29,7 +29,6 @@
 
 Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLayer)
 {
-	
 	m_systems.push_back(new RenderSystem(&a_renderLayer));
 	m_systems.push_back(new Box2DDebugRenderSystem(&a_renderLayer));
 	m_systems.push_back(new Box3DDebugRenderSystem(&a_renderLayer));
@@ -47,6 +46,8 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::FluidDragSystem()); //Check for drag behaviour
     m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision
     
+	PrintComponentsSize();
+	
 }
 
 Me::SystemInitializer::~SystemInitializer()
@@ -58,4 +59,37 @@ Me::SystemInitializer::~SystemInitializer()
             delete s;
         }
     }
+}
+
+void Me::SystemInitializer::PrintComponentsSize()
+{
+	int size = 0;
+	size = sizeof(TagComponent);
+	ME_LOG("Tag = %i \n", size);
+	size = sizeof(EditorComponent);
+	ME_LOG("EditorComponent = %i \n", size);
+	size = sizeof(TransformComponent);
+	ME_LOG("TransformComponent = %i \n", size);
+	size = sizeof(RenderComponent);
+	ME_LOG("RenderComponent = %i \n", size);
+	size = sizeof(DebugRenderComponent);
+	ME_LOG("DebugRenderComponent = %i \n", size);
+	size = sizeof(CameraComponent);
+	ME_LOG("CameraComponent = %i \n", size);
+	size = sizeof(Physics::PhysicsComponent);
+	ME_LOG("PhysicsComponent = %i \n", size);
+	size = sizeof(Physics::ColliderComponent);
+	ME_LOG("ColliderComponent = %i \n", size);
+	size = sizeof(Physics::ColliderTagComponent);
+	ME_LOG("ColliderTagComponent = %i \n", size);
+	size = sizeof(Physics::BoxCollider2DComponent);
+	ME_LOG("BoxCollider2DComponent = %i \n", size);
+	size = sizeof(Physics::BoxCollider3DComponent);
+	ME_LOG("BoxCollider3DComponent = %i \n", size);
+	size = sizeof(Physics::SphereColliderComponent);
+	ME_LOG("SphereColliderComponent = %i \n", size);
+	size = sizeof(Me::AI::AgentComponent);
+	ME_LOG("AgentComponent = %i \n", size);
+	size = sizeof(Me::AI::NavSurfaceComponent);
+	ME_LOG("NavSurfaceComponent = %i \n", size);
 }

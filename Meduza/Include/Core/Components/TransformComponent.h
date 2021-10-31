@@ -10,6 +10,8 @@ namespace Me
             Math::Vec3 m_rotation = Math::Vec3(0,0,0); // Degree
             Math::Vec3 m_scale = Math::Vec3(1,1,1);
 
+            static ComponentID s_componentID;
+
             bool m_isStatic = false;
 
             //Getting
@@ -40,6 +42,5 @@ namespace Me
                 m_scale = Math::Vec3(0,0,0);
             }
 
-            static ComponentID s_componentID;
     };
 }

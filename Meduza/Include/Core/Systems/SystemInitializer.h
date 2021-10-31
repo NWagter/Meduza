@@ -15,6 +15,7 @@ namespace Me
         ~SystemInitializer();
 
     private:
+        void PrintComponentsSize();
         std::vector<ECSSystem*> m_systems;
     };
     

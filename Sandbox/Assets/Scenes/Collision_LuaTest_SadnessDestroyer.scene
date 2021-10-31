@@ -7,10 +7,10 @@
 		<EntityID>37</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
-			<0>
-				<Tag>Camera</Tag>
-			</0>
 			<1>
+				<Tag>Camera</Tag>
+			</1>
+			<2>
 				<Translation>
 					<value0>0</value0>
 					<value1>0</value1>
@@ -26,8 +26,8 @@
 					<value1>1</value1>
 					<value2>1</value2>
 				</Scale>
-			</1>
-			<5>
+			</2>
+			<6>
 				<Far>1000</Far>
 				<Near>-0.10000000149011612</Near>
 				<Size>
@@ -37,21 +37,21 @@
 				<OrthoScale>10</OrthoScale>
 				<CameraLayer>0</CameraLayer>
 				<CameraType>1</CameraType>
-			</5>
-			<6>
+			</6>
+			<7>
 				<ScriptAmount>1</ScriptAmount>
 				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
-			</6>
+			</7>
 		</value0>
 	</Entity>
 	<Entity>
 		<EntityID>38</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<Tag>SadnessDestroyer</Tag>
-			</0>
 			<1>
+				<Tag>SadnessDestroyer</Tag>
+			</1>
+			<2>
 				<Translation>
 					<value0>0</value0>
 					<value1>4.3000001907348633</value1>
@@ -67,8 +67,8 @@
 					<value1>1</value1>
 					<value2>1</value2>
 				</Scale>
-			</1>
-			<3>
+			</2>
+			<4>
 				<Colour>
 					<value0>0.073048822581768036</value0>
 					<value1>0.27752089500427246</value1>
@@ -86,13 +86,13 @@
 					<value2>1</value2>
 					<value3>1</value3>
 				</UV>
-			</3>
-			<7>
+			</4>
+			<8>
 				<Gravity>true</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>10</Body_Drag>
-			</7>
-			<11>
+			</8>
+			<12>
 				<CollisionType>0</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
 				<CollisionScale>
@@ -105,21 +105,21 @@
 					<value1>0</value1>
 					<value2>0</value2>
 				</CollisionOffset>
-			</11>
-			<6>
+			</12>
+			<7>
 				<ScriptAmount>1</ScriptAmount>
 				<ScriptPath0>Assets/Scripts/DestroySadBox.lua</ScriptPath0>
-			</6>
+			</7>
 		</value0>
 	</Entity>
 	<Entity>
 		<EntityID>39</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
-			<0>
-				<Tag>SadBox</Tag>
-			</0>
 			<1>
+				<Tag>SadBox</Tag>
+			</1>
+			<2>
 				<Translation>
 					<value0>0</value0>
 					<value1>0</value1>
@@ -135,8 +135,8 @@
 					<value1>1</value1>
 					<value2>1</value2>
 				</Scale>
-			</1>
-			<3>
+			</2>
+			<4>
 				<Colour>
 					<value0>1</value0>
 					<value1>0.99998998641967773</value1>
@@ -154,13 +154,13 @@
 					<value2>1</value2>
 					<value3>1</value3>
 				</UV>
-			</3>
-			<7>
+			</4>
+			<8>
 				<Gravity>false</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
-			</7>
-			<11>
+			</8>
+			<12>
 				<CollisionType>0</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
 				<CollisionScale>
@@ -173,17 +173,17 @@
 					<value1>0</value1>
 					<value2>0</value2>
 				</CollisionOffset>
-			</11>
+			</12>
 		</value0>
 	</Entity>
 	<Entity>
 		<EntityID>40</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
-			<0>
-				<Tag>SadBox</Tag>
-			</0>
 			<1>
+				<Tag>SadBox</Tag>
+			</1>
+			<2>
 				<Translation>
 					<value0>1</value0>
 					<value1>-2.2000000476837158</value1>
@@ -199,8 +199,8 @@
 					<value1>1</value1>
 					<value2>1</value2>
 				</Scale>
-			</1>
-			<3>
+			</2>
+			<4>
 				<Colour>
 					<value0>0.99999850988388062</value0>
 					<value1>0.91176468133926392</value1>
@@ -218,13 +218,13 @@
 					<value2>1</value2>
 					<value3>1</value3>
 				</UV>
-			</3>
-			<7>
+			</4>
+			<8>
 				<Gravity>false</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
-			</7>
-			<13>
+			</8>
+			<14>
 				<CollisionType>0</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
 				<CollisionScale>0.5</CollisionScale>
@@ -233,7 +233,7 @@
 					<value1>0</value1>
 					<value2>0</value2>
 				</CollisionOffset>
-			</13>
+			</14>
 		</value0>
 	</Entity>
 </cereal>

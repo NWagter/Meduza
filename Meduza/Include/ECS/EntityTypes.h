@@ -8,27 +8,27 @@ using EntityFilter = std::set<ComponentID>;
 
 enum class Components : uint16_t
 {
-    Tag,
-    Transform,
-    Editor,
+    Tag = 1,
+    Transform = 2,
+    Editor = 3,
 
-    Render,
-    DebugRender,
+    Render = 4,
+    DebugRender = 5,
 
-    Camera,
+    Camera = 6,
 
-    Scripting,
+    Scripting = 7,
 
-    Physics,
-    Collider,
-    ColliderTag,
-    BoxCollider2D,
-    BoxCollider3D,
-    CircleCollider,
-    SphereCollider,
+    Physics = 8,
+    Collider = 9,
+    ColliderTag = 10,
+    BoxCollider2D = 11,
+    BoxCollider3D = 12,
+    CircleCollider = 13,
+    SphereCollider = 14,
 
-    AgentComponent,
-    NavSurfaceComponent,
+    AgentComponent = 15,
+    NavSurfaceComponent = 16,
     
     Game
 };

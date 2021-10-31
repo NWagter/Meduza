@@ -44,10 +44,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::PhysicsSystem()); //Clears and set Body correct
     m_systems.push_back(new Physics::CollisionSystem());
 	m_systems.push_back(new Physics::FluidDragSystem()); //Check for drag behaviour
-    m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision
-    
-	PrintComponentsSize();
-	
+    m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision	
 }
 
 Me::SystemInitializer::~SystemInitializer()

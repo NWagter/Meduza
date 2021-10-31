@@ -115,6 +115,12 @@ namespace Me
         auto comp = new C();
 
         auto ent = m_entities.find(a_entID);
+
+        if(!ent->second.empty())
+        {
+            RemoveComponent<C>(a_entID);
+        }
+
         ent->second.insert(C::s_componentID);
         container->AddComponent(a_entID, comp);
 		RegisterEntity(a_entID);
@@ -152,6 +158,12 @@ namespace Me
         }
 
         auto ent = m_entities.find(a_entID);
+
+        if(!ent->second.empty())
+        {
+            RemoveComponent<C>(a_entID);
+        }
+
         ent->second.insert(C::s_componentID);
 
         container->AddComponent(a_entID, a_comp);

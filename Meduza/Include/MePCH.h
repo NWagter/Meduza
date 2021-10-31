@@ -47,13 +47,13 @@
 #include <d3d12sdklayers.h>
 #include <d3dx12.h>
 
-
 #define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
 #include <crtdbg.h>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define DEBUG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #define new DEBUG_NEW
 #endif
 

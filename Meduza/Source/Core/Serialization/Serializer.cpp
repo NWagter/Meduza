@@ -64,28 +64,19 @@ static void CanSerialize(Me::EntityManager* a_eManager, EntityID a_entity, cerea
 }
 
 template<typename T, typename FUNCTION>
-static bool CanDeserialize(Me::EntityManager* a_eManager, EntityID a_entity, cereal::XMLInputArchive& a_archive , FUNCTION a_function)
+static bool CanDeserialize(cereal::XMLInputArchive& a_archive , FUNCTION a_function)
 {
     if(a_archive.getNodeName() == nullptr)
     {
         return false;
     }
-    auto component = a_eManager->GetComponent<T>(a_entity);
 
-    if(component == nullptr && std::to_string(T::s_componentID) == a_archive.getNodeName())
+    if(std::to_string(T::s_componentID) == a_archive.getNodeName())
     {
         auto comp = new T();
         
         a_archive.startNode(); 
         a_function(comp);
-        a_archive.finishNode();
-
-        return true;
-    }
-    else if(component !=  nullptr && std::to_string(T::s_componentID) == a_archive.getNodeName())
-    {
-        a_archive.startNode(); 
-        a_function(component);
         a_archive.finishNode();
 
         return true;
@@ -404,7 +395,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         
         EntityID ent = eManager->CreateEntity();
 
-        if(CanDeserialize<TagComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             std::string tag;
             archive(cereal::make_nvp("Tag", tag));
@@ -412,7 +403,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
-        if(CanDeserialize<TransformComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             archive(cereal::make_nvp("Translation" , a_comp->m_translation.m_xyz));
             archive(cereal::make_nvp("Rotation" , a_comp->m_rotation.m_xyz));
@@ -420,7 +411,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--; 
         
-        if(CanDeserialize<RenderComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
             std::string shaderPath;
@@ -452,7 +443,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         })) compAmount--;
 
-        if(CanDeserialize<CameraComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<CameraComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Far", a_comp->m_far)); 
             archive(cereal::make_nvp("Near", a_comp->m_near)); 
@@ -465,7 +456,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;             
 
-        if(CanDeserialize<Physics::PhysicsComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass)); 
@@ -474,7 +465,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp); 
         })) compAmount;   
 
-        if(CanDeserialize<Physics::BoxCollider2DComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Physics::BoxCollider2DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
             archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -488,7 +479,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, cTag);
         })) compAmount -= 3;   
 
-        if(CanDeserialize<Physics::BoxCollider3DComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
             archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -503,7 +494,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         })) compAmount -= 3;
 
-        if(CanDeserialize<Physics::SphereColliderComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Physics::SphereColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
             archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -518,7 +509,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
         })) compAmount -= 3;    
         
-        if(CanDeserialize<Scripting::ScriptComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             size_t size;
             archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
@@ -534,7 +525,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
             eManager->AddComponent(ent, a_comp);
         })) compAmount--;
 
-        if(CanDeserialize<Me::AI::AgentComponent>(eManager, ent,  archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Me::AI::AgentComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
             archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
             archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));
@@ -588,14 +579,15 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     
     EntityID ent = eManager->CreateEntity();
 
-    if(CanDeserialize<TagComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
         std::string tag;
         archive(cereal::make_nvp("Tag", tag));
+        a_comp->m_tag = tag;
         eManager->AddComponent(ent, a_comp);
     })) compAmount--;
 
-    if(CanDeserialize<TransformComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
         archive(cereal::make_nvp("Translation" , a_comp->m_translation.m_xyz));
         archive(cereal::make_nvp("Rotation" , a_comp->m_rotation.m_xyz));
@@ -603,7 +595,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp);
     })) compAmount--; 
     
-    if(CanDeserialize<RenderComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
         std::string shaderPath;
@@ -634,7 +626,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
 
     })) compAmount--;
 
-    if(CanDeserialize<CameraComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<CameraComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("Far", a_comp->m_far)); 
         archive(cereal::make_nvp("Near", a_comp->m_near)); 
@@ -647,7 +639,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp); 
     })) compAmount--;             
 
-    if(CanDeserialize<Physics::PhysicsComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
         archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));
@@ -656,7 +648,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp); 
     })) compAmount--;   
 
-    if(CanDeserialize<Physics::BoxCollider2DComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Physics::BoxCollider2DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
         archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -670,7 +662,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, cTag);
     })) compAmount--;   
 
-    if(CanDeserialize<Physics::BoxCollider3DComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
         archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -685,7 +677,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
 
     })) compAmount--; 
 
-    if(CanDeserialize<Physics::SphereColliderComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Physics::SphereColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
         archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));  
@@ -700,7 +692,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
 
     })) compAmount--;     
     
-    if(CanDeserialize<Scripting::ScriptComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
         size_t size;
         archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
@@ -716,7 +708,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp);
     })) compAmount--;
 
-    if(CanDeserialize<Me::AI::AgentComponent>(eManager, ent, archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Me::AI::AgentComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
         archive(cereal::make_nvp("TargetLocation", a_comp->m_targetLocation.m_xyz)); 
         archive(cereal::make_nvp("AgentSpeed", a_comp->m_agentSpeed));

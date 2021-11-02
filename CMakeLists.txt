@@ -5,5 +5,4 @@ project ("Meduza")
 # Include sub-projects.
 add_subdirectory ("Meduza")
 add_subdirectory ("Sandbox")
-add_subdirectory ("Lua")
-add_subdirectory ("Optick")
+add_subdirectory ("ThirdParty")

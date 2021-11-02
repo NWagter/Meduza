@@ -32,6 +32,8 @@ void Me::Resources::GL::Shader::UnBind()
     glUseProgram(0);
 }
 
+
+#ifdef _DEBUG
 bool ShaderDebug(unsigned int a_shader, std::string a_type)
 {
     int success;
@@ -44,9 +46,14 @@ bool ShaderDebug(unsigned int a_shader, std::string a_type)
         std::cout << "ERROR::SHADER::" << a_type.c_str() << "::COMPILATION_FAILED\n" << log.c_str() << std::endl;
         return false;
     }
-
     return true;
 }
+#else
+bool ShaderDebug(unsigned int, std::string)
+{
+    return true;
+}
+#endif
 
 unsigned int Me::Resources::GL::Shader::GenerateShader()
 {
@@ -87,7 +94,6 @@ void Me::Resources::GL::Shader::SetVec4(const std::string &a_name, const Math::V
 {
     glUniform4f(glGetUniformLocation(m_program, a_name.c_str()), a_vec4.m_x, a_vec4.m_y, a_vec4.m_z, a_vec4.m_w);
 }
-
 void Me::Resources::GL::Shader::SetMat4(const std::string &a_name, const Math::Mat4 a_mat4, const bool a_transpose)
 {
     Math::Mat4 glMat4 = a_mat4;

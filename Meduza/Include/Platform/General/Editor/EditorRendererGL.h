@@ -29,6 +29,8 @@ namespace Me
 
                 private:
                     ImGuiIO* m_imguiIO;
+                    bool m_dockSpace;
+                    Math::Vec2 m_viewportSize = { 0.0f, 0.0f };
                     Renderer::GL::RenderLayerGL* m_renderLayer;
             };
         }

@@ -16,6 +16,8 @@
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
 
+#include "Platform/General/Graphics/FrameBuffer.h"
+
 Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* a_renderLayer)
 {
     // Setup Dear ImGui context
@@ -34,6 +36,11 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	m_imguiIO->Fonts->AddFontDefault();
 	m_imguiIO->Fonts->AddFontFromFileTTF("Resources/Fonts/fontawesome-webfont.ttf", 12.0f, &config, s_ranges); // Merge icon font
 	
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->Pos);
+	ImGui::SetNextWindowSize(viewport->Size);
+	ImGui::SetNextWindowViewport(viewport->ID);
+
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	if(m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -94,6 +101,19 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 	{
 		m_editorWidgets[i]->Draw();
 	} 
+
+	ImGui::Begin("Viewport");
+	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+	auto frameBuffer = m_renderLayer->GetFrameBuffer();
+	Math::Vec2 panelSize = Math::Vec2(viewportPanelSize.x, viewportPanelSize.y);
+	if(m_viewportSize != panelSize)
+	{
+		frameBuffer->Resize(Math::Vec2(viewportPanelSize.x, viewportPanelSize.y));
+	}
+	m_viewportSize = panelSize;
+	unsigned int texture = frameBuffer->GetColourAttachment();
+	ImGui::Image(reinterpret_cast<void*>(texture), ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+	ImGui::End();
 	
 	ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

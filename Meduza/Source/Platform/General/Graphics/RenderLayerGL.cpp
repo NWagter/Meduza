@@ -9,6 +9,8 @@
 #include "Platform/Windows/Graphics/ContextGL.h"
 #endif
 
+#include "Platform/General/Graphics/FramebufferGL.h"
+
 #include "Platform/General/Resources/Mesh.h"
 #include "Platform/General/Resources/Shader.h"
 #include "Platform/General/Resources/Texture.h"
@@ -32,6 +34,11 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     m_window = a_window;
     m_context = new Context(*m_window);
     m_activeShader = nullptr;
+
+    FrameBufferSpecs spec;
+    spec.m_api = GFX_API::OpenGL;
+    spec.m_size = {640,480};
+    m_frameBuffer = FrameBuffer::Create(spec, *m_context);
 
     m_camera = new Camera();
     glEnable(GL_DEPTH_TEST);
@@ -75,7 +82,7 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
         delete r;
     }
     m_debugRenderables.clear();
-
+    m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
     glClearColor(a_colour.m_colour[0],
                  a_colour.m_colour[1],
@@ -179,6 +186,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glBindVertexArray(0);
     }
     
+    m_frameBuffer->UnBind();
 }
 
 void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)

@@ -1,5 +1,5 @@
 #include "MePCH.h"
-#include "Platform/General/Graphics/FrameBufferGL.h"
+#include "Platform/General/Graphics/FramebufferGL.h"
 
 #include "Platform/General/ContextBase.h"
 

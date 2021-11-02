@@ -5,7 +5,7 @@ on: [workflow_dispatch]
 env:
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
   CCACHE_VERSION: 3.7.7
 
 jobs:

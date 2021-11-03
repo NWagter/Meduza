@@ -15,6 +15,7 @@
 #include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
+#include "Platform/General/Editor/EditorViewport.h"
 
 #include "Platform/General/Graphics/FrameBuffer.h"
 
@@ -67,6 +68,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	AddWidget(entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
 	AddWidget(entEditor);
+	EditorViewport* viewPort = new EditorViewport(*entEditor, *toolbar, *a_renderLayer);
+	AddWidget(viewPort);
 
 	m_renderLayer = a_renderLayer;
 }
@@ -88,6 +91,7 @@ void Me::Editor::GL::EditorRendererGL::Clear()
 #endif
 
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 }
 
 void Me::Editor::GL::EditorRendererGL::Populate()
@@ -101,19 +105,6 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 	{
 		m_editorWidgets[i]->Draw();
 	} 
-
-	ImGui::Begin("Viewport");
-	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	auto frameBuffer = m_renderLayer->GetFrameBuffer();
-	Math::Vec2 panelSize = Math::Vec2(viewportPanelSize.x, viewportPanelSize.y);
-	if(m_viewportSize != panelSize)
-	{
-		frameBuffer->Resize(Math::Vec2(viewportPanelSize.x, viewportPanelSize.y));
-	}
-	m_viewportSize = panelSize;
-	unsigned int texture = frameBuffer->GetColourAttachment();
-	ImGui::Image(reinterpret_cast<void*>(texture), ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	ImGui::End();
 	
 	ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

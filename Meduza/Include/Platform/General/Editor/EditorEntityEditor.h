@@ -18,6 +18,7 @@ namespace Me
 
                 void Draw() override;
 
+                EntityID GetSelectedId() const {return m_selectedEntity;}
             private:
                 EntityHierarchy* m_hierarchy;
                 EntityID m_selectedEntity;

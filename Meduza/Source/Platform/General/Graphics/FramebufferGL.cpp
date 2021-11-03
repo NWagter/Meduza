@@ -56,6 +56,15 @@ void Me::Renderer::GL::FrameBufferGL::Resize(Math::Vec2 a_size)
     }
 
     m_spec.m_size = a_size;
+    if(m_spec.m_size.m_x < 1)
+    {
+        m_spec.m_size.m_x = 1;
+    }
+    if(m_spec.m_size.m_y < 1)
+    {
+        m_spec.m_size.m_y = 1;
+    }
+
     Create();
 }
 

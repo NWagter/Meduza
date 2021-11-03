@@ -25,6 +25,7 @@ Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
 {
     m_window = &a_window;
     m_activeCameraType = CameraType::Perspective;
+    m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
 }
 
 Me::Editor::EditorToolbar::~EditorToolbar()
@@ -248,7 +249,7 @@ void Me::Editor::EditorToolbar::Draw()
                     cameraComp->Reset();
                 }
             }
-            
+
             std::string cameraType = "Perspective";
             if(m_activeCameraType == CameraType::Orthographic)
             {
@@ -256,6 +257,20 @@ void Me::Editor::EditorToolbar::Draw()
             }
 
             ImGui::Text(cameraType.c_str());
+
+            
+            if(ImGui::Button("Trans"))
+            {            
+                m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
+            }
+            if(ImGui::Button("Rot"))
+            {            
+                m_currentOperationType = ImGuizmo::OPERATION::ROTATE;
+            }
+            if(ImGui::Button("Scale"))
+            {            
+                m_currentOperationType = ImGuizmo::OPERATION::SCALE;
+            }
         }
         else if(Meduza::GetEngineState() & RUN_GAME)
         {        

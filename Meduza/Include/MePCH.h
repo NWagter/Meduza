@@ -32,6 +32,7 @@
 #include <Windows.h>
 #include <wingdi.h>
 #include <imgui.h>
+#include <ImGuizmo.h>
 #include <imgui_internal.h>
 
 #pragma warning(disable:4265)

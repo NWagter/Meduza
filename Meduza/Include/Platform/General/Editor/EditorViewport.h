@@ -8,10 +8,7 @@ namespace Me
 
     namespace Renderer
     {
-        namespace GL
-        {
-            class RenderLayerGL;
-        }
+        class RenderLayer;
     }
 
     namespace Editor
@@ -22,7 +19,7 @@ namespace Me
         class EditorViewport : public EditorWidget
         {
             public:
-                EditorViewport(EntityEditor&, EditorToolbar&, Renderer::GL::RenderLayerGL&);
+                EditorViewport(EntityEditor&, EditorToolbar&, Renderer::RenderLayer&);
                 ~EditorViewport();
 
                 void Draw() override;
@@ -30,7 +27,7 @@ namespace Me
             private:
                 EntityEditor* m_editor;
                 EditorToolbar* m_toolbar;
-                Renderer::GL::RenderLayerGL* m_renderLayer;
+                Renderer::RenderLayer* m_renderLayer;
                 EntityID m_editorCamera;
 
                 Math::Vec2 m_viewportSize = { 0.0f, 0.0f };

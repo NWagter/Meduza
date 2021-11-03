@@ -56,12 +56,10 @@ namespace Me
 
                 Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
                 
-                Window* GetWindow() {return m_window;}
-                FrameBuffer* GetFrameBuffer() {return m_frameBuffer;}
+                Window* GetWindow() override {return m_window;}
             private:
                 Window* m_window;
                 Context* m_context;
-                FrameBuffer* m_frameBuffer;
 
                 std::vector<Renderable*> m_renderables;
                 std::vector<DebugRenderable*> m_debugRenderables;

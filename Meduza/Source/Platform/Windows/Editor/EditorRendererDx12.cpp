@@ -13,6 +13,7 @@
 #include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
+#include "Platform/General/Editor/EditorViewport.h"
 
 
 Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::RenderLayerDx12* a_renderLayer)
@@ -67,6 +68,8 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	AddWidget(entHierarchy);
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
 	AddWidget(entEditor);
+	EditorViewport* viewPort = new EditorViewport(*entEditor, *toolbar, *m_renderLayer);
+	AddWidget(viewPort);
 }
 
 void Me::Editor::Dx12::EditorRendererDx12::Clear()

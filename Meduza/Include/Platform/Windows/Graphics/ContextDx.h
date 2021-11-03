@@ -25,6 +25,7 @@ namespace Me
         void SetQueue(CommandQueue&);
         inline Microsoft::WRL::ComPtr<IDXGISwapChain4> GetSwapChain() { return m_swapChain; }
         inline ID3D12Resource* GetCurrentBuffer() { return m_frameBuffer[m_currentframeBufferIndex].Get(); }
+        inline Descriptor* GetRTV() { return m_rtv;}
         inline Microsoft::WRL::ComPtr<ID3D12Resource> GetBuffers(int a_id) { return m_frameBuffer[a_id]; }
 
 			  inline CommandQueue* GetQueue() { return m_queue; }

@@ -6,12 +6,13 @@
 #include "Platform/General/Editor/EditorEntityEditor.h"
 #include "Platform/General/Editor/EditorToolbar.h"
 
-#include "Platform/General/Graphics/RenderLayerGL.h"
+#include "Platform/General/Graphics/RenderLayer.h"
 #include "Platform/General/Window.h"
 
-#include "Platform/General/Graphics/FrameBuffer.h"
+#include "Platform/General/Graphics/FramebufferGL.h"
+#include "Platform/Windows/Graphics/FramebufferDx12.h"
 
-Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::GL::RenderLayerGL& a_renderer)
+Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderer)
 {
     m_renderLayer = &a_renderer;
     m_editor = &a_editor;
@@ -27,18 +28,40 @@ Me::Editor::EditorViewport::~EditorViewport()
 
 void Me::Editor::EditorViewport::Draw()
 {
+	auto frameBuffer = m_renderLayer->GetFrameBuffer();
+
+    if(frameBuffer->GetColourAttachment()->m_api == GFX_API::DX12)
+    return;
+
 	ImGui::Begin("Viewport");
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	auto frameBuffer = m_renderLayer->GetFrameBuffer();
 	Math::Vec2 panelSize = Math::Vec2(viewportPanelSize.x, viewportPanelSize.y);
 	if(m_viewportSize != panelSize)
 	{
 		frameBuffer->Resize(Math::Vec2(viewportPanelSize.x, viewportPanelSize.y));
 	}
 	m_viewportSize = panelSize;
-	unsigned int texture = frameBuffer->GetColourAttachment();
-	ImGui::Image(reinterpret_cast<void*>(texture), ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    auto colourAttachment = frameBuffer->GetColourAttachment();
+
+    switch (colourAttachment->m_api)
+    {
+    case GFX_API::DX12:
+        D3D12_GPU_DESCRIPTOR_HANDLE handle = static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment)->m_texture;
+        if(handle.ptr != 0)
+        {
+            ImGui::Image(
+                (ImTextureID)handle.ptr, 
+                ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+        }
+        break;
+    case GFX_API::OpenGL:
+	    ImGui::Image(
+            (ImTextureID)static_cast<Renderer::ColourAttachmentGL*>(colourAttachment)->m_texture, 
+            ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });   
+    default:
+        break;
+    }
 
 
     if(m_editorCamera <= 0)

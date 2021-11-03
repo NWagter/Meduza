@@ -5,6 +5,7 @@
 
 Me::Renderer::GL::FrameBufferGL::FrameBufferGL(const FrameBufferSpecs& a_spec, ContextBase& a_context) : m_spec(a_spec)
 {
+    m_attachment = nullptr;
     m_context = &a_context;
     Create();
 }
@@ -13,6 +14,8 @@ Me::Renderer::GL::FrameBufferGL::~FrameBufferGL()
     glDeleteFramebuffers(1, &m_renderTextureID);
     glDeleteTextures(1, &m_colourAttachment);
     glDeleteTextures(1, &m_depthAttachment);
+
+    delete m_attachment;
 }
 
 void Me::Renderer::GL::FrameBufferGL::Create()
@@ -80,4 +83,17 @@ void Me::Renderer::GL::FrameBufferGL::UnBind()
 #ifdef PLATFORM_WINDOWS
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #endif
+}
+
+Me::Renderer::ColourAttachment* Me::Renderer::GL::FrameBufferGL::GetColourAttachment()
+{
+    if(m_attachment == nullptr)
+    {
+        m_attachment = new ColourAttachmentGL();
+    }
+
+    m_attachment->m_api = GFX_API::OpenGL;
+    m_attachment->m_texture = reinterpret_cast<void*>(m_renderTextureID);
+
+    return m_attachment;
 }

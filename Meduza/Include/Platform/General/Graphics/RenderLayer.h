@@ -10,6 +10,8 @@ namespace Me
 
     namespace Renderer
     {
+        class FrameBuffer;
+
         class RenderLayer
         {
             public:
@@ -25,9 +27,14 @@ namespace Me
                 virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}
+                
+                virtual Window* GetWindow() = 0;
+                FrameBuffer* GetFrameBuffer() {return m_frameBuffer;}
 
             private:
                 static GFX_API ms_api;
+            protected:
+                FrameBuffer* m_frameBuffer;
         };
     }
     

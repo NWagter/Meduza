@@ -6,6 +6,11 @@ namespace Me
 {
     namespace Renderer
     {
+        struct ColourAttachmentGL : public ColourAttachment
+        {
+            void* m_texture;   
+        };
+
         namespace GL
         {          
             class FrameBufferGL : public FrameBuffer
@@ -23,15 +28,14 @@ namespace Me
                 {
                     return m_spec;
                 };
-                inline unsigned int GetColourAttachment() override
-                { 
-                    return m_colourAttachment;
-                }
+                ColourAttachment* GetColourAttachment() override;
+
             private:
                 unsigned int m_renderTextureID;
                 unsigned int m_colourAttachment;
                 unsigned int m_depthAttachment;
                 FrameBufferSpecs m_spec;
+                ColourAttachmentGL* m_attachment;
             };  
         }         
     }

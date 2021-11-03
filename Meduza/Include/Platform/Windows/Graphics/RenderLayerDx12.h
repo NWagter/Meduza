@@ -60,7 +60,7 @@ namespace Me
                 Context& GetContext();
                 Descriptor& GetSRV();
 
-                Window* GetWindow();
+                Window* GetWindow() override;
 
                 private:
 

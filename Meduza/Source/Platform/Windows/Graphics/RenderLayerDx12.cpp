@@ -12,6 +12,7 @@
 #include "Platform/Windows/Graphics/Descriptor.h"
 #include "Platform/Windows/Graphics/DepthStencil.h"
 #include "Platform/Windows/Graphics/InstancedRenderCall.h"
+#include "Platform/General/Graphics/FrameBuffer.h"
 
 #include "Platform/Windows/Resources/Mesh.h"
 #include "Platform/General/MeshLibrary.h"
@@ -54,6 +55,11 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
     m_device = new Device();
     m_context = new Context(*m_window, m_device);
 	m_window->SetContext(m_context);
+
+	FrameBufferSpecs spec;
+	spec.m_size = m_window->GetSize();
+	spec.m_api = GFX_API::DX12;
+	m_frameBuffer = FrameBuffer::Create(spec, *m_context);
 
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
@@ -165,8 +171,6 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
 {
     m_context->SwapBuffer(GetCmd());
-
-	
 
 	if (m_context->GetResize())
 	{

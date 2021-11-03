@@ -15,17 +15,22 @@ namespace Me
             bool m_swapchainTarget = false;
         };
 
+        struct ColourAttachment
+        {
+            GFX_API m_api;            
+        };
+
         class FrameBuffer
         {
         public:
             static FrameBuffer* Create(const FrameBufferSpecs&, ContextBase& a_context);
 
             virtual const FrameBufferSpecs& GetFrameBufferSpec() const = 0;
-            virtual unsigned int GetColourAttachment() = 0;
+            virtual ColourAttachment* GetColourAttachment() = 0;
 
             virtual void Resize(Math::Vec2) = 0;
-            virtual void Bind() = 0;
-            virtual void UnBind() = 0;
+            virtual void Bind() { };
+            virtual void UnBind() { };
         protected:
             ContextBase* m_context;
         };

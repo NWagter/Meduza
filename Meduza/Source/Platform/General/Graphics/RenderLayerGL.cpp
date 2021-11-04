@@ -101,7 +101,7 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
-#ifndef _DEBUG    
+#ifndef EDITOR    
     auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_screenShader));
     auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
     

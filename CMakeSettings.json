@@ -1,29 +1,77 @@
 ﻿{
   "configurations": [
     {
-      "name": "x64-Debug",
+      "name": "x64-Meduza-Debug",
       "generator": "Ninja",
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "cmake -DDEFINE_EDITOR=ON",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "variables": [],
+      "variables": [
+        {
+          "name": "DEFINE_EDITOR",
+          "value": "true",
+          "type": "BOOL"
+        }
+      ],
       "args": [ "/Zi", "/MDd", "cl", "/EHsc", "/W4", "/D_DEBUG" ]
     },
     {
-      "name": "x64-Release",
+      "name": "x64-Meduza-Release",
       "generator": "Ninja",
       "configurationType": "RelWithDebInfo",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "cmake -DDEFINE_EDITOR=ON",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "variables": [
+        {
+          "name": "DEFINE_EDITOR",
+          "value": "OFF",
+          "type": "UNINITIALIZED"
+        }
+      ]
+    },
+    {
+      "name": "x64-Game-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "cmake -DDEFINE_EDITOR=OFF",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "DEFINE_EDITOR",
+          "value": "true",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "x64-Game-Release",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "cmake -DDEFINE_EDITOR=OFF",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "DEFINE_EDITOR",
+          "value": "OFF",
+          "type": "UNINITIALIZED"
+        }
+      ]
     }
   ]
 }

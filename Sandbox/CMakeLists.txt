@@ -29,6 +29,12 @@ target_link_libraries( ${PROJECT_NAME}
         Meduza
 )
 
+OPTION(DEFINE_EDITOR "Editor macro" OFF) # Enabled by default
+
+if(DEFINE_EDITOR)
+    add_compile_definitions(EDITOR)
+endif()
+
 if(WIN32)
 	add_compile_definitions(PLATFORM_WINDOWS)
 	target_link_libraries( ${PROJECT_NAME}

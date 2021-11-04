@@ -44,7 +44,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_window = new MacOsWindow(a_w, a_h, "Meduza | Apple");
 #endif
 
-#ifndef _DEBUG
+#ifndef EDITOR
 	ms_engineState = RUN_GAME;
 #endif
 
@@ -52,7 +52,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	{
 		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, a_api);
 #ifdef PLATFORM_WINDOWS
-	#ifdef _DEBUG
+	#ifdef EDITOR
 		m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
 	#endif
 #endif
@@ -89,7 +89,7 @@ void Me::Meduza::Clear()
 		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
 
 #ifdef PLATFORM_WINDOWS
-	#ifdef _DEBUG
+	#ifdef EDITOR
 		if(m_editor != nullptr)
 		{
 			m_editor->Clear();
@@ -126,7 +126,7 @@ void Me::Meduza::Present()
 		m_renderLayer->Populate();
 
 #ifdef PLATFORM_WINDOWS
-	#ifdef _DEBUG		
+	#ifdef EDITOR		
 		if(m_editor != nullptr)
 		{
 			m_editor->Populate();

@@ -101,17 +101,19 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
-#ifndef _DEBUG
+#ifndef _DEBUG    
     auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_screenShader));
     auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
     
     s->Bind();
 
     glDisable(GL_DEPTH_TEST);
-    GLuint texture = (GLuint)static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture;
-    glBindTexture(GL_TEXTURE_2D, texture);
+    GLuint t = reinterpret_cast<GLuint>(static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture);
+    glBindTexture(GL_TEXTURE_2D, t);
     glBindVertexArray(m->GetVAO());
     glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);   
 #endif
 
     m_context->SwapBuffer();

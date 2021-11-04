@@ -1,4 +1,4 @@
-name: Meduza Release Build Dispatcher Pipeline
+name: Meduza Release Game Build Dispatcher Pipeline
 
 on: [workflow_dispatch]
 

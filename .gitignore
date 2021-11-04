@@ -4,7 +4,6 @@ gen/
 out/
 build/
 .vs/
-.vscode/
 debug/
 release/
 Intermediate/

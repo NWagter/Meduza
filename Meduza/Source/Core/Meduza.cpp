@@ -73,6 +73,8 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 
 	m_luaScripting = new Scripting::LuaScripting();
+
+	m_renderLayer->Init();
 }
 
 Me::Meduza::~Meduza()

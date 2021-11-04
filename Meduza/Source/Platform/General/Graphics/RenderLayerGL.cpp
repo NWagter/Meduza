@@ -37,7 +37,7 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 
     FrameBufferSpecs spec;
     spec.m_api = GFX_API::OpenGL;
-    spec.m_size = {640,480};
+    spec.m_size = m_window->GetSize();
     m_frameBuffer = FrameBuffer::Create(spec, *m_context);
 
     m_camera = new Camera();
@@ -48,7 +48,12 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
     glAlphaFunc(GL_GREATER, 0.6f);
     
     glCullFace(GL_FRONT); 
+}
 
+void Me::Renderer::GL::RenderLayerGL::Init()
+{
+    m_quad = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
+    m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/GLFrameBuffer.glsl");
 }
 
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -96,6 +101,19 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
+#ifndef _DEBUG
+    auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_screenShader));
+    auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
+    
+    s->Bind();
+
+    glDisable(GL_DEPTH_TEST);
+    GLuint texture = (GLuint)static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture;
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindVertexArray(m->GetVAO());
+    glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
+#endif
+
     m_context->SwapBuffer();
 }
 

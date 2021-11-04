@@ -19,6 +19,7 @@ namespace Me
 
                 virtual ~RenderLayer() = default;
 
+                virtual void Init() {}
                 virtual void Clear(Colour) = 0;
                 virtual void Populate() = 0;
                 virtual void Present() = 0;

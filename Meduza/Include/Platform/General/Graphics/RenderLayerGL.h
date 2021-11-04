@@ -47,6 +47,7 @@ namespace Me
                 RenderLayerGL(Window*);
                 ~RenderLayerGL();
 
+                void Init() override;
                 void Clear(Colour) override;
                 void Populate() override;    
                 void Present() override;                
@@ -64,7 +65,10 @@ namespace Me
                 std::vector<Renderable*> m_renderables;
                 std::vector<DebugRenderable*> m_debugRenderables;
                 Resources::GL::Shader* m_activeShader;
+
                 Camera* m_camera;
+                Shader m_screenShader;
+                Mesh m_quad;
             };
         }
     }

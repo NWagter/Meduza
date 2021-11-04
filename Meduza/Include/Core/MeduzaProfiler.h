@@ -18,7 +18,7 @@
 #else
     #define ME_PROFILE_FRAME(...)
     #define ME_PROFILE_FUNC(...)
-    #define ME_PROFILE_FRAME(NAME, ...)
-    #define ME_PROFILE_FRAME(NAME)
+    #define ME_PROFILE_TAG(NAME, ...)
+    #define ME_PROFILE_SCOPE_DYNAMIC(NAME)
     #define ME_PROFILE_THREAD(...)
 #endif

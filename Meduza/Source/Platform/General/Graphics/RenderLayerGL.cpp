@@ -108,8 +108,7 @@ void Me::Renderer::GL::RenderLayerGL::Present()
     s->Bind();
 
     glDisable(GL_DEPTH_TEST);
-    GLuint t = reinterpret_cast<GLuint>(static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture);
-    glBindTexture(GL_TEXTURE_2D, t);
+    glBindTexture(GL_TEXTURE_2D, static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture);
     glBindVertexArray(m->GetVAO());
     glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
     glBindVertexArray(0);

@@ -8,7 +8,7 @@ namespace Me
     {
         struct ColourAttachmentGL : public ColourAttachment
         {
-            void* m_texture;   
+            unsigned int m_texture;   
         };
 
         namespace GL

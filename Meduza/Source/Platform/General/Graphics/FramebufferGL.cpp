@@ -93,7 +93,7 @@ Me::Renderer::ColourAttachment* Me::Renderer::GL::FrameBufferGL::GetColourAttach
     }
 
     m_attachment->m_api = GFX_API::OpenGL;
-    m_attachment->m_texture = reinterpret_cast<void*>(m_renderTextureID);
+    m_attachment->m_texture = m_renderTextureID;
 
     return m_attachment;
 }

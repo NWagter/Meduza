@@ -57,7 +57,7 @@ void Me::Editor::EditorViewport::Draw()
         break;
     case GFX_API::OpenGL:
 	    ImGui::Image(
-            (ImTextureID)static_cast<Renderer::ColourAttachmentGL*>(colourAttachment)->m_texture, 
+            reinterpret_cast<void*>(static_cast<Renderer::ColourAttachmentGL*>(colourAttachment)->m_texture), 
             ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });   
     default:
         break;

@@ -319,7 +319,7 @@ void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
 #ifdef EDITOR  
     m_renderStats.m_vertices += vertices.size();
 #endif
-    m_debugLines.push_back(new DebugLine(vbo, vao));
+    m_debugLines.push_back(new DebugLine(vbo, vao, a_line.m_colour));
 }
 
 void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)

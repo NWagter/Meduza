@@ -26,7 +26,7 @@ Me::Debug::MeduzaDebug::~MeduzaDebug()
 	ms_instance = nullptr;
 }
 
-void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end, Colour a_colour)
 {
 #ifndef EDITOR
 	return;
@@ -36,10 +36,11 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end)
 	Renderer::LineRender line;
 	line.m_start = a_start;
 	line.m_end = a_end;
+	line.m_colour = a_colour;
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direction, float a_lenght)
+void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direction, float a_lenght, Colour a_colour)
 {
 #ifndef _DEBUG
 	return;
@@ -47,5 +48,6 @@ void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direct
 	Renderer::LineRender line;
 	line.m_start = a_start;
 	line.m_end = a_start + (a_direction * a_lenght);
+	line.m_colour = a_colour;
 	ms_instance->m_renderLayer->RenderLine(line);
 }

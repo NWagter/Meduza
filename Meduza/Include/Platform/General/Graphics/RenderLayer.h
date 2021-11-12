@@ -13,6 +13,7 @@ namespace Me
         {
             Math::Vec3 m_start;
             Math::Vec3 m_end;
+            Colour m_colour;
         };
 
 

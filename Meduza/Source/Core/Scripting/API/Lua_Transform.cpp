@@ -4,6 +4,8 @@
 #include "MeduzaIncluder.h"
 #include "Core/Scripting/API/Lua_APIHelper.h"
 
+#include "Physics/Components/PhysicsComponent.h"
+
 void Me::Scripting::Lua_API::Lua_Transform::RegisterTransformFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_Translate", lua_Translate);
@@ -100,7 +102,16 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
     Me::Math::Vec3 forward = transform.GetForward() * move.m_z;
 
     Me::Math::Vec3 movement = forward + right + up;
-    trans->m_translation = trans->m_translation + (movement);
+
+    Physics::PhysicsComponent* pC = EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
+    if (pC != nullptr)
+    {
+        pC->m_position += movement;
+    }
+    else
+    {
+        trans->m_translation += movement;
+    }
 
     return 0;
 }

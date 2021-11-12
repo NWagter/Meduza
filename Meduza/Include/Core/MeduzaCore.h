@@ -102,4 +102,20 @@ namespace Me
         Math::Vec3 m_normals;
         Math::Vec2 m_uvCoord;
     };
+
+    struct LineVertex
+    {
+        LineVertex()
+        {
+
+        }
+
+        LineVertex(float a_x, float a_y, float a_z)
+        {
+            m_vertexPos = Math::Vec3(a_x, a_y, a_z);
+        }
+
+        Math::Vec3 m_vertexPos;
+        Colour m_lineColour;
+    };
 }

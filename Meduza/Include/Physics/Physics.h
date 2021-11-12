@@ -18,7 +18,8 @@ namespace Me
 
         enum class BodyType : uint16_t
         {
-            Cirlce = 0,
+            Unkown = 0,
+            Cirlce,
             Sphere,
             Box2D,
             Box3D
@@ -37,6 +38,8 @@ namespace Me
         {
             EntityID m_entity;
             CollisionLayerID m_collisionLayerID;
+
+            Math::Vec3 m_otherPosition;
             Math::Vec3 m_hitPoint;
             Math::Vec3 m_hitNormal;
         };

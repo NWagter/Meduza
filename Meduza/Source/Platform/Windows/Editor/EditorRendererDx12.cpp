@@ -79,6 +79,14 @@ void Me::Editor::Dx12::EditorRendererDx12::Clear()
 	ImGui::NewFrame();
 }
 
+void Me::Editor::Dx12::EditorRendererDx12::Update(float a_dt)
+{
+	for (int i = 0; i < m_editorWidgets.size(); i++)
+	{
+		m_editorWidgets[i]->Update(a_dt);
+	}
+}
+
 void Me::Editor::Dx12::EditorRendererDx12::Populate()
 {
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);

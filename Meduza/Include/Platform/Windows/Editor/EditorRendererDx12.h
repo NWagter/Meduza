@@ -25,6 +25,7 @@ namespace Me
                     EditorRendererDx12(Renderer::Dx12::RenderLayerDx12*);
 
                     void Clear() override;
+                    void Update(float) override;
                     void Populate() override;
 
                 private:

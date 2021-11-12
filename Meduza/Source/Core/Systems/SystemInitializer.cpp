@@ -8,19 +8,26 @@
 
 #include "Core/Systems/RenderSystem.h"
 #include "Core/Systems/CameraSystem.h"
+#ifdef EDITOR
 #include "Core/Systems/EditorCameraSystem.h"
+#endif
 #include "Core/Systems/MousePickingSystem.h"
 
 #include "Core/Scripting/ScriptSystem.h"
 
-#include "Physics/Systems/PhysicsSystem.h"
+#include "Physics/Systems/PhysicsSystemBegin.h"
+#include "Physics/Systems/PhysicsSystemEnd.h"
 #include "Physics/Systems/GravitySystem.h"
 #include "Physics/Systems/FluidDragSystem.h"
+#include "Physics/Systems/FrictionSystem.h"
+#include "Physics/Systems/BlockingSystem.h"
 
 #include "Physics/Systems/CollisionSystem.h"
+#ifdef EDITOR
 #include "Physics/Systems/Box2DDebugRenderSystem.h"
 #include "Physics/Systems/Box3DDebugRenderSystem.h"
 #include "Physics/Systems/SphereDebugRenderSystem.h"
+#endif
 
 #include "AI/Systems/AgentMovementSystem.h"
 #include "AI/Systems/NavSurfaceSystem.h"
@@ -30,21 +37,31 @@
 Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLayer)
 {
 	m_systems.push_back(new RenderSystem(&a_renderLayer));
+	m_systems.push_back(new Physics::PhysicsSystemBegin()); //Clears and set Body correct
+	m_systems.push_back(new Physics::CollisionSystem());
+	m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision
+
+#ifdef EDITOR
 	m_systems.push_back(new Box2DDebugRenderSystem(&a_renderLayer));
 	m_systems.push_back(new Box3DDebugRenderSystem(&a_renderLayer));
 	m_systems.push_back(new SphereDebugRenderSystem(&a_renderLayer));
+#endif
 	m_systems.push_back(new CameraSystem(&a_renderLayer));
     
 	m_systems.push_back(new MousePickingSystem());
 	m_systems.push_back(new Scripting::ScriptSystem());
+
+#ifdef EDITOR
 	m_systems.push_back(new Editor::EditorCameraSystem());
+#endif // EDITOR
 	m_systems.push_back(new AI::AgentMovementSystem());
 	m_systems.push_back(new AI::NavSurfaceSystem());
 
-	m_systems.push_back(new Physics::PhysicsSystem()); //Clears and set Body correct
-    m_systems.push_back(new Physics::CollisionSystem());
-	m_systems.push_back(new Physics::FluidDragSystem()); //Check for drag behaviour
-    m_systems.push_back(new Physics::GravitySystem()); //Check if gravity pushes through object after collision	
+	m_systems.push_back(new Physics::FluidDragSystem());
+	m_systems.push_back(new Physics::FrictionSystem());
+
+	m_systems.push_back(new Physics::BlockingSystem());	
+	m_systems.push_back(new Physics::PhysicsSystemEnd()); //Clears and set Body correct
 }
 
 Me::SystemInitializer::~SystemInitializer()

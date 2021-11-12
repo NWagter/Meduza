@@ -24,16 +24,10 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
 
         for(auto blockData : pC->m_collided)
         {
-            if(std::abs(blockData.m_hitNormal.m_y) > 0.01f)
+            if(blockData.m_hitNormal.m_y > 0.01f)
             {
-                if(gs_gravity < 0 && (blockData.m_hitNormal.m_y < 0))
-                {
-                    applyGravity = false;
-                }
-                else if(gs_gravity > 0 && (blockData.m_hitNormal.m_y > 0)) // gravity check
-                {
-                    applyGravity = false;
-                }
+
+                applyGravity = false;
             }
         }
 

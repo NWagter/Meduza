@@ -10,6 +10,11 @@ namespace Me {
 		class EventSystem;
 	}
 
+	namespace Debug
+	{
+		class MeduzaDebug;
+	}
+
 	struct RenderComponent;
 
 	namespace Renderer
@@ -30,13 +35,10 @@ namespace Me {
 	namespace Editor
 	{
 		class EditorToolbar;
-	}
 #ifdef PLATFORM_WINDOWS
-	namespace Editor
-	{
 		class EditorRenderer;
-	}
 #endif
+	}
 
 	class Meduza
 	{
@@ -54,15 +56,14 @@ namespace Me {
 		Math::Vec2 GetScreenSize();
 
 		inline static unsigned char GetEngineState() { return ms_engineState;}
-		inline static unsigned char GetDebugState() { return ms_engineDebugState;}
 
 	private:
 		void Destroy();
 
 		bool m_isRunning;
 		static unsigned char ms_engineState;
-		static unsigned char ms_engineDebugState;
 
+		Debug::MeduzaDebug* m_meduzaDebugger;
 		Renderer::RenderLayer* m_renderLayer;
 		Serialization::Serializer* m_serializer;
 		SystemInitializer* m_systemInitializer;

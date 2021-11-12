@@ -38,6 +38,28 @@ namespace Me
                     DebugRenderComponent* m_debugRenderComponent;
                     Math::Mat4 m_modelMatrix;
                 };
+
+                struct DebugLine
+                {
+                    unsigned int m_vbo;
+                    unsigned int m_vao;
+
+                    Colour m_colour;
+
+                    DebugLine(unsigned int a_vbo, unsigned int a_vao, Colour a_colour = Colours::MAGENTA)
+                    {
+                        m_vbo = a_vbo;
+                        m_vao = a_vao;
+
+                        m_colour = a_colour;
+                    }
+
+                    ~DebugLine()
+                    {
+                        glDeleteVertexArrays(1, &m_vao);
+                        glDeleteBuffers(1, &m_vbo);
+                    }
+                };
                 
                 struct Camera
                 {
@@ -53,6 +75,7 @@ namespace Me
                 void Present() override;                
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
+                void RenderLine(LineRender&) override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
                 Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
@@ -64,10 +87,12 @@ namespace Me
 
                 std::vector<Renderable*> m_renderables;
                 std::vector<DebugRenderable*> m_debugRenderables;
+                std::vector<DebugLine*> m_debugLines;
                 Resources::GL::Shader* m_activeShader;
 
                 Camera* m_camera;
                 Shader m_screenShader;
+                Shader m_lineShader;
                 Mesh m_quad;
             };
         }

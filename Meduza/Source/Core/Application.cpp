@@ -36,21 +36,20 @@ bool Me::Application::Run()
     Timer<float> deltaTimer;
     float totalTime = 0.f;
     unsigned frameCount = 0;
-
-    float fps;
+    float fps = 0;
 
     while(m_meduza->IsRunning())
     {
         ME_PROFILE_FRAME("MainThread");
-        const float deltaSeconds = deltaTimer.GetElapsedTime();
+        const float deltaSecond = deltaTimer.GetElapsedTime();
         m_meduza->Clear();
         
-        m_meduza->Update(deltaSeconds);
-        Application::OnUpdate(deltaSeconds);
+        m_meduza->Update(deltaSecond);
+        Application::OnUpdate(deltaSecond);
 
         m_meduza->Present();
 
-        totalTime += deltaSeconds;
+        totalTime += deltaSecond;
         frameCount++;
         if (totalTime >= 1.f)
         {

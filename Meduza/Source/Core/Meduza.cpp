@@ -14,6 +14,7 @@
 #include "Platform/General/TextureLibrary.h"
 
 #include "Platform/General/Events/EventSystem.h"
+#include "Utils/MeduzaDebug.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
@@ -28,9 +29,17 @@
 #include "Core/Scripting/ScriptSystem.h"
 
 unsigned char Me::Meduza::ms_engineState = RUN_GAME;
-unsigned char Me::Meduza::ms_engineDebugState = DEBUG_OFF;
 
 Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
+	:
+	m_renderLayer(nullptr),
+	m_serializer(nullptr),
+	m_systemInitializer(nullptr),
+	m_luaScripting(nullptr),
+	m_window(nullptr),
+#ifdef PLATFORM_WINDOWS
+	m_editor(nullptr)
+#endif
 {
 	m_isRunning = true;
 
@@ -42,10 +51,6 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	ms_engineState = RUN_GAME;
 #elif PLATFORM_APPLE
 	m_window = new MacOsWindow(a_w, a_h, "Meduza | Apple");
-#endif
-
-#ifndef EDITOR
-	ms_engineState = RUN_GAME;
 #endif
 
 	if(m_window != nullptr)
@@ -63,6 +68,8 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 		}
 	}
 
+	m_meduzaDebugger = Debug::MeduzaDebug::CreateDebugger(*m_renderLayer);
+
 	Event::EventSystem::Create(m_window);
 	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
 	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
@@ -75,6 +82,11 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_luaScripting = new Scripting::LuaScripting();
 
 	m_renderLayer->Init();
+
+
+#ifndef EDITOR
+	ms_engineState = RUN_GAME;
+#endif
 }
 
 Me::Meduza::~Meduza()
@@ -113,6 +125,15 @@ void Me::Meduza::Update(float a_dt)
 	m_window->Peek();
 	EntityManager::GetEntityManager()->Update(a_dt);
 		
+#ifdef PLATFORM_WINDOWS
+	#ifdef EDITOR		
+		if (m_editor != nullptr)
+		{
+			m_editor->Update(a_dt);
+		}
+	#endif
+#endif
+
 	if (!m_window->IsActive())
 	{
 		m_isRunning = false;

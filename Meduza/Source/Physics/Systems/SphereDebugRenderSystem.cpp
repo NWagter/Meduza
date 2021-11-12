@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Physics/Systems/SphereDebugRenderSystem.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #include "ECS/EntityManager.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
@@ -34,7 +36,7 @@ Me::SphereDebugRenderSystem::SphereDebugRenderSystem(Renderer::RenderLayer* a_re
 
 void Me::SphereDebugRenderSystem::OnUpdate(float)
 {
-    if(Meduza::GetDebugState() & DEBUG_OFF)
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_collisionDebugger)
     {
         return;
     }

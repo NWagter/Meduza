@@ -24,13 +24,21 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
     EntityID newEntity = Serialization::Serializer::GetInstance()->DeserializeEntity(path);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(newEntity);
+    auto physics = EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(newEntity);
     
     if(trans == nullptr)
     {
         return -1;
     }
 
-    trans->m_translation = location;
+    if (physics != nullptr)
+    {
+        physics->m_position = location;
+    }
+    else
+    {
+        trans->m_translation = location;
+    }
 
     lua_pushnumber(a_luaState, (uint64_t)newEntity); 
     return 1;

@@ -10,3 +10,8 @@ Me::Editor::EditorWidget::~EditorWidget()
 {
     
 }
+
+void Me::Editor::EditorWidget::Update(float)
+{
+
+}

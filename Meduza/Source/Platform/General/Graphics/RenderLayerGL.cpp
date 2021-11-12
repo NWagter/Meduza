@@ -3,6 +3,8 @@
 #include "Platform/General/Graphics/RenderLayerGL.h"
 #include "Platform/General/Window.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #ifdef PLATFORM_LINUX
 #include "Platform/Linux/Graphics/Context.h"
 #elif PLATFORM_WINDOWS
@@ -54,6 +56,7 @@ void Me::Renderer::GL::RenderLayerGL::Init()
 {
     m_quad = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
     m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/GLFrameBuffer.glsl");
+    m_lineShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/LineShader.glsl");
 }
 
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -76,6 +79,12 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
 
 void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 {
+    for (auto line : m_debugLines)
+    {
+        delete line;
+    }
+    m_debugLines.clear();
+
     for(auto r : m_renderables)
     {
         delete r;
@@ -87,6 +96,8 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
         delete r;
     }
     m_debugRenderables.clear();
+
+
     m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
     glClearColor(a_colour.m_colour[0],
@@ -96,7 +107,9 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_activeShader = nullptr;
 
-    
+#ifdef EDITOR  
+    m_renderStats.Reset(); 
+#endif
 }
 
 void Me::Renderer::GL::RenderLayerGL::Present()
@@ -163,16 +176,19 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         
         glBindVertexArray(m->GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
+#ifdef EDITOR  
+        m_renderStats.m_drawCalls++;
+#endif
 
         glBindVertexArray(0);
         t->UnBind();
     }
 
     glDisable(GL_ALPHA_TEST);
+    glDisable(GL_DEPTH_TEST);
 
     for(auto r : m_debugRenderables)
     {
-        glDisable(GL_DEPTH_TEST);
 
         auto renderComp = r->m_debugRenderComponent;        
 		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(renderComp->m_shader));
@@ -201,8 +217,39 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         
         glBindVertexArray(m->GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
-
         glBindVertexArray(0);
+
+#ifdef EDITOR  
+        m_renderStats.m_drawCalls++;
+#endif
+    }
+
+    for (auto lines : m_debugLines)
+    {
+        auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_lineShader));
+
+        if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
+        {
+            if (s != nullptr)
+            {
+                m_activeShader = s;
+                m_activeShader->Bind();
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
+        m_activeShader->SetVec4("u_colour", Math::Vec4(lines->m_colour.m_colour));
+
+        glBindVertexArray(lines->m_vao);
+        glDrawArrays(GL_LINES, 0, 2);
+
+#ifdef EDITOR  
+        m_renderStats.m_drawCalls++;
+#endif
     }
     
     m_frameBuffer->UnBind();
@@ -216,18 +263,63 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 
     r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
+#ifdef EDITOR  
+    auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(a_renderable.m_mesh));
+    m_renderStats.m_vertices += m->GetVerticesSize();
+#endif
+
     m_renderables.push_back(r);
 }
 
 void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_renderable, TransformComponent& a_trans)
 {
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_collisionDebugger)
+    {
+        return;
+    }
+
     DebugRenderable* r = new DebugRenderable();
     r->m_debugRenderComponent = &a_renderable;
-    //r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
-
     r->m_modelMatrix = Math::Transpose(a_trans.GetTransform());
 
+#ifdef EDITOR  
+    auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(a_renderable.m_mesh));
+    m_renderStats.m_vertices += m->GetVerticesSize();
+#endif
+
     m_debugRenderables.push_back(r);
+}
+
+void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
+{
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_lineDebugger)
+    {
+        return;
+    }
+
+    unsigned int vao, vbo;
+    std::vector<float> vertices = {
+             a_line.m_start.m_x, a_line.m_start.m_y, a_line.m_start.m_z,
+             a_line.m_end.m_x, a_line.m_end.m_y, a_line.m_end.m_z,
+
+    };
+
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+#ifdef EDITOR  
+    m_renderStats.m_vertices += vertices.size();
+#endif
+    m_debugLines.push_back(new DebugLine(vbo, vao));
 }
 
 void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)

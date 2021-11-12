@@ -5,20 +5,16 @@ namespace Me
 #define RUN_GAME 1
 #define RUN_EDITOR 2
 
-
-#define DEBUG_OFF 1
-#define DEBUG_ON 2
-
-  namespace Utils
-  {
+namespace Utils
+{
     class Utilities
     {
     public:
-      static uint16_t GetHashedID(std::string);
+        static uint16_t GetHashedID(std::string);
     };     
 
     Math::Vec4 TextureSlice(Math::Vec2 a_textureSize, Math::Vec2 a_sliceBegin, Math::Vec2 a_sliceSize);
-  }
+}
 
   
   namespace Colours

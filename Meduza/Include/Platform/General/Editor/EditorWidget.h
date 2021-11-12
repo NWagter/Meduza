@@ -10,6 +10,7 @@ namespace Me
                 EditorWidget();
                 ~EditorWidget();
 
+                virtual void Update(float);
                 virtual void Draw() = 0;
         };
     }

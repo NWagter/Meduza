@@ -31,7 +31,7 @@ Me::Renderer::GL::Context::Context(Window& a_window) : Me::Renderer::ContextBase
         0,
         0, 0, 0
     };
-
+    
     m_hdc = GetDC(m_hwnd);
 
     int nPixelFormat = ChoosePixelFormat( m_hdc, &pfd );

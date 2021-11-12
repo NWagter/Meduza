@@ -7,10 +7,28 @@ namespace Me
     struct DebugRenderComponent;
     struct CameraComponent;
     struct TransformComponent;
-
     namespace Renderer
     {
+        struct LineRender
+        {
+            Math::Vec3 m_start;
+            Math::Vec3 m_end;
+        };
+
+
         class FrameBuffer;
+
+        struct RenderStats
+        {
+            int m_drawCalls = 0;
+            int m_vertices = 0;
+
+            void Reset()
+            {
+                m_drawCalls = 0;
+                m_vertices = 0;
+            }
+        };
 
         class RenderLayer
         {
@@ -25,17 +43,20 @@ namespace Me
                 virtual void Present() = 0;
                 virtual void Submit(RenderComponent&, TransformComponent&) = 0;
                 virtual void DebugSubmit(DebugRenderComponent&, TransformComponent&) = 0;
+                virtual void RenderLine(LineRender&) = 0;
                 virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}
                 
                 virtual Window* GetWindow() = 0;
                 FrameBuffer* GetFrameBuffer() {return m_frameBuffer;}
+                inline RenderStats GetRenderStats() const { return m_renderStats; }
 
             private:
                 static GFX_API ms_api;
             protected:
                 FrameBuffer* m_frameBuffer;
+                RenderStats m_renderStats;
         };
     }
     

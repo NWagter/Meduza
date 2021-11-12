@@ -7,6 +7,8 @@
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/ColliderComponent.h"
 
+#include "Utils/MeduzaDebug.h"
+
 Me::Physics::CollisionSystem::CollisionSystem()
 {
 
@@ -67,6 +69,9 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 {                
                     pC->m_triggered.push_back(data);
                 }
+
+                //Draw Hit Normal
+                Debug::MeduzaDebug::RenderLine(data.m_hitPoint, data.m_hitNormal, 2.5f);
             }
         }
     }    

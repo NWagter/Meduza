@@ -16,6 +16,7 @@
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
 #include "Platform/General/Editor/EditorViewport.h"
+#include "Platform/General/Editor/EditorStats.h"
 
 #include "Platform/General/Graphics/FrameBuffer.h"
 
@@ -70,6 +71,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	AddWidget(entEditor);
 	EditorViewport* viewPort = new EditorViewport(*entEditor, *toolbar, *a_renderLayer);
 	AddWidget(viewPort);
+	EditorStats* stats = new EditorStats(*a_renderLayer);
+	AddWidget(stats);
 
 	m_renderLayer = a_renderLayer;
 }
@@ -92,6 +95,14 @@ void Me::Editor::GL::EditorRendererGL::Clear()
 
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
+}
+
+void Me::Editor::GL::EditorRendererGL::Update(float a_dt)
+{
+	for (int i = 0; i < m_editorWidgets.size(); i++)
+	{
+		m_editorWidgets[i]->Update(a_dt);
+	}
 }
 
 void Me::Editor::GL::EditorRendererGL::Populate()

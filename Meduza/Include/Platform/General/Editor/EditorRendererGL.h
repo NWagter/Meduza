@@ -25,6 +25,7 @@ namespace Me
                     ~EditorRendererGL();
 
                     void Clear() override;
+                    void Update(float) override;
                     void Populate() override;
 
                 private:

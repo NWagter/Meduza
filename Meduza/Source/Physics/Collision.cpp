@@ -12,7 +12,7 @@
 
 bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data)
 {
-    BodyType types[2];
+    BodyType types[2] = { BodyType::Unkown, BodyType::Unkown};
     
     for(int i = 0; i < 2;i++)
     {
@@ -89,8 +89,13 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
         (sPos.m_y - sHalfSize.m_y <= oPos.m_y + oHalfSize.m_y 
         && sPos.m_y + sHalfSize.m_y >= oPos.m_y - oHalfSize.m_y))
     {
-        
-        a_data.m_hitNormal = (sPos - oPos).Normalize();
+        float x = oPos.m_x;
+        float y = oPos.m_y;
+        float z = 0;
+
+        a_data.m_otherPosition = oPos;
+        a_data.m_hitPoint = Math::Vec3(x, y, z);
+        a_data.m_hitNormal = (sPos - a_data.m_hitPoint).Normalize();
 
         return true;
     }
@@ -114,6 +119,7 @@ bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], B
         (sPos.m_z - sHalfSize.m_z <= oPos.m_z + oHalfSize.m_z 
         && sPos.m_z + sHalfSize.m_z >= oPos.m_z - oHalfSize.m_z)) 
     {
+        a_data.m_otherPosition = oPos;
         a_data.m_hitNormal = (sPos - oPos).Normalize();
         return true;
     }
@@ -131,33 +137,36 @@ bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], 
     float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, sPos.m_x + sHalfSize.m_x));
     float y = std::max(sPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, sPos.m_y + sHalfSize.m_y));
     float z = std::max(sPos.m_z - sHalfSize.m_z, std::min(spherePos.m_z, sPos.m_z + sHalfSize.m_z));
-    
-    float distance = Math::Distance(Math::Vec3(x,y,z), spherePos);
+
+    a_data.m_hitPoint = Math::Vec3(x, y, z);
+    float distance = Math::Distance(a_data.m_hitPoint, spherePos);
 
     if(distance <= a_sphereColl->m_radius)
     {
-        a_data.m_hitNormal = (sPos - spherePos).Normalize();
+        a_data.m_otherPosition = spherePos;
+        a_data.m_hitNormal = (sPos - a_data.m_hitPoint).Normalize();
     }
-
     return distance <= a_sphereColl->m_radius;
 }
 
 bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereColl, BoxCollider3DComponent* a_boxColl, CollisionData& a_data)
 {
-    Math::Vec3 sPos = a_physics[1]->m_position + a_boxColl->m_colliderOffset;
+    Math::Vec3 oPos = a_physics[1]->m_position + a_boxColl->m_colliderOffset;
     Math::Vec3 sHalfSize = a_boxColl->m_colliderSize / 2;
 
     Math::Vec3 spherePos = a_physics[0]->m_position + a_sphereColl->m_colliderOffset;
 
-    float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, sPos.m_x + sHalfSize.m_x));
-    float y = std::max(sPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, sPos.m_y + sHalfSize.m_y));
-    float z = std::max(sPos.m_z - sHalfSize.m_z, std::min(spherePos.m_z, sPos.m_z + sHalfSize.m_z));
-        
-    float distance = Math::Distance(Math::Vec3(x,y,z), spherePos);
+    float x = std::max(oPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, oPos.m_x + sHalfSize.m_x));
+    float y = std::max(oPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, oPos.m_y + sHalfSize.m_y));
+    float z = std::max(oPos.m_z - sHalfSize.m_z, std::min(spherePos.m_z, oPos.m_z + sHalfSize.m_z));
+
+    a_data.m_hitPoint = Math::Vec3(x, y, z);
+    float distance = Math::Distance(a_data.m_hitPoint, spherePos);
 
     if(distance <= a_sphereColl->m_radius)
     {
-        a_data.m_hitNormal = (spherePos - sPos).Normalize();
+        a_data.m_otherPosition = oPos;
+        a_data.m_hitNormal = (spherePos - a_data.m_hitPoint).Normalize();
     }
 
     return distance <= a_sphereColl->m_radius;
@@ -173,6 +182,7 @@ bool Me::Physics::Collision::SphereToSphere(PhysicsComponent* a_physics[2], Sphe
 
     if(distance <= rad)
     {
+        a_data.m_otherPosition = oPos;
         a_data.m_hitNormal = (sPos - oPos).Normalize();
     }
 

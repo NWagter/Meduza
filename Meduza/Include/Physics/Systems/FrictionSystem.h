@@ -7,17 +7,17 @@ namespace Me
     struct TransformComponent;
 
     namespace Physics
-    {        
+    {
         struct PhysicsComponent;
 
-        class PhysicsSystem : public BaseSystem<PhysicsComponent,TransformComponent>
+        class FrictionSystem : public BaseSystem<PhysicsComponent>
         {
         public:
-            PhysicsSystem();
-            
+            FrictionSystem();
+
         protected:
             void OnUpdate(float) override;
-            
+
         };
     }
 }

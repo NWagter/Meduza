@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Physics/Systems/Box3DDebugRenderSystem.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #include "ECS/EntityManager.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
@@ -34,7 +36,7 @@ Me::Box3DDebugRenderSystem::Box3DDebugRenderSystem(Renderer::RenderLayer* a_rend
 
 void Me::Box3DDebugRenderSystem::OnUpdate(float)
 {
-    if(Meduza::GetDebugState() & DEBUG_OFF)
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_collisionDebugger)
     {
         return;
     }

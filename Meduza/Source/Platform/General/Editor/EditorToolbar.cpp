@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/General/Editor/EditorToolbar.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #include "ECS/EntityManager.h"
 
 #include "Core/Components/TransformComponent.h"
@@ -212,6 +214,16 @@ void Me::Editor::EditorToolbar::Draw()
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Debugging"))
+        {
+            Debug::Settings& settings = Debug::MeduzaDebug::GetDebuggingSettings();
+
+            ImGui::Checkbox("Collision", &settings.m_collisionDebugger);
+            ImGui::Checkbox("Lines", &settings.m_lineDebugger);
+
+            ImGui::EndMenu();
+        }
+
         float width = ImGui::GetWindowSize().x;
         ImGui::SameLine(width * 0.5f);
 
@@ -280,19 +292,7 @@ void Me::Editor::EditorToolbar::Draw()
 
                 Serialization::Serializer::GetInstance()->DeserializeScene();
             }
-        }        
-
-        if(ImGui::Button(ICON_FA_BUG))
-        {
-            if(Meduza::GetDebugState() & DEBUG_OFF)
-            {
-                Meduza::ms_engineDebugState = DEBUG_ON;
-            }
-            else
-            {
-                Meduza::ms_engineDebugState = DEBUG_OFF;
-            }
-        }
+        }      
 
         ImGui::EndMainMenuBar();
     }

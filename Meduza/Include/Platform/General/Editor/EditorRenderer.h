@@ -18,6 +18,7 @@ namespace Me
                 virtual ~EditorRenderer();
 
                 virtual void Clear() = 0;
+                virtual void Update(float) = 0;
                 virtual void Populate() = 0;
 
                 void AddWidget(EditorWidget* const);

@@ -36,8 +36,9 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_serializer(nullptr),
 	m_systemInitializer(nullptr),
 	m_luaScripting(nullptr),
-	m_window(nullptr),
+	m_window(nullptr)
 #ifdef PLATFORM_WINDOWS
+	,
 	m_editor(nullptr)
 #endif
 {

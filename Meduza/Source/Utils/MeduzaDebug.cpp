@@ -42,9 +42,9 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end, Co
 
 void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direction, float a_lenght, Colour a_colour)
 {
-#ifndef _DEBUG
+#ifndef EDITOR
 	return;
-#endif // !_DEBUG
+#endif // !EDITOR
 	Renderer::LineRender line;
 	line.m_start = a_start;
 	line.m_end = a_start + (a_direction * a_lenght);

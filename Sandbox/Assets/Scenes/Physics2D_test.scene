@@ -91,6 +91,8 @@
 				<Gravity>false</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -153,6 +155,8 @@
 				<Gravity>true</Gravity>
 				<Body_Mass>0.80000001192092896</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1<Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>

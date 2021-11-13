@@ -345,7 +345,9 @@ void Me::Editor::EntityEditor::Draw()
             ImGui::Checkbox("Gravity", &a_comp.m_gravity);      
             ImGui::DragFloat("BodyMass", &a_comp.m_bodyMass);
             ImGui::DragFloat("Drag", &a_comp.m_drag);
+            ImGui::DragFloat("Friction", &a_comp.m_friction);
 
+            ImGui::Checkbox("Debug Hit Normals", &a_comp.m_debugHitNormals);
         });
 
         DrawComponent<Physics::BoxCollider2DComponent>(eManager, "Box2DCollider Component", m_selectedEntity, [](auto& a_comp)

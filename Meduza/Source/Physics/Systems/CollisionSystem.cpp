@@ -71,7 +71,10 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 }
 
                 //Draw Hit Normal
-                Debug::MeduzaDebug::RenderLine(data.m_hitPoint, data.m_hitNormal, 2.5f);
+                if (pC->m_debugHitNormals)
+                {
+                    Debug::MeduzaDebug::RenderLine(data.m_hitPoint, data.m_hitNormal, Debug::MeduzaDebug::GetDebuggingSettings().m_debugLineLenght);
+                }
             }
         }
     }    

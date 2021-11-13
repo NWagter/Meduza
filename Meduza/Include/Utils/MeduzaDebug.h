@@ -11,8 +11,10 @@ namespace Me
 	{
 		struct Settings
 		{
-			bool m_lineDebugger = false;
+			float m_debugLineLenght = 1.0f;
+			bool m_lineDebugger = true;
 			bool m_collisionDebugger = false;
+			bool m_showStats = false;
 		};
 
 		class MeduzaDebug

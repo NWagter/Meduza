@@ -4,6 +4,7 @@ namespace Me
 
 #define RUN_GAME 1
 #define RUN_EDITOR 2
+#define RUN_PAUSED 4
 
 namespace Utils
 {

@@ -22,25 +22,15 @@ void Me::Physics::BlockingSystem::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
 
-        Math::Vec3 direction = tC->m_translation - pC->m_position;
-
-        if (direction == Math::Vec3(0))
+        if (pC->m_velocity.Lenght() == 0)
         {
-            if (pC->m_velocity.Lenght() > 0)
-            {
-                direction = pC->m_velocity;
-            }
-            else
-            {
-                continue;
-            }
+            continue;
         }
 
-        direction.Normalize();
-
-        for (auto data : pC->m_collided)
+        for (const CollisionData& data : pC->m_collided)
         {
-
+            Math::Vec3 newVec = pC->m_velocity * data.m_hitNormal;
+            pC->m_velocity -= newVec;
         } 
     }
 }

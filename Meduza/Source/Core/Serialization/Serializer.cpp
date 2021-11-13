@@ -167,7 +167,9 @@ bool SerializeSceneA(std::string a_path)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));    
-            archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));  
+            archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));
+            archive(cereal::make_nvp("Body_Friction", a_comp->m_friction));
+            archive(cereal::make_nvp("DrawCollisionLines", a_comp->m_debugHitNormals));
         }); 
 
         CanSerialize<Me::Physics::BoxCollider2DComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
@@ -291,7 +293,9 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     {          
         archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
         archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass)); 
-        archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));     
+        archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));
+        archive(cereal::make_nvp("Body_Friction", a_comp->m_friction));
+        archive(cereal::make_nvp("DrawCollisionLines", a_comp->m_debugHitNormals));
     }); 
 
     CanSerialize<Me::Physics::BoxCollider2DComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
@@ -460,7 +464,9 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
             archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass)); 
-            archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));   
+            archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));
+            archive(cereal::make_nvp("Body_Friction", a_comp->m_friction));
+            archive(cereal::make_nvp("DrawCollisionLines", a_comp->m_debugHitNormals));
 
             eManager->AddComponent(ent, a_comp); 
         })) compAmount;   
@@ -643,7 +649,9 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     {          
         archive(cereal::make_nvp("Gravity", a_comp->m_gravity)); 
         archive(cereal::make_nvp("Body_Mass", a_comp->m_bodyMass));
-        archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));    
+        archive(cereal::make_nvp("Body_Drag", a_comp->m_drag));
+        archive(cereal::make_nvp("Body_Friction", a_comp->m_friction));
+        archive(cereal::make_nvp("DrawCollisionLines", a_comp->m_debugHitNormals));
 
         eManager->AddComponent(ent, a_comp); 
     })) compAmount--;   

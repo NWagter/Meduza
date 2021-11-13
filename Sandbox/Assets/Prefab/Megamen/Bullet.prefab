@@ -47,6 +47,8 @@
 					<Body_Gravity>9.8000001907348633</Body_Gravity>
 					<Body_Mass>10</Body_Mass>
 					<Body_Drag>10</Body_Drag>
+					<Body_Friction>1</Body_Friction>
+					<DrawCollisionLines>false</DrawCollisionLines>
 				</8>
 				<11>
 					<CollisionType>0</CollisionType>

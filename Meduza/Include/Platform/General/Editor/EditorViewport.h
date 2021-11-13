@@ -31,9 +31,6 @@ namespace Me
                 EntityID m_editorCamera;
 
                 Math::Vec2 m_viewportSize = { 0.0f, 0.0f };
-
-                bool m_locked = false;
-
         };
     }
 }

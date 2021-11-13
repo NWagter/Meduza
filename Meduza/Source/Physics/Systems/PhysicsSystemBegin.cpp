@@ -12,7 +12,7 @@ Me::Physics::PhysicsSystemBegin::PhysicsSystemBegin()
     m_executeMask = EXECUTE_INGAME;
 }
 
-void Me::Physics::PhysicsSystemBegin::OnUpdate(float a_dT)
+void Me::Physics::PhysicsSystemBegin::OnUpdate(float a_dt)
 {
     ME_PROFILE_FUNC("PhysicsSystem");
     

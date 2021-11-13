@@ -20,8 +20,10 @@ namespace Me
 
             float m_bodyMass = 1.0f;
             float m_drag = 1.0f;
+            float m_friction = 1.0f;
 
             bool m_gravity = true;
+            bool m_debugHitNormals = false;
 
             static ComponentID s_componentID;
 

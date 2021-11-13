@@ -218,8 +218,10 @@ void Me::Editor::EditorToolbar::Draw()
         {
             Debug::Settings& settings = Debug::MeduzaDebug::GetDebuggingSettings();
 
+            ImGui::Text("Physics Debugging");
             ImGui::Checkbox("Collision", &settings.m_collisionDebugger);
             ImGui::Checkbox("Lines", &settings.m_lineDebugger);
+            ImGui::DragFloat("Line Lenght", &settings.m_debugLineLenght, 0.1f, 0, 5);
 
             ImGui::EndMenu();
         }
@@ -270,14 +272,9 @@ void Me::Editor::EditorToolbar::Draw()
 
             ImGui::Text(cameraType.c_str());
 
-            
             if(ImGui::Button("Trans"))
             {            
                 m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
-            }
-            if(ImGui::Button("Rot"))
-            {            
-                m_currentOperationType = ImGuizmo::OPERATION::ROTATE;
             }
             if(ImGui::Button("Scale"))
             {            
@@ -288,11 +285,30 @@ void Me::Editor::EditorToolbar::Draw()
         {        
             if(ImGui::Button(ICON_FA_PAUSE))
             {                            
+                Meduza::ms_engineState = RUN_PAUSED;
+            }
+            if (ImGui::Button(ICON_FA_STOP))
+            {
                 Meduza::ms_engineState = RUN_EDITOR;
 
                 Serialization::Serializer::GetInstance()->DeserializeScene();
             }
-        }      
+        }
+        else if (Meduza::GetEngineState() & RUN_PAUSED)
+        {
+            if (ImGui::Button(ICON_FA_PLAY))
+            {
+                Meduza::ms_engineState = RUN_GAME;
+            }
+            if (ImGui::Button(ICON_FA_STOP))
+            {
+                Meduza::ms_engineState = RUN_EDITOR;
+
+                Serialization::Serializer::GetInstance()->DeserializeScene();
+            }
+        }
+
+        ImGui::Checkbox("Stats", &Debug::MeduzaDebug::GetDebuggingSettings().m_showStats);
 
         ImGui::EndMainMenuBar();
     }

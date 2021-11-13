@@ -79,9 +79,11 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
 {
     // box2d to box2d collision check
     Math::Vec3 sPos = a_physics[0]->m_position + a_colliders[0]->m_colliderOffset;
+    sPos.m_z = 0;
     Math::Vec2 sHalfSize = a_colliders[0]->m_colliderSize / 2;
     
     Math::Vec3 oPos = a_physics[1]->m_position + a_colliders[1]->m_colliderOffset;
+    oPos.m_z = 0;
     Math::Vec2 oHalfSize = a_colliders[1]->m_colliderSize / 2;
 
     if((sPos.m_x - sHalfSize.m_x <= oPos.m_x + oHalfSize.m_x 
@@ -89,8 +91,9 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
         (sPos.m_y - sHalfSize.m_y <= oPos.m_y + oHalfSize.m_y 
         && sPos.m_y + sHalfSize.m_y >= oPos.m_y - oHalfSize.m_y))
     {
-        float x = oPos.m_x;
-        float y = oPos.m_y;
+
+        float x = std::max(oPos.m_x - oHalfSize.m_x, std::min(sPos.m_x, oPos.m_x + oHalfSize.m_x));
+        float y = std::max(oPos.m_y - oHalfSize.m_y, std::min(sPos.m_y, oPos.m_y + oHalfSize.m_y));
         float z = 0;
 
         a_data.m_otherPosition = oPos;
@@ -119,8 +122,14 @@ bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], B
         (sPos.m_z - sHalfSize.m_z <= oPos.m_z + oHalfSize.m_z 
         && sPos.m_z + sHalfSize.m_z >= oPos.m_z - oHalfSize.m_z)) 
     {
+        float x = std::max(oPos.m_x - oHalfSize.m_x, std::min(sPos.m_x, oPos.m_x + oHalfSize.m_x));
+        float y = std::max(oPos.m_y - oHalfSize.m_y, std::min(sPos.m_y, oPos.m_y + oHalfSize.m_y));
+        float z = std::max(oPos.m_z - oHalfSize.m_z, std::min(sPos.m_z, oPos.m_z + oHalfSize.m_z));
+
         a_data.m_otherPosition = oPos;
-        a_data.m_hitNormal = (sPos - oPos).Normalize();
+        a_data.m_hitPoint = Math::Vec3(x, y, z);
+        a_data.m_hitNormal = (sPos - a_data.m_hitPoint).Normalize();
+
         return true;
     }
 

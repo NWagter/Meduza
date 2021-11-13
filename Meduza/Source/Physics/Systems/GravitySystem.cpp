@@ -19,29 +19,11 @@ void Me::Physics::GravitySystem::OnUpdate(float a_dt)
     for(auto& compTuple : m_components)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
-        
-        bool applyGravity = true;
 
-        for(auto blockData : pC->m_collided)
+        if(pC->m_gravity)
         {
-            if(blockData.m_hitNormal.m_y > 0.01f)
-            {
-
-                applyGravity = false;
-            }
+            pC->m_velocity.m_y -= ((pC->m_bodyMass * gs_gravity) * a_dt);
         }
 
-        float yVel = 0;
-
-        if(pC->m_gravity && applyGravity)
-        {
-            yVel -= ((pC->m_bodyMass * gs_gravity) * a_dt);
-        }
-        else
-        {
-            pC->m_velocity.m_y = 0;
-        }
-
-        pC->m_velocity += Math::Vec3(0, yVel, 0);
     }
 }

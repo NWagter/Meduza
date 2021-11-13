@@ -21,7 +21,11 @@ void Me::Physics::PhysicsSystemEnd::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
 
-        pC->m_position += pC->m_velocity * a_dT;
+        if (pC->m_velocity.Lenght() > 0)
+        {
+            pC->m_position += pC->m_velocity * a_dT;
+        }
+
         tC->m_translation = pC->m_position;
     }
 }

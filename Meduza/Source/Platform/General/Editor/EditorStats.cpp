@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/General/Editor/EditorStats.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #include "MeduzaIncluder.h"
 
 #include "Platform/General/Graphics/RenderLayer.h"
@@ -29,6 +31,9 @@ void Me::Editor::EditorStats::Update(float a_dt)
 
 void Me::Editor::EditorStats::Draw()
 {
+	if (!Debug::MeduzaDebug::GetDebuggingSettings().m_showStats)
+		return;
+
 	ImGui::Begin("Stats");
 	Renderer::RenderStats stats = m_renderLayer->GetRenderStats();
 	std::string delta = "ms : " + std::to_string(m_deltaTime);

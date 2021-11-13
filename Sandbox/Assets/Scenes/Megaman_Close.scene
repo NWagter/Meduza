@@ -4,7 +4,7 @@
 		<EntityAmount>9</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>20</EntityID>
+		<EntityID>1</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -45,7 +45,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>21</EntityID>
+		<EntityID>2</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -76,7 +76,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Zero.png</Texture>
 				<UV>
 					<value0>0.10540540516376495</value0>
@@ -89,6 +89,8 @@
 				<Gravity>true</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>true</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -109,7 +111,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>22</EntityID>
+		<EntityID>3</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -140,7 +142,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Ships.png</Texture>
 				<UV>
 					<value0>0.022535210475325584</value0>
@@ -156,7 +158,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>23</EntityID>
+		<EntityID>4</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -187,7 +189,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
 				<UV>
 					<value0>0.018237082287669182</value0>
@@ -200,6 +202,8 @@
 				<Gravity>true</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -220,7 +224,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>24</EntityID>
+		<EntityID>5</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -251,7 +255,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Earth_TEXTURE_CM.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -263,7 +267,9 @@
 			<8>
 				<Gravity>false</Gravity>
 				<Body_Mass>10</Body_Mass>
-				<Body_Drag>10</Body_Drag>
+				<Body_Drag>1</Body_Drag>
+				<Body_Friction>10</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -280,7 +286,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>25</EntityID>
+		<EntityID>6</EntityID>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<1>
@@ -311,7 +317,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Background.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -323,7 +329,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>26</EntityID>
+		<EntityID>7</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -354,7 +360,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
 				<UV>
 					<value0>0.018237082287669182</value0>
@@ -367,6 +373,8 @@
 				<Gravity>true</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -387,7 +395,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>27</EntityID>
+		<EntityID>8</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -418,7 +426,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
 				<UV>
 					<value0>0.018237082287669182</value0>
@@ -431,6 +439,8 @@
 				<Gravity>true</Gravity>
 				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>
@@ -451,7 +461,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>28</EntityID>
+		<EntityID>9</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -482,7 +492,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.hlsl</Shader>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Earth_TEXTURE_CM.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -495,6 +505,8 @@
 				<Gravity>false</Gravity>
 				<Body_Mass>1</Body_Mass>
 				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<11>
 				<CollisionType>1</CollisionType>

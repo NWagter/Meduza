@@ -98,14 +98,19 @@ void Me::EntityManager::Update(float a_dt)
             s->m_OnCreated = true;
         }
 
-        if(Meduza::GetEngineState() & RUN_GAME)
+        if(Meduza::GetEngineState() & (RUN_GAME | RUN_PAUSED))
         {
             if(!m_started)
             {
                 s->OnStart();
             }
 
-            if(s->m_executeMask & (EXECUTE_INGAME | EXECUTE_ALL))
+            if (s->m_executeMask & (EXECUTE_ALL))
+            {
+                s->OnUpdate(a_dt);
+            }
+
+            if (Meduza::GetEngineState() & (RUN_GAME) && s->m_executeMask & (EXECUTE_INGAME))
             {
                 s->OnUpdate(a_dt);
             }
@@ -124,7 +129,7 @@ void Me::EntityManager::Update(float a_dt)
     {
         m_started = false;
     }
-    else if(!m_started &&Meduza::GetEngineState() & RUN_GAME)
+    else if(!m_started &&Meduza::GetEngineState() & (RUN_GAME | RUN_PAUSED))
     {
         m_started = true;
     }

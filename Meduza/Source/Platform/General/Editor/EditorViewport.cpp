@@ -92,7 +92,7 @@ void Me::Editor::EditorViewport::Draw()
         Math::Mat4 pMat = Math::Mat4::Identity();
         pMat.SetPosition(camTrans->m_translation);
 
-        Math::Mat4 view = rMat * pMat.Inverse();
+        Math::Mat4 view = Math::Transpose(rMat * pMat.Inverse());
         Math::Mat4 projection;
         Math::Vec2 size = m_renderLayer->GetWindow()->GetSize();
         float aspect = size.m_x / size.m_y;
@@ -101,14 +101,14 @@ void Me::Editor::EditorViewport::Draw()
         {
         case CameraType::Orthographic:
             ImGuizmo::SetOrthographic(true);
-            projection = Math::GetOrthographicMatrix(-editorCam->m_orthoScale, editorCam->m_orthoScale,
+            projection = Math::Transpose(Math::GetOrthographicMatrix(-editorCam->m_orthoScale, editorCam->m_orthoScale,
                             -editorCam->m_orthoScale * aspect , editorCam->m_orthoScale * aspect,
-                            editorCam->m_near, editorCam->m_far);
+                            editorCam->m_near, editorCam->m_far));
             break;
         case CameraType::Perspective:
             ImGuizmo::SetOrthographic(false);
-            projection = Math::GetProjectionMatrix(45.0f, editorCam->m_size.m_x / editorCam->m_size.m_y,
-                                    editorCam->m_near, editorCam->m_far);
+            projection = Math::Transpose(Math::GetProjectionMatrix(45.0f, editorCam->m_size.m_x / editorCam->m_size.m_y,
+                                    editorCam->m_near, editorCam->m_far));
             break;
         }
 
@@ -119,13 +119,16 @@ void Me::Editor::EditorViewport::Draw()
         if(trans != nullptr)
         {
             Math::Mat4 t =  Math::Transpose(trans->GetTransform());
-            ImGuizmo::Manipulate(Math::Transpose(view).m_m, Math::Transpose(projection).m_m,
-            m_toolbar->GetOperationType(), ImGuizmo::LOCAL, t.m_m);
+            ImGuizmo::Manipulate(view.m_m, projection.m_m,
+            m_toolbar->GetOperationType(), ImGuizmo::WORLD, t.m_m);
 
             if(ImGuizmo::IsUsing())
             {
-                t =  Math::Transpose(t);
-                trans->m_translation = t.GetPosition();
+                float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+                ImGuizmo::DecomposeMatrixToComponents(t.m_m, matrixTranslation, matrixRotation, matrixScale);
+                trans->m_translation = Math::Vec3(matrixTranslation[0], matrixTranslation[1], matrixTranslation[2]);
+                //trans->m_rotation = Math::Vec3(std::abs(matrixRotation[0]), std::abs(matrixRotation[1]), std::abs(matrixRotation[2]));
+                trans->m_scale = Math::Vec3(matrixScale[0], matrixScale[1], matrixScale[2]);
             }
         }
 

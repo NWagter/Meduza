@@ -33,7 +33,7 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
 
     if (physics != nullptr)
     {
-        physics->m_position = location;
+        physics->m_movement = location;
     }
     else
     {

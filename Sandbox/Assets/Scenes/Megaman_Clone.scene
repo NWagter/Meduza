@@ -4,7 +4,7 @@
 		<EntityAmount>9</EntityAmount>
 	</SceneData>
 	<Entity>
-		<EntityID>1</EntityID>
+		<EntityID>20</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -45,7 +45,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>2</EntityID>
+		<EntityID>21</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -111,7 +111,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>3</EntityID>
+		<EntityID>22</EntityID>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -158,7 +158,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>4</EntityID>
+		<EntityID>23</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -224,7 +224,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>5</EntityID>
+		<EntityID>24</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -286,7 +286,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>6</EntityID>
+		<EntityID>25</EntityID>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<1>
@@ -329,73 +329,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>7</EntityID>
-		<ComponentAmount>8</ComponentAmount>
-		<value0>
-			<1>
-				<Tag>SpikeBall_Enemy</Tag>
-			</1>
-			<2>
-				<Translation>
-					<value0>15.643568992614746</value0>
-					<value1>-1.6951665878295898</value1>
-					<value2>0</value2>
-				</Translation>
-				<Rotation>
-					<value0>0</value0>
-					<value1>0</value1>
-					<value2>0</value2>
-				</Rotation>
-				<Scale>
-					<value0>2</value0>
-					<value1>2</value1>
-					<value2>1</value2>
-				</Scale>
-			</2>
-			<4>
-				<Colour>
-					<value0>1</value0>
-					<value1>0.99998998641967773</value1>
-					<value2>1</value2>
-					<value3>1</value3>
-				</Colour>
-				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
-				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
-				<UV>
-					<value0>0.018237082287669182</value0>
-					<value1>0.40647482872009277</value1>
-					<value2>0.10638298094272614</value2>
-					<value3>0.2050359696149826</value3>
-				</UV>
-			</4>
-			<8>
-				<Gravity>true</Gravity>
-				<Body_Mass>10</Body_Mass>
-				<Body_Drag>1</Body_Drag>
-				<Body_Friction>1</Body_Friction>
-				<DrawCollisionLines>false</DrawCollisionLines>
-			</8>
-			<11>
-				<CollisionType>1</CollisionType>
-				<CollisionLayer>0</CollisionLayer>
-				<CollisionScale>
-					<value0>2</value0>
-					<value1>2</value1>
-				</CollisionScale>
-				<CollisionOffset>
-					<value0>0</value0>
-					<value1>0</value1>
-				</CollisionOffset>
-			</11>
-			<7>
-				<ScriptAmount>1</ScriptAmount>
-				<ScriptPath0>Assets/Scripts/Megaman/Spikeball_Enemy.lua</ScriptPath0>
-			</7>
-		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>8</EntityID>
+		<EntityID>26</EntityID>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -461,7 +395,7 @@
 		</value0>
 	</Entity>
 	<Entity>
-		<EntityID>9</EntityID>
+		<EntityID>27</EntityID>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -514,6 +448,68 @@
 				<CollisionScale>
 					<value0>6</value0>
 					<value1>3</value1>
+				</CollisionScale>
+				<CollisionOffset>
+					<value0>0</value0>
+					<value1>0</value1>
+				</CollisionOffset>
+			</11>
+		</value0>
+	</Entity>
+	<Entity>
+		<EntityID>28</EntityID>
+		<ComponentAmount>7</ComponentAmount>
+		<value0>
+			<1>
+				<Tag>Wall</Tag>
+			</1>
+			<2>
+				<Translation>
+					<value0>-13.283170700073242</value0>
+					<value1>-9.0936565399169922</value1>
+					<value2>0</value2>
+				</Translation>
+				<Rotation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Rotation>
+				<Scale>
+					<value0>4</value0>
+					<value1>4</value1>
+					<value2>1</value2>
+				</Scale>
+			</2>
+			<4>
+				<Colour>
+					<value0>1</value0>
+					<value1>0.99998998641967773</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</Colour>
+				<Mesh>0</Mesh>
+				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Texture>Assets/Textures/Crate.png</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
+			</4>
+			<8>
+				<Gravity>false</Gravity>
+				<Body_Mass>1</Body_Mass>
+				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
+			</8>
+			<11>
+				<CollisionType>1</CollisionType>
+				<CollisionLayer>0</CollisionLayer>
+				<CollisionScale>
+					<value0>4</value0>
+					<value1>4</value1>
 				</CollisionScale>
 				<CollisionOffset>
 					<value0>0</value0>

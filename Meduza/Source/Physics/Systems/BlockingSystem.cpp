@@ -27,32 +27,28 @@ void Me::Physics::BlockingSystem::OnUpdate(float a_dT)
             continue;
         }
 
-        Math::Vec3 movementDir = (pC->m_position - tC->m_translation).Normalize();
-
+        Math::Vec3 movementDir = pC->m_movement;
+        movementDir.Normalize();
         for (const CollisionData& data : pC->m_collided)
         {
-            // Translation Collision
-
-            if (movementDir.m_x + data.m_hitNormal.m_x == 0)
-            {
-                pC->m_position.m_x = tC->m_translation.m_x;
-            }
-            if (movementDir.m_y + data.m_hitNormal.m_y == 0)
-            {
-                pC->m_position.m_y = tC->m_translation.m_y;
-            }
-            if (movementDir.m_z + data.m_hitNormal.m_z == 0)
-            {
-                pC->m_position.m_z = tC->m_translation.m_z;
-            }
-
             // Velocity Collision
 
             Math::Vec3 newVel = (pC->m_velocity * data.m_hitNormal).Inverse();
 
             if (!newVel.IsNan())
             {
-                pC->m_velocity += newVel;
+                pC->m_movement += newVel * a_dT;
+            }
+
+            // Translation Collision
+            if (movementDir.Lenght() <= 0)
+            {
+                continue;
+            }
+
+            if (movementDir.m_x + data.m_hitNormal.m_x == 0)
+            {
+                pC->m_movement.m_x = 0;
             }
         } 
     }

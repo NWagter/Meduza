@@ -17,6 +17,7 @@
 
 #include "Physics/Systems/PhysicsSystemBegin.h"
 #include "Physics/Systems/PhysicsSystemEnd.h"
+#include "Physics/Systems/ApplyForceSystem.h"
 #include "Physics/Systems/GravitySystem.h"
 #include "Physics/Systems/FluidDragSystem.h"
 #include "Physics/Systems/FrictionSystem.h"
@@ -62,6 +63,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::FluidDragSystem());
 	m_systems.push_back(new Physics::FrictionSystem());
 
+	//m_systems.push_back(new Physics::ApplyForceSystem());
 	m_systems.push_back(new Physics::BlockingSystem());
 
 	m_systems.push_back(new Physics::PhysicsSystemEnd()); //Clears and set Body correct

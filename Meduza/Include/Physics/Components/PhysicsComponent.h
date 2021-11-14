@@ -14,6 +14,7 @@ namespace Me
             std::vector<CollisionData> m_triggered;
             
             Math::Vec3 m_position = Math::Vec3(0,0,0);
+            Math::Vec3 m_movement = Math::Vec3(0,0,0);
             Math::Vec3 m_rotation = Math::Vec3(0,0,0);
 
             Math::Vec3 m_velocity = Math::Vec3(0,0,0);

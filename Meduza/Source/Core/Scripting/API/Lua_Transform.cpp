@@ -106,7 +106,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
     Physics::PhysicsComponent* pC = EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
     if (pC != nullptr)
     {
-        pC->m_position += movement;
+        pC->m_movement += movement;
     }
     else
     {

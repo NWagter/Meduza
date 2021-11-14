@@ -40,8 +40,6 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::PhysicsSystemBegin()); //Clears and set Body correct
 	m_systems.push_back(new Physics::CollisionSystem());
 
-	m_systems.push_back(new Physics::GravitySystem());
-	m_systems.push_back(new Physics::BlockingSystem());
 
 #ifdef EDITOR
 	m_systems.push_back(new Box2DDebugRenderSystem(&a_renderLayer));
@@ -59,10 +57,12 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new AI::AgentMovementSystem());
 	m_systems.push_back(new AI::NavSurfaceSystem());
 
+	m_systems.push_back(new Physics::GravitySystem());
 
 	m_systems.push_back(new Physics::FluidDragSystem());
 	m_systems.push_back(new Physics::FrictionSystem());
 
+	m_systems.push_back(new Physics::BlockingSystem());
 
 	m_systems.push_back(new Physics::PhysicsSystemEnd()); //Clears and set Body correct
 }

@@ -32,7 +32,13 @@ void Me::Physics::FrictionSystem::OnUpdate(float a_dt)
         {
             float friction = eManager->GetComponent<PhysicsComponent>(data.m_entity)->m_friction;
 
-            pC->m_velocity -= (pC->m_velocity * friction) * a_dt;
+            Math::Vec3 frictionVec = (pC->m_velocity * friction) * a_dt;
+
+            if (!frictionVec.IsNan())
+            {
+                pC->m_velocity -= frictionVec;
+            }
+
         }
     }
 }

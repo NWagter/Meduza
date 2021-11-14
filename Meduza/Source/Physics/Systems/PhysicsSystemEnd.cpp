@@ -21,9 +21,12 @@ void Me::Physics::PhysicsSystemEnd::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
 
-        if (pC->m_velocity.Lenght() > 0)
+
+        Math::Vec3 vP = pC->m_velocity * a_dT;
+
+        if (!vP.IsNan())
         {
-            pC->m_position += pC->m_velocity * a_dT;
+            pC->m_position += vP;
         }
 
         tC->m_translation = pC->m_position;

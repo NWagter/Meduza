@@ -26,10 +26,14 @@ void Me::Physics::FluidDragSystem::OnUpdate(float a_dt)
         {
             continue;
         }
-        float drag = pC->m_drag * std::pow(vel, gs_dragExponent);
 
+        float drag = pC->m_drag * std::pow(vel, gs_dragExponent);
         Math::Vec3 dragForce = (velocity.Normalize() * drag).Inverse();
-        pC->m_velocity += dragForce * a_dt;
+
+        if (!dragForce.IsNan())
+        {
+            pC->m_velocity += dragForce * a_dt;
+        }
     }
 }
 

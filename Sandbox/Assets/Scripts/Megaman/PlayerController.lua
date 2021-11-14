@@ -119,7 +119,7 @@ function OnUpdate(a_host, a_entity, a_fDT)
 		nX = -nX
 	end
 	
-	vForce = _CreateVector3(nX, nY, 0)
+	vForce = _CreateVector3(0, nY, 0)
 	
 	if _OnKeyDown(32) == 1 and vVel.y == 0 then
 		_ApplyForce(a_entity, vForce)

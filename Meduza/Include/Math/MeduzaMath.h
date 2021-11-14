@@ -384,6 +384,25 @@ namespace Me
 				
 				return *this;
 			}
+
+			inline bool IsNan()
+			{
+				int i = 0;
+				if (std::isnan(m_x))
+				{
+					i++;
+				}
+				if (std::isnan(m_y))
+				{
+					i++;
+				}
+				if (std::isnan(m_z))
+				{
+					i++;
+				}
+
+				return i == 3;
+			}
 		};
 
 		class Vec4

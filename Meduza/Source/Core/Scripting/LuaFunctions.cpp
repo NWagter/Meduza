@@ -14,6 +14,8 @@
 
 #include "Core/Scripting/API/Lua_Graphics.h"
 
+#include "Core/Scripting/API/Lua_SceneManager.h"
+
 #include "Core/Scripting/ScriptComponent.h"
 #include "Platform/General/FileSystem/FileSystem.h"
 
@@ -33,6 +35,7 @@ void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
     Lua_API::Lua_Physics::RegisterPhysicsFunctions(a_luaState);
 
     Lua_API::Lua_Graphics::RegisterGraphicsFunctions(a_luaState);
+    Lua_API::Lua_SceneManager::RegisterSceneManagerFunctions(a_luaState);
 }
 
 int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)

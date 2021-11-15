@@ -10,7 +10,7 @@ BaseGame::BaseGame()
 
 void BaseGame::InitGame()
 {
-    Me::Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/MonkeyHeadScene.scene");
+    Me::Serialization::Serializer::GetInstance()->DeserializeScene("Assets/Scenes/Megaman_Clone.scene");
 }
 
 void BaseGame::UpdateGame(float)

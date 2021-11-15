@@ -61,7 +61,8 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 data.m_collisionLayerID = colliderComponents[e]->m_collider->m_collisionLayer;
 
                 //Add collisionData
-                if(bC->m_collider->m_collisionType == CollisionType::Block)
+                if(bC->m_collider->m_collisionType == CollisionType::Block && 
+                    colliderComponents[e]->m_collider->m_collisionType != CollisionType::Overlap)
                 {
                     pC->m_collided.push_back(data);
                 }
@@ -69,6 +70,7 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 {                
                     pC->m_triggered.push_back(data);
                 }
+
 
                 //Draw Hit Normal
                 if (pC->m_debugHitNormals)

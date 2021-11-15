@@ -16,7 +16,7 @@ namespace Me
 
                 bool SerializeScene();
                 bool SerializeSceneAs(std::string);
-                bool DeserializeScene(std::string = "");
+                bool DeserializeScene(std::string = "", bool = true, bool = true);
 
                 bool SerializeEntity(std::string, EntityID);
                 EntityID DeserializeEntity(std::string);

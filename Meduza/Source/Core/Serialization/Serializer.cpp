@@ -354,14 +354,14 @@ bool Me::Serialization::Serializer::SerializeSceneAs(std::string a_file)
     return SerializeSceneA(a_file);    
 }
 
-bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
+bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_rememberScene, bool a_cleanup)
 {
     std::string path = a_file;
     if(path.empty())
     {
         path = ms_instance->m_activeScene;
     }
-    else
+    else if(a_rememberScene)
     {
         ms_instance->m_activeScene = path;
     }
@@ -376,8 +376,12 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
 
     cereal::XMLInputArchive archive(is);
 
-    EntityManager* eManager = EntityManager::GetEntityManager();             
-    eManager->CleanGame();
+    EntityManager* eManager = EntityManager::GetEntityManager();
+
+    if (a_cleanup)
+    {
+        eManager->CleanGame();
+    }
     
     int amount;
 

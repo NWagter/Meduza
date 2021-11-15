@@ -16,7 +16,7 @@
 					</Translation>
 					<Rotation>
 						<value0>0</value0>
-						<value1>190</value1>
+						<value1>0</value1>
 						<value2>0</value2>
 					</Rotation>
 					<Scale>
@@ -64,7 +64,8 @@
 					</CollisionOffset>
 				</12>
 				<7>
-					<ScriptAmount>0</ScriptAmount>
+					<ScriptAmount>1</ScriptAmount>
+					<ScriptPath0>Assets/Scripts/MoveSideways.lua</ScriptPath0>
 				</7>
 			</value0>
 		</Entity>

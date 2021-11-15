@@ -16,15 +16,13 @@ function OnUpdate(a_host, a_entity, a_fDT)
     if fTime < 0 then
         if bLeft == true then
             bLeft = false
-            _FlipX(a_entity)
         else
             bLeft = true
-            _FlipX(a_entity)
         end
 
         fTime = 2
     end
 
     vMovement.x = xSpeed * a_fDT
-    _Translate(a_entity, vMovement)
+    _Move(a_entity, vMovement)
 end

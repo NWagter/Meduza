@@ -3,8 +3,7 @@
 	<SceneData>
 		<EntityAmount>4</EntityAmount>
 	</SceneData>
-	<Entity>
-		<EntityID>37</EntityID>
+	<value0>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -43,9 +42,8 @@
 				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>38</EntityID>
+	</value0>
+	<value1>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -113,9 +111,8 @@
 				<ScriptPath0>Assets/Scripts/DestroySadBox.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>39</EntityID>
+	</value1>
+	<value2>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -179,9 +176,8 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>40</EntityID>
+	</value2>
+	<value3>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -241,6 +237,6 @@
 				</CollisionOffset>
 			</14>
 		</value0>
-	</Entity>
+	</value3>
 </cereal>
 

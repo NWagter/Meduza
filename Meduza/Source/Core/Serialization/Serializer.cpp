@@ -104,9 +104,7 @@ bool SerializeSceneA(std::string a_path)
             continue;
         }
 
-        archive.setNextName("Entity"); 
         archive.startNode();    
-        archive(cereal::make_nvp("EntityID" ,ent.first));
         archive.setNextName("Components"); 
         archive(cereal::make_nvp("ComponentAmount" , (int)ent.second.size()));
 
@@ -392,8 +390,6 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file)
     {        
         archive.startNode();
         int compAmount = 0;
-        EntityID entId;
-        archive(cereal::make_nvp("EntityID" , entId));
         archive(cereal::make_nvp("ComponentAmount", compAmount));
         archive.startNode(); 
         

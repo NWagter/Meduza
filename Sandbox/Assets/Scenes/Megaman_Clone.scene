@@ -3,8 +3,7 @@
 	<SceneData>
 		<EntityAmount>9</EntityAmount>
 	</SceneData>
-	<Entity>
-		<EntityID>20</EntityID>
+	<value0>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -43,9 +42,8 @@
 				<ScriptPath0>Assets/Scripts/Megaman/FollowPlayerCamera.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>21</EntityID>
+	</value0>
+	<value1>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -109,9 +107,8 @@
 				<ScriptPath0>Assets/Scripts/Megaman/PlayerController.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>22</EntityID>
+	</value1>
+	<value2>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -156,9 +153,8 @@
 				<ScriptPath0>Assets/Scripts/MoveSideways.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>23</EntityID>
+	</value2>
+	<value3>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -222,9 +218,8 @@
 				<ScriptPath0>Assets/Scripts/Megaman/Spikeball_Enemy.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>24</EntityID>
+	</value3>
+	<value4>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -284,9 +279,8 @@
 				</CollisionOffset>
 			</11>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>25</EntityID>
+	</value4>
+	<value5>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<1>
@@ -327,9 +321,8 @@
 				</UV>
 			</4>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>26</EntityID>
+	</value5>
+	<value6>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
@@ -393,9 +386,8 @@
 				<ScriptPath0>Assets/Scripts/Megaman/Spikeball_Enemy.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>27</EntityID>
+	</value6>
+	<value7>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -455,9 +447,8 @@
 				</CollisionOffset>
 			</11>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>28</EntityID>
+	</value7>
+	<value8>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -517,6 +508,6 @@
 				</CollisionOffset>
 			</11>
 		</value0>
-	</Entity>
+	</value8>
 </cereal>
 

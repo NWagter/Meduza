@@ -3,8 +3,7 @@
 	<SceneData>
 		<EntityAmount>3</EntityAmount>
 	</SceneData>
-	<Entity>
-		<EntityID>48</EntityID>
+	<value0>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -43,9 +42,8 @@
 				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>49</EntityID>
+	</value0>
+	<value1>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -107,9 +105,8 @@
 				</CollisionOffset>
 			</11>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>50</EntityID>
+	</value1>
+	<value2>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -171,6 +168,6 @@
 				</CollisionOffset>
 			</11>
 		</value0>
-	</Entity>
+	</value2>
 </cereal>
 

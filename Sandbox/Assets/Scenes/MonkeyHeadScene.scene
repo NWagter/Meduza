@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<SceneData>
-		<EntityAmount>4</EntityAmount>
+		<EntityAmount>5</EntityAmount>
 	</SceneData>
-	<Entity>
-		<EntityID>11</EntityID>
+	<value0>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<1>
@@ -43,9 +42,8 @@
 				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>12</EntityID>
+	</value0>
+	<value1>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -107,9 +105,8 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>13</EntityID>
+	</value1>
+	<value2>
 		<ComponentAmount>3</ComponentAmount>
 		<value0>
 			<1>
@@ -137,9 +134,8 @@
 				<ScriptPath0>Assets/Scripts/CreateMonkeyHead.lua</ScriptPath0>
 			</7>
 		</value0>
-	</Entity>
-	<Entity>
-		<EntityID>14</EntityID>
+	</value2>
+	<value3>
 		<ComponentAmount>7</ComponentAmount>
 		<value0>
 			<1>
@@ -147,9 +143,9 @@
 			</1>
 			<2>
 				<Translation>
-					<value0>0</value0>
-					<value1>-0.23999999463558197</value1>
-					<value2>20</value2>
+					<value0>-10</value0>
+					<value1>0</value1>
+					<value2>10</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -201,6 +197,69 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</Entity>
+	</value3>
+	<value4>
+		<ComponentAmount>7</ComponentAmount>
+		<value0>
+			<1>
+				<Tag>Wall</Tag>
+			</1>
+			<2>
+				<Translation>
+					<value0>10</value0>
+					<value1>0</value1>
+					<value2>10</value2>
+				</Translation>
+				<Rotation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Rotation>
+				<Scale>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
+				</Scale>
+			</2>
+			<4>
+				<Colour>
+					<value0>1</value0>
+					<value1>0.99998998641967773</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</Colour>
+				<Mesh>1</Mesh>
+				<Shader>Assets/Shaders/Lit_Shader.glsl</Shader>
+				<Texture>Assets/Textures/Crate.png</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
+			</4>
+			<8>
+				<Gravity>false</Gravity>
+				<Body_Mass>1</Body_Mass>
+				<Body_Drag>1</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
+			</8>
+			<12>
+				<CollisionType>0</CollisionType>
+				<CollisionLayer>0</CollisionLayer>
+				<CollisionScale>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
+				</CollisionScale>
+				<CollisionOffset>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</CollisionOffset>
+			</12>
+		</value0>
+	</value4>
 </cereal>
 

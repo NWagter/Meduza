@@ -11,7 +11,7 @@
 				<2>
 					<Translation>
 						<value0>0</value0>
-						<value1>0.20000000298023224</value1>
+						<value1>-1.9545713663101196</value1>
 						<value2>10</value2>
 					</Translation>
 					<Rotation>
@@ -20,9 +20,9 @@
 						<value2>0</value2>
 					</Rotation>
 					<Scale>
-						<value0>1</value0>
-						<value1>1</value1>
-						<value2>1</value2>
+						<value0>2.5</value0>
+						<value1>2</value1>
+						<value2>2</value2>
 					</Scale>
 				</2>
 				<4>
@@ -44,7 +44,6 @@
 				</4>
 				<8>
 					<Gravity>true</Gravity>
-					<Body_Gravity>9.8000001907348633</Body_Gravity>
 					<Body_Mass>0.60000002384185791</Body_Mass>
 					<Body_Drag>1</Body_Drag>
 					<Body_Friction>1</Body_Friction>
@@ -65,8 +64,7 @@
 					</CollisionOffset>
 				</12>
 				<7>
-					<ScriptAmount>1</ScriptAmount>
-					<ScriptPath0>Assets/Scripts/ScaleObject.lua</ScriptPath0>
+					<ScriptAmount>0</ScriptAmount>
 				</7>
 			</value0>
 		</Entity>

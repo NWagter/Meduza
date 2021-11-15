@@ -31,14 +31,7 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
         return -1;
     }
 
-    if (physics != nullptr)
-    {
-        physics->m_movement = location;
-    }
-    else
-    {
-        trans->m_translation = location;
-    }
+    trans->m_translation = location;
 
     lua_pushnumber(a_luaState, (uint64_t)newEntity); 
     return 1;

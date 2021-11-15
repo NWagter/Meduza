@@ -22,33 +22,36 @@ void Me::Physics::BlockingSystem::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(m_components.at(i));
         TransformComponent* tC = std::get<TransformComponent*>(m_components.at(i));
 
-        if (pC->m_velocity.Lenght() <= 0.1f)
-        {
-            continue;
-        }
-
         Math::Vec3 movementDir = pC->m_movement;
         movementDir.Normalize();
+        Math::Vec3 vel = pC->m_velocity;
+        vel.Normalize();
+
         for (const CollisionData& data : pC->m_collided)
         {
             // Velocity Collision
+            Math::Vec3 result = vel + data.m_hitNormal;
 
-            Math::Vec3 newVel = (pC->m_velocity * data.m_hitNormal).Inverse();
+            Math::Vec3 newVel = pC->m_velocity * (result * result);
 
             if (!newVel.IsNan())
             {
-                pC->m_movement += newVel * a_dT;
-            }
-
-            // Translation Collision
-            if (movementDir.Lenght() <= 0)
-            {
-                continue;
+                pC->m_velocity = newVel;
             }
 
             if (movementDir.m_x + data.m_hitNormal.m_x == 0)
             {
                 pC->m_movement.m_x = 0;
+            }
+
+            if (movementDir.m_y + data.m_hitNormal.m_y == 0)
+            {
+                pC->m_movement.m_y = 0;
+            }
+
+            if (movementDir.m_z + data.m_hitNormal.m_z == 0)
+            {
+                pC->m_movement.m_z = 0;
             }
         } 
     }

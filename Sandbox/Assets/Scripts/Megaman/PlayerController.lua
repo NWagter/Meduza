@@ -112,14 +112,14 @@ function OnUpdate(a_host, a_entity, a_fDT)
 	
 	vVel = _GetVelocity(a_entity)
 	
-	nY = 50
-	nX = nY * 0.1
+	nY = 15
+	nX = 10
 	
 	if not bIsMoveRight then
 		nX = -nX
 	end
 	
-	vForce = _CreateVector3(0, nY, 0)
+	vForce = _CreateVector3(nX, nY, 0)
 	
 	if _OnKeyDown(32) == 1 and vVel.y == 0 then
 		_ApplyForce(a_entity, vForce)

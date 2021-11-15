@@ -357,6 +357,39 @@ namespace Me
 				return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);
 			}
 
+			inline Vec3& Round() 
+			{
+				float lenght = Lenght();
+
+				m_x = std::roundf(m_x);
+				m_y = std::roundf(m_y);
+				m_z = std::roundf(m_z);
+
+				return *this;
+			}
+
+			inline Vec3& Floor()
+			{
+				float lenght = Lenght();
+
+				m_x = std::floorf(m_x);
+				m_y = std::floorf(m_y);
+				m_z = std::floorf(m_z);
+
+				return *this;
+			}
+
+			inline Vec3& Ceil()
+			{
+				float lenght = Lenght();
+
+				m_x = std::ceilf(m_x);
+				m_y = std::ceilf(m_y);
+				m_z = std::ceilf(m_z);
+
+				return *this;
+			}
+
 			inline float Distance(Vec3 a_rhs)
 			{
 				float x = a_rhs.m_x - m_x;

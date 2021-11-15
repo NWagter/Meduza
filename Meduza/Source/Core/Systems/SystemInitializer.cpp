@@ -63,7 +63,6 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 	m_systems.push_back(new Physics::FluidDragSystem());
 	m_systems.push_back(new Physics::FrictionSystem());
 
-	//m_systems.push_back(new Physics::ApplyForceSystem());
 	m_systems.push_back(new Physics::BlockingSystem());
 
 	m_systems.push_back(new Physics::PhysicsSystemEnd()); //Clears and set Body correct

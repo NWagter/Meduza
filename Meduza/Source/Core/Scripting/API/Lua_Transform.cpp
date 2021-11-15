@@ -78,7 +78,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_GetLocation(lua_State* a_luaState
     lua_pushnumber(a_luaState, trans->m_translation.m_z);
     lua_settable(a_luaState, -3);
 
-    luaL_getmetatable(a_luaState, "VectorMetaTable");
+    luaL_getmetatable(a_luaState, "Vector3");
     lua_setmetatable(a_luaState, -2);
 
     return 1;

@@ -1,14 +1,14 @@
 local sName
 
-function OnStart(a_host, a_entity)
+function OnStart(a_host, a_eEntity)
     sName = "SadBox"
 end
 
-function OnUpdate(a_host, a_entity, a_fDT)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 
-    local ent = _OnTriggerEntityName(a_entity, sName)
-    if ent ~= 0 then
-        _DestroyEnt(ent)
+    local eEnt = _OnTriggerEntityName(a_eEntity, sName)
+    if eEnt ~= 0 then
+        _DestroyEnt(eEnt)
     end
 
 end

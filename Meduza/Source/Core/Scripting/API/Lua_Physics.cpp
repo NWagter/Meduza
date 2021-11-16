@@ -13,9 +13,8 @@ void Me::Scripting::Lua_API::Lua_Physics::RegisterPhysicsFunctions(lua_State* a_
     lua_register(a_luaState, "_GetVelocity", lua_GetVelocity);
     lua_register(a_luaState, "_ApplyForce", lua_ApplyForce);
 
-    lua_register(a_luaState, "_OnTriggerEntityName", lua_OnTriggerEntityName);
-    lua_register(a_luaState, "_OnCollisionEntityName", lua_OnCollisionEntityName);
-    
+    lua_register(a_luaState, "_OnTrigger", lua_OnTrigger);
+    lua_register(a_luaState, "_OnCollision", lua_OnCollision);   
 }
 
 int Me::Scripting::Lua_API::Lua_Physics::lua_GetVelocity(lua_State* a_luaState)
@@ -62,80 +61,97 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
     return 1;
 }
 
-int Me::Scripting::Lua_API::Lua_Physics::lua_OnTriggerEntityName(lua_State* a_luaState)
+int Me::Scripting::Lua_API::Lua_Physics::lua_OnTrigger(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 2) return -1;
+    if (lua_gettop(a_luaState) != 1) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    std::string name = lua_tostring(a_luaState, 2);
-
-    EntityFilter filter;
-    filter.insert(TagComponent::s_componentID);
-    filter.insert(Physics::ColliderTagComponent::s_componentID);
-    filter.insert(Physics::PhysicsComponent::s_componentID);
 
     EntityManager* eManager = EntityManager::GetEntityManager();
-    std::vector<EntityID> ents = eManager->GetEntities(filter);
 
-    for(auto e : ents)
+    Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(ent);
+
+    lua_newtable(a_luaState);
+    int it = 0;
+
+    for (auto& data : c->m_triggered)
     {
-        TagComponent* t = eManager->GetComponent<TagComponent>(e);
+        Physics::TriggerResult result;
+        result.m_hit = true;
+        result.m_data = data;
+        result.m_name = eManager->GetComponent<TagComponent>(data.m_entity)->m_tag;
 
-        if(t->m_tag == name || name.empty())
-        {            
-            Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(ent);
-
-            for(auto data : c->m_triggered)
-            {
-                if(data.m_entity == e)
-                {
-                    lua_pushnumber(a_luaState, (int)e); 
-                    return 1;
-                }
-            }
-        }
+        TriggerResult(a_luaState, result);
+        lua_rawseti(a_luaState, -2, it);
     }
 
-    lua_pushnumber(a_luaState, -1); 
-
-    return -1;
+    return 1;
 }
 
-int Me::Scripting::Lua_API::Lua_Physics::lua_OnCollisionEntityName(lua_State* a_luaState)
+int Me::Scripting::Lua_API::Lua_Physics::lua_OnCollision(lua_State* a_luaState)
 {
-    if(lua_gettop(a_luaState) != 2) return -1;
+    if (lua_gettop(a_luaState) != 1) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    std::string name = lua_tostring(a_luaState, 2);
-
-    EntityFilter filter;
-    filter.insert(TagComponent::s_componentID);
-    filter.insert(Physics::ColliderTagComponent::s_componentID);
-    filter.insert(Physics::PhysicsComponent::s_componentID);
 
     EntityManager* eManager = EntityManager::GetEntityManager();
-    std::vector<EntityID> ents = eManager->GetEntities(filter);
 
-    for(auto e : ents)
+    Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(ent);
+
+    lua_newtable(a_luaState);
+    int it = 0;
+    for (auto& data : c->m_collided)
     {
-        TagComponent* t = eManager->GetComponent<TagComponent>(e);
+        Physics::CollisionResult result;
+        result.m_hit = true;
+        result.m_data = data;
+        result.m_name = eManager->GetComponent<TagComponent>(data.m_entity)->m_tag; 
 
-        if(t->m_tag == name)
-        {            
-            Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(e);
+        CollisionResult(a_luaState, result);
+        lua_rawseti(a_luaState, -2, it);
 
-            for(auto data : c->m_collided)
-            {
-                if(data.m_entity == ent)
-                {
-                    lua_pushnumber(a_luaState, (int)e); 
-                    return 1;
-                }
-            }
-        }
+        it++;
     }
 
-    lua_pushnumber(a_luaState, -1); 
+    return 1;
+}
 
-    return -1;
+void Me::Scripting::Lua_API::Lua_Physics::TriggerResult(lua_State* a_luaState, Physics::TriggerResult& a_result)
+{
+    lua_newtable(a_luaState);
+
+    lua_pushstring(a_luaState, "hasHit");
+    lua_pushboolean(a_luaState, a_result.m_hit);
+    lua_settable(a_luaState, -3);
+
+    lua_pushstring(a_luaState, "entity");
+    lua_pushnumber(a_luaState, (int)a_result.m_data.m_entity);
+    lua_settable(a_luaState, -3);
+
+    lua_pushstring(a_luaState, "name");
+    lua_pushstring(a_luaState, a_result.m_name.c_str());
+    lua_settable(a_luaState, -3);
+
+    luaL_getmetatable(a_luaState, "TriggerResult");
+    lua_setmetatable(a_luaState, -3);
+}
+
+void Me::Scripting::Lua_API::Lua_Physics::CollisionResult(lua_State* a_luaState, Physics::CollisionResult a_result)
+{
+    lua_newtable(a_luaState);
+
+    lua_pushstring(a_luaState, "hasHit");
+    lua_pushboolean(a_luaState, a_result.m_hit);
+    lua_settable(a_luaState, -3);
+
+    lua_pushstring(a_luaState, "entity");
+    lua_pushnumber(a_luaState, (int)a_result.m_data.m_entity);
+    lua_settable(a_luaState, -3);
+
+    lua_pushstring(a_luaState, "name");
+    lua_pushstring(a_luaState, a_result.m_name.c_str());
+    lua_settable(a_luaState, -3);
+
+    luaL_getmetatable(a_luaState, "CollisionResult");
+    lua_setmetatable(a_luaState, -3);
 }

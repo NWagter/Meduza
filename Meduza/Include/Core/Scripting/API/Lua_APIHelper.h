@@ -10,7 +10,7 @@ namespace Me
             {
                 public:
                     static Math::Vec3 GetVector(lua_State*, int);
-                    
+                    static void StackDump(lua_State*);
             }; 
         
         }

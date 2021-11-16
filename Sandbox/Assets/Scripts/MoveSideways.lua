@@ -1,28 +1,28 @@
 local bLeft = true
-local fTime = 1
+local nTime = 1
 
-function OnUpdate(a_host, a_entity, a_fDT)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 
-    fTime = fTime - a_fDT
+    nTime = nTime - a_nDt
     vMovement = _CreateVector3()
     xSpeed = 5
 
     if bLeft == true then
-        xSpeed = -5
+        nXSpeed = -5
     else
         xSpeed = 5
     end
 
-    if fTime < 0 then
+    if nTime < 0 then
         if bLeft == true then
             bLeft = false
         else
             bLeft = true
         end
 
-        fTime = 2
+        nTime = 2
     end
 
-    vMovement.x = xSpeed * a_fDT
-    _Move(a_entity, vMovement)
+    vMovement.x = xSpeed * a_nDt
+    _Move(a_eEntity, vMovement)
 end

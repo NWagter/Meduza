@@ -1,43 +1,47 @@
-local fMoveSpeed
-local fLifeTime
+local nMoveSpeed
+local nLifeTime
 
 local bMoveRight
 
-function OnStart(a_host, a_entity)
-	fMoveSpeed = 15
-	fLifeTime = 4
+function OnStart(a_host, a_eEntity)
+	nMoveSpeed = 15
+	nLifeTime = 4
 	bMoveRight = true
 end
 
-function OnUpdate(a_host, a_entity, a_fDT)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 
 	vMove = _CreateVector3()
 	
 	if bMoveRight then
-		vMove.x = fMoveSpeed * a_fDT
+		vMove.x = nMoveSpeed * a_nDt
 	else
-		vMove.x = -fMoveSpeed * a_fDT
+		vMove.x = -nMoveSpeed * a_nDt
 	end
 	
-    _Move(a_entity, vMove)
+    _Move(a_eEntity, vMove)
 	
-	fLifeTime = fLifeTime - a_fDT
+	nLifeTime = nLifeTime - a_nDt
 	
-	if fLifeTime <= 0 then
-		_DestroyEnt(a_entity)
+	if nLifeTime <= 0 then
+		_DestroyEnt(a_eEntity)
 	end
 	
-	enemy = _OnTriggerEntityName(a_entity, "SpikeBall_Enemy")
-    if enemy ~= 0 then
-		_CallFunction(enemy, "Spikeball_Enemy", "Kill", a_entity)
-    end
-	
+	results = _OnTrigger(a_eEntity)
+	for i = 0, #results do
+		if results[i].hasHit then
+			if results[i].name == "SpikeBall_Enemy" then
+				_CallFunction(results[i].entity, "Spikeball_Enemy", "Kill", a_eEntity)
+			end		
+			_DestroyEnt(a_eEntity)
+		end
+	end
 end
 
-function MoveRight(a_callerEnt)
+function MoveRight(a_eCallerEnt)
 	bMoveRight = true
 end
 
-function MoveLeft(a_callerEnt)
+function MoveLeft(a_eCallerEnt)
 	bMoveRight = false	
 end

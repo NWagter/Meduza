@@ -1,18 +1,18 @@
-local fMoveSpeed
+local nMoveSpeed
 
-local fTimeBetweenBullet
-local fXBulletOffset
+local nTimeBetweenBullet
+local nXBulletOffset
 
 local bIsMoveRight
 local bIsMoving
-local lastBullet
+local eLastBullet
 
-local fAnimationTime
-local fMoveAnimationMultiplier
+local nAnimationTime
+local nMoveAnimationMultiplier
 
-local iCurrentAnimId
-local iMaxMoveAnim
-local iMaxIdleAnim
+local nCurrentAnimId
+local nMaxMoveAnim
+local nMaxIdleAnim
 
 local tIdleAnimationTable = {
 	{x = 0.5, y = 0.5, z = 36, w = 52},
@@ -28,89 +28,89 @@ local tMoveAnimationTable = {
 	{x = 330, y = 0.5, z = 40, w = 52},
 }
 
-function OnStart(a_host, a_entity)
-    fMoveSpeed = 10
-	fTimeBetweenBullet = 0
-	lastBullet = -1
+function OnStart(a_host, a_eEntity)
+    nMoveSpeed = 10
+	nTimeBetweenBullet = 0
+	eLastBullet = -1
 	
 	bIsMoveRight = true
 	
-	iCurrentAnimId = 1
+	nCurrentAnimId = 1
 	bIsMoving = false
-	iMaxIdleAnim = 2
-	iMaxMoveAnim = 6
-	fAnimationTime = 0.2
-	fMoveAnimationMultiplier = 5
+	nMaxIdleAnim = 2
+	nMaxMoveAnim = 6
+	nAnimationTime = 0.2
+	nMoveAnimationMultiplier = 5
 	
 	
-	anim = tIdleAnimationTable[iCurrentAnimId]
-	_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)
-	fXBulletOffset = 2
+	anim = tIdleAnimationTable[nCurrentAnimId]
+	_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)
+	nXBulletOffset = 2
 end
 
-function OnUpdate(a_host, a_entity, a_fDT)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 	
-	if fAnimationTime <= 0 then
+	if nAnimationTime <= 0 then
 	
-		fAnimationTime = 0.2
-		iCurrentAnimId = iCurrentAnimId + 1
+		nAnimationTime = 0.2
+		nCurrentAnimId = nCurrentAnimId + 1
 		
 		if bIsMoving then
 		
-			if iCurrentAnimId > iMaxMoveAnim then
-				iCurrentAnimId = 1
+			if nCurrentAnimId > nMaxMoveAnim then
+				nCurrentAnimId = 1
 			end
 			
-			anim = tMoveAnimationTable[iCurrentAnimId]
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)
+			anim = tMoveAnimationTable[nCurrentAnimId]
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)
 		else			
-			if iCurrentAnimId > iMaxIdleAnim then
-				iCurrentAnimId = 1
+			if nCurrentAnimId > nMaxIdleAnim then
+				nCurrentAnimId = 1
 			end
 			
-			anim = tIdleAnimationTable[iCurrentAnimId]
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)
+			anim = tIdleAnimationTable[nCurrentAnimId]
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)
 		end
 	end
 
 	if bIsMoving then
-		fAnimationTime = fAnimationTime - (fMoveAnimationMultiplier * a_fDT)	
+		nAnimationTime = nAnimationTime - (nMoveAnimationMultiplier * a_nDt)	
 	else	
-		fAnimationTime = fAnimationTime - a_fDT
+		nAnimationTime = nAnimationTime - a_nDt
 	end
 	
-	if lastBullet >= 0 then
+	if eLastBullet >= 0 then
 		if bIsMoveRight then
-			_CallFunction(lastBullet, "BulletScript", "MoveRight", a_entity)	
-			lastBullet = -1
+			_CallFunction(eLastBullet, "BulletScript", "MoveRight", a_eEntity)	
+			eLastBullet = -1
 		else
-			_CallFunction(lastBullet, "BulletScript", "MoveLeft", a_entity)	
-			_FlipX(lastBullet)	
-			lastBullet = -1
+			_CallFunction(eLastBullet, "BulletScript", "MoveLeft", a_eEntity)	
+			_FlipX(eLastBullet)	
+			eLastBullet = -1
 		end
 	end
 
 	vMove = _CreateVector3()
 	
-	if fTimeBetweenBullet > 0 then
-		fTimeBetweenBullet = fTimeBetweenBullet - a_fDT
+	if nTimeBetweenBullet > 0 then
+		nTimeBetweenBullet = nTimeBetweenBullet - a_nDt
 	end
 
 	if _OnKeyDown(68) == 1 then
-        vMove.x = (fMoveSpeed * a_fDT)   
+        vMove.x = (nMoveSpeed * a_nDt)   
 		if not bIsMoveRight then
 			bIsMoveRight = true
-			_FlipX(a_entity)
+			_FlipX(a_eEntity)
 		end
     elseif _OnKeyDown(65) == 1 then
-        vMove.x = vMove.x -(fMoveSpeed * a_fDT) 
+        vMove.x = vMove.x -(nMoveSpeed * a_nDt) 
 		if bIsMoveRight then
 			bIsMoveRight = false
-			_FlipX(a_entity)
+			_FlipX(a_eEntity)
 		end 
     end  
 	
-	vVel = _GetVelocity(a_entity)
+	vVel = _GetVelocity(a_eEntity)
 	
 	nY = 15
 	nX = 10
@@ -122,39 +122,39 @@ function OnUpdate(a_host, a_entity, a_fDT)
 	vForce = _CreateVector3(nX, nY, 0)
 	
 	if _OnKeyDown(32) == 1 and vVel.y == 0 then
-		_ApplyForce(a_entity, vForce)
+		_ApplyForce(a_eEntity, vForce)
     end	
 	
-	if (_OnKeyDown(80) == 1 and fTimeBetweenBullet <= 0) then
-		location = _GetLocation(a_entity)
+	if (_OnKeyDown(80) == 1 and nTimeBetweenBullet <= 0) then
+		vLocation = _GetLocation(a_eEntity)
 		
 		if bIsMoveRight then
-			location.x = location.x + fXBulletOffset
+			vLocation.x = vLocation.x + nXBulletOffset
 		else
-			location.x = location.x - fXBulletOffset			
+			vLocation.x = vLocation.x - nXBulletOffset			
 		end
 		
-		lastBullet = _InstantiatePrefab("Assets/Prefab/Megamen/Bullet.prefab", location)		
-		fTimeBetweenBullet = 0.5
+		eLastBullet = _InstantiatePrefab("Assets/Prefab/Megamen/Bullet.prefab", vLocation)		
+		nTimeBetweenBullet = 0.5
 	end
 	
 	if vMove.x ~= 0 or vMove.y ~= 0 then
 		if not bIsMoving then
 		bIsMoving = true
-			iCurrentAnimId = 1
-			anim = moveAnimationTable[iCurrentAnimId]
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)
+			nCurrentAnimId = 1
+			anim = moveAnimationTable[nCurrentAnimId]
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)
 		end
 	else
 		if bIsMoving then
 			bIsMoving = false
-			iCurrentAnimId = 1
-			anim = idleAnimationTable[iCurrentAnimId]
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)
+			nCurrentAnimId = 1
+			anim = idleAnimationTable[nCurrentAnimId]
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)
 		end
 	end
 	
-    _Move(a_entity, vMove)
+    _Move(a_eEntity, vMove)
 	
 end
 
@@ -162,9 +162,9 @@ function OnDestroy()
 
 	print("OnDestroy")
 
-	moveSpeed = nil
-	rotateSpeed = nil
-	timeBetweenBullet = nil
-	isMoveRight = nil
-	lastBullet = nil
+	nMoveSpeed = nil
+	nRotateSpeed = nil
+	nTimeBetweenBullet = nil
+	bIsMoveRight = nil
+	eLastBullet = nil
 end

@@ -1,18 +1,18 @@
-local fDistance
+local nDistance
 
 local bDefenceForm
 
-local iCurrentAnimationId
-local iMaxIdleAnimationId
-local iMaxDefendAnimationId
+local nCurrentAnimationId
+local nMaxIdleAnimationId
+local nMaxDefendAnimationId
 
-local fAnimationTime
-local fIdleAnimSpeed
-local fDefendAnimSpeed
+local nAnimationTime
+local nIdleAnimSpeed
+local nDefendAnimSpeed
 
 local bDead
 
-local selfEnt
+local eSelfEnt
 
 local tIdleTable = {
 	{x = 6, y = 43, z = 35, w = 42},
@@ -34,59 +34,59 @@ local tDefendTable = {
 	{x = 260, y = 8, z = 32, w = 31}
 }
 
-function OnStart(a_host, a_entity)
+function OnStart(a_host, a_eEntity)
 
-	selfEnt = a_entity
+	eSelfEnt = a_eEntity
 	
-	iCurrentAnimationId = 1
-	iMaxIdleAnimationId = 7
-	iMaxDefendAnimationId = 7
+	nCurrentAnimationId = 1
+	nMaxIdleAnimationId = 7
+	nMaxDefendAnimationId = 7
 	
-	fDistance = 12
+	nDistance = 12
 	
-	fAnimationTime = 0.5
-	fIdleAnimSpeed = 4
+	nAnimationTime = 0.5
+	nIdleAnimSpeed = 4
 	
 	bDefenceForm = false
 	bDead = false
 	
-	anim = tIdleTable[iCurrentAnimationId]
-	_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)	
+	anim = tIdleTable[nCurrentAnimationId]
+	_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)	
 end
 
-function OnUpdate(a_host, a_entity, a_fDT)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 
 	
-	if fAnimationTime <= 0 then
+	if nAnimationTime <= 0 then
 	
-		fAnimationTime = 0.5
+		nAnimationTime = 0.5
 		if not bDefenceForm then
-			iCurrentAnimationId = iCurrentAnimationId + 1
-			if iCurrentAnimationId > iMaxIdleAnimationId then
-				iCurrentAnimationId = 1
+			nCurrentAnimationId = nCurrentAnimationId + 1
+			if nCurrentAnimationId > nMaxIdleAnimationId then
+				nCurrentAnimationId = 1
 			end
 			
-			anim = tIdleTable[iCurrentAnimationId]		
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)	
+			anim = tIdleTable[nCurrentAnimationId]		
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)	
 		else
-			iCurrentAnimationId = iCurrentAnimationId + 1
-			if iCurrentAnimationId > iMaxDefendAnimationId then
-				iCurrentAnimationId = 1
+			nCurrentAnimationId = nCurrentAnimationId + 1
+			if nCurrentAnimationId > nMaxDefendAnimationId then
+				nCurrentAnimationId = 1
 			end
 			
-			anim = tDefendTable[iCurrentAnimationId]		
-			_SetUV(a_entity, anim.x, anim.y, anim.z, anim.w)	
+			anim = tDefendTable[nCurrentAnimationId]		
+			_SetUV(a_eEntity, anim.x, anim.y, anim.z, anim.w)	
 		end
 		
 	end	
 	
-	fAnimationTime = fAnimationTime - fIdleAnimSpeed * a_fDT
+	nAnimationTime = nAnimationTime - nIdleAnimSpeed * a_nDt
 
 	
-	pEnt = _GetEntityByName("Megamen")
+	ePlayer = _GetEntityByName("Megamen")
 	
-	if pEnt > 0 then
-		if _GetDistance(a_entity, pEnt) < fDistance then
+	if ePlayer > 0 then
+		if _GetDistance(a_eEntity, ePlayer) < nDistance then
 			bDefenceForm = true
 		else
 			bDefenceForm = false
@@ -99,21 +99,26 @@ function OnUpdate(a_host, a_entity, a_fDT)
 	
 	if bDefenceForm then
 		-- Check for Player
-		player = _OnCollisionEntityName(a_entity, "Megamen")
-		if player ~= 0 then
-			_DestroyEnt(player)		
+		results = _OnCollision(a_eEntity)
+
+		for i = 0, #results do
+			if results[i].hasHit then
+				if(results[i].name == "Megamen") then
+					_DestroyEnt(results[i].entity)	
+				end
+			end
 		end
 	else
 		
 	end
 end
 
-function Kill(a_callerEnt)
+function Kill(a_eCallerEnt)
 
 	if not bDefenceForm then
-		_DestroyEnt(selfEnt)	
+		_DestroyEnt(eSelfEnt)	
 	end
 	
-	_DestroyEnt(a_callerEnt)
+	_DestroyEnt(a_eCallerEnt)
 
 end

@@ -42,6 +42,25 @@ namespace Me
             Math::Vec3 m_otherPosition;
             Math::Vec3 m_hitPoint;
             Math::Vec3 m_hitNormal;
+
+            CollisionData()
+            {
+                m_entity = 0;
+            }
+        };
+
+        struct TriggerResult
+        {
+            CollisionData m_data;
+            std::string m_name;
+            bool m_hit;
+        };        
+        
+        struct CollisionResult
+        {
+            CollisionData m_data;
+            std::string m_name;
+            bool m_hit;
         };
     }
 }

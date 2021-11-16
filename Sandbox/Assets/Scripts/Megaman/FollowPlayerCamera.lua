@@ -1,20 +1,20 @@
-local fMoveSpeed
-local playerEntity
+local nMoveSpeed
+local ePlayerEntity
 local fYOffset
 local vDir
 
 function OnStart(a_host, a_entity)
-	playerEntity = _GetEntityByName("Megamen")
-	fMoveSpeed = 7
+	ePlayerEntity = _GetEntityByName("Megamen")
+	nMoveSpeed = 7
 	vDir = _CreateVector3()
 end
 
-function OnUpdate(a_host, a_entity, a_dt)
+function OnUpdate(a_host, a_eEntity, a_nDt)
 
-	playerLocation = _GetLocation(playerEntity)
-	ownLocation = _GetLocation(a_entity)
+	vPlayerLocation = _GetLocation(ePlayerEntity)
+	vOwnLocation = _GetLocation(a_eEntity)
 	
-	vDir.x = ((playerLocation.x - ownLocation.x) * fMoveSpeed) * a_dt
+	vDir.x = ((vPlayerLocation.x - vOwnLocation.x) * nMoveSpeed) * a_nDt
 	
-	_Move(a_entity, vDir)
+	_Move(a_eEntity, vDir)
 end

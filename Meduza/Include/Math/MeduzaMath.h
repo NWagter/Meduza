@@ -361,9 +361,9 @@ namespace Me
 			{
 				float lenght = Lenght();
 
-				m_x = std::roundf(m_x);
-				m_y = std::roundf(m_y);
-				m_z = std::roundf(m_z);
+				m_x = std::round(m_x);
+				m_y = std::round(m_y);
+				m_z = std::round(m_z);
 
 				return *this;
 			}
@@ -372,9 +372,9 @@ namespace Me
 			{
 				float lenght = Lenght();
 
-				m_x = std::floorf(m_x);
-				m_y = std::floorf(m_y);
-				m_z = std::floorf(m_z);
+				m_x = std::floor(m_x);
+				m_y = std::floor(m_y);
+				m_z = std::floor(m_z);
 
 				return *this;
 			}
@@ -383,9 +383,9 @@ namespace Me
 			{
 				float lenght = Lenght();
 
-				m_x = std::ceilf(m_x);
-				m_y = std::ceilf(m_y);
-				m_z = std::ceilf(m_z);
+				m_x = std::ceil(m_x);
+				m_y = std::ceil(m_y);
+				m_z = std::ceil(m_z);
 
 				return *this;
 			}

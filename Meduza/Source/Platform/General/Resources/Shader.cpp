@@ -85,6 +85,10 @@ unsigned int Me::Resources::GL::Shader::GenerateShader()
 	return shaderProgram;
 }
 
+void Me::Resources::GL::Shader::SetFloat(const std::string& a_name, const float a_value)
+{
+    glUniform1f(glGetUniformLocation(m_program, a_name.c_str()), a_value);
+}
 
 void Me::Resources::GL::Shader::SetVec3(const std::string &a_name, const Math::Vec3 a_vec3)
 {

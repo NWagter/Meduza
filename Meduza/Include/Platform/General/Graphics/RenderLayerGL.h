@@ -60,7 +60,20 @@ namespace Me
                         glDeleteBuffers(1, &m_vbo);
                     }
                 };
-                
+                struct DebugCricle
+                {
+                    Math::Mat4 m_trans;
+                    float m_radius;
+                    Colour m_colour;
+
+                    DebugCricle(Math::Mat4& a_trans, float a_rad, Colour a_colour = Colours::MAGENTA)
+                    {
+                        m_trans = a_trans;
+                        m_radius = a_rad;
+                        m_colour = a_colour;
+                    }
+                };
+
                 struct Camera
                 {
                     Math::Mat4 m_cameraMatrix;
@@ -76,6 +89,7 @@ namespace Me
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
                 void RenderLine(LineRender&) override;
+                void RenderCircle(CircleRender&)  override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
                 Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
@@ -88,11 +102,13 @@ namespace Me
                 std::vector<Renderable*> m_renderables;
                 std::vector<DebugRenderable*> m_debugRenderables;
                 std::vector<DebugLine*> m_debugLines;
+                std::vector<DebugCricle*> m_debugCircle;
                 Resources::GL::Shader* m_activeShader;
 
                 Camera* m_camera;
                 Shader m_screenShader;
                 Shader m_lineShader;
+                Shader m_circleShader;
                 Mesh m_quad;
             };
         }

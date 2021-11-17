@@ -51,3 +51,16 @@ void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direct
 	line.m_colour = a_colour;
 	ms_instance->m_renderLayer->RenderLine(line);
 }
+
+void Me::Debug::MeduzaDebug::RenderCircle(Math::Mat4& a_trans, float a_radius, Colour a_colour)
+{
+#ifndef EDITOR
+	return;
+#endif // !EDITOR
+	Renderer::CircleRender circle;
+	circle.m_transform = a_trans;
+	circle.m_radius = a_radius;
+	circle.m_colour = a_colour;
+	ms_instance->m_renderLayer->RenderCircle(circle);
+}
+

@@ -26,6 +26,7 @@
 #include "Physics/Systems/CollisionSystem.h"
 #ifdef EDITOR
 #include "Physics/Systems/Box2DDebugRenderSystem.h"
+#include "Physics/Systems/CircleDebugRenderSystem.h"
 #include "Physics/Systems/Box3DDebugRenderSystem.h"
 #include "Physics/Systems/SphereDebugRenderSystem.h"
 #endif
@@ -44,6 +45,7 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
 
 #ifdef EDITOR
 	m_systems.push_back(new Box2DDebugRenderSystem(&a_renderLayer));
+	m_systems.push_back(new CircleDebugRenderSystem());
 	m_systems.push_back(new Box3DDebugRenderSystem(&a_renderLayer));
 	m_systems.push_back(new SphereDebugRenderSystem(&a_renderLayer));
 #endif

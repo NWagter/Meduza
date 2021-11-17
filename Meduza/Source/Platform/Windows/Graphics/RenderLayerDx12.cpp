@@ -260,6 +260,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::RenderLine(LineRender&)
 
 }
 
+void Me::Renderer::Dx12::RenderLayerDx12::RenderCircle(CircleRender&)
+{
+
+}
+
 void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent& a_trans)
 {
 	Math::Mat4 camMat = Math::Mat4::Identity();

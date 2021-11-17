@@ -14,6 +14,12 @@ namespace Me
             Math::Vec3 m_start;
             Math::Vec3 m_end;
             Colour m_colour;
+        };        
+        struct CircleRender
+        {
+            Math::Mat4 m_transform;
+            float m_radius;
+            Colour m_colour;
         };
 
 
@@ -45,6 +51,7 @@ namespace Me
                 virtual void Submit(RenderComponent&, TransformComponent&) = 0;
                 virtual void DebugSubmit(DebugRenderComponent&, TransformComponent&) = 0;
                 virtual void RenderLine(LineRender&) = 0;
+                virtual void RenderCircle(CircleRender&) = 0;
                 virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}

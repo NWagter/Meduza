@@ -50,6 +50,7 @@ namespace Me
                 void Submit(RenderComponent&, TransformComponent&) override;
                 void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
                 void RenderLine(LineRender&) override;
+                void RenderCircle(CircleRender&)  override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
                 
                 Resources::Dx12::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);

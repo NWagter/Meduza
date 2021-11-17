@@ -7,6 +7,7 @@
 #include "Physics/Components/ColliderComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 #include "Physics/Components/BoxCollider3DComponent.h"
+#include "Physics/Components/CircleColliderComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
 #include "AI/Components/AgentComponent.h"

@@ -12,6 +12,7 @@
 
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
+#include "Physics/Components/CircleColliderComponent.h"
 #include "Physics/Components/BoxCollider3DComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
@@ -379,8 +380,37 @@ void Me::Editor::EntityEditor::Draw()
                 
                 ImGui::EndCombo();
             }
-        }); 
-        
+        });     
+        DrawComponent<Physics::CircleColliderComponent>(eManager, "CircleCollider Component", m_selectedEntity, [](auto& a_comp)
+            {
+                ImGui::DragFloat("Radius", &a_comp.m_radius);
+                Helper::EditorHelper::DrawVec2Prop("ColliderOffset", a_comp.m_colliderOffset);
+
+                const char* collisionTypes[] = { "Overlap", "Block" };
+                const char* currentCollisionType = collisionTypes[int(a_comp.m_collisionType)];
+
+                if (ImGui::BeginCombo("CollisionType", currentCollisionType))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        bool isSelected = currentCollisionType == collisionTypes[i];
+
+                        if (ImGui::Selectable(collisionTypes[i], isSelected))
+                        {
+                            currentCollisionType = collisionTypes[i];
+                            a_comp.m_collisionType = Physics::CollisionType(i);
+                        }
+
+                        if (isSelected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+
+
+                    ImGui::EndCombo();
+                }
+            });
         DrawComponent<Physics::BoxCollider3DComponent>(eManager, "Box3DCollider Component", m_selectedEntity, [](auto& a_comp)
         {
             Helper::EditorHelper::DrawVec3Prop("ColliderScale", a_comp.m_colliderSize);
@@ -411,7 +441,6 @@ void Me::Editor::EntityEditor::Draw()
                 ImGui::EndCombo();
             }
         });
-
         DrawComponent<Physics::SphereColliderComponent>(eManager, "SphereCollider Component", m_selectedEntity, [](auto& a_comp)
         {
             ImGui::DragFloat("Radius", &a_comp.m_radius);
@@ -442,6 +471,7 @@ void Me::Editor::EntityEditor::Draw()
                 ImGui::EndCombo();
             }
         }); 
+        
         DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [](auto& a_comp)
         {
             size_t size = a_comp.m_scripts.size();
@@ -500,7 +530,6 @@ void Me::Editor::EntityEditor::Draw()
             ImGui::DragFloat("AgentSpeed", &a_comp.m_agentSpeed);
             ImGui::DragFloat("AgentStopdistance", &a_comp.m_stopDistance);
         });
-
         DrawComponent<AI::NavSurfaceComponent>(eManager, "NavSurface Component", m_selectedEntity, [](auto& a_comp)
         {
             Math::Vec2 gS = a_comp.m_gridSize;
@@ -561,6 +590,16 @@ void Me::Editor::EntityEditor::Draw()
         if(ImGui::MenuItem("Box2D Component"))
         {
             auto cComp = new Physics::BoxCollider2DComponent();
+            eManager->AddComponent(m_selectedEntity, cComp);
+            eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
+
+            OnColliderAdded(m_selectedEntity, eManager, cComp);
+
+            ImGui::CloseCurrentPopup();
+        }        
+        if (ImGui::MenuItem("Circle Component"))
+        {
+            auto cComp = new Physics::CircleColliderComponent();
             eManager->AddComponent(m_selectedEntity, cComp);
             eManager->AddComponent<DebugRenderComponent>(m_selectedEntity);
 

@@ -8,6 +8,7 @@ namespace Me
     {
         virtual void Reset(){}
         virtual ~BaseComponent() {}
+        virtual void CustomGUI() {}
         static ComponentID s_componentID;
     };
 

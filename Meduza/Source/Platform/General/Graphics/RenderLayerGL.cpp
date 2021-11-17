@@ -57,6 +57,7 @@ void Me::Renderer::GL::RenderLayerGL::Init()
     m_quad = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
     m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/GLFrameBuffer.glsl");
     m_lineShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/LineShader.glsl");
+    m_circleShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/CircleShader.glsl");
 }
 
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -72,6 +73,18 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
         delete r;
     }
     m_debugRenderables.clear();
+
+    for(auto r : m_debugCircle)
+    {
+        delete r;
+    }
+    m_debugCircle.clear();
+
+    for (auto line : m_debugLines)
+    {
+        delete line;
+    }
+    m_debugLines.clear();
 
     delete m_context;
     delete m_camera;
@@ -96,6 +109,12 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
         delete r;
     }
     m_debugRenderables.clear();
+
+    for (auto r : m_debugCircle)
+    {
+        delete r;
+    }
+    m_debugCircle.clear();
 
 
     m_frameBuffer->Bind();
@@ -251,6 +270,40 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         m_renderStats.m_drawCalls++;
 #endif
     }
+
+    for (auto circle : m_debugCircle)
+    {
+        auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_circleShader));
+        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
+        if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
+        {
+            if (s != nullptr)
+            {
+                m_activeShader = s;
+                m_activeShader->Bind();
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        m_activeShader->SetMat4("u_model", circle->m_trans, true);
+        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
+        m_activeShader->SetFloat("u_radius", circle->m_radius);
+        m_activeShader->SetVec4("u_colour", Math::Vec4(circle->m_colour.m_colour));
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glBindVertexArray(m->GetVAO());
+        glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
+        glBindVertexArray(0);
+
+#ifdef EDITOR  
+        m_renderStats.m_drawCalls++;
+#endif
+    }
     
     m_frameBuffer->UnBind();
 }
@@ -317,9 +370,22 @@ void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 #ifdef EDITOR  
-    m_renderStats.m_vertices += vertices.size();
+    m_renderStats.m_vertices += 2;
 #endif
     m_debugLines.push_back(new DebugLine(vbo, vao, a_line.m_colour));
+}
+
+void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender& a_circle)
+{
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_lineDebugger)
+    {
+        return;
+    }
+#ifdef EDITOR  
+    m_renderStats.m_vertices += 1;
+#endif
+    
+    m_debugCircle.push_back(new DebugCricle(a_circle.m_transform, a_circle.m_radius, a_circle.m_colour));
 }
 
 void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)

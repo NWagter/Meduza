@@ -11,6 +11,7 @@
 
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
+#include "Physics/Components/CircleColliderComponent.h"
 #include "Physics/Components/BoxCollider3DComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
@@ -177,6 +178,13 @@ bool SerializeSceneA(std::string a_path)
             archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
             archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));   
         }); 
+        CanSerialize<Me::Physics::CircleColliderComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {
+            archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType));
+            archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_radius));
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));
+        });
         CanSerialize<Me::Physics::BoxCollider3DComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
@@ -303,6 +311,13 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
         archive(cereal::make_nvp("CollisionScale", a_comp->m_colliderSize.m_xy)); 
         archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));   
     }); 
+    CanSerialize<Me::Physics::CircleColliderComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType));
+        archive(cereal::make_nvp("CollisionLayer", (int)a_comp->m_collisionLayer));
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_radius));
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));
+    });
     CanSerialize<Me::Physics::BoxCollider3DComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("CollisionType", (int)a_comp->m_collisionType)); 
@@ -484,7 +499,20 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
         })) compAmount -= 3;   
+        if (CanDeserialize<Physics::CircleColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {
+            archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType));
+            archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));
+            archive(cereal::make_nvp("CollisionScale", a_comp->m_radius));
+            archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));
 
+            eManager->AddComponent(ent, a_comp);
+            eManager->AddComponent<DebugRenderComponent>(ent);
+
+            Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+            eManager->AddComponent(ent, cTag);
+
+        })) compAmount--;
         if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
@@ -669,7 +697,20 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
         eManager->AddComponent(ent, cTag);
     })) compAmount--;   
+    if (CanDeserialize<Physics::CircleColliderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType));
+        archive(cereal::make_nvp("CollisionLayer", (uint16_t)a_comp->m_collisionLayer));
+        archive(cereal::make_nvp("CollisionScale", a_comp->m_radius));
+        archive(cereal::make_nvp("CollisionOffset", a_comp->m_colliderOffset.m_xy));
 
+        eManager->AddComponent(ent, a_comp);
+        eManager->AddComponent<DebugRenderComponent>(ent);
+
+        Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
+        eManager->AddComponent(ent, cTag);
+
+    })) compAmount--;
     if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 

@@ -74,7 +74,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Zero.png</Texture>
 				<UV>
 					<value0>0.10540540516376495</value0>
@@ -139,7 +139,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Ships.png</Texture>
 				<UV>
 					<value0>0.022535210475325584</value0>
@@ -185,7 +185,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
 				<UV>
 					<value0>0.018237082287669182</value0>
@@ -250,7 +250,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Earth_TEXTURE_CM.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -311,7 +311,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/Background.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -353,7 +353,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Megamen/SpikeBall.png</Texture>
 				<UV>
 					<value0>0.018237082287669182</value0>
@@ -418,7 +418,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Earth_TEXTURE_CM.png</Texture>
 				<UV>
 					<value0>0</value0>
@@ -479,7 +479,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>0</Mesh>
-				<Shader>Assets/Shaders/Unlit_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/Unlit_Shader.glsl</Shader>
 				<Texture>Assets/Textures/Crate.png</Texture>
 				<UV>
 					<value0>0</value0>

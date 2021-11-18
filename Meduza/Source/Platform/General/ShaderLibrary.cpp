@@ -76,9 +76,9 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 		if(ext != "hlsl")
 		{
 			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-			
-			path = "Assets/Shaders/";
-			path.append(Files::FileSystem::GetFileName(a_path));
+
+			size_t lastindex = path.find_last_of(".");
+			path = path.substr(0, lastindex);
 			path.append(".hlsl");
 
 			std::ifstream tryPath (path);
@@ -103,9 +103,9 @@ Me::Shader Me::Resources::ShaderLibrary::CreateShader(std::string a_path)
 		if(ext != "glsl")
 		{
 			ME_GFX_LOG("We can't load %s ,\n with the following extention : %s \n", a_path.c_str(), ext.c_str());
-			
-			path = "Assets/Shaders/";
-			path.append(Files::FileSystem::GetFileName(a_path));
+
+			size_t lastindex = path.find_last_of(".");
+			path = path.substr(0, lastindex);
 			path.append(".glsl");
 
 			std::ifstream tryPath (path);

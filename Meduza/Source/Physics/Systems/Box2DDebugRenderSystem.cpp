@@ -30,7 +30,7 @@ Me::Box2DDebugRenderSystem::Box2DDebugRenderSystem(Renderer::RenderLayer* a_rend
 
     m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
 
-    m_debugShader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
+    m_debugShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/UnlitColour_Shader.glsl");
 
 }
 

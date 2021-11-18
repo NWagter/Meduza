@@ -55,9 +55,9 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 void Me::Renderer::GL::RenderLayerGL::Init()
 {
     m_quad = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
-    m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/GLFrameBuffer.glsl");
-    m_lineShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/LineShader.glsl");
-    m_circleShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/CircleShader.glsl");
+    m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/GLFrameBuffer.glsl");
+    m_lineShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/LineShader.glsl");
+    m_circleShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/CircleShader.glsl");
 }
 
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()

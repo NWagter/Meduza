@@ -69,7 +69,7 @@ namespace Me
                     DebugCricle(Math::Mat4& a_trans, float a_rad, Colour a_colour = Colours::MAGENTA)
                     {
                         m_trans = a_trans;
-                        m_radius = a_rad;
+                        m_radius = a_rad * 2;
                         m_colour = a_colour;
                     }
                 };

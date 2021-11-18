@@ -30,7 +30,7 @@ Me::SphereDebugRenderSystem::SphereDebugRenderSystem(Renderer::RenderLayer* a_re
 
     m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Sphere);
 
-    m_debugShader = Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
+    m_debugShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/UnlitColour_Shader.glsl");
 
 }
 

@@ -141,7 +141,7 @@ bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent* a_physics[2], 
     a_data.m_hitPoint = Math::Vec3(x, y, 0);
     float distance = Math::Distance(a_data.m_hitPoint, circlePos);
 
-    bool col = distance <= a_cirlceCol->m_radius * 0.5f;
+    bool col = distance <= a_cirlceCol->m_radius;
 
     if (col)
     {
@@ -167,7 +167,7 @@ bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent* a_physics[2], 
     a_data.m_hitPoint = Math::Vec3(x, y, 0);
     float distance = Math::Distance(a_data.m_hitPoint, circlePos);
 
-    bool col = distance <= a_cirlceCol->m_radius * 0.5f;
+    bool col = distance <= a_cirlceCol->m_radius;
 
     if (col)
     {
@@ -187,7 +187,7 @@ bool Me::Physics::Collision::CircleToCircle(PhysicsComponent* a_physics[2], Circ
     oPos.m_z = 0;
 
     float distance = Math::Distance(sPos, oPos);
-    float rad = (a_colliders[0]->m_radius * 0.5f) + (a_colliders[1]->m_radius * 0.5f);
+    float rad = (a_colliders[0]->m_radius) + (a_colliders[1]->m_radius);
 
     bool col = distance <= rad;
 
@@ -243,7 +243,7 @@ bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], 
     a_data.m_hitPoint = Math::Vec3(x, y, z);
     float distance = Math::Distance(a_data.m_hitPoint, spherePos);
 
-    bool col = distance <= a_sphereColl->m_radius / 2;
+    bool col = distance <= a_sphereColl->m_radius;
 
     if(col)
     {
@@ -267,7 +267,7 @@ bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], 
     a_data.m_hitPoint = Math::Vec3(x, y, z);
     float distance = Math::Distance(a_data.m_hitPoint, spherePos);
 
-    bool col = distance <= a_sphereColl->m_radius / 2;
+    bool col = distance <= a_sphereColl->m_radius;
 
     if(col)
     {
@@ -284,7 +284,7 @@ bool Me::Physics::Collision::SphereToSphere(PhysicsComponent* a_physics[2], Sphe
     Math::Vec3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_sphereCollider[1]->m_colliderOffset;
 
     float distance = Math::Distance(sPos, oPos);    
-    float rad = (a_sphereCollider[0]->m_radius * 0.5f) + (a_sphereCollider[1]->m_radius * 0.5f);
+    float rad = (a_sphereCollider[0]->m_radius) + (a_sphereCollider[1]->m_radius);
 
     bool col = distance <= rad;
 

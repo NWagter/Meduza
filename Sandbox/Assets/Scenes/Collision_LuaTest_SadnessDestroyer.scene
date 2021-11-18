@@ -74,7 +74,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>1</Mesh>
-				<Shader>Assets/Shaders/LitColour_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
 				<Texture>
 					<value0></value0>
 				</Texture>
@@ -143,7 +143,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>1</Mesh>
-				<Shader>Assets/Shaders/LitColour_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
 				<Texture>
 					<value0></value0>
 				</Texture>
@@ -208,7 +208,7 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>3</Mesh>
-				<Shader>Assets/Shaders/LitColour_Shader.glsl</Shader>
+				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
 				<Texture>
 					<value0></value0>
 				</Texture>

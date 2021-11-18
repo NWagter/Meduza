@@ -5,12 +5,12 @@ function OnUpdate(a_host, a_eEntity, a_nDt)
 
     nTime = nTime - a_nDt
     vMovement = _CreateVector3()
-    xSpeed = 5
+    nXSpeed = 5
 
     if bLeft == true then
         nXSpeed = -5
     else
-        xSpeed = 5
+        nXSpeed = 5
     end
 
     if nTime < 0 then
@@ -23,6 +23,6 @@ function OnUpdate(a_host, a_eEntity, a_nDt)
         nTime = 2
     end
 
-    vMovement.x = xSpeed * a_nDt
+    vMovement.x = nXSpeed * a_nDt
     _Move(a_eEntity, vMovement)
 end

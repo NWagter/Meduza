@@ -20,7 +20,7 @@ Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window
 	wr.bottom = int(m_size.m_y) + wr.top;
 	
 	m_hWnd = CreateWindow(WindowClass::GetName(), m_title,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_BORDER | WS_SIZEBOX ,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
 

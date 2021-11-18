@@ -6,9 +6,13 @@ end
 
 function OnUpdate(a_host, a_eEntity, a_nDt)
 
-    local eEnt = _OnTriggerEntityName(a_eEntity, sName)
-    if eEnt ~= 0 then
-        _DestroyEnt(eEnt)
-    end
+	results = _OnTrigger(a_eEntity)
+	for i = 0, #results do
+		if results[i].hasHit then
+			if results[i].name == sName then
+				_DestroyEnt(results[i].entity)
+			end		
+		end
+	end
 
 end

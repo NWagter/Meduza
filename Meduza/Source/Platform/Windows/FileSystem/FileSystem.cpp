@@ -103,7 +103,9 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 			a_data.m_files.push_back(std::pair<std::string, std::string>(name, path));
 		}
 
-		if(p.path().string().front() != '!' && p.is_directory())
+		std::string s = p.path().filename().string();
+
+		if(s.front() != '!' && p.is_directory())
 		{
 			GetFilesOfType(a_data, a_type, p.path().string());
 		}

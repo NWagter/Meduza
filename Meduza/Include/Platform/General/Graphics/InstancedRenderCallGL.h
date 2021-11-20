@@ -14,7 +14,7 @@ namespace Me
     {
         namespace GL
         {
-            constexpr unsigned int MAX_TEXTURES = 8;
+            constexpr unsigned int MAX_TEXTURES = 3;
 
             template<typename InstancedData>
             class InstancedRenderCall : public BaseInstanced

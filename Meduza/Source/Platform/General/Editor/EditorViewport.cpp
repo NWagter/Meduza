@@ -100,12 +100,14 @@ void Me::Editor::EditorViewport::Draw()
         switch (editorCam->m_cameraType)
         {
         case CameraType::Orthographic:
+
             ImGuizmo::SetOrthographic(true);
             projection = Math::Transpose(Math::GetOrthographicMatrix(-editorCam->m_orthoScale, editorCam->m_orthoScale,
                             -editorCam->m_orthoScale * aspect , editorCam->m_orthoScale * aspect,
                             editorCam->m_near, editorCam->m_far));
             break;
         case CameraType::Perspective:
+
             ImGuizmo::SetOrthographic(false);
             projection = Math::Transpose(Math::GetProjectionMatrix(45.0f, editorCam->m_size.m_x / editorCam->m_size.m_y,
                                     editorCam->m_near, editorCam->m_far));
@@ -126,9 +128,15 @@ void Me::Editor::EditorViewport::Draw()
             {
                 float matrixTranslation[3], matrixRotation[3], matrixScale[3];
                 ImGuizmo::DecomposeMatrixToComponents(t.m_m, matrixTranslation, matrixRotation, matrixScale);
-                trans->m_translation = Math::Vec3(matrixTranslation[0], matrixTranslation[1], matrixTranslation[2]);
-                //trans->m_rotation = Math::Vec3(std::abs(matrixRotation[0]), std::abs(matrixRotation[1]), std::abs(matrixRotation[2]));
-                trans->m_scale = Math::Vec3(matrixScale[0], matrixScale[1], matrixScale[2]);
+
+                Math::Vec3 deltaTrans = Math::Vec3(matrixTranslation[0], matrixTranslation[1], matrixTranslation[2]) - trans->m_translation;
+                trans->m_translation += deltaTrans;
+
+                Math::Vec3 deltaRot = Math::Vec3(std::abs(matrixRotation[0]), std::abs(matrixRotation[1]), std::abs(matrixRotation[2])) - trans->m_rotation;
+                trans->m_rotation += deltaRot;
+
+                Math::Vec3 deltaScale = Math::Vec3(matrixScale[0], matrixScale[1], matrixScale[2]) - trans->m_scale;
+                trans->m_scale += deltaScale;
             }
         }
 

@@ -276,6 +276,10 @@ void Me::Editor::EditorToolbar::Draw()
             {            
                 m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
             }
+            if (ImGui::Button("Rotation"))
+            {
+                m_currentOperationType = ImGuizmo::OPERATION::ROTATE;
+            }
             if(ImGui::Button("Scale"))
             {            
                 m_currentOperationType = ImGuizmo::OPERATION::SCALE;

@@ -65,7 +65,7 @@ namespace Me
                 }
                 ~InstancedRenderCall()
                 {
-                    delete m_instancedBuffer;
+                    glDeleteBuffers(1, &m_ibo);
                     m_instancedData.clear();
                 }
 

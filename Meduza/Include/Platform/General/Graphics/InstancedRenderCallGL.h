@@ -5,6 +5,8 @@
 #include "Platform/General/Resources/Mesh.h"
 #include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/Texture.h"
+#include "Platform/General/ShaderLibrary.h"
+#include "Platform/General/Resources/Shader.h"
 
 namespace Me
 {
@@ -12,7 +14,7 @@ namespace Me
     {
         namespace GL
         {
-            constexpr unsigned int MAX_TEXTURES = 1;
+            constexpr unsigned int MAX_TEXTURES = 8;
 
             template<typename InstancedData>
             class InstancedRenderCall : public BaseInstanced
@@ -38,6 +40,8 @@ namespace Me
                     glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 16));
                     //UV
                     glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 20));
+                    //textureID
+                    glVertexAttribPointer(9, 1, GL_INT, false, sizeof(InstancedData), (void*)(sizeof(float) * 24));
 
                     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -47,6 +51,7 @@ namespace Me
                     glEnableVertexAttribArray(6);
                     glEnableVertexAttribArray(7);
                     glEnableVertexAttribArray(8);
+                    glEnableVertexAttribArray(9);
 
                     // sent these attributes only once per instance to the program:
                     glVertexAttribDivisor(3, 1);
@@ -55,6 +60,7 @@ namespace Me
                     glVertexAttribDivisor(6, 1);
                     glVertexAttribDivisor(7, 1);
                     glVertexAttribDivisor(8, 1);
+                    glVertexAttribDivisor(9, 1);
 
                     glBindVertexArray(0);
 
@@ -104,29 +110,28 @@ namespace Me
             {
                 auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
 
-
-                // upload instance buffer data:
-                glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
-                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData) * m_alignmentItem, m_instancedData.data());
-                glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-                glBindVertexArray(mesh->GetVAO());
-
                 for (auto t : m_textures)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->Bind();
+                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->Bind(t.second);
                     if (!a_debug && m_meshIndex == (Mesh)Primitives::Quad)
                     {
                         glDisable(GL_CULL_FACE);
                     }
                 }
 
+                // upload instance buffer data:
+                glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData)* m_alignmentItem, m_instancedData.data());
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+                glBindVertexArray(mesh->GetVAO());
+
                 // render objects in scene
                 glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
 
                 for (auto t : m_textures)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->UnBind();
+                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->UnBind(t.second);
                 }
 
                 return mesh->GetVerticesSize();
@@ -165,8 +170,10 @@ namespace Me
                     return -1;
                 }
 
-                m_textureAmount++;
                 m_textures[a_texture] = m_textureAmount;
+                m_textureAmount++;
+
+                return m_textures[a_texture];
             }
         }
     }

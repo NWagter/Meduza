@@ -70,12 +70,14 @@ void Me::Resources::GL::Texture::Unload()
 
 }
 
-void Me::Resources::GL::Texture::Bind()
+void Me::Resources::GL::Texture::Bind(int a_slot)
 {
+    glActiveTexture(GL_TEXTURE0 + a_slot);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 }
 
-void Me::Resources::GL::Texture::UnBind()
+void Me::Resources::GL::Texture::UnBind(int a_slot)
 {
+    glActiveTexture(GL_TEXTURE0 + a_slot);
     glBindTexture(GL_TEXTURE_2D, 0);    
 }

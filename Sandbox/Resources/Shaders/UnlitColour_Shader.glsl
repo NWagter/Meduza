@@ -8,6 +8,7 @@ layout(location = 2) in vec2 a_texC;
 layout(location = 3) in mat4 a_model;
 layout(location = 7) in vec4 a_colour;
 layout(location = 8) in vec4 a_uv;
+layout(location = 9) in float a_textureId;
 
 uniform mat4 u_projectionView;
 

@@ -5,6 +5,17 @@ Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase(a_shader)
 {
     m_source = Helper::GL::ShaderHelper::GetSources(a_shader);
     m_program = GenerateShader();
+
+    glUseProgram(m_program);
+
+    glUniform1i(glGetUniformLocation(m_program, "u_texture0"), 0);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture1"), 1);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture2"), 2);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture3"), 3);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture4"), 4);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture5"), 5);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture6"), 6);
+    glUniform1i(glGetUniformLocation(m_program, "u_texture7"), 7);
 }
 
 Me::Resources::GL::Shader::~Shader()

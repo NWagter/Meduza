@@ -18,8 +18,8 @@ namespace Me
                     void Reload() override;
                     void Unload() override;
 
-                    void Bind();
-                    void UnBind();
+                    void Bind(int);
+                    void UnBind(int);
                 private:
                     unsigned int m_texture;
                 };

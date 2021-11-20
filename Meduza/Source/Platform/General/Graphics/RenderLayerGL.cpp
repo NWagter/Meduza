@@ -339,6 +339,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
     iB.m_colour = a_renderable.m_colour.m_colour;
     iB.m_model = Math::Transpose(a_trans.GetTransform());
     iB.m_textureCoords = a_renderable.m_textureCoords;
+    iB.m_textureId = texture;
 
     static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 }

@@ -76,7 +76,15 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
     }
     m_debugLines.clear();
 
+    for (auto i : m_instances)
+    {
+        delete i;
+    }
     m_instances.clear();
+    for (auto i : m_debugInstances)
+    {
+        delete i;
+    }
     m_debugInstances.clear();
 
     delete m_context;
@@ -97,7 +105,15 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
     }
     m_debugCircle.clear();
 
+    for (auto i : m_instances)
+    {
+        delete i;
+    }
     m_instances.clear();
+    for (auto i : m_debugInstances)
+    {
+        delete i;
+    }
     m_debugInstances.clear();
 
     m_frameBuffer->Bind();

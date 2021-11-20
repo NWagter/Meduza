@@ -67,7 +67,5 @@ vec4 GetTexture()
 
 void main()
 {
-    vec4 t = GetTexture();
-
-    gl_FragColor = t * colour;
+    gl_FragColor = GetTexture() * colour;
 }

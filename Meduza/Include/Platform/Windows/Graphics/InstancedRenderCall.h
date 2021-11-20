@@ -1,4 +1,5 @@
 #pragma once
+#include "Platform/General/Graphics/BaseInstanced.h"
 
 #include "Platform/Windows/Helper/BufferStructures.h"
 #include "Platform/Windows/Graphics/CommandList.h"
@@ -10,24 +11,7 @@ namespace Me
     namespace Renderer
     {
         namespace Dx12
-        {
-
-            constexpr unsigned int MAX_INSTANCES = 4096;
-
-            class BaseInstanced
-            {
-            public:
-                ~BaseInstanced() = default;
-
-                virtual void Draw(CommandList*) = 0;
-                virtual void ClearBuffer() = 0;
-
-                virtual Mesh GetMesh() = 0;
-                virtual Shader GetShader() = 0;
-                virtual unsigned int GetSRVID() = 0;
-                virtual bool ReachedMaxSize() = 0;
-            };
-            
+        {            
             template<typename InstancedData>
             class InstancedRenderCall : public BaseInstanced
             {
@@ -48,7 +32,7 @@ namespace Me
                     m_instancedData.clear();
                 }
 
-                void Draw(CommandList*) override;
+                void Draw(CommandList*);
                 bool AddData(InstancedData);
                 void ClearBuffer() override
                 {
@@ -58,7 +42,7 @@ namespace Me
 
                 Mesh GetMesh() override { return m_meshIndex;}
                 Shader GetShader() override { return m_shaderIndex;}
-                unsigned int GetSRVID() override { return m_srvId;}
+                unsigned int GetSRVID() { return m_srvId;}
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES);}
             protected:
                 Mesh m_meshIndex;

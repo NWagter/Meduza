@@ -5,37 +5,42 @@ layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec3 a_normal;
 layout(location = 2) in vec2 a_texC;
 
-uniform mat4 u_model;
+layout(location = 3) in mat4 a_model;
+layout(location = 7) in vec4 a_colour;
+layout(location = 8) in vec4 a_uv;
+
 uniform mat4 u_projectionView;
 
-out vec2 texC;
+out vec4 colour;
 out vec3 normal;
 out vec3 posW;
+out vec2 texC;
 
 void main()
 {
-    vec4 pos = u_model * vec4(a_pos, 1);
+    vec4 pos = a_model * vec4(a_pos, 1);
     posW = pos.xyz;
     
     gl_Position = u_projectionView * pos;
 
     texC = a_texC;
-    normal = mat3(u_model) * a_normal;
+    normal = mat3(a_model) * a_normal;
+    colour = a_colour;
 }
 
 #type Pixel
 #version 330 core
 
-in vec2 texC;
+in vec4 colour;
 in vec3 normal;
 in vec3 posW;
+in vec2 texC;
 
-uniform vec4 u_colour;
 uniform sampler2D u_texture;
 
 void main()
 {
-    vec4 c = texture(u_texture, texC) * u_colour;
+    vec4 c = texture(u_texture, texC) * colour;
 
     vec3 norm = normalize(normal);
 

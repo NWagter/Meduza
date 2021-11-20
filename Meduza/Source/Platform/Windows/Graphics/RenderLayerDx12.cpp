@@ -209,12 +209,12 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	{
 		for(auto iR : m_instancedRenderer)
 		{
-
-			if(	a_renderable.m_mesh == iR->GetMesh()
-				&& a_renderable.m_shader == iR->GetShader()
-				&& srv == iR->GetSRVID())
+			auto dxIr = static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(iR);
+			if(	a_renderable.m_mesh == dxIr->GetMesh()
+				&& a_renderable.m_shader == dxIr->GetShader()
+				&& srv == dxIr->GetSRVID())
 			{
-				if(!iR->ReachedMaxSize())
+				if(!dxIr->ReachedMaxSize())
 				{
 					instancedRenderer = iR;
 					break;
@@ -312,11 +312,12 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 
 	for(auto instanced : m_instancedRenderer)
 	{
+		auto dxInstanced = static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instanced);
 		// TODO : Get Material and set the correct SRV
-		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(instanced->GetShader()));
-		if(instanced->GetSRVID() != srvId)
+		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(dxInstanced->GetShader()));
+		if(dxInstanced->GetSRVID() != srvId)
 		{
-			srvId = instanced->GetSRVID();
+			srvId = dxInstanced->GetSRVID();
 			srv = m_textureLoader->GetSRV(srvId);
 			ID3D12DescriptorHeap* inlineDesHeap[] = { srv.m_srv->GetHeap().Get() };
 			cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
@@ -331,7 +332,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
 		
 		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
-		instanced->Draw(cmd);
+		dxInstanced->Draw(cmd);
 	}
 }
 

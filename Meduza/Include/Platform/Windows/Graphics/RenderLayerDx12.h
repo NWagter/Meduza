@@ -26,6 +26,8 @@ namespace Me
 
     namespace Renderer
     {
+        class BaseInstanced;
+
         namespace Dx12
         {
             class Device;
@@ -34,8 +36,6 @@ namespace Me
             class Descriptor;
             class CommandList;
             class DepthStencilBuffer;
-
-            class BaseInstanced;
 
 
             class RenderLayerDx12 : public RenderLayer

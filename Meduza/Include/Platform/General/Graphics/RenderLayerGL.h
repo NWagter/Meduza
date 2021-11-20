@@ -18,9 +18,17 @@ namespace Me
     namespace Renderer
     {
         class FrameBuffer;
+        class BaseInstanced;
         
         namespace GL
         {
+            struct DefaultInstancedBuffer
+            {
+                Math::Mat4 m_model = Math::Mat4::Identity();
+                Math::Vec4 m_colour = Math::Vec4(1, 0, 1, 1);
+                Math::Vec4 m_textureCoords = Math::Vec4(0, 0, 1, 1);
+            };
+
             class Context;
 
             class RenderLayerGL : public RenderLayer
@@ -99,8 +107,9 @@ namespace Me
                 Window* m_window;
                 Context* m_context;
 
-                std::vector<Renderable*> m_renderables;
-                std::vector<DebugRenderable*> m_debugRenderables;
+                std::vector<BaseInstanced*> m_instances;
+                std::vector<BaseInstanced*> m_debugInstances;
+
                 std::vector<DebugLine*> m_debugLines;
                 std::vector<DebugCricle*> m_debugCircle;
                 Resources::GL::Shader* m_activeShader;

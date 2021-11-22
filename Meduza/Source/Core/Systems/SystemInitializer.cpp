@@ -15,6 +15,9 @@
 
 #include "Core/Scripting/ScriptSystem.h"
 
+#include "Particles/Systems/ParticleEmitterSystem.h"
+#include "Particles/Systems/ParticleSystem.h"
+
 #include "Physics/Systems/PhysicsSystemBegin.h"
 #include "Physics/Systems/PhysicsSystemEnd.h"
 #include "Physics/Systems/ApplyForceSystem.h"
@@ -53,6 +56,9 @@ Me::SystemInitializer::SystemInitializer(Me::Renderer::RenderLayer& a_renderLaye
     
 	m_systems.push_back(new MousePickingSystem());
 	m_systems.push_back(new Scripting::ScriptSystem());
+
+	m_systems.push_back(new Particle::ParticleEmitterSystem());
+	m_systems.push_back(new Particle::ParticleSystem());
 
 #ifdef EDITOR
 	m_systems.push_back(new Editor::EditorCameraSystem());

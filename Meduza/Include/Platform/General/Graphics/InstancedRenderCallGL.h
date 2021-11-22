@@ -158,7 +158,7 @@ namespace Me
             int InstancedRenderCall<InstancedData>::AddTexture(Texture a_texture)
             {
                 if (a_texture == 0)
-                    return -1;
+                    return -9999; // Un textured..
 
                 if (m_textures.find(a_texture) != m_textures.end()) 
                 {

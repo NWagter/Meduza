@@ -29,6 +29,9 @@ enum class Components : uint16_t
 
     AgentComponent = 15,
     NavSurfaceComponent = 16,
+
+    ParticleComponent = 17,
+    ParticleSystemComponent = 18,
     
     Game
 };

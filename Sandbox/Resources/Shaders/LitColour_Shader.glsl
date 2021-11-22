@@ -23,7 +23,7 @@ void main()
     vec4 pos = a_model * vec4(a_pos, 1);
     posW = pos.xyz;
     
-    gl_Position = u_projectionView * pos;
+    gl_Position = u_projectionView * a_model * vec4(a_pos, 1.0);;
 
     texC = a_texC;
     normal = mat3(a_model) * a_normal;

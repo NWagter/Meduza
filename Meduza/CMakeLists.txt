@@ -46,6 +46,9 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 
 	Source/Physics/*.cpp
 	Source/Physics/Systems/*.cpp
+	
+	Source/Particles/*.cpp
+	Source/Particles/Systems/*.cpp
 
 	Source/AI/*.cpp
 	Source/AI/Systems/*.cpp

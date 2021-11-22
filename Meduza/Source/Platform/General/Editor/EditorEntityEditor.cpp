@@ -10,6 +10,9 @@
 #include "Core/Components/CameraComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
 
+
+#include "Particles/Components/ParticleSystemComponent.h"
+
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 #include "Physics/Components/CircleColliderComponent.h"
@@ -341,6 +344,11 @@ void Me::Editor::EntityEditor::Draw()
             ImGui::DragInt("Camera Layer", &a_comp.m_cameralayer);
         });
 
+        DrawComponent<Particle::ParticleSystemComponent>(eManager, "ParticleSystem Component", m_selectedEntity, [](auto& a_comp)
+        {
+
+        });
+
         DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)
         {
             ImGui::Checkbox("Gravity", &a_comp.m_gravity);      
@@ -640,6 +648,12 @@ void Me::Editor::EntityEditor::Draw()
                 sC->AddScript();
             }
 
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::MenuItem("ParticleSystem Component"))
+        {
+            auto pComp = new Particle::ParticleSystemComponent();
+            eManager->AddComponent(m_selectedEntity, pComp);
             ImGui::CloseCurrentPopup();
         }
         if(ImGui::MenuItem("Agent Component"))

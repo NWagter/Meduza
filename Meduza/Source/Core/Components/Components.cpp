@@ -5,6 +5,9 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Scripting/ScriptComponent.h"
 
+#include "Particles/Components/ParticleComponent.h"
+#include "Particles/Components/ParticleSystemComponent.h"
+
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 #include "Physics/Components/CircleColliderComponent.h"
@@ -33,3 +36,6 @@ ComponentID Me::Scripting::ScriptComponent::s_componentID = static_cast<Componen
 
 ComponentID Me::AI::AgentComponent::s_componentID = static_cast<ComponentID>(Components::AgentComponent);
 ComponentID Me::AI::NavSurfaceComponent::s_componentID = static_cast<ComponentID>(Components::NavSurfaceComponent);
+
+ComponentID Me::Particle::ParticleComponent::s_componentID = static_cast<ComponentID>(Components::ParticleComponent);
+ComponentID Me::Particle::ParticleSystemComponent::s_componentID = static_cast<ComponentID>(Components::ParticleSystemComponent);

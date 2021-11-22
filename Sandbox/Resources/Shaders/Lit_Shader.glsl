@@ -55,7 +55,7 @@ vec4 GetTexture()
     if (ceil(texId) == 2)
         return texture(u_texture2, texC);
 
-    return texture(u_texture0, texC);
+    return colour;
 }
 
 void main()

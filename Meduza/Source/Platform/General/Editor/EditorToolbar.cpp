@@ -118,6 +118,7 @@ void Me::Editor::EditorToolbar::Draw()
 
         bool createMesh = false;
         Primitives primitive = Primitives::Cube;
+        std::string primitiveName = "Cube";
         Shader shader = 0;
 
         if(ImGui::BeginMenu("Create"))
@@ -128,21 +129,25 @@ void Me::Editor::EditorToolbar::Draw()
                 {
                     createMesh = true;
                     primitive = Primitives::Cube;
+                    primitiveName = "Cube";
                 }
                 if(ImGui::Button("Sphere"))
                 {
                     createMesh = true;
                     primitive = Primitives::Sphere;
+                    primitiveName = "Sphere";
                 }
                 if(ImGui::Button("Plane"))
                 {
                     createMesh = true;
-                    primitive = Primitives::Plane;
+                    primitive = Primitives::Plane; 
+                    primitiveName = "Plane";
                 }
                 if(ImGui::Button("Quad"))
                 {
                     createMesh = true;
                     primitive = Primitives::Quad;
+                    primitiveName = "Quad";
                 }
 
                 if(createMesh)
@@ -162,6 +167,7 @@ void Me::Editor::EditorToolbar::Draw()
                 {
                     createMesh = true;
                     primitive = Primitives::Quad;
+                    primitiveName = "Quad";
                 }                
 
                 if(createMesh)
@@ -200,7 +206,7 @@ void Me::Editor::EditorToolbar::Draw()
             if(createMesh)
             {
                                     
-                EntityID ent = eManager->CreateEntity();
+                EntityID ent = eManager->CreateEntity(primitiveName);
                 eManager->AddComponent<TransformComponent>(ent);
 
                 auto rComp = new RenderComponent();

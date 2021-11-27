@@ -42,8 +42,15 @@ void Me::Particle::ParticleEmitterSystem::OnUpdate(float a_dt)
             particleSystem->m_currentParticles++;
             ParticleComponent* pComp = new ParticleComponent();
             Particle particle = particleSystem->m_particle;
+            Math::Vec3 vel = particle.m_velocity;
 
-            pComp->m_velocity = particle.m_velocity;
+            if (particle.m_randomVelocity)
+            {
+                vel = Math::RandomRange(vel, particle.m_velocityRange);
+            }
+
+
+            pComp->m_velocity = vel;
             pComp->m_lifeTime = particle.m_initialLifeTime;
             pComp->m_parent = particleSystem;
 

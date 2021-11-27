@@ -14,7 +14,7 @@ namespace Me
 
             int m_maxParticles = 1000;
             int m_currentParticles = 0;
-            float m_spawnRate = 0.4f;
+            float m_spawnRate = 0.1f;
 
             float m_time = 0;
 

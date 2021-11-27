@@ -23,6 +23,7 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
+#include <random>
 
 #include <cereal/archives/xml.hpp>
 #include <FontAwesome/FontAwesome.h>

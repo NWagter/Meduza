@@ -10,6 +10,7 @@ namespace Me
 	{
 		static constexpr float gs_pi = 3.141592654f;
 		static constexpr float gs_pi2 = 6.283185307f;
+		static constexpr float gs_seed = 12121998;
 
 		class Vec3;
 		class Vec4;
@@ -1118,6 +1119,27 @@ namespace Me
 			std::swap(transposed.m_m[11], transposed.m_m[14]);
 
 			return transposed;
+		}
+
+		inline float RandomRange(const float a_min, const float a_max)
+		{
+			float max = std::max(a_min, a_max);
+			float min = std::min(a_min, a_max);
+
+			float randomDelta = ((float)rand()) / (float)RAND_MAX;
+			float r = (1 - randomDelta) * min + randomDelta * max;
+			return r;
+		}
+
+		inline Vec3 RandomRange(const Vec3 a_min, const Vec3 a_max)
+		{
+			Vec3 result;
+
+			result.m_x = RandomRange(a_min.m_x, a_max.m_x);
+			result.m_y = RandomRange(a_min.m_y, a_max.m_y);
+			result.m_z = RandomRange(a_min.m_z, a_max.m_z);
+
+			return result;
 		}
 
 	}

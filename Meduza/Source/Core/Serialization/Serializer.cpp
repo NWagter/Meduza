@@ -9,6 +9,8 @@
 
 #include "Core/Scripting/ScriptComponent.h"
 
+#include "Particles/Components/ParticleSystemComponent.h"
+
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
 #include "Physics/Components/CircleColliderComponent.h"
@@ -161,7 +163,40 @@ bool SerializeSceneA(std::string a_path)
             archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));     
                   
         }); 
-        
+
+        CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        {
+            if (a_comp->m_mesh > 10)
+            {
+                auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);
+                archive(cereal::make_nvp("Mesh", mesh->GetPath()));
+            }
+            else
+            {
+                archive(cereal::make_nvp("Mesh", a_comp->m_mesh));
+            }
+
+            auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+            if (shader != nullptr)
+            {
+                archive(cereal::make_nvp("Shader", shader->GetPath()));
+            }
+            else
+            {
+                archive(cereal::make_nvp("Shader", ""));
+            }
+
+            archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));
+            archive(cereal::make_nvp("SpawnRate", a_comp->m_spawnRate));
+
+            archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+            archive(cereal::make_nvp("Direction", a_comp->m_particle.m_direction.m_xyz));
+            archive(cereal::make_nvp("RandomDirectionAllowed", a_comp->m_particle.m_randomDirection));
+            archive(cereal::make_nvp("RandomDirection", a_comp->m_particle.m_initialLifeTime)); 
+            archive(cereal::make_nvp("LifeTime", a_comp->m_particle.m_initialLifeTime));
+            archive(cereal::make_nvp("Speed", a_comp->m_particle.m_speed));
+        });
+
         CanSerialize<Me::Physics::PhysicsComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("Gravity", a_comp->m_gravity));  
@@ -295,6 +330,39 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
                 
     }); 
     
+    CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    {
+        if (a_comp->m_mesh > 10)
+        {
+            auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);
+            archive(cereal::make_nvp("Mesh", mesh->GetPath()));
+        }
+        else
+        {
+            archive(cereal::make_nvp("Mesh", a_comp->m_mesh));
+        }
+
+        auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+        if (shader != nullptr)
+        {
+            archive(cereal::make_nvp("Shader", shader->GetPath()));
+        }
+        else
+        {
+            archive(cereal::make_nvp("Shader", ""));
+        }
+
+        archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));
+        archive(cereal::make_nvp("SpawnRate", a_comp->m_spawnRate));
+
+        archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+        archive(cereal::make_nvp("Direction", a_comp->m_particle.m_direction.m_xyz));
+        archive(cereal::make_nvp("RandomDirectionAllowed", a_comp->m_particle.m_randomDirection));
+        archive(cereal::make_nvp("RandomDirection", a_comp->m_particle.m_initialLifeTime));
+        archive(cereal::make_nvp("LifeTime", a_comp->m_particle.m_initialLifeTime));
+        archive(cereal::make_nvp("Speed", a_comp->m_particle.m_speed));
+    });
+
     CanSerialize<Me::Physics::PhysicsComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
     {          
         archive(cereal::make_nvp("Gravity", a_comp->m_gravity));      
@@ -474,6 +542,43 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             a_comp->m_cameraType = (CameraType)type;
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;             
+
+        if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        {
+            archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+            std::string shaderPath;
+
+            std::string mesh;
+            archive(cereal::make_nvp("Mesh", mesh));
+
+            if (!Files::FileSystem::GetFileExtention(mesh).empty())
+            {
+                a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+            }
+            else
+            {
+                a_comp->m_mesh = (Mesh)std::stoi(mesh);
+            }
+
+
+            archive(cereal::make_nvp("Shader", shaderPath));
+            if (!shaderPath.empty())
+            {
+                a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+            }
+
+            archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));
+            archive(cereal::make_nvp("SpawnRate", a_comp->m_spawnRate));
+
+            archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+            archive(cereal::make_nvp("Direction", a_comp->m_particle.m_direction.m_xyz));
+            archive(cereal::make_nvp("RandomDirectionAllowed", a_comp->m_particle.m_randomDirection));
+            archive(cereal::make_nvp("RandomDirection", a_comp->m_particle.m_initialLifeTime));
+            archive(cereal::make_nvp("LifeTime", a_comp->m_particle.m_initialLifeTime));
+            archive(cereal::make_nvp("Speed", a_comp->m_particle.m_speed));
+
+            eManager->AddComponent(ent, a_comp);
+        }))compAmount--;
 
         if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
@@ -672,6 +777,43 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         a_comp->m_cameraType = (CameraType)type;
         eManager->AddComponent(ent, a_comp); 
     })) compAmount--;             
+
+    if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    {
+        archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+        std::string shaderPath;
+
+        std::string mesh;
+        archive(cereal::make_nvp("Mesh", mesh));
+
+        if (!Files::FileSystem::GetFileExtention(mesh).empty())
+        {
+            a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+        }
+        else
+        {
+            a_comp->m_mesh = (Mesh)std::stoi(mesh);
+        }
+
+
+        archive(cereal::make_nvp("Shader", shaderPath));
+        if (!shaderPath.empty())
+        {
+            a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+        }
+
+        archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));
+        archive(cereal::make_nvp("SpawnRate", a_comp->m_spawnRate));
+
+        archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
+        archive(cereal::make_nvp("Direction", a_comp->m_particle.m_direction.m_xyz));
+        archive(cereal::make_nvp("RandomDirectionAllowed", a_comp->m_particle.m_randomDirection));
+        archive(cereal::make_nvp("RandomDirection", a_comp->m_particle.m_initialLifeTime));
+        archive(cereal::make_nvp("LifeTime", a_comp->m_particle.m_initialLifeTime));
+        archive(cereal::make_nvp("Speed", a_comp->m_particle.m_speed));
+
+        eManager->AddComponent(ent, a_comp);
+    }))compAmount--;
 
     if(CanDeserialize<Physics::PhysicsComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {          

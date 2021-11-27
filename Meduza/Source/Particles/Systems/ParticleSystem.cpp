@@ -21,7 +21,7 @@ void Me::Particle::ParticleSystem::OnUpdate(float a_dt)
         Me::TransformComponent* trans = std::get<Me::TransformComponent*>(m_components[i]);
         Me::Particle::ParticleComponent* particleComponent = std::get<Me::Particle::ParticleComponent*>(m_components[i]);
 
-        trans->m_translation += particleComponent->m_velocity * a_dt;
+        trans->m_translation += (particleComponent->m_direction * particleComponent->m_speed) * a_dt;
         particleComponent->m_lifeTime -= a_dt;
 
         if (particleComponent->m_lifeTime <= 0)

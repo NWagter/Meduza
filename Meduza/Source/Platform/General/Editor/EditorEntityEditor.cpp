@@ -346,13 +346,17 @@ void Me::Editor::EntityEditor::Draw()
 
         DrawComponent<Particle::ParticleSystemComponent>(eManager, "ParticleSystem Component", m_selectedEntity, [](auto& a_comp)
         {
+                ImGui::DragFloat("spawnRate", &a_comp.m_spawnRate);
+                ImGui::DragInt("maxParticles", &a_comp.m_maxParticles);
+
                 ImGui::DragFloat("Lifetime", &a_comp.m_particle.m_initialLifeTime);
+                ImGui::DragFloat("Speed", &a_comp.m_particle.m_speed);
                 ImGui::ColorEdit4("Colour", a_comp.m_particle.m_initalColour.m_colour);
-                Helper::EditorHelper::DrawVec3Prop("Velocity", a_comp.m_particle.m_velocity);
-                ImGui::Checkbox("RandomRange", &a_comp.m_particle.m_randomVelocity);
-                if (a_comp.m_particle.m_randomVelocity)
+                Helper::EditorHelper::DrawVec3Prop("Direction", a_comp.m_particle.m_direction);
+                ImGui::Checkbox("RandomRange", &a_comp.m_particle.m_randomDirection);
+                if (a_comp.m_particle.m_randomDirection)
                 {
-                    Helper::EditorHelper::DrawVec3Prop("VelocityRange", a_comp.m_particle.m_velocityRange);
+                    Helper::EditorHelper::DrawVec3Prop("DirectionRange", a_comp.m_particle.m_directionRange);
                 }
         });
 

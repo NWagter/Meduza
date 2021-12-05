@@ -5,9 +5,6 @@ project (Meduza)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-OPTION(DEFINE_EDITOR "Editor macro" OFF) # Enabled by default
-
 if(DEFINE_EDITOR)
     add_compile_definitions(EDITOR)
 endif()

@@ -17,7 +17,7 @@
           "type": "BOOL"
         }
       ],
-      "args": [ "/Zi", "/MDd", "cl", "/EHsc", "/W4", "/D_DEBUG" ]
+      "args": [ "/Z7", "/MDd", "cl", "/EHsc", "/W4", "/D_DEBUG" ]
     },
     {
       "name": "x64-Meduza-Release",
@@ -32,10 +32,11 @@
       "variables": [
         {
           "name": "DEFINE_EDITOR",
-          "value": "OFF",
-          "type": "UNINITIALIZED"
+          "value": "True",
+          "type": "BOOL"
         }
-      ]
+      ],
+      "args": [ "/ZI" ]
     },
     {
       "name": "x64-Game-Debug",
@@ -50,7 +51,7 @@
       "variables": [
         {
           "name": "DEFINE_EDITOR",
-          "value": "true",
+          "value": "False",
           "type": "BOOL"
         }
       ]

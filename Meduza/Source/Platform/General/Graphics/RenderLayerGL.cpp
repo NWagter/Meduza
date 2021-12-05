@@ -107,14 +107,12 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
     for (auto i : m_instances)
     {
-        delete i;
+        i->ClearBuffer();
     }
-    m_instances.clear();
     for (auto i : m_debugInstances)
     {
-        delete i;
+        i->ClearBuffer();
     }
-    m_debugInstances.clear();
 
     m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
@@ -149,6 +147,7 @@ void Me::Renderer::GL::RenderLayerGL::Present()
     m_context->SwapBuffer();
 }
 
+
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
     glEnable(GL_DEPTH_TEST);
@@ -179,7 +178,6 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
         int vertSize = glI->Draw();
         glBindVertexArray(0);
-        //t->UnBind();
 
 #ifdef EDITOR  
         m_renderStats.m_drawCalls++;

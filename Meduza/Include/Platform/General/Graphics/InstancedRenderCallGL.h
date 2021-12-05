@@ -119,16 +119,18 @@ namespace Me
                     }
                 }
 
-                // upload instance buffer data:
-                glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
-                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData)* m_alignmentItem, m_instancedData.data());
-                glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
                 glBindVertexArray(mesh->GetVAO());
 
-                // render objects in scene
-                glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
+                // upload instance buffer data:
+                glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData) * m_alignmentItem, m_instancedData.data());
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+                // render objects in scene
+                int indices = mesh->GetIndices().size();
+
+                glDrawElementsInstanced(GL_TRIANGLES, indices, GL_UNSIGNED_SHORT, nullptr, m_alignmentItem);
+                
                 for (auto t : m_textures)
                 {
                     static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->UnBind(t.second);

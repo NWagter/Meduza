@@ -44,6 +44,7 @@ namespace Me
                 Shader GetShader() override { return m_shaderIndex;}
                 unsigned int GetSRVID() { return m_srvId;}
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES);}
+                bool Empty() override { return m_alignmentItem == 0; }
             protected:
                 Mesh m_meshIndex;
                 Shader m_shaderIndex;

@@ -30,6 +30,7 @@ namespace Me
 
                     auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
                     glBindVertexArray(mesh->GetVAO());
+                    glGenBuffers(1, &m_ibo);
                     glBindBuffer(GL_ARRAY_BUFFER, m_ibo);
                     //ModelMat
                     glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
@@ -91,7 +92,7 @@ namespace Me
 
                 int Amount() { return m_alignmentItem; }
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES); }
-
+                bool Empty() override { return m_alignmentItem == 0; }
             protected:
                 unsigned int m_ibo;
                 Mesh m_meshIndex;

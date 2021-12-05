@@ -155,6 +155,11 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
     for (auto i : m_instances)
     {
+        if (i->Empty())
+        {
+            continue;
+        }
+
         glEnable(GL_CULL_FACE);
 
         auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(i);

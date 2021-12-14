@@ -14,7 +14,7 @@ namespace Me
     {
         namespace GL
         {
-            constexpr unsigned int MAX_TEXTURES = 3;
+            constexpr unsigned int MAX_TEXTURES = 8;
 
             template<typename InstancedData>
             class InstancedRenderCall : public BaseInstanced
@@ -27,61 +27,19 @@ namespace Me
 
                     m_alignmentItem = 0;
                     m_textureAmount = 0;
-
-                    auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
-                    glBindVertexArray(mesh->GetVAO());
-                    glGenBuffers(1, &m_ibo);
-                    glBindBuffer(GL_ARRAY_BUFFER, m_ibo);
-                    //ModelMat
-                    glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
-                    glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 4));
-                    glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 8));
-                    glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 12));
-                    //Colour
-                    glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 16));
-                    //UV
-                    glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 20));
-                    //textureID
-                    glVertexAttribPointer(9, 1, GL_INT, false, sizeof(InstancedData), (void*)(sizeof(float) * 24));
-
-                    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-                    glEnableVertexAttribArray(3);
-                    glEnableVertexAttribArray(4);
-                    glEnableVertexAttribArray(5);
-                    glEnableVertexAttribArray(6);
-                    glEnableVertexAttribArray(7);
-                    glEnableVertexAttribArray(8);
-                    glEnableVertexAttribArray(9);
-
-                    // sent these attributes only once per instance to the program:
-                    glVertexAttribDivisor(3, 1);
-                    glVertexAttribDivisor(4, 1);
-                    glVertexAttribDivisor(5, 1);
-                    glVertexAttribDivisor(6, 1);
-                    glVertexAttribDivisor(7, 1);
-                    glVertexAttribDivisor(8, 1);
-                    glVertexAttribDivisor(9, 1);
-
-                    glBindVertexArray(0);
-
-                    glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
-                    glBufferData(GL_UNIFORM_BUFFER, sizeof(InstancedData) * MAX_INSTANCES, NULL, GL_DYNAMIC_DRAW);
-                    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
                 }
                 ~InstancedRenderCall()
                 {
-                    glDeleteBuffers(1, &m_ibo);
-                    m_instancedData.clear();
+                    ClearBuffer();
                 }
 
-                int Draw(bool = false);
+                int Draw(Math::Mat4, bool = false);
                 bool AddData(InstancedData);
                 int AddTexture(Texture);
                 void ClearBuffer() override
                 {
-                    m_instancedData.clear();
+                    m_instancedData.clear(); 
+                    m_instancedData = std::vector<InstancedData>(MAX_INSTANCES);
                     m_textures.clear();
                     m_alignmentItem = 0;
                     m_textureAmount = 0;
@@ -93,27 +51,33 @@ namespace Me
                 int Amount() { return m_alignmentItem; }
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES); }
                 bool Empty() override { return m_alignmentItem == 0; }
+            private:
+                void CreateInstancedBuffer();
             protected:
-                unsigned int m_ibo;
                 Mesh m_meshIndex;
                 Shader m_shaderIndex;
-                std::map<Texture, unsigned int> m_textures;
+                std::vector<Texture> m_textures;
 
                 unsigned int m_alignmentItem = 0;
                 unsigned int m_textureAmount = 0;
 
 
-                std::vector<InstancedData> m_instancedData;
+                std::vector<InstancedData> m_instancedData = std::vector<InstancedData>(MAX_INSTANCES);
             };
 
             template<typename InstancedData>
-            int InstancedRenderCall<InstancedData>::Draw(bool a_debug)
+            int InstancedRenderCall<InstancedData>::Draw(Math::Mat4 a_camMat, bool a_debug)
             {
-                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
+                CreateInstancedBuffer();
 
-                for (auto t : m_textures)
+                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
+                auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_shaderIndex));
+
+                s->Bind();
+
+                for (size_t i = 0; i < m_textures.size(); i++)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->Bind(t.second);
+                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->Bind(static_cast<int>(i));
                     if (!a_debug && m_meshIndex == (Mesh)Primitives::Quad)
                     {
                         glDisable(GL_CULL_FACE);
@@ -122,21 +86,21 @@ namespace Me
 
                 glBindVertexArray(mesh->GetVAO());
 
-                // upload instance buffer data:
-                glBindBuffer(GL_UNIFORM_BUFFER, m_ibo);
-                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData) * m_alignmentItem, m_instancedData.data());
-                glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
                 // render objects in scene
                 int indices = mesh->GetIndices().size();
 
-                glDrawElementsInstanced(GL_TRIANGLES, indices, GL_UNSIGNED_SHORT, nullptr, m_alignmentItem);
-                
-                for (auto t : m_textures)
+                s->SetMat4("u_projectionView", a_camMat, false);
+                glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
+                // render objects in scene
+
+                glBindVertexArray(0);
+
+                for (size_t i = 0; i < m_textures.size(); i++)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(t.first))->UnBind(t.second);
+                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->UnBind(static_cast<int>(i));
                 }
 
+                s->UnBind();
                 return mesh->GetVerticesSize();
             }
 
@@ -150,7 +114,7 @@ namespace Me
 
                 InstancedData data = a_data;
 
-                m_instancedData.push_back(a_data);
+                m_instancedData[m_alignmentItem] = a_data;
                 m_alignmentItem++;
 
 
@@ -163,9 +127,12 @@ namespace Me
                 if (a_texture == 0)
                     return -9999; // Un textured..
 
-                if (m_textures.find(a_texture) != m_textures.end()) 
+                for (size_t i = 0; i < m_textures.size(); i++)
                 {
-                    return m_textures.at(a_texture);
+                    if (a_texture == m_textures[i])
+                    {
+                        return static_cast<int>(i);
+                    }
                 }
 
                 if (m_textureAmount >= MAX_TEXTURES)
@@ -173,10 +140,56 @@ namespace Me
                     return -1;
                 }
 
-                m_textures[a_texture] = m_textureAmount;
+                m_textures.push_back(a_texture);
                 m_textureAmount++;
 
-                return m_textures[a_texture];
+                return m_textureAmount - 1;
+            }
+
+            template<typename InstancedData>
+            void InstancedRenderCall<InstancedData>::CreateInstancedBuffer()
+            {
+                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
+
+                glBindVertexArray(mesh->GetVAO());
+
+                unsigned int ibo;
+                glGenBuffers(1, &ibo);
+                glBindBuffer(GL_ARRAY_BUFFER, ibo);
+                glBufferData(GL_ARRAY_BUFFER, m_alignmentItem * sizeof(InstancedData), &m_instancedData[0], GL_STATIC_DRAW);
+
+                //ModelMat
+                glEnableVertexAttribArray(3);
+                glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
+                glEnableVertexAttribArray(4);
+                glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(1 * sizeof(Math::Vec4)));
+                glEnableVertexAttribArray(5);
+                glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(2 * sizeof(Math::Vec4)));
+                glEnableVertexAttribArray(6);
+                glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(3 * sizeof(Math::Vec4)));
+                //Colour
+                glEnableVertexAttribArray(7);
+                glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(4 * sizeof(Math::Vec4)));
+                //UV
+                glEnableVertexAttribArray(8);
+                glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(5 * sizeof(Math::Vec4)));
+                //textureID
+
+                glEnableVertexAttribArray(9);
+                glVertexAttribPointer(9, 1, GL_FLOAT, false, sizeof(InstancedData), (void*)(6 * sizeof(Math::Vec4)));
+
+
+                // sent these attributes only once per instance to the program:
+                glVertexAttribDivisor(3, 1);
+                glVertexAttribDivisor(4, 1);
+                glVertexAttribDivisor(5, 1);
+                glVertexAttribDivisor(6, 1);
+                glVertexAttribDivisor(7, 1);
+                glVertexAttribDivisor(8, 1);
+                glVertexAttribDivisor(9, 1);
+
+                glBindVertexArray(0);
+                glDeleteBuffers(1, &ibo);
             }
         }
     }

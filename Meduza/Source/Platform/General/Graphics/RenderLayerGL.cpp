@@ -81,6 +81,7 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
         delete i;
     }
     m_instances.clear();
+
     for (auto i : m_debugInstances)
     {
         delete i;
@@ -109,10 +110,13 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
     {
         i->ClearBuffer();
     }
+    //m_instances.clear();
+
     for (auto i : m_debugInstances)
     {
         i->ClearBuffer();
     }
+    //m_debugInstances.clear();
 
     m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
@@ -137,6 +141,7 @@ void Me::Renderer::GL::RenderLayerGL::Present()
     s->Bind();
 
     glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, static_cast<ColourAttachmentGL*>(m_frameBuffer->GetColourAttachment())->m_texture);
     glBindVertexArray(m->GetVAO());
     glDrawElementsInstanced(GL_TRIANGLES, m->GetIndices().size(), GL_UNSIGNED_SHORT, 0, 1);
@@ -163,26 +168,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glEnable(GL_CULL_FACE);
 
         auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(i);
-
-        //auto renderComp = r->m_renderComponent;
-		auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(i->GetShader()));
-
-		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
-		{
-            if(s != nullptr)
-            {
-                m_activeShader = s;
-                m_activeShader->Bind();
-            }
-            else
-            {
-                continue;
-            }
-		}
-
-        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
-        int vertSize = glI->Draw();
-        glBindVertexArray(0);
+        int vertSize = glI->Draw(m_camera->m_cameraMatrix);
 
 #ifdef EDITOR  
         m_renderStats.m_drawCalls++;
@@ -198,27 +184,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         glEnable(GL_CULL_FACE);
 
         auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(i);
-
-        //auto renderComp = r->m_renderComponent;
-        auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(i->GetShader()));
-
-        if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
-        {
-            if (s != nullptr)
-            {
-                m_activeShader = s;
-                m_activeShader->Bind();
-            }
-            else
-            {
-                continue;
-            }
-        }
-
-        m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
-        int vertSize = glI->Draw(true);
-        glBindVertexArray(0);
-        //t->UnBind();
+        int vertSize = glI->Draw(m_camera->m_cameraMatrix);
 
 #ifdef EDITOR  
         m_renderStats.m_drawCalls++;

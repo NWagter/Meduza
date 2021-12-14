@@ -45,6 +45,13 @@ Me::Renderer::GL::Context::Context(Window& a_window) : Me::Renderer::ContextBase
     {
         return;
     }
+
+    printf("---------------------------------------------------------------- \n");
+    ME_GFX_LOG("Render Context Info : \n");
+    printf("Vendor : %s \n", glGetString(GL_VENDOR));
+    printf("Renderer : %s \n", glGetString(GL_RENDERER));
+    printf("OpenGL version :%s \n", glGetString(GL_VERSION));
+    printf("---------------------------------------------------------------- \n");
 }
 
 Me::Renderer::GL::Context::~Context()

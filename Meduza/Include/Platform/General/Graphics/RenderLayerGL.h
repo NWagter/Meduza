@@ -27,7 +27,7 @@ namespace Me
                 Math::Mat4 m_model = Math::Mat4::Identity();
                 Math::Vec4 m_colour = Math::Vec4(1, 0, 1, 1);
                 Math::Vec4 m_textureCoords = Math::Vec4(0, 0, 1, 1);
-                int m_textureId = 0;
+                float m_textureId = 0;
             };
 
             class Context;

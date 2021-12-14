@@ -37,6 +37,11 @@ in float texId;
 uniform sampler2D u_texture0;
 uniform sampler2D u_texture1;
 uniform sampler2D u_texture2;
+uniform sampler2D u_texture3;
+uniform sampler2D u_texture4;
+uniform sampler2D u_texture5;
+uniform sampler2D u_texture6;
+uniform sampler2D u_texture7;
 
 vec4 GetTexture()
 {
@@ -46,9 +51,20 @@ vec4 GetTexture()
         return texture(u_texture1, texC);
     if (ceil(texId) == 2)
         return texture(u_texture2, texC);
+    if (ceil(texId) == 3)
+        return texture(u_texture3, texC);
+    if (ceil(texId) == 4)
+        return texture(u_texture4, texC);
+    if (ceil(texId) == 5)
+        return texture(u_texture5, texC);
+    if (ceil(texId) == 6)
+        return texture(u_texture6, texC);
+    if (ceil(texId) == 7)
+        return texture(u_texture7, texC);
 
     return colour;
 }
+
 void main()
 {
     gl_FragColor = GetTexture() * colour;

@@ -12,7 +12,7 @@
 
 #include "tiny_gltf.h"
 
-bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, std::vector<Vertex>& a_vertices, std::vector<uint16_t>& a_indices)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, std::vector<MeshPrimitives>& a_meshes)
 {
 	tinygltf::Model model;
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
@@ -34,138 +34,144 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
 		}
 	}
 
-    std::vector<Vertex> vertices;
-	std::vector<uint16_t> indices;
+	std::vector<MeshPrimitives> meshes;
 
 	//Load Mesh
-	for(auto primitive : model.meshes[0].primitives)
+	for (size_t i = 0; i < model.meshes.size(); i++)
 	{
-		auto attr = primitive.attributes;
-        auto attribIter = attr.find("NORMAL");
-
-        if (attribIter != attr.end())
-        {
-			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
-			auto count = model.accessors[attribIter->second].count;
-			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
-
-			vertices.reserve(count);
-			auto& buffer = model.buffers[bufferView.buffer];
-			auto start = bufferView.byteOffset;
-
-			for(std::size_t i = 0; i < count; i++)
-			{
-				Math::Vec3 normals = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
-
-				if(vertices.size() <= i)
-				{
-					Vertex v;
-					v.m_normals = normals;
-					vertices.push_back(v);
-				}
-				else
-				{
-					vertices.at(i).m_normals = normals;
-				}
-			}
-		}
-	        
-		attribIter = attr.find("POSITION");
-        if (attribIter != attr.end())
-        {
-			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
-			auto count = model.accessors[attribIter->second].count;
-			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
-
-			vertices.reserve(count);
-			auto& buffer = model.buffers[bufferView.buffer];
-			auto start = bufferView.byteOffset;
-
-			for(std::size_t i = 0; i < count; i++)
-			{
-				Math::Vec3 vertPos = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
-
-				if(vertices.size() <= i)
-				{
-					Vertex v;
-					v.m_vertexPos = vertPos;
-					vertices.push_back(v);
-				}
-				else
-				{
-					vertices.at(i).m_vertexPos = vertPos;
-				}
-			}
-		}
-		
-		attribIter = attr.find("TEXCOORD_0");
-        if (attribIter != attr.end())
-        {
-			auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
-			auto count = model.accessors[attribIter->second].count;
-			auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
-
-			vertices.reserve(count);
-			auto& buffer = model.buffers[bufferView.buffer];
-			auto start = bufferView.byteOffset;
-
-			for(std::size_t i = 0; i < count; ++i)
-			{
-				Math::Vec2 textCoord = *(GetElementFromBuffer<Math::Vec2>(&buffer.data[accessorByteOffset], start, i));
-
-				if(vertices.size() <= i)
-				{
-					Vertex v;
-					v.m_uvCoord = textCoord;
-					vertices.push_back(v);
-				}
-				else
-				{
-					vertices.at(i).m_uvCoord = textCoord;
-				}
-			}
-		}
-	
-
-		int accesorIndex = primitive.indices;
-		if(accesorIndex != -1)
+		MeshPrimitives mesh = MeshPrimitives(model.meshes[i].name);
+		for (auto primitive : model.meshes[i].primitives)
 		{
-			auto& bufferView = model.bufferViews[model.accessors[accesorIndex].bufferView];
-			auto count = model.accessors[accesorIndex].count;
-			auto accessorByteOffset = model.accessors[accesorIndex].byteOffset;
 
-			indices.reserve(count);
+			auto attr = primitive.attributes;
+			auto extras = model.meshes[i].extras;
 
-			auto& buffer = model.buffers[bufferView.buffer];
-			auto start = bufferView.byteOffset;
-			auto compType = model.accessors[accesorIndex].componentType;
+			auto attribIter = attr.find("NORMAL");
 
-			for(std::size_t i = 0; i < count; ++i)
+			if (attribIter != attr.end())
 			{
-				uint16_t indice = 0;
+				auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+				auto count = model.accessors[attribIter->second].count;
+				auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
 
-				if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT)
-				{
-					indice = static_cast<uint16_t>(*GetElementFromBuffer<unsigned short>(&buffer.data[accessorByteOffset], start, i));
-				}
-				else if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT)
-				{
-					indice = (*GetElementFromBuffer<uint16_t>(&buffer.data[accessorByteOffset], start, i));
+				mesh.m_vertices.reserve(count);
+				auto& buffer = model.buffers[bufferView.buffer];
+				auto start = bufferView.byteOffset;
 
-				}
-				else if(compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE)
+				for (std::size_t i = 0; i < count; i++)
 				{
-					indice = static_cast<uint16_t>(*GetElementFromBuffer<unsigned char>(&buffer.data[accessorByteOffset], start, i));
-					
-				}
+					Math::Vec3 normals = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
 
-				indices.push_back(indice);
+					if (mesh.m_vertices.size() <= i)
+					{
+						Vertex v;
+						v.m_normals = normals;
+						mesh.m_vertices.push_back(v);
+					}
+					else
+					{
+						mesh.m_vertices.at(i).m_normals = normals;
+					}
+				}
+			}
+
+			attribIter = attr.find("POSITION");
+			if (attribIter != attr.end())
+			{
+				auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+				auto count = model.accessors[attribIter->second].count;
+				auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
+
+				mesh.m_vertices.reserve(count);
+				auto& buffer = model.buffers[bufferView.buffer];
+				auto start = bufferView.byteOffset;
+
+				for (std::size_t i = 0; i < count; i++)
+				{
+					Math::Vec3 vertPos = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
+
+					if (mesh.m_vertices.size() <= i)
+					{
+						Vertex v;
+						v.m_vertexPos = vertPos;
+						mesh.m_vertices.push_back(v);
+					}
+					else
+					{
+						mesh.m_vertices.at(i).m_vertexPos = vertPos;
+					}
+				}
+			}
+
+			attribIter = attr.find("TEXCOORD_0");
+			if (attribIter != attr.end())
+			{
+				auto& bufferView = model.bufferViews[model.accessors[attribIter->second].bufferView];
+				auto count = model.accessors[attribIter->second].count;
+				auto accessorByteOffset = model.accessors[attribIter->second].byteOffset;
+
+				mesh.m_vertices.reserve(count);
+				auto& buffer = model.buffers[bufferView.buffer];
+				auto start = bufferView.byteOffset;
+
+				for (std::size_t i = 0; i < count; i++)
+				{
+					Math::Vec2 textCoord = *(GetElementFromBuffer<Math::Vec2>(&buffer.data[accessorByteOffset], start, i));
+
+					if (mesh.m_vertices.size() <= i)
+					{
+						Vertex v;
+						v.m_uvCoord = textCoord;
+						mesh.m_vertices.push_back(v);
+					}
+					else
+					{
+						mesh.m_vertices.at(i).m_uvCoord = textCoord;
+					}
+				}
+			}
+
+			int accesorIndex = primitive.indices;
+			if (accesorIndex != -1)
+			{
+				auto& bufferView = model.bufferViews[model.accessors[accesorIndex].bufferView];
+				auto count = model.accessors[accesorIndex].count;
+				auto accessorByteOffset = model.accessors[accesorIndex].byteOffset;
+
+				mesh.m_indices.reserve(count);
+
+				auto& buffer = model.buffers[bufferView.buffer];
+				auto start = bufferView.byteOffset;
+				auto compType = model.accessors[accesorIndex].componentType;
+
+				for (std::size_t i = 0; i < count; ++i)
+				{
+					uint16_t indice = 0;
+
+					if (compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT)
+					{
+						indice = static_cast<uint16_t>(*GetElementFromBuffer<unsigned short>(&buffer.data[accessorByteOffset], start, i));
+					}
+					else if (compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT)
+					{
+						indice = (*GetElementFromBuffer<uint16_t>(&buffer.data[accessorByteOffset], start, i));
+
+					}
+					else if (compType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE)
+					{
+						indice = static_cast<uint16_t>(*GetElementFromBuffer<unsigned char>(&buffer.data[accessorByteOffset], start, i));
+
+					}
+
+					mesh.m_indices.push_back(indice);
+				}
 			}
 		}
+
+		meshes.push_back(mesh);
 	}
 
-    a_vertices = vertices;
-    a_indices = indices;
+	a_meshes = meshes;
 
     if (model.textures.size() > 0)
 	{

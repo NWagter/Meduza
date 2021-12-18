@@ -64,17 +64,9 @@ Me::Resources::MeshLibrary::~MeshLibrary()
 
 Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_file)
 {
-	Me::Mesh meshId = Utils::Utilities::GetHashedID(Me::Files::FileSystem::GetFileName(a_file));
-
-    if (ms_instance->m_meshes[meshId] != nullptr)
-    {
-        return meshId;
-    }
-
-	std::vector<Vertex> vertices;
-	std::vector<uint16_t> indices;
+	std::vector<Utils::Resources::MeshPrimitives> meshes;
 	
-	if(!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_file, vertices, indices))
+	if(!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_file, meshes))
 	{
 		return 0;
 	}
@@ -82,7 +74,7 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_file)
 	std::string name;
 
 	ME_CORE_LOG("Mesh : %s is loaded with success \n", a_file.c_str());
-    return CreateMesh(a_file, meshId, vertices, indices);
+    return CreateMeshes(a_file, meshes);
 }
 
 Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_path, uint16_t a_id, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
@@ -120,6 +112,22 @@ Me::Mesh Me::Resources::MeshLibrary::CreateMesh(std::string a_path, uint16_t a_i
 	}
 
     return 0;
+}
+
+Me::Mesh Me::Resources::MeshLibrary::CreateMeshes(std::string a_path, std::vector<Utils::Resources::MeshPrimitives> a_meshes)
+{
+	for (auto m : a_meshes)
+	{
+		Me::Mesh id = Utils::Utilities::GetHashedID(m.m_name);
+		if (ms_instance->m_meshes[id] != nullptr)
+		{
+			continue;
+		}
+
+		CreateMesh(a_path, id, m.m_vertices, m.m_indices);
+	}
+
+	return Utils::Utilities::GetHashedID(a_meshes.at(0).m_name);
 }
 
 Me::Mesh Me::Resources::MeshLibrary::GetMeshIndex(std::string a_name)

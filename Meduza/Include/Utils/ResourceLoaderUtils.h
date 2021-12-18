@@ -11,10 +11,22 @@ namespace Me
     {
         namespace Resources 
         {
+            struct MeshPrimitives
+            {
+                std::string m_name;
+                std::vector<Vertex> m_vertices;
+                std::vector<uint16_t> m_indices;
+
+                MeshPrimitives(std::string a_name)
+                {
+                    m_name = a_name;
+                }
+            };
+
             class ResourceLoaderUtils
             {
                 public:
-                    static bool LoadModel(std::string, std::vector<Vertex>&, std::vector<uint16_t>&);
+                    static bool LoadModel(std::string, std::vector<MeshPrimitives>&);
 
                     static unsigned char * LoadImage(std::string, int*, int*, int*);
                     static void FreeImage(void*);

@@ -6,6 +6,14 @@ namespace Me
         class RenderLayer;
     }
 
+    namespace Utils
+    {
+        namespace Resources
+        {
+            struct MeshPrimitives;
+        }
+    }
+
     namespace Resources
     {
         class MeshBase;
@@ -18,6 +26,7 @@ namespace Me
 
             static Mesh CreateMesh(std::string);
             static Mesh CreateMesh(std::string, Mesh, std::vector<Vertex>, std::vector<uint16_t>);
+            static Mesh CreateMeshes(std::string, std::vector<Utils::Resources::MeshPrimitives>);
                     
             static Mesh GetMeshIndex(std::string);
             static Mesh GetMeshIndex(Primitives);

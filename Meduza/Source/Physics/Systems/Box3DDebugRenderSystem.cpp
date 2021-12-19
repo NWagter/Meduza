@@ -13,10 +13,8 @@
 #include "Physics/Physics.h"
 #include "Physics/Components/BoxCollider3DComponent.h"
 
-#include "Platform/General/ShaderLibrary.h"
-#include "Platform/General/MeshLibrary.h"
-
-#include "Platform/General/Resources/Mesh.h"
+#include "Platform/General/Resources/Shader.h"
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Core/Meduza.h"
 
@@ -28,10 +26,8 @@ Me::Box3DDebugRenderSystem::Box3DDebugRenderSystem(Renderer::RenderLayer* a_rend
     m_debugColour = Colours::MAGENTA;
     m_debugColour.m_colour[3] = 0.4f;
 
-    m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Cube);
-
-    m_debugShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/UnlitColour_Shader.glsl");
-
+    m_debugMesh = static_cast<Resource>(Primitives::Cube);
+    m_debugShader = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Resources/Shaders/UnlitColour_Shader.glsl")->GetID();
 }
 
 void Me::Box3DDebugRenderSystem::OnUpdate(float)

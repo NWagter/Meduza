@@ -4,7 +4,7 @@
 #include "Platform/Windows/Helper/BufferStructures.h"
 #include "Platform/Windows/Graphics/CommandList.h"
 
-#include "Platform/General/MeshLibrary.h"
+#include "Platform/General/ResourceLibrary.h"
 
 namespace Me
 {
@@ -59,7 +59,7 @@ namespace Me
             template<typename InstancedData>
             void InstancedRenderCall<InstancedData>::Draw(CommandList* a_cmd)
             {
-                auto m = static_cast<Resources::Dx12::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
+                auto m = static_cast<Resources::Dx12::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
                 a_cmd->Draw(m, m_instancedBuffer->GetResource().Get() ,m_alignmentItem);
             }
 

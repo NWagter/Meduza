@@ -55,6 +55,7 @@ namespace Me
                 virtual void SetCamera(CameraComponent&, TransformComponent&) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}
+                static RenderLayer* GetRenderLayer() { return ms_instance; };
                 
                 virtual Window* GetWindow() = 0;
                 FrameBuffer* GetFrameBuffer() {return m_frameBuffer;}
@@ -62,6 +63,7 @@ namespace Me
 
             private:
                 static GFX_API ms_api;
+                static RenderLayer* ms_instance;
             protected:
                 FrameBuffer* m_frameBuffer;
                 RenderStats m_renderStats;

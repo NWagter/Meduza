@@ -1,8 +1,8 @@
 #include "MePCH.h"
 #include "Platform/General/Resources/Mesh.h"
 
-Me::Resources::GL::Mesh::Mesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
- : MeshBase(a_path, a_vertices, a_indices)
+Me::Resources::GL::Mesh::Mesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+ : MeshBase(a_vertices, a_indices)
 {
     GenerateBuffers();
 }

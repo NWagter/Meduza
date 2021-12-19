@@ -8,9 +8,10 @@ namespace Me
 
     namespace Resources
     {
+        class MeshBase;
+
         namespace Dx12
         {
-            class Mesh;
             class Shader;
             class Texture;
         }
@@ -53,7 +54,7 @@ namespace Me
                 void RenderCircle(CircleRender&)  override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
                 
-                Resources::Dx12::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
+                Resources::MeshBase* CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
                 Resources::Dx12::Texture* LoadTexture(std::string);
                 Resources::Dx12::Texture* LoadTexture(std::string, const std::vector<unsigned char>, int, int);
 

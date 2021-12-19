@@ -24,8 +24,7 @@
 #include "Physics/Physics.h"
 #include "Physics/Components/PhysicsComponent.h"
 ///------ Library -------
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/ShaderLibrary.h"
+#include "Platform/General/ResourceLibrary.h"
 #include "Platform/General/TextureLibrary.h"
 //------ Events ---------
 #include "Platform/General/Events/EventSystem.h"

@@ -17,9 +17,9 @@
 #include "Platform/General/Resources/Shader.h"
 #include "Platform/General/Resources/Texture.h"
 
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
+
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
@@ -56,10 +56,11 @@ Me::Renderer::GL::RenderLayerGL::RenderLayerGL(Window* a_window)
 
 void Me::Renderer::GL::RenderLayerGL::Init()
 {
-    m_quad = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
-    m_screenShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/GLFrameBuffer.glsl");
-    m_lineShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/LineShader.glsl");
-    m_circleShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/!Shaders/CircleShader.glsl");
+    m_quad = static_cast<Resource>(Primitives::Quad);
+    Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
+    m_screenShader = rLibrary->LoadResource<Resources::ShaderBase>("Resources/Shaders/!Shaders/GLFrameBuffer.glsl")->GetID();
+    m_lineShader = rLibrary->LoadResource<Resources::ShaderBase>("Resources/Shaders/!Shaders/LineShader.glsl")->GetID();
+    m_circleShader = rLibrary->LoadResource<Resources::ShaderBase>("Resources/Shaders/!Shaders/CircleShader.glsl")->GetID();
 }
 
 Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
@@ -134,9 +135,11 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
+    Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
+    
 #ifndef EDITOR    
-    auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_screenShader));
-    auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
+    auto s = static_cast<Resources::GL::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(m_screenShader));
+    auto m = static_cast<Resources::GL::Mesh*>(rLibrary->GetResource<Resources::MeshBase>(m_quad));
     
     s->Bind();
 
@@ -155,6 +158,8 @@ void Me::Renderer::GL::RenderLayerGL::Present()
 
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
+    Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_ALPHA_TEST);
 
@@ -194,7 +199,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
     for (auto lines : m_debugLines)
     {
-        auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_lineShader));
+        auto s = static_cast<Resources::GL::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(m_lineShader));
 
         if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
         {
@@ -222,8 +227,8 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
     for (auto circle : m_debugCircle)
     {
-        auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_circleShader));
-        auto m = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_quad));
+        auto s = static_cast<Resources::GL::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(m_circleShader));
+        auto m = static_cast<Resources::GL::Mesh*>(rLibrary->GetResource<Resources::MeshBase>(m_quad));
         if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
         {
             if (s != nullptr)
@@ -438,7 +443,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     m_camera->m_cameraMatrix = Math::Transpose(camViewProjection);
 }
 
-Me::Resources::GL::Mesh* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::MeshBase* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
-    return new Resources::GL::Mesh(a_path, a_vertices, a_indices);
+    return new Resources::GL::Mesh(a_vertices, a_indices);
 }

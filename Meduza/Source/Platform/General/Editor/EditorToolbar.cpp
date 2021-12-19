@@ -9,11 +9,11 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/CameraComponent.h"
 
-#include "Platform/General/ShaderLibrary.h"
-
 #include "Core/Serialization/Serializer.h"
 
 #include "Platform/General/Window.h"
+#include "Platform/General/ResourceLibrary.h"
+#include "Platform/General/Resources/ShaderBase.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
@@ -152,11 +152,7 @@ void Me::Editor::EditorToolbar::Draw()
 
                 if(createMesh)
                 {              
-                    shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
-                    if(shader == 0)
-                    {      
-                        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.glsl");
-                    }
+                    shader = Me::Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Assets/Shaders/LitColour_Shader.glsl")->GetID();
                 }
 
                 ImGui::EndMenu();
@@ -171,12 +167,8 @@ void Me::Editor::EditorToolbar::Draw()
                 }                
 
                 if(createMesh)
-                {              
-                    shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.hlsl");
-                    if(shader == 0)
-                    {      
-                        shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/UnlitColour_Shader.glsl");
-                    }
+                {
+                    shader = Me::Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Assets/Shaders/UnlitColour_Shader.glsl")->GetID();
                 }
                 ImGui::EndMenu();
             }

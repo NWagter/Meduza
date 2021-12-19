@@ -13,10 +13,8 @@
 #include "Physics/Physics.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
-#include "Platform/General/ShaderLibrary.h"
-#include "Platform/General/MeshLibrary.h"
-
-#include "Platform/General/Resources/Mesh.h"
+#include "Platform/General/Resources/Shader.h"
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Core/Meduza.h"
 
@@ -28,9 +26,8 @@ Me::SphereDebugRenderSystem::SphereDebugRenderSystem(Renderer::RenderLayer* a_re
     m_debugColour = Colours::MAGENTA;
     m_debugColour.m_colour[3] = 0.4f;
 
-    m_debugMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Sphere);
-
-    m_debugShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/UnlitColour_Shader.glsl");
+    m_debugMesh = static_cast<Resource>(Primitives::Sphere);
+    m_debugShader = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Resources/Shaders/UnlitColour_Shader.glsl")->GetID();
 
 }
 

@@ -1,0 +1,72 @@
+#pragma once
+
+#include "Platform/General/FileSystem/FileSystem.h"
+
+namespace Me
+{
+    namespace Resources
+    {
+		class ResourceBase;
+
+        class ResourceLibrary
+        {
+        public:
+            static ResourceLibrary* CreateResourceLibrary();
+			static ResourceLibrary* GetInstance();
+            static void Destroy();
+
+            template<typename T, typename = typename std::enable_if<std::is_base_of<ResourceBase, T>::value, T>::type, typename ... Args>
+            T* LoadResource(const std::string& a_path, Args... a_args);
+
+			template<typename T>
+			T* GetResource(const Resource a_resourceId);
+
+			std::unordered_map<Resource, ResourceBase*> GetResources() const { return m_resources; }
+
+        private:
+			ResourceLibrary();
+			~ResourceLibrary() = default;
+
+			//Base Geometry
+			void CreateQuad();
+			void CreatePlane();
+			void CreateCube();
+			void CreateSphere();
+
+			static ResourceLibrary* ms_instance;
+            std::unordered_map<Resource, ResourceBase*> m_resources;
+        };
+
+		template <typename T, typename, class... Args>
+		T* ResourceLibrary::LoadResource(const std::string& a_path, Args... a_args)
+		{
+			std::string fileName = Files::FileSystem::GetFileName(a_path);			
+			Resource id = Utils::Utilities::GetHashedID(fileName);
+
+			//Check if resource is already loaded in.
+			T* resource = GetResource<T>(id);
+			if (resource != nullptr)
+			{
+				return resource;
+			}
+
+			resource = T(a_args...).OnCreate(a_path);
+			resource->InitializeResource(id, a_path, fileName);
+			m_resources.insert(std::make_pair(id, resource));
+
+			return resource;
+		}
+
+		template <typename T>
+		T* ResourceLibrary::GetResource(const Resource a_resourceId)
+		{
+			const auto it = m_resources.find(a_resourceId);
+			if (it != m_resources.end())
+			{
+				return dynamic_cast<T*>(it->second);
+			}
+
+			return nullptr;
+		}
+    }
+}

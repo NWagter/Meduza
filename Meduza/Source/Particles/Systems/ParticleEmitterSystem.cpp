@@ -8,13 +8,13 @@
 #include "Particles/Components/ParticleSystemComponent.h"
 #include "Particles/Components/ParticleComponent.h"
 
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/ShaderLibrary.h"
+#include "Platform/General/Resources/Shader.h"
+#include "Platform/General/ResourceLibrary.h"
 
 Me::Particle::ParticleEmitterSystem::ParticleEmitterSystem()
 {
-    m_defaultMesh = Resources::MeshLibrary::GetMeshIndex(Primitives::Quad);
-    m_defaultShader = Resources::ShaderLibrary::CreateShader("Resources/Shaders/UnlitColour_Shader.glsl");
+    m_defaultMesh = static_cast<Resource>(Primitives::Quad);
+    m_defaultShader = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Resources/Shaders/UnlitColour_Shader.glsl")->GetID();
 }
 
 void Me::Particle::ParticleEmitterSystem::OnUpdate(float a_dt)

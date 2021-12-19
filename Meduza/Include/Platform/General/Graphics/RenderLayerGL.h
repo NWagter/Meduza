@@ -8,9 +8,10 @@ namespace Me
 
     namespace Resources
     {
+        class MeshBase;
+
         namespace GL
         {
-            class Mesh;
             class Shader;
         }
     }
@@ -101,7 +102,7 @@ namespace Me
                 void RenderCircle(CircleRender&)  override;
                 void SetCamera(CameraComponent&, TransformComponent&) override;
 
-                Resources::GL::Mesh* CreateMesh(std::string, std::vector<Vertex>, std::vector<uint16_t>);
+                Resources::MeshBase* CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
                 
                 Window* GetWindow() override {return m_window;}
             private:

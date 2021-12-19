@@ -12,7 +12,7 @@
 #endif
 
 Me::GFX_API Me::Renderer::RenderLayer::ms_api = Me::GFX_API::Unknown;
-
+Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::ms_instance = nullptr;
 Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::CreateRenderer(Me::Window* a_window, Me::GFX_API a_api)
 {
     ms_api = a_api;
@@ -20,21 +20,26 @@ Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::CreateRenderer(Me::Window*
     {
         case Me::GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
-            return new Dx12::RenderLayerDx12(a_window);
+            ms_instance = new Dx12::RenderLayerDx12(a_window);
+            return ms_instance;
 #else
             ME_CORE_ASSERT_M(false, "This platform doesn't support DirectX12")
             return nullptr;
 #endif
         break;
         case Me::GFX_API::OpenGL:
-            return new GL::RenderLayerGL(a_window);
+            ms_instance = new GL::RenderLayerGL(a_window);
+            return ms_instance;
         break;
         default:
 #ifdef PLATFORM_WINDOWS
-            return new Dx12::RenderLayerDx12(a_window);
+            ms_instance = new Dx12::RenderLayerDx12(a_window);
+            return ms_instance;
 #elif PLATFORM_LINUX
-            return new GL::RenderLayerGL(a_window);
+            ms_instance = new GL::RenderLayerGL(a_window);
+            return ms_instance;
 #elif PLATFORM_APPLE
+            ME_CORE_ASSERT_M(false, "We don't support Apple :(")
             return nullptr;
 #endif
         break;

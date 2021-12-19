@@ -9,9 +9,9 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/TextureLibrary.h"
+#include "Platform/General/ResourceLibrary.h"
+#include "Platform/General/Resources/Resource.h"
 
 #include "Platform/General/Events/EventSystem.h"
 #include "Utils/MeduzaDebug.h"
@@ -72,8 +72,7 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_meduzaDebugger = Debug::MeduzaDebug::CreateDebugger(*m_renderLayer);
 
 	Event::EventSystem::Create(m_window);
-	Resources::MeshLibrary::CreateMeshLibrary(*m_renderLayer);
-	Resources::ShaderLibrary::CreateShaderLibrary(*m_renderLayer);
+	Resources::ResourceLibrary::CreateResourceLibrary();
 	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
 	m_serializer = new Serialization::Serializer();
@@ -174,9 +173,8 @@ Me::Math::Vec2 Me::Meduza::GetScreenSize()
 
 void Me::Meduza::Destroy()
 {
+	Resources::ResourceLibrary::Destroy();
 	Resources::TextureLibrary::Destroy();
-	Resources::ShaderLibrary::Destroy();
-	Resources::MeshLibrary::Destroy();
 	Event::EventSystem::Destroy();
 	Serialization::Serializer::DestroySerializer();
 

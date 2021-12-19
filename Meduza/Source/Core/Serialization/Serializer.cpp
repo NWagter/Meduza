@@ -19,12 +19,12 @@
 
 #include "AI/Components/AgentComponent.h"
 
-#include "Platform/General/ShaderLibrary.h"
-#include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/TextureBase.h"
-#include "Platform/General/MeshLibrary.h"
+
+#include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/Resources/MeshBase.h"
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
 
@@ -94,6 +94,7 @@ bool SerializeSceneA(std::string a_path)
     cereal::XMLOutputArchive archive(os);
 
     Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
+    Me::Resources::ResourceLibrary* rLibrary = Me::Resources::ResourceLibrary::GetInstance();
     archive.setNextName("SceneData"); 
     archive.startNode();  
 
@@ -125,21 +126,21 @@ bool SerializeSceneA(std::string a_path)
             
         });   
 
-        CanSerialize<Me::RenderComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::RenderComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)
         {          
             archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour));   
 
             if(a_comp->m_mesh > 10)
             {
-                auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);  
-                archive(cereal::make_nvp("Mesh", mesh->GetPath()));   
+                Me::Resources::MeshBase* mesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp->m_mesh);
+                archive(cereal::make_nvp("Mesh", mesh->GetPath()));
             }   
             else
             {
                 archive(cereal::make_nvp("Mesh", a_comp->m_mesh)); 
             }
 
-            auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+            auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
             archive(cereal::make_nvp("Shader", shader->GetPath()));    
             auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
             if(texture != nullptr)
@@ -164,11 +165,11 @@ bool SerializeSceneA(std::string a_path)
                   
         }); 
 
-        CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
+        CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)
         {
             if (a_comp->m_mesh > 10)
             {
-                auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);
+                Me::Resources::MeshBase* mesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp->m_mesh);
                 archive(cereal::make_nvp("Mesh", mesh->GetPath()));
             }
             else
@@ -176,7 +177,7 @@ bool SerializeSceneA(std::string a_path)
                 archive(cereal::make_nvp("Mesh", a_comp->m_mesh));
             }
 
-            auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+            auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
             if (shader != nullptr)
             {
                 archive(cereal::make_nvp("Shader", shader->GetPath()));
@@ -266,6 +267,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     cereal::XMLOutputArchive archive(os);
 
     Me::EntityManager* eManager = Me::EntityManager::GetEntityManager();
+    Me::Resources::ResourceLibrary* rLibrary = Me::Resources::ResourceLibrary::GetInstance();
     archive.setNextName("PrefabData"); 
     archive.startNode();  
 
@@ -291,21 +293,21 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
         
     });   
 
-    CanSerialize<Me::RenderComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    CanSerialize<Me::RenderComponent>(eManager, a_entity, archive, [&archive, &rLibrary](auto& a_comp)
     {          
         archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour));   
 
         if(a_comp->m_mesh > 10)
         {
-            auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);  
-            archive(cereal::make_nvp("Mesh", mesh->GetPath()));   
+            Me::Resources::MeshBase* mesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp->m_mesh);
+            archive(cereal::make_nvp("Mesh", mesh->GetPath()));
         }   
         else
         {
             archive(cereal::make_nvp("Mesh", a_comp->m_mesh)); 
         }
 
-        auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+        auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
         archive(cereal::make_nvp("Shader", shader->GetPath()));    
         auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
         if(texture != nullptr)
@@ -330,11 +332,11 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
                 
     }); 
     
-    CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
+    CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, a_entity, archive, [&archive, &rLibrary](auto& a_comp)
     {
         if (a_comp->m_mesh > 10)
         {
-            auto mesh = Me::Resources::MeshLibrary::GetMesh(a_comp->m_mesh);
+            Me::Resources::MeshBase* mesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp->m_mesh);
             archive(cereal::make_nvp("Mesh", mesh->GetPath()));
         }
         else
@@ -342,7 +344,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
             archive(cereal::make_nvp("Mesh", a_comp->m_mesh));
         }
 
-        auto shader = Me::Resources::ShaderLibrary::GetShader(a_comp->m_shader);
+        auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
         if (shader != nullptr)
         {
             archive(cereal::make_nvp("Shader", shader->GetPath()));
@@ -460,6 +462,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
     cereal::XMLInputArchive archive(is);
 
     EntityManager* eManager = EntityManager::GetEntityManager();
+    Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
     if (a_cleanup)
     {
@@ -498,25 +501,26 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             eManager->AddComponent(ent, a_comp);
         })) compAmount--; 
         
-        if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
         {          
             archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
             std::string shaderPath;
 
-            std::string mesh;
-            archive(cereal::make_nvp("Mesh", mesh));
+            std::string meshPath;
+            archive(cereal::make_nvp("Mesh", meshPath));
 
-            if(!Files::FileSystem::GetFileExtention(mesh).empty())
-            {                
-                a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+            if(!Files::FileSystem::GetFileExtention(meshPath).empty())
+            {
+                auto mesh = rLibrary->LoadResource<Resources::MeshBase>(meshPath);
+                a_comp->m_mesh = mesh->GetID();
             }
             else
             {
-                a_comp->m_mesh = (Mesh)std::stoi(mesh);
+                a_comp->m_mesh = (Mesh)std::stoi(meshPath);
             }
 
-            archive(cereal::make_nvp("Shader", shaderPath));    
-            a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+            archive(cereal::make_nvp("Shader", shaderPath));
+            a_comp->m_shader = rLibrary->LoadResource<Resources::ShaderBase>(shaderPath)->GetID();
 
             std::string texturePath;
             archive(cereal::make_nvp("Texture", texturePath));
@@ -543,28 +547,29 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             eManager->AddComponent(ent, a_comp); 
         })) compAmount--;             
 
-        if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
         {
             archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
             std::string shaderPath;
 
-            std::string mesh;
-            archive(cereal::make_nvp("Mesh", mesh));
+            std::string meshPath;
+            archive(cereal::make_nvp("Mesh", meshPath));
 
-            if (!Files::FileSystem::GetFileExtention(mesh).empty())
+            if (!Files::FileSystem::GetFileExtention(meshPath).empty())
             {
-                a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+                auto mesh = rLibrary->LoadResource<Resources::MeshBase>(meshPath);
+                a_comp->m_mesh = mesh->GetID();
             }
             else
             {
-                a_comp->m_mesh = (Mesh)std::stoi(mesh);
+                a_comp->m_mesh = (Mesh)std::stoi(meshPath);
             }
 
 
             archive(cereal::make_nvp("Shader", shaderPath));
             if (!shaderPath.empty())
             {
-                a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+                a_comp->m_shader = rLibrary->LoadResource<Resources::ShaderBase>(shaderPath)->GetID();
             }
 
             archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));
@@ -702,6 +707,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     cereal::XMLInputArchive archive(is);
 
     EntityManager* eManager = EntityManager::GetEntityManager();
+    Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
     int compAmount = 0;
 
@@ -734,25 +740,26 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp);
     })) compAmount--; 
     
-    if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<RenderComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
     {          
         archive(cereal::make_nvp("Colour", a_comp->m_colour.m_colour)); 
         std::string shaderPath;
 
-        std::string mesh;
-        archive(cereal::make_nvp("Mesh", mesh));
+        std::string meshPath;
+        archive(cereal::make_nvp("Mesh", meshPath));
 
-        if(!Files::FileSystem::GetFileExtention(mesh).empty())
-        {                
-            a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+        if(!Files::FileSystem::GetFileExtention(meshPath).empty())
+        {
+            auto mesh = rLibrary->LoadResource<Resources::MeshBase>(meshPath);
+            a_comp->m_mesh = mesh->GetID();
         }
         else
         {
-            a_comp->m_mesh = (Mesh)std::stoi(mesh);
+            a_comp->m_mesh = (Mesh)std::stoi(meshPath);
         }
 
-        archive(cereal::make_nvp("Shader", shaderPath));    
-        a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+        archive(cereal::make_nvp("Shader", shaderPath));
+        a_comp->m_shader = rLibrary->LoadResource<Resources::ShaderBase>(shaderPath)->GetID();
 
         std::string texturePath;
         archive(cereal::make_nvp("Texture", texturePath));
@@ -778,28 +785,29 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         eManager->AddComponent(ent, a_comp); 
     })) compAmount--;             
 
-    if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    if (CanDeserialize<Me::Particle::ParticleSystemComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
     {
         archive(cereal::make_nvp("Colour", a_comp->m_particle.m_initalColour.m_colour));
         std::string shaderPath;
 
-        std::string mesh;
-        archive(cereal::make_nvp("Mesh", mesh));
+        std::string meshPath;
+        archive(cereal::make_nvp("Mesh", meshPath));
 
-        if (!Files::FileSystem::GetFileExtention(mesh).empty())
+        if (!Files::FileSystem::GetFileExtention(meshPath).empty())
         {
-            a_comp->m_mesh = Resources::MeshLibrary::CreateMesh(mesh);
+            auto mesh = rLibrary->LoadResource<Resources::MeshBase>(meshPath);
+            a_comp->m_mesh = mesh->GetID();
         }
         else
         {
-            a_comp->m_mesh = (Mesh)std::stoi(mesh);
+            a_comp->m_mesh = (Mesh)std::stoi(meshPath);
         }
 
 
         archive(cereal::make_nvp("Shader", shaderPath));
         if (!shaderPath.empty())
         {
-            a_comp->m_shader = Resources::ShaderLibrary::CreateShader(shaderPath);
+            a_comp->m_shader = rLibrary->LoadResource<Resources::ShaderBase>(shaderPath)->GetID();
         }
 
         archive(cereal::make_nvp("MaxParticles", a_comp->m_maxParticles));

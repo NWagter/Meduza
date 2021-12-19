@@ -1,12 +1,12 @@
 #pragma once
 #include "Platform/General/Graphics/BaseInstanced.h"
 
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/Resources/Mesh.h"
 #include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/Texture.h"
-#include "Platform/General/ShaderLibrary.h"
 #include "Platform/General/Resources/Shader.h"
+
+#include "Platform/General/Resources/Mesh.h"
+#include "Platform/General/ResourceLibrary.h"
 
 namespace Me
 {
@@ -70,10 +70,10 @@ namespace Me
             {
                 CreateInstancedBuffer();
 
-                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
-                auto s = static_cast<Resources::GL::Shader*>(Resources::ShaderLibrary::GetShader(m_shaderIndex));
+                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
+                auto shader = static_cast<Resources::GL::Shader*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::ShaderBase>(m_shaderIndex));
 
-                s->Bind();
+                shader->Bind();
 
                 for (size_t i = 0; i < m_textures.size(); i++)
                 {
@@ -89,7 +89,7 @@ namespace Me
                 // render objects in scene
                 int indices = mesh->GetIndices().size();
 
-                s->SetMat4("u_projectionView", a_camMat, false);
+                shader->SetMat4("u_projectionView", a_camMat, false);
                 glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
                 // render objects in scene
 
@@ -100,7 +100,7 @@ namespace Me
                     static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->UnBind(static_cast<int>(i));
                 }
 
-                s->UnBind();
+                shader->UnBind();
                 return mesh->GetVerticesSize();
             }
 
@@ -149,7 +149,7 @@ namespace Me
             template<typename InstancedData>
             void InstancedRenderCall<InstancedData>::CreateInstancedBuffer()
             {
-                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::MeshLibrary::GetMesh(m_meshIndex));
+                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
 
                 glBindVertexArray(mesh->GetVAO());
 

@@ -14,11 +14,10 @@
 #include "Platform/Windows/Graphics/InstancedRenderCall.h"
 #include "Platform/General/Graphics/FrameBuffer.h"
 
+#include "Platform/General/ResourceLibrary.h"
 #include "Platform/Windows/Resources/Mesh.h"
-#include "Platform/General/MeshLibrary.h"
 
 #include "Platform/Windows/Resources/Shader.h"
-#include "Platform/General/ShaderLibrary.h"
 
 #include "Platform/Windows/Resources/Texture.h"
 #include "Platform/General/TextureLibrary.h"
@@ -304,6 +303,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 	GetCmd().SetViewPort(1);
 
 	auto cmd = &GetCmd();
+	Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
 	unsigned int srvId = 0;
 	Helper::Dx12::SRV srv = m_textureLoader->GetSRV(srvId);
@@ -314,7 +314,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 	{
 		auto dxInstanced = static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instanced);
 		// TODO : Get Material and set the correct SRV
-		auto s = static_cast<Resources::Dx12::Shader*>(Resources::ShaderLibrary::GetShader(dxInstanced->GetShader()));
+		auto shader = static_cast<Resources::Dx12::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(dxInstanced->GetShader()));
 		if(dxInstanced->GetSRVID() != srvId)
 		{
 			srvId = dxInstanced->GetSRVID();
@@ -323,9 +323,9 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 			cmd->GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
 		}
 
-		if(m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
+		if(m_activeShader == nullptr || m_activeShader != shader) // only change when shader / pso changes
 		{
-			m_activeShader = s;
+			m_activeShader = shader;
 			m_activeShader->Bind();
 		}
 
@@ -367,9 +367,9 @@ Me::Window* Me::Renderer::Dx12::RenderLayerDx12::GetWindow()
 	return static_cast<Window*>(m_window);
 }
 
-Me::Resources::Dx12::Mesh* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::string a_path, std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::MeshBase* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
 {
-	return new Me::Resources::Dx12::Mesh(a_path, a_vertices,a_indices, *m_device, GetCmd());
+	return new Me::Resources::Dx12::Mesh(a_vertices, a_indices, *m_device, GetCmd());
 }
 
 Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_path)

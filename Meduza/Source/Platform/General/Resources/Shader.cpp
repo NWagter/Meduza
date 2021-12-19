@@ -1,7 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/Resources/Shader.h"
 
-Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase(a_shader)
+Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase()
 {
     m_source = Helper::GL::ShaderHelper::GetSources(a_shader);
     m_program = GenerateShader();

@@ -1,12 +1,15 @@
 #pragma once
+#include "Platform/General/Resources/Resource.h"
+
 namespace Me
 {
     namespace Resources
     {
-        class MeshBase
+        class MeshBase : public ResourceBase
         {
         public:
-            MeshBase(std::string, std::vector<Vertex>, std::vector<uint16_t>);
+            MeshBase();
+            MeshBase(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
             virtual ~MeshBase();   
 
             unsigned int GetVerticesSize() const
@@ -25,9 +28,10 @@ namespace Me
             inline std::vector<Vertex> GetVertices() const { return m_vertices; }
             inline std::vector<uint16_t> GetIndices() const { return m_indices; }
 
-            inline std::string GetPath() const {return m_filePath;}
+            MeshBase* OnCreate(const std::string& a_path) override;
+            MeshBase* Create(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
         protected:
-            std::string m_filePath;
+
             std::vector<Vertex> m_vertices;
             std::vector<uint16_t> m_indices;
 

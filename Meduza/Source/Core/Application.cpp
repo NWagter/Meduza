@@ -4,10 +4,6 @@
 #include "Core/Application.h"
 #include "Core/Meduza.h"
 
-#include "Platform/General/MeshLibrary.h"
-#include "Platform/General/ShaderLibrary.h"
-#include "Platform/General/TextureLibrary.h"
-
 #include "ECS/EntityManager.h"
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/TransformComponent.h"

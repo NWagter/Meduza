@@ -12,6 +12,7 @@ namespace Me
     using Mesh = uint16_t;
     using Shader = uint16_t;
     using Texture = uint16_t;
+    using Resource = uint16_t;
 
     enum class ResourceTypes
     {

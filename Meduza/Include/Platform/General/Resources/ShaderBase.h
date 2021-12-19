@@ -1,4 +1,7 @@
 #pragma once
+
+#include "Platform/General/Resources/Resource.h"
+
 namespace Me
 {
     namespace Resources
@@ -10,23 +13,20 @@ namespace Me
             FragmentShader
         };
 
-        class ShaderBase
+        class ShaderBase : public ResourceBase
         {
         public:
-            ShaderBase(std::string);
-
+            ShaderBase() : ResourceBase(ResourceType::Shader) {};
             virtual ~ShaderBase();   
 
-            virtual void Reload() = 0;
-            virtual void Unload() = 0;
+            virtual void Reload() {};
+            virtual void Unload() {};
 
-            virtual void Bind() = 0;
-            virtual void UnBind() = 0;
+            virtual void Bind() {};
+            virtual void UnBind() {};
 
-            inline std::string GetPath() const { return m_shaderPath;}
+            ShaderBase* OnCreate(const std::string& a_path) override;
         protected:
-
-            std::string m_shaderPath;
 
         };
     }

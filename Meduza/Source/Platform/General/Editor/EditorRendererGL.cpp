@@ -17,6 +17,7 @@
 #include "Platform/General/Editor/EditorEntityEditor.h"
 #include "Platform/General/Editor/EditorViewport.h"
 #include "Platform/General/Editor/EditorStats.h"
+#include "Platform/General/Editor/EditorResourceBrowser.h"
 
 #include "Platform/General/Graphics/FrameBuffer.h"
 
@@ -73,6 +74,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	AddWidget(viewPort);
 	EditorStats* stats = new EditorStats(*a_renderLayer);
 	AddWidget(stats);
+	EditorResourceBrowser* resourceBrowser = new EditorResourceBrowser();
+	AddWidget(resourceBrowser);
 
 	m_renderLayer = a_renderLayer;
 }

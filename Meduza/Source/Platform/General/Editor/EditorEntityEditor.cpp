@@ -23,11 +23,11 @@
 #include "AI/Components/NavSurfaceComponent.h"
 
 #include "Platform/General/Resources/ShaderBase.h"
-#include "Platform/General/ShaderLibrary.h"
-#include "Platform/General/Resources/MeshBase.h"
-#include "Platform/General/MeshLibrary.h"
 #include "Platform/General/Resources/TextureBase.h"
 #include "Platform/General/TextureLibrary.h"
+
+#include "Platform/General/Resources/MeshBase.h"
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/Events/EventSystem.h"
 
@@ -121,6 +121,7 @@ static Me::Math::Vec4 s_uv = Me::Math::Vec4(0,0,0,0);
 void Me::Editor::EntityEditor::Draw()
 {    
 	auto eManager = EntityManager::GetEntityManager();
+    Me::Resources::ResourceLibrary* rLibrary = Me::Resources::ResourceLibrary::GetInstance();
 	
 	ImGui::Begin("Entity Editor");
 
@@ -161,13 +162,13 @@ void Me::Editor::EntityEditor::Draw()
             Helper::EditorHelper::DrawVec3Prop("Scale", a_comp.m_scale);
         }, false);
 
-        DrawComponent<RenderComponent>(eManager, "Render Component", m_selectedEntity, [](auto& a_comp)
+        DrawComponent<RenderComponent>(eManager, "Render Component", m_selectedEntity, [&rLibrary](auto& a_comp)
         {
             ImGui::ColorEdit4("Colour", a_comp.m_colour.m_colour);
 
             
-            std::string currentMesh = Files::FileSystem::GetFileName(Resources::MeshLibrary::GetMesh(a_comp.m_mesh)->GetPath());
-            std::string currentShader = Files::FileSystem::GetFileName(Resources::ShaderLibrary::GetShader(a_comp.m_shader)->GetPath());
+            std::string currentMesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp.m_mesh)->GetFileName();
+            std::string currentShader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp.m_shader)->GetFileName();
             auto texture = Resources::TextureLibrary::GetTexture(a_comp.m_texture);
 
             std::string currentTexture = "None";
@@ -217,7 +218,7 @@ void Me::Editor::EntityEditor::Draw()
             }
             if(!newModelPath.empty())
             {
-                a_comp.m_mesh = Resources::MeshLibrary::CreateMesh(newModelPath);
+                a_comp.m_mesh = rLibrary->LoadResource<Resources::MeshBase>(newModelPath)->GetID();
             }else if(primitive < 10)
             {
                 a_comp.m_mesh = primitive;
@@ -244,7 +245,7 @@ void Me::Editor::EntityEditor::Draw()
             }
             if(!newShaderPath.empty())
             {
-                a_comp.m_shader = Resources::ShaderLibrary::CreateShader(newShaderPath);
+                a_comp.m_shader = rLibrary->LoadResource<Resources::ShaderBase>(newShaderPath)->GetID();
             }
             
             std::string newTexturePath = "";
@@ -581,10 +582,10 @@ void Me::Editor::EntityEditor::Draw()
             auto rComp = new RenderComponent();
             rComp->m_mesh = Mesh(Primitives::Quad);
 
-            Me::Shader shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.hlsl");
+            Me::Shader shader = rLibrary->LoadResource<Resources::ShaderBase>("Assets/Shaders/LitColour_Shader.hlsl")->GetID();
             if(shader == 0)
             {      
-                shader = Me::Resources::ShaderLibrary::CreateShader("Assets/Shaders/LitColour_Shader.glsl");
+                shader = rLibrary->LoadResource<Resources::ShaderBase>("Assets/Shaders/LitColour_Shader.glsl")->GetID();
             }
 
             rComp->m_shader = shader;

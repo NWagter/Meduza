@@ -37,6 +37,11 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::OnCreate(const std::string& a_
 		return nullptr;
 	}
 
+	if (meshes.size() <= 1)
+	{
+		return Create(meshes.at(0).m_vertices, meshes.at(0).m_indices);
+	}
+
 	MeshBase* mesh = nullptr;
 	ResourceLibrary* rLib = ResourceLibrary::GetInstance();
 	bool first = false;

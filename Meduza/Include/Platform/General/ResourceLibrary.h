@@ -18,6 +18,10 @@ namespace Me
             template<typename T, typename = typename std::enable_if<std::is_base_of<ResourceBase, T>::value, T>::type, typename ... Args>
             T* LoadResource(const std::string& a_path, Args... a_args);
 
+
+			template<typename T, typename = typename std::enable_if<std::is_base_of<ResourceBase, T>::value, T>::type, typename ... Args>
+			T* AddResource(T* a_resource, const std::string& a_path, const std::string& a_name);
+
 			template<typename T>
 			T* GetResource(const Resource a_resourceId);
 
@@ -51,10 +55,34 @@ namespace Me
 			}
 
 			resource = T(a_args...).OnCreate(a_path);
+
+			if (GetResource<T>(id) != nullptr)
+			{
+				return resource;
+			}
+
 			resource->InitializeResource(id, a_path, fileName);
 			m_resources.insert(std::make_pair(id, resource));
 
 			return resource;
+		}
+
+		template <typename T, typename, class... Args>
+		T* ResourceLibrary::AddResource(T* a_resource, const std::string& a_path, const std::string& a_name)
+		{
+			Resource id = Utils::Utilities::GetHashedID(a_name);
+
+			T* resource = GetResource<T>(id);
+			if (resource != nullptr)
+			{
+				delete a_resource;
+				return resource;
+			}
+
+			a_resource->InitializeResource(id, a_path, a_name);
+			m_resources.insert(std::make_pair(id, a_resource));
+
+			return a_resource;
 		}
 
 		template <typename T>

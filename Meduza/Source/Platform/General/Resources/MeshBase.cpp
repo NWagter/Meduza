@@ -1,6 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/Resources/MeshBase.h"
 #include "Utils/ResourceLoaderUtils.h"
+#include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/Graphics/RenderLayerGL.h"
 
@@ -36,7 +37,23 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::OnCreate(const std::string& a_
 		return nullptr;
 	}
 
-	return Create(meshes.at(0).m_vertices, meshes.at(0).m_indices);
+	MeshBase* mesh = nullptr;
+	ResourceLibrary* rLib = ResourceLibrary::GetInstance();
+	bool first = false;
+	for (auto m : meshes)
+	{
+		std::string name = m.m_name;
+		if (!first)
+		{
+			first = true;
+			mesh = rLib->AddResource<MeshBase>(Create(m.m_vertices, m.m_indices), a_path, Files::FileSystem::GetFileName(a_path));
+			continue;
+		}
+
+		rLib->AddResource<MeshBase>(Create(m.m_vertices, m.m_indices), a_path, name);
+	}
+
+	return mesh;
 }
 
 Me::Resources::MeshBase* Me::Resources::MeshBase::Create(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)

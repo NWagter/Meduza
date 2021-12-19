@@ -93,4 +93,6 @@ Me::Resources::ShaderBase* Me::Resources::ShaderBase::OnCreate(const std::string
 #endif
 		break;
 	}
+
+	return nullptr;
 }

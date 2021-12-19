@@ -63,5 +63,7 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::Create(std::vector<Vertex> a_v
 #endif
 		break;
 	}
+
+	return nullptr;
 }
 

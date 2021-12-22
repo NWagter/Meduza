@@ -25,7 +25,7 @@ namespace Me
 			template<typename T>
 			T* GetResource(const Resource a_resourceId);
 
-			std::unordered_map<Resource, ResourceBase*> GetResources() const { return m_resources; }
+			std::unordered_map<Resource, ResourceBase*> const& GetResources() const { return m_resources; }
 
         private:
 			ResourceLibrary();

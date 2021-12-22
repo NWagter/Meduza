@@ -66,7 +66,7 @@ void Me::Editor::EditorViewport::Draw()
 
     if(m_editorCamera <= 0)
     {               
-        auto eManager = EntityManager::GetEntityManager();
+        auto const eManager = EntityManager::GetEntityManager();
         EntityFilter filter;
         filter.insert(CameraComponent::s_componentID);
         filter.insert(EditorComponent::s_componentID);

@@ -204,6 +204,7 @@ void Me::Meduza::Destroy()
 		delete m_systemInitializer;
 	}
 
+	delete m_meduzaDebugger;
 	EntityManager::DestroyEntityManager();
 }
 

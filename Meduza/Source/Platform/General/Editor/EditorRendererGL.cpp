@@ -82,7 +82,9 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 
 Me::Editor::GL::EditorRendererGL::~EditorRendererGL()
 {
-
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 }
 
 void Me::Editor::GL::EditorRendererGL::Clear()

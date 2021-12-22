@@ -72,6 +72,14 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	AddWidget(viewPort);
 }
 
+Me::Editor::Dx12::EditorRendererDx12::~EditorRendererDx12()
+{
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+	
+}
+
 void Me::Editor::Dx12::EditorRendererDx12::Clear()
 {
 	ImGui_ImplDX12_NewFrame();

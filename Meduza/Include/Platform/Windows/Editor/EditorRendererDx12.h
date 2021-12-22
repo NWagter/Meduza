@@ -23,6 +23,7 @@ namespace Me
             {
                 public: 
                     EditorRendererDx12(Renderer::Dx12::RenderLayerDx12*);
+                    ~EditorRendererDx12();
 
                     void Clear() override;
                     void Update(float) override;

@@ -9,7 +9,7 @@ namespace Me
         class BaseInstanced
         {
         public:
-            ~BaseInstanced() = default;
+            virtual ~BaseInstanced() = default;
 
             virtual void ClearBuffer() = 0;
 

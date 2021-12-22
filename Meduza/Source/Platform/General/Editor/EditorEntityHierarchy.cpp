@@ -79,7 +79,7 @@ void Me::Editor::EntityHierarchy::Draw()
 		ImGui::EndPopup();
 	}
 
-	for(auto ent : eManager->GetEntities())
+	for(auto const& ent : eManager->GetEntities())
 	{
 		if(eManager->GetComponent<EditorComponent>(ent.first) != nullptr)
 		{
@@ -87,7 +87,7 @@ void Me::Editor::EntityHierarchy::Draw()
 		}
 		EntityID selected = m_selectedEntity;
 		bool shouldDelete = false; 
-		TagComponent* tagComp = eManager->GetComponent<TagComponent>(ent.first);
+		TagComponent const* tagComp = eManager->GetComponent<TagComponent>(ent.first);
 		if(tagComp != nullptr && DrawEnt(selected, ent.first, tagComp->m_tag, shouldDelete, m_window))
 		{
 			m_selectedEntity = ent.first;

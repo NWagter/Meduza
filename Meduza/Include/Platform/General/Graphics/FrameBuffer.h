@@ -24,6 +24,7 @@ namespace Me
         {
         public:
             static FrameBuffer* Create(const FrameBufferSpecs&, ContextBase& a_context);
+            virtual ~FrameBuffer() = default;
 
             virtual const FrameBufferSpecs& GetFrameBufferSpec() const = 0;
             virtual ColourAttachment* GetColourAttachment() = 0;

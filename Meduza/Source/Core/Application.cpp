@@ -16,6 +16,7 @@ Me::Application::Application(int a_w,int a_h, int a_api)
 
 Me::Application::~Application()
 {
+    ME_PROFILE_STOP();
     delete m_meduza;
 }
 
@@ -34,6 +35,7 @@ bool Me::Application::Run()
     unsigned frameCount = 0;
     float fps = 0;
 
+    ME_PROFILE_APP("Meduza");
     while(m_meduza->IsRunning())
     {
         ME_PROFILE_FRAME("MainThread");

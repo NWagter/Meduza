@@ -35,14 +35,14 @@ namespace Me
         template<class C = BaseComponent>
 		C* GetComponent(const EntityID a_entID);
         template<class C = BaseComponent>
-		std::map<EntityID, C*> GetComponents();
+		std::map<EntityID, C*> const& GetComponents();
 
         void DestroyEntities();
         void Update(float);
         
         std::vector<EntityID> GetEntities(EntityFilter);
-        std::map<EntityID, std::set<ComponentID>> GetEntities() {return m_entities;}
-        std::map<ComponentID, IComponentContainer*> GetContainers() {return m_containers;}
+        std::map<EntityID, std::set<ComponentID>> const& GetEntities() {return m_entities;}
+        std::map<ComponentID, IComponentContainer*> const& GetContainers() {return m_containers;}
         private:
         EntityManager();
         ~EntityManager();
@@ -185,7 +185,7 @@ namespace Me
     }
 
     template<class C>
-    std::map<EntityID, C*> EntityManager::GetComponents()
+    std::map<EntityID, C*> const& EntityManager::GetComponents()
     {
         auto container = GetComponentContainer<C>();
 

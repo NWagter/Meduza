@@ -30,7 +30,8 @@ namespace Me
                 }
                 ~InstancedRenderCall()
                 {
-                    ClearBuffer();
+                    m_instancedData.clear();
+                    m_textures.clear();
                 }
 
                 int Draw(Math::Mat4, bool = false);

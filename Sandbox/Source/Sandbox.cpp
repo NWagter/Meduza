@@ -33,6 +33,7 @@ void Sandbox::OnInitilized()
 void Sandbox::OnClose()
 {
     ME_GAME_LOG("Game Closed \n");
+    delete m_game;
 }
 
 //Create the game "Application"

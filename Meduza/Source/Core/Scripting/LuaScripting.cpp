@@ -13,7 +13,7 @@ Me::Scripting::LuaScripting::LuaScripting()
 
 Me::Scripting::LuaScripting::~LuaScripting()
 {
-    
+    ms_instance = nullptr;
 }
 
 static int MyFunc(lua_State* L)

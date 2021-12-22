@@ -89,6 +89,7 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
     }
     m_debugInstances.clear();
 
+    delete m_frameBuffer;
     delete m_context;
     delete m_camera;
 }
@@ -305,9 +306,6 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
         }
     }
 
-    Renderable* r = new Renderable();
-    r->m_renderComponent = &a_renderable;
-
     auto iB = DefaultInstancedBuffer();
 
     iB.m_colour = a_renderable.m_colour.m_colour;
@@ -354,9 +352,6 @@ void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_render
             instancedRenderer = b;
         }
     }
-
-    DebugRenderable* r = new DebugRenderable();
-    r->m_debugRenderComponent = &a_renderable;
 
     auto iB = DefaultInstancedBuffer();
 

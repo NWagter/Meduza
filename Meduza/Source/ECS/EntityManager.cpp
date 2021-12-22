@@ -53,7 +53,7 @@ Me::EntityManager::~EntityManager()
 
 bool Me::EntityManager::EntityExists(EntityID a_entity)
 {
-    auto entities = ms_entityManager->m_entities;
+    auto const& entities = ms_entityManager->m_entities;
     if(entities.size() <= 0)
     {
         return false;
@@ -140,7 +140,7 @@ std::vector<EntityID> Me::EntityManager::GetEntities(EntityFilter a_filter)
     // TODO : Filter out entities that contain all the Componets from filter
     std::vector<EntityID> entities;
 
-    for(auto e : m_entities)
+    for(auto const& e : m_entities)
     {
         int amount = a_filter.size();
 

@@ -26,13 +26,13 @@ int Me::Scripting::Lua_API::Lua_Entities::lua_GetEntityByName(lua_State* a_luaSt
 {
     if(lua_gettop(a_luaState) != 1) return -1;
 
-    std::string name = lua_tostring(a_luaState, 1);
+    std::string const& name = lua_tostring(a_luaState, 1);
 
     EntityFilter filter;
     filter.insert(TagComponent::s_componentID);
     
     EntityManager* eManager = EntityManager::GetEntityManager();
-    std::vector<EntityID> ents = eManager->GetEntities(filter);
+    std::vector<EntityID> const& ents = eManager->GetEntities(filter);
 
     for(auto e : ents)
     {

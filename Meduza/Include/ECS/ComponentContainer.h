@@ -40,7 +40,7 @@ namespace Me
         C* GetComponent(EntityID a_entId);
 
         BaseComponent* GetBaseComponent(const EntityID a_entId) override;
-		std::map<EntityID, C*> GetComponents();
+		std::map<EntityID, C*> const& GetComponents();
 
         std::map<EntityID, C*> m_components;
 
@@ -94,7 +94,7 @@ namespace Me
 	}
 
     template <class C>
-	std::map<EntityID, C*> ComponentContainer<C>::GetComponents()
+	std::map<EntityID, C*> const& ComponentContainer<C>::GetComponents()
 	{
 		return m_components;
 	}

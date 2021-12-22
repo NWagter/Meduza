@@ -32,6 +32,7 @@ Me::Renderer::Dx12::Context::~Context()
 {
     m_frameBuffer->ReleaseAndGetAddressOf();
 	m_swapChain.ReleaseAndGetAddressOf();
+	delete m_rtv;
 }
 
 void Me::Renderer::Dx12::Context::SwapBuffer(CommandList& a_cmd)

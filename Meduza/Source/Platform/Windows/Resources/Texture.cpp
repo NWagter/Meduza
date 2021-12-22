@@ -10,6 +10,8 @@ Me::Resources::Dx12::Texture::Texture(unsigned int a_srvId, Helper::Dx12::Textur
 
 Me::Resources::Dx12::Texture::~Texture()
 {
+    if (m_texture->m_resource.Get() != nullptr)
+        m_texture->m_resource->Release();
     delete m_texture;
 }
 

@@ -110,11 +110,26 @@ Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
 {
     m_queue->Flush();
 
+	for (auto cmd : m_cmd)
+	{
+		delete cmd;
+	}
+
 	delete m_textureLoader;
     delete m_context;
     delete m_device;
     delete m_queue;
 	delete m_dsBuffer;
+	delete m_srv;
+	delete m_frameBuffer;
+
+	for (auto instanced : m_instancedRenderer)
+	{
+		delete instanced;
+	}
+	m_instancedRenderer.clear();
+
+	delete m_camBuffer;
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
@@ -375,8 +390,8 @@ Me::Resources::MeshBase* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::ve
 Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_path)
 {
 	auto tData = m_textureLoader->LoadTexture(a_path);
-
 	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
+	delete tData;
 
 	return texture;
 }
@@ -386,6 +401,7 @@ Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(s
 	auto tData = m_textureLoader->LoadTexture(a_texture, a_width, a_height);
 	tData->m_textureData->m_filename = a_file;
 	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
+	delete tData;
 
 	return texture;
 }

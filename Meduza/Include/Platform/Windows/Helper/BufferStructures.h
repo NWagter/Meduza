@@ -32,8 +32,8 @@ namespace Me
                 }
                 ~UploadBuffer()
                 {
-                    m_buffer->Release();
-                    delete m_data;
+                    if(m_buffer.Get() != nullptr)
+                        m_buffer->Release();
                 }
                 void CopyData(int a_alignment, const T& a_data)
                 {

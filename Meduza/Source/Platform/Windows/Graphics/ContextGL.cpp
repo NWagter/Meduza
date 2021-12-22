@@ -56,7 +56,7 @@ Me::Renderer::GL::Context::Context(Window& a_window) : Me::Renderer::ContextBase
 
 Me::Renderer::GL::Context::~Context()
 {
-    
+    wglDeleteContext(m_renderContext);
 }
 
 void Me::Renderer::GL::Context::Resize(float a_width, float a_height)

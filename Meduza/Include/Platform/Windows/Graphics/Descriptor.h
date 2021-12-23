@@ -10,7 +10,7 @@ namespace Me
             class Descriptor
             {			
             public:
-                Descriptor(D3D12_DESCRIPTOR_HEAP_DESC, Device&);
+                Descriptor(D3D12_DESCRIPTOR_HEAP_DESC const a_desc, Device& a_device);
                 ~Descriptor();
 
                 inline unsigned int GetSize() const { return m_heapSize; }

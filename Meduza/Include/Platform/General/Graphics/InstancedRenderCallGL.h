@@ -20,7 +20,7 @@ namespace Me
             class InstancedRenderCall : public BaseInstanced
             {
             public:
-                InstancedRenderCall(Mesh& a_mesh, Shader& a_shader)
+                InstancedRenderCall(Mesh const& a_mesh, Shader const& a_shader)
                 {
                     m_meshIndex = a_mesh;
                     m_shaderIndex = a_shader;
@@ -34,9 +34,9 @@ namespace Me
                     m_textures.clear();
                 }
 
-                int Draw(Math::Mat4, bool = false);
-                bool AddData(InstancedData);
-                int AddTexture(Texture);
+                int Draw(Math::Mat4 const& a_cameraMatrix, bool const a_debugMode = false);
+                bool AddData(InstancedData const& a_instanceData);
+                int AddTexture(Texture const& a_texture);
                 void ClearBuffer() override
                 {
                     m_instancedData.clear(); 
@@ -67,7 +67,7 @@ namespace Me
             };
 
             template<typename InstancedData>
-            int InstancedRenderCall<InstancedData>::Draw(Math::Mat4 a_camMat, bool a_debug)
+            int InstancedRenderCall<InstancedData>::Draw(Math::Mat4 const& a_cameraMatrix, bool const a_debugMode)
             {
                 CreateInstancedBuffer();
 
@@ -79,7 +79,7 @@ namespace Me
                 for (size_t i = 0; i < m_textures.size(); i++)
                 {
                     static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->Bind(static_cast<int>(i));
-                    if (!a_debug && m_meshIndex == (Mesh)Primitives::Quad)
+                    if (!a_debugMode && m_meshIndex == (Mesh)Primitives::Quad)
                     {
                         glDisable(GL_CULL_FACE);
                     }
@@ -90,7 +90,7 @@ namespace Me
                 // render objects in scene
                 int indices = mesh->GetIndices().size();
 
-                shader->SetMat4("u_projectionView", a_camMat, false);
+                shader->SetMat4("u_projectionView", a_cameraMatrix, false);
                 glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
                 // render objects in scene
 
@@ -106,16 +106,14 @@ namespace Me
             }
 
             template<typename InstancedData>
-            bool InstancedRenderCall<InstancedData>::AddData(InstancedData a_data)
+            bool InstancedRenderCall<InstancedData>::AddData(InstancedData const& a_instanceData)
             {
                 if (m_alignmentItem >= MAX_INSTANCES)
                 {
                     return false;
                 }
 
-                InstancedData data = a_data;
-
-                m_instancedData[m_alignmentItem] = a_data;
+                m_instancedData[m_alignmentItem] = a_instanceData;
                 m_alignmentItem++;
 
 
@@ -123,7 +121,7 @@ namespace Me
             }
 
             template<typename InstancedData>
-            int InstancedRenderCall<InstancedData>::AddTexture(Texture a_texture)
+            int InstancedRenderCall<InstancedData>::AddTexture(Texture const& a_texture)
             {
                 if (a_texture == 0)
                     return -9999; // Un textured..

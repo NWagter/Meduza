@@ -11,7 +11,7 @@ namespace Me
     class SystemInitializer
     {
     public:
-        SystemInitializer(Me::Renderer::RenderLayer&);
+        SystemInitializer(Me::Renderer::RenderLayer& a_renderLayer);
         ~SystemInitializer();
 
     private:

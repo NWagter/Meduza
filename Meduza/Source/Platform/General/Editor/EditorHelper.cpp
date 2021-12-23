@@ -2,7 +2,7 @@
 
 #include "Platform/General/Editor/EditorHelper.h"
 
-void Me::Editor::Helper::EditorHelper::DrawVec2Prop(const std::string &a_label, Me::Math::Vec2& a_value, float a_resetValue, float a_columnWidth)
+void Me::Editor::Helper::EditorHelper::DrawVec2Prop(std::string const& a_label, Me::Math::Vec2& a_value, float const a_resetValue, float const a_columnWidth)
 {
     ImGui::PushID(a_label.c_str());
     ImGui::Columns(2);
@@ -47,7 +47,7 @@ void Me::Editor::Helper::EditorHelper::DrawVec2Prop(const std::string &a_label, 
     ImGui::Columns(1);
     ImGui::PopID();
 }
-void Me::Editor::Helper::EditorHelper::DrawVec3Prop(const std::string &a_label, Me::Math::Vec3& a_value, float a_resetValue, float a_columnWidth)
+void Me::Editor::Helper::EditorHelper::DrawVec3Prop(std::string const& a_label, Me::Math::Vec3& a_value, float const a_resetValue, float const a_columnWidth)
 {
     ImGui::PushID(a_label.c_str());
     ImGui::Columns(2);
@@ -106,7 +106,7 @@ void Me::Editor::Helper::EditorHelper::DrawVec3Prop(const std::string &a_label, 
     ImGui::Columns(1);
     ImGui::PopID();
 }
-bool Me::Editor::Helper::EditorHelper::DrawVec4Prop(const std::string &a_label, Me::Math::Vec4& a_value, float a_resetValue, float a_columnWidth)
+bool Me::Editor::Helper::EditorHelper::DrawVec4Prop(std::string const& a_label, Me::Math::Vec4& a_value, float const a_resetValue, float const a_columnWidth)
 {
     bool changed = false;
 

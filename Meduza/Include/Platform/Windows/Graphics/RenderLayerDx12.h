@@ -42,21 +42,21 @@ namespace Me
             class RenderLayerDx12 : public RenderLayer
             {
                 public:
-                RenderLayerDx12(Me::Window*);
+                RenderLayerDx12(Me::Window* a_window);
                 virtual ~RenderLayerDx12();
 
-                void Clear(Colour) override;
+                void Clear(Colour const a_clearColour) override;
                 void Populate() override;
                 void Present() override;
-                void Submit(RenderComponent&, TransformComponent&) override;
-                void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
-                void RenderLine(LineRender&) override;
-                void RenderCircle(CircleRender&)  override;
-                void SetCamera(CameraComponent&, TransformComponent&) override;
+                void Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent) override;
+                void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent) override;
+                void RenderLine(LineRender const& a_lineRender) override;
+                void RenderCircle(CircleRender const& a_circleRender)  override;
+                void SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent) override;
                 
-                Resources::MeshBase* CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
-                Resources::Dx12::Texture* LoadTexture(std::string);
-                Resources::Dx12::Texture* LoadTexture(std::string, const std::vector<unsigned char>, int, int);
+                Resources::MeshBase* CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
+                Resources::Dx12::Texture* LoadTexture(std::string const& a_file);
+                Resources::Dx12::Texture* LoadTexture(std::string const& a_file, std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
 
                 CommandList& GetCmd(int a_id = 0);
                 Device& GetDevice();

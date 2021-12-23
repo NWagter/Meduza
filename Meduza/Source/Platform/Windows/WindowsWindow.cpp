@@ -5,7 +5,7 @@
 
 #include "Platform/General/Events/EventSystem.h"
 
-Me::WindowsWindow::WindowsWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
+Me::WindowsWindow::WindowsWindow(int const a_width, int const a_height, const char* a_title) : Window(a_width, a_height, a_title)
 {
 	m_eventSystem = nullptr;
 	m_context = nullptr;
@@ -32,9 +32,9 @@ Me::WindowsWindow::~WindowsWindow()
 {
 }
 
-void Me::WindowsWindow::ActiveCursor(bool a_active)
+void Me::WindowsWindow::ActiveCursor(bool a_showCursor)
 {
-	ShowCursor(a_active);	
+	ShowCursor(a_showCursor);
 }
 
 void Me::WindowsWindow::Peek()
@@ -59,7 +59,7 @@ void Me::WindowsWindow::Quit()
 		PostQuitMessage(0);
 }
 
-void Me::WindowsWindow::SetTitle(std::string a_title)
+void Me::WindowsWindow::SetTitle(std::string const& a_title)
 {
 	std::string title = a_title;
 	title.append(" | Windows");
@@ -72,7 +72,7 @@ void Me::WindowsWindow::SetContext(Renderer::ContextBase* a_context)
 	m_context = a_context;
 }
 
-LRESULT __stdcall Me::WindowsWindow::HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT __stdcall Me::WindowsWindow::HandleMsgSetup(HWND const a_hwnd, UINT const a_msg, WPARAM const a_wParam, LPARAM const a_lParam)
 {
 
 	if (a_msg == WM_NCCREATE) {

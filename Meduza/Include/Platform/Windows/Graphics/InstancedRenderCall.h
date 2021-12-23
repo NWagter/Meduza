@@ -16,7 +16,7 @@ namespace Me
             class InstancedRenderCall : public BaseInstanced
             {
             public:
-                InstancedRenderCall(Mesh& a_mesh, Shader& a_shader, unsigned int& a_srvId, Device* a_device)
+                InstancedRenderCall(Mesh const& a_mesh, Shader const& a_shader, unsigned int const& a_srvId, Device* a_device)
                 {
                     m_meshIndex = a_mesh;
                     m_shaderIndex = a_shader;

@@ -49,7 +49,7 @@ Me::Helper::Dx12::TextureLoader::~TextureLoader()
     m_srvs.clear();
 }
 
-const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(std::string a_file)
+const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(std::string const& a_file)
 {
     TextureReturnData* data = new TextureReturnData();
 
@@ -67,7 +67,7 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
     return data;
 }
 
-const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height)
+const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
 {
     TextureReturnData* data = new TextureReturnData();
 
@@ -150,7 +150,7 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
     return data;
 }
 
-Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(std::string a_file, std::string a_ext)
+Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(std::string const& a_file, std::string const& a_ext)
 {
     TextureData* texture = new TextureData();
     texture->m_filename = Files::FileSystem::GetFileName(a_file);
@@ -254,10 +254,10 @@ void Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a_srv, TextureData
     }
 }
 
-void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned int a_srvId)
+void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned int const a_index)
 {
     auto t = &a_texture;
-    auto srv = m_srvs.at(a_srvId).m_srv;
+    auto srv = m_srvs.at(a_index).m_srv;
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE hDescriptor(srv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
@@ -273,7 +273,7 @@ void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
 
 	auto tResource = t->m_resource;
-    m_srvs.at(a_srvId).m_textures.push_back(t);
+    m_srvs.at(a_index).m_textures.push_back(t);
 
 	srvDesc.Texture2D.MipLevels = tResource->GetDesc().MipLevels;
 	srvDesc.Format = tResource->GetDesc().Format;

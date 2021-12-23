@@ -40,8 +40,8 @@ namespace Me
         using CompTuple = std::tuple<std::add_pointer_t<Comps>...>;
         std::vector<CompTuple> m_components;
         
-        void OnEntityCreated(const EntityID& a_entity) override final;
-        void OnEntityDestroy(const EntityID& a_entity) override final;
+        void OnEntityCreated(EntityID const& a_entity) override final;
+        void OnEntityDestroy(EntityID const& a_entity) override final;
 
     public:
         virtual ~BaseSystem() = default;
@@ -56,7 +56,7 @@ namespace Me
     };
 
     template<class... Comps>
-    void BaseSystem<Comps...>::OnEntityCreated(const EntityID& a_entity)
+    void BaseSystem<Comps...>::OnEntityCreated(EntityID const& a_entity)
     {
         CompTuple compTuple;
         size_t matchingComps = 0;
@@ -107,7 +107,7 @@ namespace Me
 
 
     template<class... Comps>
-    void BaseSystem<Comps...>::OnEntityDestroy(const EntityID& a_entity)
+    void BaseSystem<Comps...>::OnEntityDestroy(EntityID const& a_entity)
     {
         auto it = std::find(m_entities.begin(), m_entities.end(), a_entity);
         

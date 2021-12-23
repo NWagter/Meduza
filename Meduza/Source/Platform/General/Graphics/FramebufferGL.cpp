@@ -3,7 +3,7 @@
 
 #include "Platform/General/ContextBase.h"
 
-Me::Renderer::GL::FrameBufferGL::FrameBufferGL(const FrameBufferSpecs& a_spec, ContextBase& a_context) : m_spec(a_spec)
+Me::Renderer::GL::FrameBufferGL::FrameBufferGL(FrameBufferSpecs const& a_spec, ContextBase& a_context) : m_spec(a_spec)
 {
     m_attachment = nullptr;
     m_context = &a_context;
@@ -48,7 +48,7 @@ void Me::Renderer::GL::FrameBufferGL::Create()
 
 }
 
-void Me::Renderer::GL::FrameBufferGL::Resize(Math::Vec2 a_size)
+void Me::Renderer::GL::FrameBufferGL::Resize(Math::Vec2 const& a_size)
 {
 
     if( m_renderTextureID)

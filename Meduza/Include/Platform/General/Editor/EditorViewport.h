@@ -19,7 +19,7 @@ namespace Me
         class EditorViewport : public EditorWidget
         {
             public:
-                EditorViewport(EntityEditor&, EditorToolbar&, Renderer::RenderLayer&);
+                EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderLayer);
                 ~EditorViewport();
 
                 void Draw() override;

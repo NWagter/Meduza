@@ -16,29 +16,29 @@ namespace Me
         static void DestroyEntityManager();
         inline static EntityManager* GetEntityManager() {return ms_entityManager;}
 
-        static bool EntityExists(EntityID);
+        static bool EntityExists(EntityID const a_entityID);
 
-        static void AddSystem(ECSSystem*);
-        static EntityID CreateEntity(std::string = "");
-        static void DestroyEntity(EntityID);
+        static void AddSystem(ECSSystem* a_system);
+        static EntityID CreateEntity(std::string a_tag = "");
+        static void DestroyEntity(EntityID const a_entityID);
 
         static void CleanGame();
         static int GetGameEntityAmount();
 
         template<class C = BaseComponent>
-        bool AddComponent(const EntityID a_entID);        
+        bool AddComponent(EntityID const a_entityID);
         template<class C = BaseComponent>
-        bool RemoveComponent(const EntityID a_entID);
+        bool RemoveComponent(EntityID const a_entityID);
 
         template<class C = BaseComponent>
-        bool AddComponent(const EntityID a_entID, C* a_comp);
+        bool AddComponent(EntityID const a_entityID, C* a_component);
         template<class C = BaseComponent>
-		C* GetComponent(const EntityID a_entID);
+		C* GetComponent(EntityID const a_entityID);
         template<class C = BaseComponent>
 		std::map<EntityID, C*> const& GetComponents();
 
         void DestroyEntities();
-        void Update(float);
+        void Update(float a_dt);
         
         std::vector<EntityID> GetEntities(EntityFilter);
         std::map<EntityID, std::set<ComponentID>> const& GetEntities() {return m_entities;}
@@ -105,7 +105,7 @@ namespace Me
 //===== Component Logics
 
     template<class C>
-    bool EntityManager::AddComponent(const EntityID a_entID)
+    bool EntityManager::AddComponent(EntityID const a_entityID)
     {
         auto container = GetComponentContainer<C>();
         if(container == nullptr)
@@ -114,22 +114,22 @@ namespace Me
         }
         auto comp = new C();
 
-        auto ent = m_entities.find(a_entID);
+        auto ent = m_entities.find(a_entityID);
 
         if(!ent->second.empty())
         {
-            RemoveComponent<C>(a_entID);
+            RemoveComponent<C>(a_entityID);
         }
 
         ent->second.insert(C::s_componentID);
-        container->AddComponent(a_entID, comp);
-		RegisterEntity(a_entID);
+        container->AddComponent(a_entityID, comp);
+		RegisterEntity(a_entityID);
 
         return true;
     }
 
     template<class C>
-    bool EntityManager::RemoveComponent(const EntityID a_entID)
+    bool EntityManager::RemoveComponent(EntityID const a_entityID)
     {
         auto container = GetComponentContainer<C>();
         if(container == nullptr)
@@ -137,19 +137,19 @@ namespace Me
             return false;
         }
 
-        container->RemoveComponent(a_entID);
+        container->RemoveComponent(a_entityID);
 
-        auto ent = m_entities.find(a_entID);
+        auto ent = m_entities.find(a_entityID);
         ent->second.erase(C::s_componentID);
         
-        UnRegisterEntity(a_entID);
-		RegisterEntity(a_entID);
+        UnRegisterEntity(a_entityID);
+		RegisterEntity(a_entityID);
 
         return true;
     }
 
     template<class C>
-    bool EntityManager::AddComponent(const EntityID a_entID, C* a_comp)
+    bool EntityManager::AddComponent(EntityID const a_entityID, C* a_component)
     {
         auto container = GetComponentContainer<C>();
         if(container == nullptr)
@@ -157,23 +157,23 @@ namespace Me
             container = AddComponentContainer<C>();
         }
 
-        auto ent = m_entities.find(a_entID);
+        auto ent = m_entities.find(a_entityID);
 
         if(!ent->second.empty())
         {
-            RemoveComponent<C>(a_entID);
+            RemoveComponent<C>(a_entityID);
         }
 
         ent->second.insert(C::s_componentID);
 
-        container->AddComponent(a_entID, a_comp);
+        container->AddComponent(a_entityID, a_component);
 
-		RegisterEntity(a_entID);
+		RegisterEntity(a_entityID);
 
         return true;
     }    
     template<class C>
-    C* EntityManager::GetComponent(const EntityID a_entID)
+    C* EntityManager::GetComponent(EntityID const a_entityID)
     {
         auto container = GetComponentContainer<C>();
         if(container == nullptr)
@@ -181,7 +181,7 @@ namespace Me
             return nullptr;
         }
 
-		return container->GetComponent(a_entID);
+		return container->GetComponent(a_entityID);
     }
 
     template<class C>
@@ -191,7 +191,7 @@ namespace Me
 
         if(container == nullptr)
         {
-            return std::map<EntityID, C*>();
+            return AddComponentContainer<C>()->GetComponents();
         }
 
 		return container->GetComponents();

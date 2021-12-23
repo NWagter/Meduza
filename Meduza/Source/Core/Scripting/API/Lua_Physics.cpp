@@ -136,7 +136,7 @@ void Me::Scripting::Lua_API::Lua_Physics::TriggerResult(lua_State* a_luaState, P
     lua_setmetatable(a_luaState, -3);
 }
 
-void Me::Scripting::Lua_API::Lua_Physics::CollisionResult(lua_State* a_luaState, Physics::CollisionResult a_result)
+void Me::Scripting::Lua_API::Lua_Physics::CollisionResult(lua_State* a_luaState, Physics::CollisionResult& a_result)
 {
     lua_newtable(a_luaState);
 

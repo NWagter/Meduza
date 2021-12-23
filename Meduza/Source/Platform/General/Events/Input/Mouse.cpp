@@ -29,7 +29,7 @@ void Me::Event::Input::Mouse::Clear()
     }
 }
 
-Me::Event::MouseEvent Me::Event::Input::Mouse::State(MouseButton a_button)
+Me::Event::MouseEvent Me::Event::Input::Mouse::State(MouseButton const& a_button)
 {
     auto mEvent = m_mouse.find(a_button);
     return mEvent->second;
@@ -45,7 +45,7 @@ Me::Physics::Ray Me::Event::Input::Mouse::GetScreenRay()
     return *m_screenRay;
 }
 
-void Me::Event::Input::Mouse::SetState(MouseButton a_button, MouseEvent a_event)
+void Me::Event::Input::Mouse::SetState(MouseButton const& a_button, MouseEvent const& a_event)
 {    
     auto mEvent = m_mouse.find(a_button);
 
@@ -62,12 +62,12 @@ void Me::Event::Input::Mouse::SetState(MouseButton a_button, MouseEvent a_event)
     }
 }
 
-void Me::Event::Input::Mouse::SetPosition(Math::Vec2 a_pos)
+void Me::Event::Input::Mouse::SetPosition(Math::Vec2 const& a_position)
 {
-    m_position = a_pos;
+    m_position = a_position;
 }
 
-void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent a_camera, TransformComponent a_trans)
+void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_transform)
 {
     float x = (m_position.m_x * 2) / a_camera.m_size.m_x;
     float y = (m_position.m_y * 2) / a_camera.m_size.m_y;
@@ -75,10 +75,10 @@ void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent a_camera, TransformC
     Math::Vec4 ray_clip = Math::Vec4(x,y, -1, 1);
 
     Math::Mat4 pMat = Math::Mat4::Identity();
-    pMat.SetPosition(a_trans.m_translation);
+    pMat.SetPosition(a_transform.m_translation);
 
     Math::Mat4 rMat = Math::Mat4::Identity();
-    rMat.Rotation(a_trans.m_rotation);
+    rMat.Rotation(a_transform.m_rotation);
 
     Math::Mat4 view = rMat * pMat.Inverse();
 

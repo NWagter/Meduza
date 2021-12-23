@@ -19,7 +19,7 @@ namespace Me
                 class Texture : public TextureBase
                 {
                 public:
-                    Texture(unsigned int, Helper::Dx12::TextureData&, const Math::Vec2);
+                    Texture(unsigned int const a_srvId, Helper::Dx12::TextureData& a_texture, Math::Vec2 const& a_size);
                     ~Texture();
 
                     virtual void Reload();

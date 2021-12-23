@@ -132,7 +132,7 @@ Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
 	delete m_camBuffer;
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
+void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour const a_clearColour)
 {
 	auto cmd = GetCmd();
 
@@ -166,7 +166,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour a_colour)
 	D3D12_CPU_DESCRIPTOR_HANDLE dvsHandle = m_dsBuffer->DepthStencilView();
 
 
-	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_colour.m_colour, 0, nullptr);
+	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_clearColour.m_colour, 0, nullptr);
 	cmd.GetList()->ClearDepthStencilView(dvsHandle,
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
@@ -196,7 +196,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
 	}
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)
+void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_renderable, TransformComponent const& a_transformComponent)
 {
 	// If no instanced Renderers we just create one
 	BaseInstanced* instancedRenderer = nullptr;
@@ -254,7 +254,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
 
-	Math::Mat4 model = a_trans.GetTransform();
+	Math::Mat4 model = a_transformComponent.GetTransform();
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMATRIX((model).m_m));
 
@@ -263,45 +263,45 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent& a_renderable, 
 
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent&, TransformComponent&)
+void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent const&, TransformComponent const&)
 {
 
 }
 
 
-void Me::Renderer::Dx12::RenderLayerDx12::RenderLine(LineRender&)
+void Me::Renderer::Dx12::RenderLayerDx12::RenderLine(LineRender const&)
 {
 
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::RenderCircle(CircleRender&)
+void Me::Renderer::Dx12::RenderLayerDx12::RenderCircle(CircleRender const&)
 {
 
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent& a_cam, TransformComponent& a_trans)
+void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent)
 {
 	Math::Mat4 camMat = Math::Mat4::Identity();
-	if(a_cam.m_cameraType == CameraType::Orthographic)
+	if(a_cameraComponent.m_cameraType == CameraType::Orthographic)
 	{		
         Me::Math::Vec2 size = m_window->GetSize();
         float aspect = size.m_x / size.m_y;
 
-        camMat = Math::GetOrthographicMatrix(-a_cam.m_orthoScale, a_cam.m_orthoScale,
-            -a_cam.m_orthoScale * aspect , a_cam.m_orthoScale * aspect,
-            a_cam.m_near, a_cam.m_far);
+        camMat = Math::GetOrthographicMatrix(-a_cameraComponent.m_orthoScale, a_cameraComponent.m_orthoScale,
+            -a_cameraComponent.m_orthoScale * aspect , a_cameraComponent.m_orthoScale * aspect,
+            a_cameraComponent.m_near, a_cameraComponent.m_far);
 	}
-	else if(a_cam.m_cameraType == CameraType::Perspective)
+	else if(a_cameraComponent.m_cameraType == CameraType::Perspective)
 	{
-        camMat = Math::GetProjectionMatrix(45.0f, a_cam.m_size.m_x / a_cam.m_size.m_y,
-         a_cam.m_near, a_cam.m_far);
+        camMat = Math::GetProjectionMatrix(45.0f, a_cameraComponent.m_size.m_x / a_cameraComponent.m_size.m_y,
+         a_cameraComponent.m_near, a_cameraComponent.m_far);
 	}
     
     Math::Mat4 rMat = Math::Mat4::Identity();
-    rMat.Rotation(a_trans.m_rotation);
+    rMat.Rotation(a_transformComponent.m_rotation);
 
     Math::Mat4 pMat = Math::Mat4::Identity();
-    pMat.SetPosition(a_trans.m_translation);
+    pMat.SetPosition(a_transformComponent.m_translation);
 
     Math::Mat4 view = rMat * pMat.Inverse();
 
@@ -382,21 +382,21 @@ Me::Window* Me::Renderer::Dx12::RenderLayerDx12::GetWindow()
 	return static_cast<Window*>(m_window);
 }
 
-Me::Resources::MeshBase* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::MeshBase* Me::Renderer::Dx12::RenderLayerDx12::CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices)
 {
 	return new Me::Resources::Dx12::Mesh(a_vertices, a_indices, *m_device, GetCmd());
 }
 
-Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_path)
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string const& a_file)
 {
-	auto tData = m_textureLoader->LoadTexture(a_path);
+	auto tData = m_textureLoader->LoadTexture(a_file);
 	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
 	delete tData;
 
 	return texture;
 }
 
-Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string a_file ,const std::vector<unsigned char> a_texture, int a_width, int a_height)
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string const& a_file, std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
 {
 	auto tData = m_textureLoader->LoadTexture(a_texture, a_width, a_height);
 	tData->m_textureData->m_filename = a_file;

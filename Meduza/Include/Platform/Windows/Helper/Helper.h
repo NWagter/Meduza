@@ -36,17 +36,17 @@ namespace Me
             class Helper
             {
                 public:
-				static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBuffer(ID3D12Device*,
-					ID3D12GraphicsCommandList*,
-					const void*,
-					UINT64,
-					Microsoft::WRL::ComPtr<ID3D12Resource>&);
+				static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBuffer(ID3D12Device* a_device,
+                    ID3D12GraphicsCommandList* a_cmdList,
+                    const void* a_initData,
+                    UINT64 const a_byteSize,
+                    Microsoft::WRL::ComPtr<ID3D12Resource>& a_uploadBuffer);
 
-				static Microsoft::WRL::ComPtr<ID3D12Resource> CopyBuffer(ID3D12Device*,
-					ID3D12GraphicsCommandList*,
-					const void*,
-					UINT64,
-					Microsoft::WRL::ComPtr<ID3D12Resource>&);
+				static Microsoft::WRL::ComPtr<ID3D12Resource> CopyBuffer(ID3D12Device* a_device,
+                    ID3D12GraphicsCommandList* a_cmdList,
+                    const void* a_initData,
+                    UINT64 const a_byteSize,
+                    Microsoft::WRL::ComPtr<ID3D12Resource>& a_uploadBuffer);
             };
         }
     }

@@ -18,7 +18,7 @@ namespace Me
                 ~AgentMovementSystem();
 
             protected:
-                void OnUpdate(float) override;  
+                void OnUpdate(float a_dt) override;  
         };
     }
 }

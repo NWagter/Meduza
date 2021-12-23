@@ -15,9 +15,9 @@ namespace Me
 		class FileSystem
 		{
 		public:
-			static std::string ReadFile(std::string);
-			static std::string GetFileName(std::string);
-			static std::string GetFileExtention(std::string);
+			static std::string ReadFile(std::string const& a_path);
+			static std::string GetFileName(std::string const& a_path);
+			static std::string GetFileExtention(std::string const& a_path);
 		};
 	}
 }

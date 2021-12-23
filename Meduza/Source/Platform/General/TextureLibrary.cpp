@@ -34,7 +34,7 @@ void Me::Resources::TextureLibrary::Destroy()
     delete ms_instance;
 }
 
-Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
+Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string const& a_texture)
 {
 	std::string ext = Files::FileSystem::GetFileExtention(a_texture);
     Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_texture));
@@ -100,7 +100,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::string a_texture)
     return 0;
 }
 
-Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsigned char> a_texture, int a_width, int a_height,std::string a_name, std::string a_file)
+Me::Texture Me::Resources::TextureLibrary::CreateTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height, std::string const& a_name, std::string const& a_file)
 {
     Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_name));
 
@@ -165,7 +165,7 @@ Me::Texture Me::Resources::TextureLibrary::CreateTexture(const std::vector<unsig
     return 0;
 }
 
-Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
+Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string const& a_texture)
 {
     Texture hashedId =  Utils::Utilities::GetHashedID(Files::FileSystem::GetFileName(a_texture));
     if (ms_instance->m_textures[hashedId] != nullptr)
@@ -176,7 +176,7 @@ Me::Texture Me::Resources::TextureLibrary::GetTexture(std::string a_texture)
     ME_GFX_LOG("Texture %s does not Exist! \n", a_texture.c_str());
     return 0;
 }
-Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Texture a_texture)
+Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Texture const a_texture)
 {
     TextureBase* t = ms_instance->m_textures[a_texture];
 
@@ -188,7 +188,7 @@ Me::Resources::TextureBase* Me::Resources::TextureLibrary::GetTexture(Me::Textur
     return t;
 }
 
-bool Me::Resources::TextureLibrary::UnloadTexture(std::string a_texture)
+bool Me::Resources::TextureLibrary::UnloadTexture(std::string const& a_texture)
 {  
     //Check if already exists
 	if (!UnloadTexture(Utils::Utilities::GetHashedID(a_texture), false))
@@ -199,7 +199,7 @@ bool Me::Resources::TextureLibrary::UnloadTexture(std::string a_texture)
     
 	return true;
 }
-bool Me::Resources::TextureLibrary::UnloadTexture(Texture a_texture, bool a_message)
+bool Me::Resources::TextureLibrary::UnloadTexture(Texture const a_texture, bool const a_message)
 {
     //Check if already exists
 	if (ms_instance->m_textures[a_texture] == nullptr)

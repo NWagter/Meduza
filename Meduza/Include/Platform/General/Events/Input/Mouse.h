@@ -22,16 +22,16 @@ namespace Me
                 Mouse();
                 ~Mouse();
 
-                MouseEvent State(MouseButton);
+                MouseEvent State(MouseButton const& a_button);
                 Math::Vec2 GetPosition();
                 Physics::Ray GetScreenRay();
 
 
             private:
                 void Clear();
-                void SetState(MouseButton, MouseEvent);
-                void SetPosition(Math::Vec2);
-                void SetWorldSpace(CameraComponent, TransformComponent);
+                void SetState(MouseButton const& a_button, MouseEvent const& a_event);
+                void SetPosition(Math::Vec2 const& a_position);
+                void SetWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_transform);
 
                 std::map<MouseButton, MouseEvent> m_mouse;
                 Math::Vec2 m_position;

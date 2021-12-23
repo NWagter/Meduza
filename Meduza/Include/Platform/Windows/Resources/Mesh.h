@@ -20,10 +20,10 @@ namespace Me
             class Mesh : public MeshBase
             {
             public:
-                Mesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices, Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);
+                Mesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices, Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd);
                 virtual ~Mesh();    
 
-                void GenerateBuffers(Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);
+                void GenerateBuffers(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd);
                 void DisposeUploaders();
 
                 Microsoft::WRL::ComPtr<ID3DBlob> m_vertexBufferCPU = nullptr;

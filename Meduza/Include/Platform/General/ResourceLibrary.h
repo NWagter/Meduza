@@ -16,14 +16,14 @@ namespace Me
             static void Destroy();
 
             template<typename T, typename = typename std::enable_if<std::is_base_of<ResourceBase, T>::value, T>::type, typename ... Args>
-            T* LoadResource(const std::string& a_path, Args... a_args);
+            T* LoadResource(std::string const& a_path, Args... a_args);
 
 
 			template<typename T, typename = typename std::enable_if<std::is_base_of<ResourceBase, T>::value, T>::type, typename ... Args>
-			T* AddResource(T* a_resource, const std::string& a_path, const std::string& a_name);
+			T* AddResource(T* a_resource, std::string const& a_path, std::string const& a_name);
 
 			template<typename T>
-			T* GetResource(const Resource a_resourceId);
+			T* GetResource(Resource const a_resourceId);
 
 			std::unordered_map<Resource, ResourceBase*> const& GetResources() const { return m_resources; }
 
@@ -42,7 +42,7 @@ namespace Me
         };
 
 		template <typename T, typename, class... Args>
-		T* ResourceLibrary::LoadResource(const std::string& a_path, Args... a_args)
+		T* ResourceLibrary::LoadResource(std::string const& a_path, Args... a_args)
 		{
 			std::string fileName = Files::FileSystem::GetFileName(a_path);			
 			Resource id = Utils::Utilities::GetHashedID(fileName);
@@ -68,7 +68,7 @@ namespace Me
 		}
 
 		template <typename T, typename, class... Args>
-		T* ResourceLibrary::AddResource(T* a_resource, const std::string& a_path, const std::string& a_name)
+		T* ResourceLibrary::AddResource(T* a_resource, std::string const& a_path, std::string const& a_name)
 		{
 			Resource id = Utils::Utilities::GetHashedID(a_name);
 
@@ -86,7 +86,7 @@ namespace Me
 		}
 
 		template <typename T>
-		T* ResourceLibrary::GetResource(const Resource a_resourceId)
+		T* ResourceLibrary::GetResource(Resource const a_resourceId)
 		{
 			const auto it = m_resources.find(a_resourceId);
 			if (it != m_resources.end())

@@ -25,12 +25,12 @@ namespace Me
 			
 		}
 
-		void SetStartTime(TimePoint a_time)
+		void SetStartTime(TimePoint const& a_time)
 		{
 			m_startTime = a_time;
 		}
 
-		void Start(T a_duration, bool a_reset = true)
+		void Start(T const& a_duration, bool const a_reset = true)
 		{
 			if(a_reset)
 			{

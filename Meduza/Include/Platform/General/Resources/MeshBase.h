@@ -9,7 +9,7 @@ namespace Me
         {
         public:
             MeshBase();
-            MeshBase(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
+            MeshBase(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
             virtual ~MeshBase();   
 
             unsigned int GetVerticesSize() const

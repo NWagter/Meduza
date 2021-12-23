@@ -23,29 +23,29 @@ namespace Me
         class EventSystem
         {
         public:
-            static EventSystem* Create(Window*);
+            static EventSystem* Create(Window* a_window);
             static void Destroy();
 
             static EventSystem* GetEventSystem() {return ms_eventSystem;}
             
-            void ShowCursor(bool);
+            void ShowCursor(bool a_showCursor);
 
-            bool KeyDown(KeyCode);
-            bool KeyUp(KeyCode);
-            bool MouseButtonDown(MouseButton);
-            bool MouseButtonUp(MouseButton);
-            bool MouseButtonPressed(MouseButton);
+            bool KeyDown(KeyCode const& a_key);
+            bool KeyUp(KeyCode const& a_key);
+            bool MouseButtonDown(MouseButton const& a_button);
+            bool MouseButtonUp(MouseButton const& a_button);
+            bool MouseButtonPressed(MouseButton const& a_button);
             Math::Vec2 MousePosition();
             Math::Vec2 ScreenSize();
             void Clear();
         private:
-            EventSystem(Window*);
+            EventSystem(Window* a_window);
             ~EventSystem();
             
-            void OnKeyEvent(KeyCode, KeyState);
-            void OnMouseEvent(MouseButton, MouseEvent);
-            void OnMouseMove(Math::Vec2);
-            void SetMouseWorldSpace(CameraComponent, TransformComponent);
+            void OnKeyEvent(KeyCode const& a_key, KeyState const& a_state);
+            void OnMouseEvent(MouseButton const& a_button, MouseEvent const& a_event);
+            void OnMouseMove(Math::Vec2 const& a_position);
+            void SetMouseWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_transform);
 
             static EventSystem* ms_eventSystem;
 

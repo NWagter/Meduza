@@ -21,11 +21,11 @@ namespace Me
             class EditorRendererGL : public Me::Editor::EditorRenderer
             {
                 public:
-                    EditorRendererGL(Renderer::GL::RenderLayerGL*);
+                    EditorRendererGL(Renderer::GL::RenderLayerGL* a_renderLayer);
                     ~EditorRendererGL();
 
                     void Clear() override;
-                    void Update(float) override;
+                    void Update(float a_dt) override;
                     void Populate() override;
 
                 private:

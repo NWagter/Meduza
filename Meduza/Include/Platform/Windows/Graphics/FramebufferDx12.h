@@ -17,10 +17,10 @@ namespace Me
             class FrameBufferDx12 : public FrameBuffer
             {
             public:
-                FrameBufferDx12(const FrameBufferSpecs&, ContextBase&);
+                FrameBufferDx12(FrameBufferSpecs const& a_spec, ContextBase& a_context);
                 ~FrameBufferDx12();
 
-                void Resize(Math::Vec2) override;
+                void Resize(Math::Vec2 const& a_size) override;
 
                 inline const FrameBufferSpecs& GetFrameBufferSpec() const override
                 {

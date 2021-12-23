@@ -15,13 +15,13 @@ namespace Me
         Application(int a_width = 1280 ,int a_height = 720, int a_api = 0);
         virtual ~Application();
 
-        virtual void OnUpdate(float);
+        virtual void OnUpdate(float a_dt);
         virtual void OnInitilized() = 0;
         virtual void OnClose() = 0;
         
         bool Run();
     protected:
-        virtual void SetName(std::string) final;
+        virtual void SetName(std::string a_appName) final;
         Math::Vec2 GetScreenSize();
 
     private:

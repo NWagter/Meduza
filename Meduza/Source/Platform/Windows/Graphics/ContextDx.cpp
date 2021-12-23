@@ -54,12 +54,12 @@ void Me::Renderer::Dx12::Context::SwapBuffer(CommandList& a_cmd)
 	m_queue->Flush();
 }
 
-void Me::Renderer::Dx12::Context::Resize(float a_x, float a_y)
+void Me::Renderer::Dx12::Context::Resize(float const a_width, float const a_height)
 {
 	if (!m_resize)
 	{
-        m_width = a_x;
-        m_height = a_y;
+        m_width = a_width;
+        m_height = a_height;
 		m_resize = true;
 		return;
 	}
@@ -117,13 +117,13 @@ void Me::Renderer::Dx12::Context::CreateRTV(Descriptor& a_rtv)
 	}
 }
 
-void Me::Renderer::Dx12::Context::Resize(int a_w, int a_h)
+void Me::Renderer::Dx12::Context::Resize(int const a_width, int const a_height)
 {
 	DXGI_SWAP_CHAIN_DESC1 sd;
 	m_swapChain->GetDesc1(&sd);
 	m_swapChain.Reset();
-	sd.Width = a_w;
-	sd.Height = a_h;
+	sd.Width = a_width;
+	sd.Height = a_height;
 
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain1;
 	m_device->GetFactory()->CreateSwapChainForHwnd(

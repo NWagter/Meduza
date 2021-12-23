@@ -13,7 +13,7 @@ namespace Me
         class EntityEditor : public EditorWidget
         {
             public:
-                EntityEditor(EntityHierarchy&);
+                EntityEditor(EntityHierarchy& a_entityHierarchy);
                 ~EntityEditor();
 
                 void Draw() override;

@@ -16,11 +16,11 @@ namespace Me
             class FrameBufferGL : public FrameBuffer
             {
             public:
-                FrameBufferGL(const FrameBufferSpecs&, ContextBase&);
+                FrameBufferGL(FrameBufferSpecs const& a_spec, ContextBase& a_context);
                 ~FrameBufferGL();
 
                 void Create();
-                void Resize(Math::Vec2) override;
+                void Resize(Math::Vec2 const& a_size) override;
                 void Bind() override;
                 void UnBind() override;
 

@@ -4,7 +4,7 @@
 #include "Platform/General/ContextBase.h"
 
 
-Me::MacOsWindow::MacOsWindow(int a_w, int a_h, const char* a_title) : Window(a_w, a_h, a_title)
+Me::MacOsWindow::MacOsWindow(int const a_w, int const a_h, const char* a_title) : Window(a_w, a_h, a_title)
 {
 	m_active = false;
 
@@ -33,7 +33,7 @@ void Me::MacOsWindow::SetContext(Renderer::ContextBase* a_context)
 	m_context = a_context;
 }
 
-void Me::MacOsWindow::SetTitle(std::string)
+void Me::MacOsWindow::SetTitle(std::string const& a_title)
 {
 
 } 

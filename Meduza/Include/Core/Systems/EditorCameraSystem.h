@@ -17,7 +17,7 @@ namespace Me
 
             protected:
                 void OnCreate() override;  
-                void OnUpdate(float) override;  
+                void OnUpdate(float a_dt) override;  
 
             private:
         };

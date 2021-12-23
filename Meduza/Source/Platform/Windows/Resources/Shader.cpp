@@ -6,12 +6,12 @@
 #include "Platform/Windows/Graphics/Device.h"
 #include "Platform/Windows/Graphics/CommandList.h"
 
-Me::Resources::Dx12::Shader::Shader( std::string a_path, Renderer::Dx12::RenderLayerDx12& a_renderer) : ShaderBase()
+Me::Resources::Dx12::Shader::Shader(std::string const& a_path, Renderer::Dx12::RenderLayerDx12& a_renderLayer) : ShaderBase()
 {
     m_vertShader = a_path;
 	m_pixShader = a_path;
 
-    auto r = &a_renderer;
+    auto r = &a_renderLayer;
     if(r != nullptr)
     {
         m_renderLayer = r;

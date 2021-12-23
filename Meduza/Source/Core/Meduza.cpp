@@ -30,7 +30,7 @@
 
 unsigned char Me::Meduza::ms_engineState = RUN_GAME;
 
-Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
+Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	:
 	m_renderLayer(nullptr),
 	m_serializer(nullptr),
@@ -45,13 +45,13 @@ Me::Meduza::Meduza(int a_w, int a_h, GFX_API a_api)
 	m_isRunning = true;
 
 #ifdef PLATFORM_WINDOWS
-	m_window = new WindowsWindow(a_w, a_h, "Meduza | Windows");
+	m_window = new WindowsWindow(a_width, a_height, "Meduza | Windows");
 	ms_engineState = RUN_EDITOR;
 #elif PLATFORM_LINUX
-	m_window = new LinuxWindow(a_w, a_h, "Meduza | Linux");
+	m_window = new LinuxWindow(a_width, a_height, "Meduza | Linux");
 	ms_engineState = RUN_GAME;
 #elif PLATFORM_APPLE
-	m_window = new MacOsWindow(a_w, a_h, "Meduza | Apple");
+	m_window = new MacOsWindow(a_width, a_height, "Meduza | Apple");
 #endif
 
 	if(m_window != nullptr)
@@ -161,9 +161,9 @@ void Me::Meduza::Present()
 	m_isRunning = false;
 }
 
-void Me::Meduza::SetAppName(std::string a_name)
+void Me::Meduza::SetAppName(std::string a_appName)
 {
-	m_window->SetTitle(a_name);
+	m_window->SetTitle(a_appName);
 }
 
 Me::Math::Vec2 Me::Meduza::GetScreenSize()

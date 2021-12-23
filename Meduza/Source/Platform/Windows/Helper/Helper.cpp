@@ -5,7 +5,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CreateBuffer(
 	ID3D12Device* a_device,
 	ID3D12GraphicsCommandList* a_cmdList,
 	const void* a_initData,
-	UINT64 a_byteSize,
+	UINT64 const a_byteSize,
 	Microsoft::WRL::ComPtr<ID3D12Resource>& a_uploadBuffer)
 {
 	Microsoft::WRL::ComPtr<ID3D12Resource> defaultBuffer;
@@ -72,7 +72,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Me::Helper::Dx12::Helper::CopyBuffer(
 	ID3D12Device* a_device,
 	ID3D12GraphicsCommandList* a_cmdList,
 	const void* a_initData,
-	UINT64 a_byteSize,
+	UINT64 const a_byteSize,
 	Microsoft::WRL::ComPtr<ID3D12Resource>& a_uploadBuffer)
 {
 	Microsoft::WRL::ComPtr<ID3D12Resource> defaultBuffer;

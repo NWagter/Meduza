@@ -12,12 +12,12 @@ namespace Me
             class Context : public ContextBase
             {
             public:
-                Context(Window&);
+                Context(Window& a_window);
                 ~Context();
 
                 void InitContext(WindowData&, float, float);
 
-                void Resize(float,float) override;
+                void Resize(float const a_width,float const a_height) override;
                 void SwapBuffer();
 
                 float m_width, m_height;

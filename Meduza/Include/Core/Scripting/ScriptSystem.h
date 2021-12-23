@@ -15,9 +15,9 @@ namespace Me
 
             protected:
                 void OnStart() override;
-                void OnUpdate(float) override;
+                void OnUpdate(float a_dt) override;
 
-                void Start(ScriptComponent*, EntityID);
+                void Start(ScriptComponent* a_scriptComponent, EntityID a_entId);
 
         };
     }

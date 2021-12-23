@@ -23,13 +23,13 @@ namespace Me
         class FrameBuffer
         {
         public:
-            static FrameBuffer* Create(const FrameBufferSpecs&, ContextBase& a_context);
+            static FrameBuffer* Create(FrameBufferSpecs const& a_spec, ContextBase& a_context);
             virtual ~FrameBuffer() = default;
 
             virtual const FrameBufferSpecs& GetFrameBufferSpec() const = 0;
             virtual ColourAttachment* GetColourAttachment() = 0;
 
-            virtual void Resize(Math::Vec2) = 0;
+            virtual void Resize(Math::Vec2 const& a_size) = 0;
             virtual void Bind() { };
             virtual void UnBind() { };
         protected:

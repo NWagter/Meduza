@@ -22,11 +22,11 @@ static int MyFunc(lua_State* L)
     return 0;
 }
 
-void Me::Scripting::LuaScripting::ExecuteScript(std::string a_string, float a_dt)
+void Me::Scripting::LuaScripting::ExecuteScript(std::string a_script, float a_dt)
 {
     lua_State * L = luaL_newstate();
     luaL_openlibs(L);
-    int state = luaL_dofile(L, a_string.c_str());
+    int state = luaL_dofile(L, a_script.c_str());
 
     lua_register(L, "_Func", MyFunc);
     lua_getglobal(L, "OnUpdate");

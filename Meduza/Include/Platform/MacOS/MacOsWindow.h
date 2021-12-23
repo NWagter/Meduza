@@ -6,15 +6,15 @@ namespace Me
 	class MacOsWindow : public Window
 	{
 	public:
-		MacOsWindow(int, int, const char*);
+		MacOsWindow(int const a_width,  int const a_height, const char* a_title);
 		virtual ~MacOsWindow();
 
 		void ActiveCursor(bool) override;
 		void Peek() override;
 		void Quit() override;
-		void SetContext(Renderer::ContextBase*) override;
+		void SetContext(Renderer::ContextBase* a_context) override;
 
-		void SetTitle(std::string) override; 
+		void SetTitle(std::string const& a_title) override;
 
 	};
 }

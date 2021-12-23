@@ -15,7 +15,7 @@ Me::Renderer::Dx12::Fence::~Fence()
 	m_fence.ReleaseAndGetAddressOf();
 }
 
-void Me::Renderer::Dx12::Fence::WaitForFence(UINT a_fValue)
+void Me::Renderer::Dx12::Fence::WaitForFence(UINT const a_fValue)
 {
 	std::chrono::milliseconds duration = std::chrono::milliseconds::max();
 

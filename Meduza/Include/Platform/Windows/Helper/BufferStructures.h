@@ -26,7 +26,7 @@ namespace Me
             class UploadBuffer
             {
             public:
-                UploadBuffer(Renderer::Dx12::Device& a_device, bool a_constant)
+                UploadBuffer(Renderer::Dx12::Device& a_device, bool const a_constant)
                 {                    
                     CreateResource(a_device, 0, a_constant, true);
                 }
@@ -35,11 +35,11 @@ namespace Me
                     if(m_buffer.Get() != nullptr)
                         m_buffer->Release();
                 }
-                void CopyData(int a_alignment, const T& a_data)
+                void CopyData(int const a_alignment, T const& a_data)
                 {
                     memcpy(&m_data[a_alignment], &a_data, sizeof(T));
                 }
-                void SetElementCount(Renderer::Dx12::Device& a_device, int a_amount, bool a_constant)
+                void SetElementCount(Renderer::Dx12::Device& a_device, int const a_amount, bool const a_constant)
                 {
                     CreateResource(a_device, a_amount, a_constant);
                 }
@@ -57,7 +57,7 @@ namespace Me
                 int m_elementCount = 256;
                 int m_constBufferAlignment;
 
-                void CreateResource(Renderer::Dx12::Device& a_device, int a_amount, bool a_constant, bool a_onCreate = false)
+                void CreateResource(Renderer::Dx12::Device& a_device, int const a_amount, bool const a_constant, bool const a_onCreate = false)
                 {
                     unsigned int byteSize = sizeof(T);
 

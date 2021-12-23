@@ -9,17 +9,17 @@ namespace Me
             class Lua_Math
             {
                 public:
-                    static void RegisterMathFunctions(lua_State*);
+                    static void RegisterMathFunctions(lua_State* a_luaState);
                 
                 private:
-                    static int lua_CreateVector3(lua_State*);                    
-                    static int lua_GetDistance(lua_State*);
+                    static int lua_CreateVector3(lua_State* a_luaState);
+                    static int lua_GetDistance(lua_State* a_luaState);
 
-                    static void CreateVector3(lua_State*, Math::Vec3);
+                    static void CreateVector3(lua_State* a_luaState, Math::Vec3 a_vec);
 
-                    static int Add_Vec3(lua_State*);
-                    static int Sub_Vec3(lua_State*);
-                    static int Mul_Vec3(lua_State*);
+                    static int Add_Vec3(lua_State* a_luaState);
+                    static int Sub_Vec3(lua_State* a_luaState);
+                    static int Mul_Vec3(lua_State* a_luaState);
             }; 
         
         }

@@ -14,10 +14,10 @@ namespace Me
             class DepthStencilBuffer
             {
             public:
-                DepthStencilBuffer(Device&, CommandList&, int, int);
+                DepthStencilBuffer(Device& a_device, CommandList& a_cmd, int const a_width, int const a_height);
                 ~DepthStencilBuffer();
 
-                void SetBuffer(Device&, CommandList&, int, int);
+                void SetBuffer(Device& a_device, CommandList& a_cmd, int const a_width, int const a_height);
                 D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView()const;
             private:
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_dsBuffer;

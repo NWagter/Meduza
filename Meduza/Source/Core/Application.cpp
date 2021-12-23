@@ -63,9 +63,9 @@ bool Me::Application::Run()
     return true;
 }
 
-void Me::Application::SetName(std::string a_name)
+void Me::Application::SetName(std::string a_appName)
 {
-    m_meduza->SetAppName(a_name);
+    m_meduza->SetAppName(a_appName);
 }
 
 Me::Math::Vec2 Me::Application::GetScreenSize()

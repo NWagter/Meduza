@@ -11,15 +11,15 @@ namespace Me
         class Serializer
         {
             public:
-                Serializer(std::string = "");
+                Serializer(std::string a_file = "");
                 static void DestroySerializer();
 
                 bool SerializeScene();
-                bool SerializeSceneAs(std::string);
-                bool DeserializeScene(std::string = "", bool = true, bool = true);
+                bool SerializeSceneAs(std::string a_file);
+                bool DeserializeScene(std::string a_file = "", bool a_rememberScene = true, bool a_cleanup = true);
 
-                bool SerializeEntity(std::string, EntityID);
-                EntityID DeserializeEntity(std::string);
+                bool SerializeEntity(std::string a_file, EntityID a_entityId);
+                EntityID DeserializeEntity(std::string a_file);
 
                 static Serializer* GetInstance() { return ms_instance;}
             private:

@@ -10,7 +10,7 @@ Me::Event::Input::Keyboard::~Keyboard()
     Clear();
 }
 
-Me::Event::KeyState Me::Event::Input::Keyboard::State(KeyCode a_key)
+Me::Event::KeyState Me::Event::Input::Keyboard::State(KeyCode const& a_key)
 {
     auto key = m_keyboardRegister.find(a_key);
     
@@ -26,7 +26,7 @@ void Me::Event::Input::Keyboard::Clear()
 {
     m_keyboardRegister.clear();
 }
-void Me::Event::Input::Keyboard::SetState(KeyCode a_key, KeyState a_state)
+void Me::Event::Input::Keyboard::SetState(KeyCode const& a_key, KeyState const& a_state)
 {
     auto key = m_keyboardRegister.find(a_key);
 

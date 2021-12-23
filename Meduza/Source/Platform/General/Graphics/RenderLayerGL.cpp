@@ -94,7 +94,7 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
     delete m_camera;
 }
 
-void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
+void Me::Renderer::GL::RenderLayerGL::Clear(Colour const a_clearColour)
 {
     for (auto line : m_debugLines)
     {
@@ -122,10 +122,10 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour a_colour)
 
     m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
-    glClearColor(a_colour.m_colour[0],
-                 a_colour.m_colour[1],
-                 a_colour.m_colour[2],
-                 a_colour.m_colour[3]);
+    glClearColor(a_clearColour.m_colour[0],
+        a_clearColour.m_colour[1],
+        a_clearColour.m_colour[2],
+        a_clearColour.m_colour[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_activeShader = nullptr;
 
@@ -263,7 +263,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     m_frameBuffer->UnBind();
 }
 
-void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, TransformComponent& a_trans)
+void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent)
 {
     // If no instanced Renderers we just create one
     BaseInstanced* instancedRenderer = nullptr;
@@ -271,9 +271,9 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 
     if (m_instances.empty())
     {
-        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderable.m_mesh, a_renderable.m_shader);
+        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderComponent.m_mesh, a_renderComponent.m_shader);
         m_instances.push_back(b);
-        texture = b->AddTexture(a_renderable.m_texture);
+        texture = b->AddTexture(a_renderComponent.m_texture);
 
         instancedRenderer = b;
     }
@@ -282,10 +282,10 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
         for (auto iR : m_instances)
         {
             auto glIR = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(iR);
-            texture = glIR->AddTexture(a_renderable.m_texture);
+            texture = glIR->AddTexture(a_renderComponent.m_texture);
 
-            if (a_renderable.m_mesh == glIR->GetMesh()
-                && a_renderable.m_shader == glIR->GetShader()
+            if (a_renderComponent.m_mesh == glIR->GetMesh()
+                && a_renderComponent.m_shader == glIR->GetShader()
                 && texture != -1)
             {
                 if (!glIR->ReachedMaxSize())
@@ -298,8 +298,8 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 
         if (instancedRenderer == nullptr)
         {
-            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderable.m_mesh, a_renderable.m_shader);
-            texture = b->AddTexture(a_renderable.m_texture);
+            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderComponent.m_mesh, a_renderComponent.m_shader);
+            texture = b->AddTexture(a_renderComponent.m_texture);
             m_instances.push_back(b);
 
             instancedRenderer = b;
@@ -308,21 +308,22 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent& a_renderable, Tran
 
     auto iB = DefaultInstancedBuffer();
 
-    iB.m_colour = a_renderable.m_colour.m_colour;
-    iB.m_model = Math::Transpose(a_trans.GetTransform());
-    iB.m_textureCoords = a_renderable.m_textureCoords;
+    Me::Colour colour = a_renderComponent.m_colour;
+    iB.m_colour = colour.m_colour;
+    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
+    iB.m_textureCoords = a_renderComponent.m_textureCoords;
     iB.m_textureId = texture;
 
     static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 }
 
-void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_renderable, TransformComponent& a_trans)
+void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent)
 {
     BaseInstanced* instancedRenderer = nullptr;
 
     if (m_debugInstances.empty())
     {
-        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderable.m_mesh, a_renderable.m_shader);
+        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_debugRenderComponent.m_mesh, a_debugRenderComponent.m_shader);
         m_debugInstances.push_back(b);
 
         instancedRenderer = b;
@@ -333,8 +334,8 @@ void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_render
         {
             auto glIR = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(iR);
 
-            if (a_renderable.m_mesh == glIR->GetMesh()
-                && a_renderable.m_shader == glIR->GetShader())
+            if (a_debugRenderComponent.m_mesh == glIR->GetMesh()
+                && a_debugRenderComponent.m_shader == glIR->GetShader())
             {
                 if (!glIR->ReachedMaxSize())
                 {
@@ -346,7 +347,7 @@ void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_render
 
         if (instancedRenderer == nullptr)
         {
-            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderable.m_mesh, a_renderable.m_shader);
+            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_debugRenderComponent.m_mesh, a_debugRenderComponent.m_shader);
             m_debugInstances.push_back(b);
 
             instancedRenderer = b;
@@ -355,13 +356,14 @@ void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent& a_render
 
     auto iB = DefaultInstancedBuffer();
 
-    iB.m_colour = a_renderable.m_debugColour.m_colour;
-    iB.m_model = Math::Transpose(a_trans.GetTransform());
+    Me::Colour colour = a_debugRenderComponent.m_debugColour;
+    iB.m_colour = colour.m_colour;
+    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
 
     static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 }
 
-void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
+void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender const& a_lineRender)
 {
     if (!Debug::MeduzaDebug::GetDebuggingSettings().m_lineDebugger)
     {
@@ -370,8 +372,8 @@ void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
 
     unsigned int vao, vbo;
     std::vector<float> vertices = {
-             a_line.m_start.m_x, a_line.m_start.m_y, a_line.m_start.m_z,
-             a_line.m_end.m_x, a_line.m_end.m_y, a_line.m_end.m_z,
+             a_lineRender.m_start.m_x, a_lineRender.m_start.m_y, a_lineRender.m_start.m_z,
+             a_lineRender.m_end.m_x, a_lineRender.m_end.m_y, a_lineRender.m_end.m_z,
 
     };
 
@@ -390,10 +392,10 @@ void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender& a_line)
 #ifdef EDITOR  
     m_renderStats.m_vertices += 2;
 #endif
-    m_debugLines.push_back(new DebugLine(vbo, vao, a_line.m_colour));
+    m_debugLines.push_back(new DebugLine(vbo, vao, a_lineRender.m_colour));
 }
 
-void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender& a_circle)
+void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender const& a_circleRender)
 {
     if (!Debug::MeduzaDebug::GetDebuggingSettings().m_lineDebugger)
     {
@@ -403,33 +405,33 @@ void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender& a_circle)
     m_renderStats.m_vertices += 1;
 #endif
     
-    m_debugCircle.push_back(new DebugCricle(a_circle.m_transform, a_circle.m_radius, a_circle.m_colour));
+    m_debugCircle.push_back(new DebugCricle(a_circleRender.m_transform, a_circleRender.m_radius, a_circleRender.m_colour));
 }
 
-void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, TransformComponent& a_transComp)
+void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent)
 {
     Math::Mat4 camMat = Math::Mat4::Identity();
 
-    if(a_cameraComp.m_cameraType == Me::CameraType::Orthographic)
+    if(a_cameraComponent.m_cameraType == Me::CameraType::Orthographic)
     {
         Me::Math::Vec2 size = m_window->GetSize();
         float aspect = size.m_x / size.m_y;
 
-        camMat = Math::GetOrthographicMatrix(-a_cameraComp.m_orthoScale, a_cameraComp.m_orthoScale,
-            -a_cameraComp.m_orthoScale * aspect , a_cameraComp.m_orthoScale * aspect,
-            a_cameraComp.m_near, a_cameraComp.m_far);
+        camMat = Math::GetOrthographicMatrix(-a_cameraComponent.m_orthoScale, a_cameraComponent.m_orthoScale,
+            -a_cameraComponent.m_orthoScale * aspect , a_cameraComponent.m_orthoScale * aspect,
+            a_cameraComponent.m_near, a_cameraComponent.m_far);
     }
     else
     {
-        camMat = Math::GetProjectionMatrix(45.0f, a_cameraComp.m_size.m_x / a_cameraComp.m_size.m_y,
-         a_cameraComp.m_near, a_cameraComp.m_far);
+        camMat = Math::GetProjectionMatrix(45.0f, a_cameraComponent.m_size.m_x / a_cameraComponent.m_size.m_y,
+         a_cameraComponent.m_near, a_cameraComponent.m_far);
     }
     
     Math::Mat4 rMat = Math::Mat4::Identity();
-    rMat.Rotation(a_transComp.m_rotation);
+    rMat.Rotation(a_transformComponent.m_rotation);
 
     Math::Mat4 pMat = Math::Mat4::Identity();
-    pMat.SetPosition(a_transComp.m_translation);
+    pMat.SetPosition(a_transformComponent.m_translation);
 
     Math::Mat4 view = rMat * pMat.Inverse();
 
@@ -438,7 +440,7 @@ void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent& a_cameraComp, T
     m_camera->m_cameraMatrix = Math::Transpose(camViewProjection);
 }
 
-Me::Resources::MeshBase* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::MeshBase* Me::Renderer::GL::RenderLayerGL::CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices)
 {
     return new Resources::GL::Mesh(a_vertices, a_indices);
 }

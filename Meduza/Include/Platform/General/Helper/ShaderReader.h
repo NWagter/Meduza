@@ -17,8 +17,8 @@ namespace Me
             class ShaderHelper
             {
             public:
-                static ShaderSources GetSources(std::string, std::string);
-                static ShaderSources GetSources(std::string);
+                static ShaderSources GetSources(std::string a_vertexShader, std::string a_pixelShader);
+                static ShaderSources GetSources(std::string a_shader);
             };
         }
     }

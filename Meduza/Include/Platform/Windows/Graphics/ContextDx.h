@@ -15,24 +15,24 @@ namespace Me
       class Context : public ContextBase
       {
       public:
-        Context(Window&, Device*);
+        Context(Window& a_window, Device* a_device);
         ~Context();
         
-        void SwapBuffer(CommandList&);
-        void Resize(float,float) override;
+        void SwapBuffer(CommandList& a_cmd);
+        void Resize(float const a_width, float const a_height) override;
 
         void CreateSwapchain();
-        void SetQueue(CommandQueue&);
+        void SetQueue(CommandQueue& a_queue);
         inline Microsoft::WRL::ComPtr<IDXGISwapChain4> GetSwapChain() { return m_swapChain; }
         inline ID3D12Resource* GetCurrentBuffer() { return m_frameBuffer[m_currentframeBufferIndex].Get(); }
         inline Descriptor* GetRTV() { return m_rtv;}
-        inline Microsoft::WRL::ComPtr<ID3D12Resource> GetBuffers(int a_id) { return m_frameBuffer[a_id]; }
+        inline Microsoft::WRL::ComPtr<ID3D12Resource> GetBuffers(int const a_index) { return m_frameBuffer[a_index]; }
 
-			  inline CommandQueue* GetQueue() { return m_queue; }
+        inline CommandQueue* GetQueue() { return m_queue; }
 
         void ClearRTV();
-        void CreateRTV(Descriptor&);
-        void Resize(int, int);
+        void CreateRTV(Descriptor& a_rtv);
+        void Resize(int const a_width, int const a_height);
         Math::Vec2 Resize();
 
         inline DXGI_FORMAT GetFormat() { return m_backBufferFormat; }

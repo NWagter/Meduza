@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND a_hwnd)
+std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND const a_hwnd)
 {
 	char path[260];
 	HMODULE hModule = GetModuleHandle(NULL);
@@ -34,7 +34,7 @@ std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND 
 
 	return std::string();
 }
-std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND a_hwnd)
+std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND const a_hwnd)
 {
 	char path[260];
 	HMODULE hModule = GetModuleHandle(NULL);
@@ -66,7 +66,7 @@ std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND 
 	return std::string();
 }
 
-void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType a_type, std::string a_path)
+void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType const a_type, std::string const& a_path)
 {
 	a_data.m_path = a_path;
 

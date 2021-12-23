@@ -10,10 +10,10 @@ namespace Me
             class Mesh : public MeshBase
             {
             public:
-                Mesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
+                Mesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
                 virtual ~Mesh();
 
-                void SetMode(GLenum);
+                void SetMode(GLenum a_mode);
                 void GenerateBuffers();
                 void GenerateAttributes();
 

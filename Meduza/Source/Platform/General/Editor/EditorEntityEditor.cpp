@@ -35,9 +35,9 @@
 
 #include "Platform/Windows/FileSystem/FileSystem.h"
 
-Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entHierarchy)
+Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entityHierarchy)
 {
-    m_hierarchy = &a_entHierarchy;
+    m_hierarchy = &a_entityHierarchy;
     m_selectedEntity = -1;
 }
 

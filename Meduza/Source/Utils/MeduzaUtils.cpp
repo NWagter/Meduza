@@ -1,14 +1,14 @@
 #include "MePCH.h"
 #include "Utils/MeduzaUtils.h"
 
-uint16_t Me::Utils::Utilities::GetHashedID(std::string a_strToHash)
+uint16_t Me::Utils::Utilities::GetHashedID(std::string const& a_strToHash)
 {   
     uint16_t hashedId = 0;
     hashedId = static_cast<uint16_t>(std::hash<std::string>{}(a_strToHash));
     return hashedId;
 }
 
-Me::Math::Vec4 Me::Utils::TextureSlice(Math::Vec2 a_textureSize, Math::Vec2 a_sliceBegin, Math::Vec2 a_sliceSize)
+Me::Math::Vec4 Me::Utils::TextureSlice(Math::Vec2 const& a_textureSize, Math::Vec2 const& a_sliceBegin, Math::Vec2 const& a_sliceSize)
 {
     Math::Vec4 slice = Math::Vec4(0,0,1,1);
 

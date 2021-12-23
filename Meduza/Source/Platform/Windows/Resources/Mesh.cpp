@@ -7,7 +7,7 @@
 #include "Platform/Windows/Graphics/CommandList.h"
 
 
-Me::Resources::Dx12::Mesh::Mesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices, Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
+Me::Resources::Dx12::Mesh::Mesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices, Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
 	: MeshBase(a_vertices, a_indices)
 {
 	GenerateBuffers(a_device, a_cmd);

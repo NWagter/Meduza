@@ -4,7 +4,7 @@
 #include "Platform/Windows/Graphics/ContextDx.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
 
-Me::Renderer::Dx12::FrameBufferDx12::FrameBufferDx12(const FrameBufferSpecs& a_spec, ContextBase& a_context) : m_spec(a_spec)
+Me::Renderer::Dx12::FrameBufferDx12::FrameBufferDx12(FrameBufferSpecs const& a_spec, ContextBase& a_context) : m_spec(a_spec)
 {
     m_attachment = nullptr;
     m_context = &a_context;
@@ -15,7 +15,7 @@ Me::Renderer::Dx12::FrameBufferDx12::~FrameBufferDx12()
 }
 
 
-void Me::Renderer::Dx12::FrameBufferDx12::Resize(Math::Vec2 a_size)
+void Me::Renderer::Dx12::FrameBufferDx12::Resize(Math::Vec2 const& a_size)
 {
 
 }

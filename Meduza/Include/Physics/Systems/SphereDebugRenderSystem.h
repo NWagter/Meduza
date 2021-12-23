@@ -25,10 +25,10 @@ namespace Me
         Colour m_debugColour;
         
     public:
-        SphereDebugRenderSystem(Renderer::RenderLayer*);
+        SphereDebugRenderSystem(Renderer::RenderLayer* a_renderLayer);
         
     protected:
-        void OnUpdate(float) override;
+        void OnUpdate(float a_dt) override;
         
     };
 }

@@ -25,10 +25,10 @@ namespace Me
         Colour m_debugColour;
         
     public:
-        Box2DDebugRenderSystem(Renderer::RenderLayer*);
+        Box2DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer);
         
     protected:
-        void OnUpdate(float) override;
+        void OnUpdate(float a_dt) override;
         
     };
 }

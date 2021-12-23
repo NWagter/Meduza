@@ -13,7 +13,7 @@ namespace Me
         class EditorToolbar : public EditorWidget
         {
             public:
-                EditorToolbar(Window&);
+                EditorToolbar(Window& a_window);
                 ~EditorToolbar();
 
                 void Draw() override;

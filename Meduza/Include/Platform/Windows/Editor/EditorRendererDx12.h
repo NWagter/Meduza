@@ -22,11 +22,11 @@ namespace Me
             class EditorRendererDx12 : public Me::Editor::EditorRenderer
             {
                 public: 
-                    EditorRendererDx12(Renderer::Dx12::RenderLayerDx12*);
+                    EditorRendererDx12(Renderer::Dx12::RenderLayerDx12* a_renderLayer);
                     ~EditorRendererDx12();
 
                     void Clear() override;
-                    void Update(float) override;
+                    void Update(float a_dt) override;
                     void Populate() override;
 
                 private:

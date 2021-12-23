@@ -56,7 +56,7 @@ void Me::Event::EventSystem::Clear()
 
 // User Check
 
-bool Me::Event::EventSystem::KeyDown(KeyCode a_key)
+bool Me::Event::EventSystem::KeyDown(KeyCode const& a_key)
 {
     char upperKey = toupper(char(a_key));    
     char lowerKey = tolower(char(a_key));    
@@ -68,7 +68,7 @@ bool Me::Event::EventSystem::KeyDown(KeyCode a_key)
 
     return false;
 }
-bool Me::Event::EventSystem::KeyUp(KeyCode a_key)
+bool Me::Event::EventSystem::KeyUp(KeyCode const& a_key)
 {
     char upperKey = toupper(char(a_key));    
     char lowerKey = tolower(char(a_key));    
@@ -80,7 +80,7 @@ bool Me::Event::EventSystem::KeyUp(KeyCode a_key)
     
     return false;
 }
-bool Me::Event::EventSystem::MouseButtonDown(MouseButton a_button)
+bool Me::Event::EventSystem::MouseButtonDown(MouseButton const& a_button)
 {    
     if(m_mouse->State(a_button) == MouseEvent::MouseDown)
     {
@@ -88,7 +88,7 @@ bool Me::Event::EventSystem::MouseButtonDown(MouseButton a_button)
     }
     return false;
 }
-bool Me::Event::EventSystem::MouseButtonUp(MouseButton a_button)
+bool Me::Event::EventSystem::MouseButtonUp(MouseButton const& a_button)
 {     
     if(m_mouse->State(a_button) == MouseEvent::MouseUp)
     {
@@ -97,7 +97,7 @@ bool Me::Event::EventSystem::MouseButtonUp(MouseButton a_button)
     return false;
 }
 
-bool Me::Event::EventSystem::MouseButtonPressed(MouseButton a_button)
+bool Me::Event::EventSystem::MouseButtonPressed(MouseButton const& a_button)
 {     
     if(m_mouse->State(a_button) == MouseEvent::Pressed)
     {
@@ -116,20 +116,20 @@ Me::Math::Vec2 Me::Event::EventSystem::ScreenSize()
     return m_screenSize;
 }
 
-void Me::Event::EventSystem::OnKeyEvent(KeyCode a_key, KeyState a_state)
+void Me::Event::EventSystem::OnKeyEvent(KeyCode const& a_key, KeyState const& a_state)
 {
     m_keyboard->SetState(a_key, a_state);
 }
 
-void Me::Event::EventSystem::OnMouseEvent(MouseButton a_button, MouseEvent a_event)
+void Me::Event::EventSystem::OnMouseEvent(MouseButton const& a_button, MouseEvent const& a_event)
 {
     m_mouse->SetState(a_button, a_event);
 }
-void Me::Event::EventSystem::OnMouseMove(Math::Vec2 a_pos)
+void Me::Event::EventSystem::OnMouseMove(Math::Vec2 const& a_position)
 {
-    m_mouse->SetPosition(a_pos);
+    m_mouse->SetPosition(a_position);
 }
-void Me::Event::EventSystem::SetMouseWorldSpace(CameraComponent a_camera, TransformComponent a_trans)
+void Me::Event::EventSystem::SetMouseWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_trans)
 {
     m_mouse->SetWorldSpace(a_camera, a_trans);
 }

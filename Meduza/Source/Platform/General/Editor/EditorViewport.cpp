@@ -12,9 +12,9 @@
 #include "Platform/General/Graphics/FramebufferGL.h"
 #include "Platform/Windows/Graphics/FramebufferDx12.h"
 
-Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderer)
+Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderLayer)
 {
-    m_renderLayer = &a_renderer;
+    m_renderLayer = &a_renderLayer;
     m_editor = &a_editor;
     m_toolbar = &a_toolbar;
 

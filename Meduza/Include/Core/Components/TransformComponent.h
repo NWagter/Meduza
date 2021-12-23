@@ -15,7 +15,7 @@ namespace Me
             bool m_isStatic = false;
 
             //Getting
-            Math::Mat4 GetTransform()
+            Math::Mat4 GetTransform() const
             {
                 Math::Mat4 translationMat = Math::Mat4::Identity();
                 translationMat.SetPosition(m_translation);

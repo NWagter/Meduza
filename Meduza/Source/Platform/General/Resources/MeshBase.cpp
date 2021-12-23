@@ -15,7 +15,7 @@ Me::Resources::MeshBase::MeshBase()
 
 }
 
-Me::Resources::MeshBase::MeshBase(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices)
+Me::Resources::MeshBase::MeshBase(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices)
 	: Me::Resources::ResourceBase(ResourceType::Mesh)
 {
 	m_vertices = a_vertices;

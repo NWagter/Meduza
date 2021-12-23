@@ -5,7 +5,7 @@
 #include "Platform/Windows/Graphics/CommandList.h"
 #include "Platform/Windows/Graphics/Fence.h"
 
-Me::Renderer::Dx12::CommandQueue::CommandQueue(D3D12_COMMAND_QUEUE_DESC a_desc, Device* a_device)
+Me::Renderer::Dx12::CommandQueue::CommandQueue(D3D12_COMMAND_QUEUE_DESC const a_desc, Device* a_device)
 {
     m_fence = new Fence(a_device);
     m_description = a_desc;

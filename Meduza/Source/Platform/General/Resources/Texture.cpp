@@ -4,7 +4,7 @@
 
 #include "Utils/ResourceLoaderUtils.h"
 
-Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Math::Vec2(0,0), a_textureFile)
+Me::Resources::GL::Texture::Texture(std::string const& a_file) : TextureBase(Math::Vec2(0,0), a_file)
 {
     glGenTextures(1, &m_texture);  
     glBindTexture(GL_TEXTURE_2D, m_texture);  
@@ -15,7 +15,7 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char *data = Me::Utils::Resources::ResourceLoaderUtils::LoadImage(a_textureFile, &width, &height, &nrChannels); 
+    unsigned char *data = Me::Utils::Resources::ResourceLoaderUtils::LoadImage(a_file, &width, &height, &nrChannels); 
 
     if (data)
     {   
@@ -32,7 +32,7 @@ Me::Resources::GL::Texture::Texture(std::string a_textureFile) : TextureBase(Mat
     Me::Utils::Resources::ResourceLoaderUtils::FreeImage(data);
 }
 
-Me::Resources::GL::Texture::Texture(std::string a_file, const std::vector<unsigned char> a_texture, int a_width, int a_height) : TextureBase(Math::Vec2(0,0), a_file)
+Me::Resources::GL::Texture::Texture(std::string const& a_file, std::vector<unsigned char> const& a_texture, int const a_width, int const a_height) : TextureBase(Math::Vec2(0,0), a_file)
 {
     glGenTextures(1, &m_texture);  
     glBindTexture(GL_TEXTURE_2D, m_texture);  

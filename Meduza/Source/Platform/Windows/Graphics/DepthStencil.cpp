@@ -6,7 +6,7 @@
 #include "Platform/Windows/Graphics/CommandList.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
 
-Me::Renderer::Dx12::DepthStencilBuffer::DepthStencilBuffer(Device& a_device, CommandList& a_cmd, int a_w, int a_h)
+Me::Renderer::Dx12::DepthStencilBuffer::DepthStencilBuffer(Device& a_device, CommandList& a_cmd, int const a_width, int const a_height)
 {
 	D3D12_DESCRIPTOR_HEAP_DESC dvsDesc = {};
 	dvsDesc.NumDescriptors = 1;
@@ -15,7 +15,7 @@ Me::Renderer::Dx12::DepthStencilBuffer::DepthStencilBuffer(Device& a_device, Com
 	dvsDesc.NodeMask = 0;
 
 	m_dsv = new Descriptor(dvsDesc, a_device);
-	SetBuffer(a_device, a_cmd, a_w, a_h);
+	SetBuffer(a_device, a_cmd, a_width, a_height);
 }
 
 Me::Renderer::Dx12::DepthStencilBuffer::~DepthStencilBuffer()
@@ -29,7 +29,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE Me::Renderer::Dx12::DepthStencilBuffer::DepthStencil
 	return m_dsv->GetHeap()->GetCPUDescriptorHandleForHeapStart();
 }
 
-void Me::Renderer::Dx12::DepthStencilBuffer::SetBuffer(Device& a_device, CommandList& a_cmd, int a_w, int a_h)
+void Me::Renderer::Dx12::DepthStencilBuffer::SetBuffer(Device& a_device, CommandList& a_cmd, int const a_width, int const a_height)
 {
 	m_dsBuffer.Reset();
 
@@ -37,8 +37,8 @@ void Me::Renderer::Dx12::DepthStencilBuffer::SetBuffer(Device& a_device, Command
 	D3D12_RESOURCE_DESC depthStencilDesc;
 	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	depthStencilDesc.Alignment = 0;
-	depthStencilDesc.Width = a_w;
-	depthStencilDesc.Height = a_h;
+	depthStencilDesc.Width = a_width;
+	depthStencilDesc.Height = a_height;
 	depthStencilDesc.DepthOrArraySize = 1;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.Format = m_dsFormat;

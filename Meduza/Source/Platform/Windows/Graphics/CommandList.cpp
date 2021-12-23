@@ -6,7 +6,7 @@
 #include "Platform/Windows/Resources/Mesh.h"
 #include "Platform/Windows/Resources/Shader.h"
 
-Me::Renderer::Dx12::CommandList::CommandList(D3D12_COMMAND_LIST_TYPE a_type, Device* a_device, float a_x, float a_y)
+Me::Renderer::Dx12::CommandList::CommandList(D3D12_COMMAND_LIST_TYPE const a_type, Device* a_device, float const a_width, float const a_height)
 {
     for (auto& alloc : m_cmdAllocator)
 	{
@@ -21,7 +21,7 @@ Me::Renderer::Dx12::CommandList::CommandList(D3D12_COMMAND_LIST_TYPE a_type, Dev
         IID_PPV_ARGS(m_cmdList.GetAddressOf()));
     
     m_cmdList.Get()->SetName(L"Command List");
-    SetViewAndScissor(a_x,a_y);
+    SetViewAndScissor(a_width, a_height);
 }
 
 Me::Renderer::Dx12::CommandList::~CommandList()
@@ -37,7 +37,7 @@ void Me::Renderer::Dx12::CommandList::Close()
     m_cmdList->Close();
 }
 
-void Me::Renderer::Dx12::CommandList::Reset(unsigned int a_frame, Resources::Dx12::Shader* a_shader)
+void Me::Renderer::Dx12::CommandList::Reset(unsigned int const a_frame, Resources::Dx12::Shader* a_shader)
 {
 	if (a_shader == nullptr)
 	{
@@ -50,33 +50,33 @@ void Me::Renderer::Dx12::CommandList::Reset(unsigned int a_frame, Resources::Dx1
 }
 
 
-void Me::Renderer::Dx12::CommandList::SetViewPort(int a_port)
+void Me::Renderer::Dx12::CommandList::SetViewPort(int const a_index)
 {
-	m_cmdList->RSSetViewports(a_port, &m_viewport);
-	m_cmdList->RSSetScissorRects(a_port, &m_scissorRect);
+	m_cmdList->RSSetViewports(a_index, &m_viewport);
+	m_cmdList->RSSetScissorRects(a_index, &m_scissorRect);
 }
 
-void Me::Renderer::Dx12::CommandList::SetViewAndScissor(float a_x, float a_y)
+void Me::Renderer::Dx12::CommandList::SetViewAndScissor(float const a_width, float const a_height)
 {
 	D3D12_VIEWPORT vp;
 	vp.TopLeftX = 0.0f;
 	vp.TopLeftY = 0.0f;
-	vp.Width = a_x;
-	vp.Height = a_y;
+	vp.Width = a_width;
+	vp.Height = a_height;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
 	m_viewport = vp;
 
-	m_scissorRect = { 0,0, int(a_x), int(a_y) };
+	m_scissorRect = { 0,0, int(a_width), int(a_height) };
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Me::Renderer::Dx12::CommandList::GetCurrentAllocator(unsigned int a_id)
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Me::Renderer::Dx12::CommandList::GetCurrentAllocator(unsigned int const a_index)
 {
-	return m_cmdAllocator[a_id];
+	return m_cmdAllocator[a_index];
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Me::Renderer::Dx12::CommandList::CreateAlloc(D3D12_COMMAND_LIST_TYPE a_type, Device* a_device)
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Me::Renderer::Dx12::CommandList::CreateAlloc(D3D12_COMMAND_LIST_TYPE const a_type, Device* a_device)
 {
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator;
 	a_device->GetDevice()->CreateCommandAllocator(a_type, IID_PPV_ARGS(&commandAllocator));
@@ -98,7 +98,7 @@ void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh)
 	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
 }
 
-void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int a_count)
+void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count)
 {	
 	// set the root descriptor table 0 to the constant buffer descriptor heap
 	m_cmdList->SetGraphicsRootShaderResourceView(2, a_heaps->GetGPUVirtualAddress());

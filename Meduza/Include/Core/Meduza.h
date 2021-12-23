@@ -43,16 +43,16 @@ namespace Me {
 	class Meduza
 	{
 	public:
-		Meduza(int,int, GFX_API);
+		Meduza(int a_width, int a_height, GFX_API a_api);
 		~Meduza();
 		
 		inline bool IsRunning() { return m_isRunning; }
 
 		void Clear();
-		void Update(float);
+		void Update(float a_dt);
 		void Present();
 
-		void SetAppName(std::string);
+		void SetAppName(std::string a_appName);
 		Math::Vec2 GetScreenSize();
 
 		inline static unsigned char GetEngineState() { return ms_engineState;}

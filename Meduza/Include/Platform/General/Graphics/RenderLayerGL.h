@@ -76,7 +76,7 @@ namespace Me
                     float m_radius;
                     Colour m_colour;
 
-                    DebugCricle(Math::Mat4& a_trans, float a_rad, Colour a_colour = Colours::MAGENTA)
+                    DebugCricle(Math::Mat4 const& a_trans, float const& a_rad, Colour const& a_colour = Colours::MAGENTA)
                     {
                         m_trans = a_trans;
                         m_radius = a_rad * 2;
@@ -89,20 +89,20 @@ namespace Me
                     Math::Mat4 m_cameraMatrix;
                 };
 
-                RenderLayerGL(Window*);
+                RenderLayerGL(Window* a_window);
                 ~RenderLayerGL();
 
                 void Init() override;
-                void Clear(Colour) override;
+                void Clear(Colour const a_clearColour) override;
                 void Populate() override;    
                 void Present() override;                
-                void Submit(RenderComponent&, TransformComponent&) override;
-                void DebugSubmit(DebugRenderComponent&, TransformComponent&) override;
-                void RenderLine(LineRender&) override;
-                void RenderCircle(CircleRender&)  override;
-                void SetCamera(CameraComponent&, TransformComponent&) override;
+                void Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent) override;
+                void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent) override;
+                void RenderLine(LineRender const& a_lineRender) override;
+                void RenderCircle(CircleRender const& a_circleRender)  override;
+                void SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent) override;
 
-                Resources::MeshBase* CreateMesh(std::vector<Vertex> a_vertices, std::vector<uint16_t> a_indices);
+                Resources::MeshBase* CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
                 
                 Window* GetWindow() override {return m_window;}
             private:

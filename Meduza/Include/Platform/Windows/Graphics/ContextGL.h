@@ -10,10 +10,10 @@ namespace Me
             class Context : public ContextBase
             {
             public:
-                Context(Window&);
+                Context(Window& a_window);
                 ~Context();
 
-                void Resize(float,float) override;
+                void Resize(float const a_width, float const a_heigt) override;
                 void SwapBuffer();
 
                 float m_width, m_height;

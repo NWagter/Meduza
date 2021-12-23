@@ -22,8 +22,8 @@ namespace Me
 			WindowClass();
 			~WindowClass();
 
-			WindowClass(const WindowClass&) = delete;
-			WindowClass& operator=(const WindowClass&) = delete;
+			WindowClass(WindowClass const&) = delete;
+			WindowClass& operator=(WindowClass const&) = delete;
 			static constexpr const char* ms_wndName = "WinWindow";
 			static WindowClass ms_wndClass;
 			HINSTANCE m_hInstance;
@@ -31,21 +31,21 @@ namespace Me
 		};
 
 	public:
-		WindowsWindow(int, int, const char*);
+		WindowsWindow(int const a_width, int const a_height, const char* a_title);
 		virtual ~WindowsWindow();
 
-		void ActiveCursor(bool) override;
+		void ActiveCursor(bool a_showCursor) override;
 		void Peek() override;
 		void Quit() override;
-		void SetContext(Renderer::ContextBase*) override;
+		void SetContext(Renderer::ContextBase* a_context) override;
 
-		void SetTitle(std::string) override; 
+		void SetTitle(std::string const& a_title) override; 
 
 		inline HWND GetWindowHandle() {return m_hWnd;}
 	private:
-		static LRESULT WINAPI HandleMsgSetup(HWND, UINT, WPARAM, LPARAM);
-		static LRESULT WINAPI HandleMsgThunk(HWND, UINT, WPARAM, LPARAM);
-		LRESULT HandleMsg(HWND, UINT, WPARAM, LPARAM);
+		static LRESULT WINAPI HandleMsgSetup(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam);
+		static LRESULT WINAPI HandleMsgThunk(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam);
+		LRESULT HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam);
 
 		HWND m_hWnd;
 	};

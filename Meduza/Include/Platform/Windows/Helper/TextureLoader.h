@@ -35,17 +35,17 @@ namespace Me
             class TextureLoader
             {
             public:
-                TextureLoader(Renderer::Dx12::Device&, Renderer::Dx12::CommandList&);
+                TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd);
                 ~TextureLoader();
 
-                const TextureReturnData* LoadTexture(std::string);
-                const TextureReturnData* LoadTexture(const std::vector<unsigned char>, int, int);
+                const TextureReturnData* LoadTexture(std::string const& a_file);
+                const TextureReturnData* LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
 
-                inline SRV GetSRV(unsigned int a_id) {return m_srvs.at(a_id);}
+                inline SRV GetSRV(unsigned int const a_index) {return m_srvs.at(a_index);}
             private:
-                TextureData* CreateTexture(std::string, std::string);
-                void SRVOffset(unsigned int*, TextureData&);
-                void LoadToSRV(TextureData&, unsigned int);
+                TextureData* CreateTexture(std::string const& a_file, std::string const& a_ext);
+                void SRVOffset(unsigned int* a_srv, TextureData& a_texture);
+                void LoadToSRV(TextureData& a_texture, unsigned int a_index);
 
                 Renderer::Dx12::Device* m_device;
                 Renderer::Dx12::CommandList* m_cmd;

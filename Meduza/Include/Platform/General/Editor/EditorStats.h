@@ -14,10 +14,10 @@ namespace Me
         class EditorStats : public EditorWidget
         {
         public:
-            EditorStats(Renderer::RenderLayer&);
+            EditorStats(Renderer::RenderLayer& a_renderLayer);
             ~EditorStats();
 
-            void Update(float) override;
+            void Update(float a_dt) override;
             void Draw() override;
 
         private:

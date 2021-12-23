@@ -12,8 +12,8 @@ namespace Me
             class Shader : public ShaderBase
             {
             public:
-                Shader(std::string, std::string);
-                Shader(std::string);
+                Shader(std::string a_vertexShader, std::string a_pixelShader);
+                Shader(std::string a_shader);
 
                 virtual ~Shader();   
 
@@ -23,10 +23,10 @@ namespace Me
                 void Bind() override;
                 void UnBind() override;
 
-                void SetFloat(const std::string&, const float);
-                void SetVec3(const std::string &, const Math::Vec3);
-                void SetVec4(const std::string &, const Math::Vec4);
-                void SetMat4(const std::string &a_name, const Math::Mat4, const bool);
+                void SetFloat(std::string const& a_location, float const a_value);
+                void SetVec3(std::string const& a_location, Math::Vec3 const& a_vec3);
+                void SetVec4(std::string const& a_location, Math::Vec4 const& a_vec4);
+                void SetMat4(std::string const& a_location, Math::Mat4 const& a_mat4, bool const a_transpose);
 
             private:
                 Helper::GL::ShaderSources m_source;

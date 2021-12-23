@@ -687,9 +687,9 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
     return false;    
 }
 
-bool Me::Serialization::Serializer::SerializeEntity(std::string a_path, EntityID a_entityId)
+bool Me::Serialization::Serializer::SerializeEntity(std::string a_file, EntityID a_entityId)
 {
-    return SerializeEntityA(a_path, a_entityId);
+    return SerializeEntityA(a_file, a_entityId);
 }
 
 EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)

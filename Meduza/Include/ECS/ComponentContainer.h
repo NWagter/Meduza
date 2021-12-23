@@ -13,8 +13,8 @@ namespace Me
         IComponentContainer() {}
         virtual ~IComponentContainer() = default;
 
-        virtual BaseComponent* GetBaseComponent(EntityID a_entId) = 0;
-        virtual bool RemoveComponent(EntityID a_entId) = 0;
+        virtual BaseComponent* GetBaseComponent(EntityID const a_entId) = 0;
+        virtual bool RemoveComponent(EntityID const a_entId) = 0;
     };
 
     template<class C>
@@ -35,11 +35,11 @@ namespace Me
 
         private:
         bool AddComponent(EntityID a_entId, C* a_component);
-        bool RemoveComponent(EntityID a_entId);
+        bool RemoveComponent(EntityID const a_entId);
 
-        C* GetComponent(EntityID a_entId);
+        C* GetComponent(EntityID const a_entId);
 
-        BaseComponent* GetBaseComponent(const EntityID a_entId) override;
+        BaseComponent* GetBaseComponent(EntityID const a_entId) override;
 		std::map<EntityID, C*> const& GetComponents();
 
         std::map<EntityID, C*> m_components;
@@ -63,7 +63,7 @@ namespace Me
 
     
 	template <class C>
-	bool ComponentContainer<C>::RemoveComponent(const EntityID a_entId)
+	bool ComponentContainer<C>::RemoveComponent(EntityID const a_entId)
 	{
 		auto comp = m_components.find(a_entId);
 
@@ -81,7 +81,7 @@ namespace Me
 	}
 
     template <class C>
-	C* ComponentContainer<C>::GetComponent(const EntityID a_entId)
+	C* ComponentContainer<C>::GetComponent(EntityID const a_entId)
 	{
 		auto comp = m_components.find(a_entId);
 
@@ -100,7 +100,7 @@ namespace Me
 	}
     
     template <class C>
-    BaseComponent* ComponentContainer<C>::GetBaseComponent(const EntityID a_entId)
+    BaseComponent* ComponentContainer<C>::GetBaseComponent(EntityID const a_entId)
 	{
         auto comp = m_components.find(a_entId);
 

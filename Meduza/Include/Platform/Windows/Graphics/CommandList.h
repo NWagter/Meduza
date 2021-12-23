@@ -19,23 +19,23 @@ namespace Me
             class CommandList
             {
             public:
-                CommandList(D3D12_COMMAND_LIST_TYPE, Device*, float, float);
+                CommandList(D3D12_COMMAND_LIST_TYPE const a_type, Device* a_device, float const a_width, float const a_height);
                 ~CommandList();
 
                 void Close();
-                void Reset(unsigned int, Resources::Dx12::Shader* = nullptr);
+                void Reset(unsigned const int a_frame, Resources::Dx12::Shader* a_shader = nullptr);
                 
-                inline ID3D12GraphicsCommandList* GetList() { return m_cmdList.Get(); }
-                void SetViewPort(int);
-                void SetViewAndScissor(float, float);
-                Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(unsigned int);
+                inline ID3D12GraphicsCommandList* GetList() const { return m_cmdList.Get(); }
+                void SetViewPort(int const a_index);
+                void SetViewAndScissor(float const a_width, float const a_height);
+                Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(unsigned int const a_index);
 
-                void Draw(Resources::Dx12::Mesh*);
-                void Draw(Resources::Dx12::Mesh*, ID3D12Resource*, int);
+                void Draw(Resources::Dx12::Mesh* a_mesh);
+                void Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count);
 
                 bool m_closedList = false;
             private:
-                Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CreateAlloc(D3D12_COMMAND_LIST_TYPE, Device*);
+                Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CreateAlloc(D3D12_COMMAND_LIST_TYPE const, Device*);
                 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_cmdList;
                 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_cmdAllocator[3];
 

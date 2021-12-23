@@ -51,7 +51,7 @@ Me::EntityManager::~EntityManager()
     m_containers.clear();
 }
 
-bool Me::EntityManager::EntityExists(EntityID a_entity)
+bool Me::EntityManager::EntityExists(EntityID const a_entityID)
 {
     auto const& entities = ms_entityManager->m_entities;
     if(entities.size() <= 0)
@@ -59,7 +59,7 @@ bool Me::EntityManager::EntityExists(EntityID a_entity)
         return false;
     }
 
-    auto it = entities.find(a_entity);
+    auto it = entities.find(a_entityID);
 
     if(it == entities.end())
     {
@@ -197,9 +197,9 @@ EntityID Me::EntityManager::CreateEntity(std::string a_tag)
     return m_entityId;
 }
 
-void Me::EntityManager::DestroyEntity(EntityID a_entID)
+void Me::EntityManager::DestroyEntity(EntityID const a_entityID)
 {
-    ms_entityManager->m_entitiesToDestroy.push_back(a_entID);
+    ms_entityManager->m_entitiesToDestroy.push_back(a_entityID);
 }
 
 void Me::EntityManager::CleanGame()

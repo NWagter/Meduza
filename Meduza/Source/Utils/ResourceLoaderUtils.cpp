@@ -12,7 +12,7 @@
 
 #include "tiny_gltf.h"
 
-bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, std::vector<MeshPrimitives>& a_meshes)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_path, std::vector<MeshPrimitives>& a_meshes)
 {
 	tinygltf::Model model;
 	std::string ext = Files::FileSystem::GetFileExtention(a_path);
@@ -208,7 +208,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string a_path, st
     return true;
 }
 
-unsigned char * Me::Utils::Resources::ResourceLoaderUtils::LoadImage(std::string a_path,int *a_width, int *a_height, int *a_channels)
+unsigned char * Me::Utils::Resources::ResourceLoaderUtils::LoadImage(std::string const& a_path, int *a_width, int *a_height, int *a_channels)
 {
     const char* file = a_path.c_str();
 	return stbi_load(file, a_width, a_height, a_channels, STBI_rgb_alpha);
@@ -219,7 +219,7 @@ void Me::Utils::Resources::ResourceLoaderUtils::FreeImage(void* a_data)
 	stbi_image_free(a_data);
 }
 
-bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLTFModelFromPath(std::string a_path, tinygltf::Model& a_model)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLTFModelFromPath(std::string const& a_path, tinygltf::Model& a_model)
 {
     tinygltf::TinyGLTF loader;
     std::string err;
@@ -247,7 +247,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLTFModelFromPath(std::strin
     
     return true;
 }
-bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLBModelFromPath(std::string a_path, tinygltf::Model& a_model)
+bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLBModelFromPath(std::string const& a_path, tinygltf::Model& a_model)
 {
     tinygltf::TinyGLTF loader;
     tinygltf::Model model;

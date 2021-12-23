@@ -5,20 +5,20 @@
 
 Me::Debug::MeduzaDebug* Me::Debug::MeduzaDebug::ms_instance = nullptr;
 
-Me::Debug::MeduzaDebug* Me::Debug::MeduzaDebug::CreateDebugger(Renderer::RenderLayer& a_renderer)
+Me::Debug::MeduzaDebug* Me::Debug::MeduzaDebug::CreateDebugger(Renderer::RenderLayer& a_renderLayer)
 {
 	if (ms_instance != nullptr)
 	{
 		ME_ASSERT_M(true, "Can't have multiple debuggers!");
 	}
 
-	ms_instance = new MeduzaDebug(a_renderer);
+	ms_instance = new MeduzaDebug(a_renderLayer);
 	return ms_instance;
 }
 
-Me::Debug::MeduzaDebug::MeduzaDebug(Renderer::RenderLayer& a_renderer)
+Me::Debug::MeduzaDebug::MeduzaDebug(Renderer::RenderLayer& a_renderLayer)
 {
-	m_renderLayer = &a_renderer;
+	m_renderLayer = &a_renderLayer;
 }
 
 Me::Debug::MeduzaDebug::~MeduzaDebug()
@@ -26,7 +26,7 @@ Me::Debug::MeduzaDebug::~MeduzaDebug()
 	ms_instance = nullptr;
 }
 
-void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end, Colour a_colour)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 const& a_start, Math::Vec3 const& a_end, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;
@@ -40,7 +40,7 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 a_start, Math::Vec3 a_end, Co
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direction, float a_lenght, Colour a_colour)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3& a_start, Math::Vec3& a_direction, float const a_lenght, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;
@@ -52,7 +52,7 @@ void Me::Debug::MeduzaDebug::RenderLine( Math::Vec3 a_start, Math::Vec3 a_direct
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderCircle(Math::Mat4& a_trans, float a_radius, Colour a_colour)
+void Me::Debug::MeduzaDebug::RenderCircle(Math::Mat4 const& a_trans, float const a_radius, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;

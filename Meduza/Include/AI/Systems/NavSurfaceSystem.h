@@ -17,7 +17,7 @@ namespace Me
             NavSurfaceSystem();
             ~NavSurfaceSystem();
 
-            void OnUpdate(float) override;
+            void OnUpdate(float a_dt) override;
 
         private:
             std::map<EntityID, NavField*> m_fields;

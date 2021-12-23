@@ -11,10 +11,10 @@ namespace Utils
     class Utilities
     {
     public:
-        static uint16_t GetHashedID(std::string);
+        static uint16_t GetHashedID(std::string const& a_strToHash);
     };     
 
-    Math::Vec4 TextureSlice(Math::Vec2 a_textureSize, Math::Vec2 a_sliceBegin, Math::Vec2 a_sliceSize);
+    Math::Vec4 TextureSlice(Math::Vec2 const& a_textureSize, Math::Vec2 const& a_sliceBegin, Math::Vec2 const& a_sliceSize);
 }
 
   
@@ -37,7 +37,7 @@ namespace Utils
 
   namespace Animation
   {
-    static Me::Math::Vec4 GetUV(Me::Math::Vec4 a_texture, Me::Math::Vec2 a_textureSize)
+    static Me::Math::Vec4 GetUV(Me::Math::Vec4 const& a_texture, Me::Math::Vec2 const& a_textureSize)
     {
       Me::Math::Vec4 uv;
 

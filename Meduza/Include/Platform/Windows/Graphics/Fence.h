@@ -11,12 +11,12 @@ namespace Me
             class Fence
             {
             public:
-                Fence(Device*);
+                Fence(Device* a_device);
                 ~Fence();
 
-                void WaitForFence(UINT);
+                void WaitForFence(UINT const a_fValue);
 
-                void Flush(CommandQueue&);
+                void Flush(CommandQueue& a_queue);
 
 
                 Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;

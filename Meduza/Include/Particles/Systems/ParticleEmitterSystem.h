@@ -15,7 +15,7 @@ namespace Me
 			ParticleEmitterSystem();
 
 		protected:
-			void OnUpdate(float) override;
+			void OnUpdate(float a_dt) override;
 
 			Shader m_defaultShader;
 			Mesh m_defaultMesh;

@@ -16,10 +16,10 @@ namespace Me
     private:
         Renderer::RenderLayer* m_renderLayer;
     public:
-        RenderSystem(Renderer::RenderLayer*);
+        RenderSystem(Renderer::RenderLayer* a_renderLayer);
         
     protected:
-        void OnUpdate(float) override;
+        void OnUpdate(float a_dt) override;
         
     };
 }

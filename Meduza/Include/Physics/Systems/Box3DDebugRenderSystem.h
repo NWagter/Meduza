@@ -25,10 +25,10 @@ namespace Me
         Colour m_debugColour;
         
     public:
-        Box3DDebugRenderSystem(Renderer::RenderLayer*);
+        Box3DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer);
         
     protected:
-        void OnUpdate(float) override;
+        void OnUpdate(float a_dt) override;
         
     };
 }

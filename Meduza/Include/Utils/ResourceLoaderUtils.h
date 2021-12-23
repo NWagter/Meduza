@@ -26,17 +26,17 @@ namespace Me
             class ResourceLoaderUtils
             {
                 public:
-                    static bool LoadModel(std::string, std::vector<MeshPrimitives>&);
+                    static bool LoadModel(std::string const& a_path, std::vector<MeshPrimitives>& a_meshes);
 
-                    static unsigned char * LoadImage(std::string, int*, int*, int*);
-                    static void FreeImage(void*);
+                    static unsigned char * LoadImage(std::string const& a_path, int* a_width, int* a_height, int* a_channels);
+                    static void FreeImage(void* a_data);
 
                 private:
-                    static bool LoadGLTFModelFromPath(std::string, tinygltf::Model& );
-                    static bool LoadGLBModelFromPath(std::string, tinygltf::Model& );
+                    static bool LoadGLTFModelFromPath(std::string const& a_path, tinygltf::Model& a_model);
+                    static bool LoadGLBModelFromPath(std::string const& a_path, tinygltf::Model& a_model);
 
                     template<typename T>
-                    inline static const T* GetElementFromBuffer(const unsigned char* a_data, const std::size_t a_offset, const std::size_t a_index)
+                    inline static const T* GetElementFromBuffer(const unsigned char* a_data, std::size_t const a_offset, std::size_t const a_index)
                     {
                         assert(a_data != nullptr);
 

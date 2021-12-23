@@ -6,7 +6,7 @@ namespace Me
         class TextureBase
         {
         public:
-            TextureBase(const Math::Vec2, std::string);
+            TextureBase(Math::Vec2 const& a_size, std::string const& a_path);
 
             virtual ~TextureBase();   
 

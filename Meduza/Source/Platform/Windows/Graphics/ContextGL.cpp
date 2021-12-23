@@ -59,7 +59,7 @@ Me::Renderer::GL::Context::~Context()
     wglDeleteContext(m_renderContext);
 }
 
-void Me::Renderer::GL::Context::Resize(float a_width, float a_height)
+void Me::Renderer::GL::Context::Resize(float const a_width, float const a_height)
 {
     m_width = a_width;
     m_height = a_height;

@@ -16,7 +16,7 @@ namespace Me
             FrictionSystem();
 
         protected:
-            void OnUpdate(float) override;
+            void OnUpdate(float a_dt) override;
 
         };
     }

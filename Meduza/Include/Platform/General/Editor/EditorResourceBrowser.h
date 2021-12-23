@@ -17,7 +17,7 @@ namespace Me
             EditorResourceBrowser();
             ~EditorResourceBrowser();
 
-            void Update(float) override;
+            void Update(float a_dt) override;
             void Draw() override;
         };
     }

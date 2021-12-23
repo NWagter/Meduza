@@ -11,7 +11,7 @@
 #elif PLATFORM_APPLE
 #endif
 
-Me::Renderer::FrameBuffer* Me::Renderer::FrameBuffer::Create(const FrameBufferSpecs& a_spec, ContextBase& a_context)
+Me::Renderer::FrameBuffer* Me::Renderer::FrameBuffer::Create(FrameBufferSpecs const& a_spec, ContextBase& a_context)
 {
     switch (a_spec.m_api)
     {

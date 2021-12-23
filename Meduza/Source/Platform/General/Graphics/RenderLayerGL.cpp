@@ -17,8 +17,6 @@
 #include "Platform/General/Resources/Shader.h"
 #include "Platform/General/Resources/Texture.h"
 
-#include "Platform/General/TextureLibrary.h"
-
 #include "Platform/General/ResourceLibrary.h"
 
 #include "Core/Components/RenderComponent.h"

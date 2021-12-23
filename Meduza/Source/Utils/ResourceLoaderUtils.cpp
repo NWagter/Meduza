@@ -2,7 +2,8 @@
 #include "Utils/ResourceLoaderUtils.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
-#include "Platform/General/TextureLibrary.h"
+#include "Platform/General/ResourceLibrary.h"
+#include "Platform/General/Resources/TextureBase.h"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -195,11 +196,12 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_p
 						directory = a_path.substr(0, last_slash_idx);
 					}
 
-					Me::Resources::TextureLibrary::CreateTexture(directory + "/"+ image.uri);
+					Me::Resources::ResourceLibrary::GetInstance()->LoadResource<Me::Resources::TextureBase>(directory + "/" + image.uri);
 				}
 				else
 				{
-					Me::Resources::TextureLibrary::CreateTexture(image.image, image.width, image.height, a_path, a_path);
+					auto texture = Me::Resources::TextureBase().Create(image.image, image.width, image.height);
+					Me::Resources::ResourceLibrary::GetInstance()->AddResource<Me::Resources::TextureBase>(texture, a_path, Me::Files::FileSystem::GetFileName(a_path));
 				}
 			}
 		}

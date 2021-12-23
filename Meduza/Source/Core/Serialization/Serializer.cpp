@@ -19,7 +19,6 @@
 
 #include "AI/Components/AgentComponent.h"
 
-#include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/TextureBase.h"
 
 #include "Platform/General/Resources/ShaderBase.h"
@@ -142,7 +141,7 @@ bool SerializeSceneA(std::string a_path)
 
             auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
             archive(cereal::make_nvp("Shader", shader->GetPath()));    
-            auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
+            auto texture = rLibrary->GetResource<Me::Resources::TextureBase>(a_comp->m_texture);
             if(texture != nullptr)
             {
                 archive(cereal::make_nvp("Texture", texture->GetPath())); 
@@ -309,7 +308,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
 
         auto shader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp->m_shader);
         archive(cereal::make_nvp("Shader", shader->GetPath()));    
-        auto texture = Me::Resources::TextureLibrary::GetTexture(a_comp->m_texture);
+        auto texture = rLibrary->GetResource<Me::Resources::TextureBase>(a_comp->m_texture);
         if(texture != nullptr)
         {
             archive(cereal::make_nvp("Texture", texture->GetPath())); 
@@ -526,7 +525,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             archive(cereal::make_nvp("Texture", texturePath));
             
             if(!texturePath.empty())  
-                a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
+                a_comp->m_texture = rLibrary->LoadResource<Resources::TextureBase>(texturePath)->GetID();
 
             archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
 
@@ -765,7 +764,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         archive(cereal::make_nvp("Texture", texturePath));
         
         if(!texturePath.empty())  
-            a_comp->m_texture = Resources::TextureLibrary::CreateTexture(texturePath);
+            a_comp->m_texture = rLibrary->LoadResource<Resources::TextureBase>(texturePath)->GetID();
 
         archive(cereal::make_nvp("UV", a_comp->m_textureCoords.m_xyzw));
         eManager->AddComponent(ent, a_comp);   

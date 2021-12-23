@@ -16,11 +16,9 @@
 
 #include "Platform/General/ResourceLibrary.h"
 #include "Platform/Windows/Resources/Mesh.h"
-
 #include "Platform/Windows/Resources/Shader.h"
-
 #include "Platform/Windows/Resources/Texture.h"
-#include "Platform/General/TextureLibrary.h"
+
 #include "Platform/Windows/Helper/TextureLoader.h"
 
 #include "Core/Components/RenderComponent.h"
@@ -205,7 +203,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_render
 	unsigned int textureId = 0;
 	if(a_renderable.m_texture != 0)
 	{
-		auto t = static_cast<Resources::Dx12::Texture*>(Resources::TextureLibrary::GetTexture(a_renderable.m_texture));	
+		auto t = static_cast<Resources::Dx12::Texture*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::TextureBase>(a_renderable.m_texture));	
 		srv = t->GetSRVId();
 		textureId = t->GetTexture().m_srvOffset;		
 	}
@@ -396,10 +394,9 @@ Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(s
 	return texture;
 }
 
-Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::string const& a_file, std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
+Me::Resources::Dx12::Texture* Me::Renderer::Dx12::RenderLayerDx12::LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
 {
 	auto tData = m_textureLoader->LoadTexture(a_texture, a_width, a_height);
-	tData->m_textureData->m_filename = a_file;
 	auto texture = new Resources::Dx12::Texture(tData->m_srvId, *tData->m_textureData, tData->m_size);
 	delete tData;
 

@@ -1,10 +1,8 @@
 #pragma once
 #include "Platform/General/Graphics/BaseInstanced.h"
 
-#include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/Texture.h"
 #include "Platform/General/Resources/Shader.h"
-
 #include "Platform/General/Resources/Mesh.h"
 #include "Platform/General/ResourceLibrary.h"
 
@@ -78,7 +76,7 @@ namespace Me
 
                 for (size_t i = 0; i < m_textures.size(); i++)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->Bind(static_cast<int>(i));
+                    static_cast<Resources::GL::Texture*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::TextureBase>(m_textures[i]))->Bind(static_cast<int>(i));
                     if (!a_debugMode && m_meshIndex == (Mesh)Primitives::Quad)
                     {
                         glDisable(GL_CULL_FACE);
@@ -98,7 +96,7 @@ namespace Me
 
                 for (size_t i = 0; i < m_textures.size(); i++)
                 {
-                    static_cast<Resources::GL::Texture*>(Resources::TextureLibrary::GetTexture(m_textures[i]))->UnBind(static_cast<int>(i));
+                    static_cast<Resources::GL::Texture*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::TextureBase>(m_textures[i]))->UnBind(static_cast<int>(i));
                 }
 
                 shader->UnBind();

@@ -24,8 +24,6 @@
 
 #include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/Resources/TextureBase.h"
-#include "Platform/General/TextureLibrary.h"
-
 #include "Platform/General/Resources/MeshBase.h"
 #include "Platform/General/ResourceLibrary.h"
 
@@ -169,7 +167,7 @@ void Me::Editor::EntityEditor::Draw()
             
             std::string currentMesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp.m_mesh)->GetFileName();
             std::string currentShader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp.m_shader)->GetFileName();
-            auto texture = Resources::TextureLibrary::GetTexture(a_comp.m_texture);
+            auto texture = rLibrary->GetResource<Me::Resources::TextureBase>(a_comp.m_texture);
 
             std::string currentTexture = "None";
             if(texture != nullptr)
@@ -269,14 +267,14 @@ void Me::Editor::EntityEditor::Draw()
             }
             if(!newTexturePath.empty())
             {
-                a_comp.m_texture = Resources::TextureLibrary::CreateTexture(newTexturePath);
+                a_comp.m_texture = rLibrary->LoadResource<Resources::TextureBase>(newTexturePath)->GetID();
             }
 
             if(a_comp.m_texture > 0)
             {           
                 if(s_uv == Math::Vec4(0,0,0,0))
                 {
-                    Math::Vec2 size = Resources::TextureLibrary::GetTexture(a_comp.m_texture)->GetSize();
+                    Math::Vec2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
                     Math::Vec4 tC = a_comp.m_textureCoords;
                     float y = 0;
                     if(tC.m_y != 0)
@@ -297,7 +295,7 @@ void Me::Editor::EntityEditor::Draw()
 
                 if(ImGui::Button("Apply TextureRect"))
                 {
-                    Math::Vec2 size = Resources::TextureLibrary::GetTexture(a_comp.m_texture)->GetSize();
+                    Math::Vec2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
                     a_comp.m_textureCoords = Animation::GetUV(s_uv, size);
                 }
             }

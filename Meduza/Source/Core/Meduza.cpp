@@ -9,9 +9,7 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
-#include "Platform/General/TextureLibrary.h"
 #include "Platform/General/ResourceLibrary.h"
-#include "Platform/General/Resources/Resource.h"
 
 #include "Platform/General/Events/EventSystem.h"
 #include "Utils/MeduzaDebug.h"
@@ -73,7 +71,6 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 
 	Event::EventSystem::Create(m_window);
 	Resources::ResourceLibrary::CreateResourceLibrary();
-	Resources::TextureLibrary::CreateTextureLibrary(*m_renderLayer);
 	EntityManager::CreateEntityManager();
 	m_serializer = new Serialization::Serializer();
 
@@ -174,7 +171,6 @@ Me::Math::Vec2 Me::Meduza::GetScreenSize()
 void Me::Meduza::Destroy()
 {
 	Resources::ResourceLibrary::Destroy();
-	Resources::TextureLibrary::Destroy();
 	Event::EventSystem::Destroy();
 	Serialization::Serializer::DestroySerializer();
 

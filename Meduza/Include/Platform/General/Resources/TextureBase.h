@@ -1,23 +1,28 @@
 #pragma once
+
+#include "Platform/General/Resources/Resource.h"
+
 namespace Me
 {
     namespace Resources
     {
-        class TextureBase
+        class TextureBase : public ResourceBase
         {
-        public:
-            TextureBase(Math::Vec2 const& a_size, std::string const& a_path);
+        public:            
+            TextureBase() : ResourceBase(ResourceType::Texture) {};
+            TextureBase(Math::Vec2 const& a_size);
 
             virtual ~TextureBase();   
 
-            virtual void Reload() = 0;
-            virtual void Unload() = 0;
+            virtual void Reload() {};
+            virtual void Unload() {};
 
             inline Math::Vec2 GetSize() const {return m_size;}
-            inline std::string GetPath() const {return m_filePath;}
+
+            TextureBase* OnCreate(const std::string& a_path) override;
+            TextureBase* Create(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
         protected:
             Math::Vec2 m_size;
-            std::string m_filePath;
         };
     }
 }

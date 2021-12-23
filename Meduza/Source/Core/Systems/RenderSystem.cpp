@@ -8,7 +8,6 @@
 #include "Core/Components/RenderComponent.h"
 #include "Core/Components/TransformComponent.h"
 
-#include "Platform/General/TextureLibrary.h"
 #include "Platform/General/Resources/TextureBase.h"
 
 Me::RenderSystem::RenderSystem(Renderer::RenderLayer* a_renderLayer)

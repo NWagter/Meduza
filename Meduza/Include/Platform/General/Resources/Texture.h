@@ -12,7 +12,7 @@ namespace Me
                 {
                 public:
                     Texture(std::string const& a_file);
-                    Texture(std::string const& a_file, std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
+                    Texture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
                     virtual ~Texture();
 
                     void Reload() override;

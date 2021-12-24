@@ -19,10 +19,11 @@
 
 #include "AI/Components/AgentComponent.h"
 
-#include "Platform/General/Resources/TextureBase.h"
-
-#include "Platform/General/Resources/ShaderBase.h"
 #include "Platform/General/Resources/MeshBase.h"
+#include "Platform/General/Resources/Scene.h"
+#include "Platform/General/Resources/Script.h"
+#include "Platform/General/Resources/ShaderBase.h"
+#include "Platform/General/Resources/TextureBase.h"
 #include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/FileSystem/FileSystem.h"
@@ -652,7 +653,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
 
         })) compAmount -= 3;    
         
-        if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
         {
             size_t size;
             archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
@@ -661,7 +662,8 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             {
                 std::string scriptPath = "ScriptPath" + std::to_string(i);
                 std::string script;
-                archive(cereal::make_nvp(scriptPath.c_str(), script));    
+                archive(cereal::make_nvp(scriptPath.c_str(), script));
+                rLibrary->LoadResource<Resources::Script>(script);
                 a_comp->AddScript(script);
             }  
             
@@ -890,7 +892,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
 
     })) compAmount--;     
     
-    if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    if(CanDeserialize<Scripting::ScriptComponent>(archive, [&ent, &eManager, &archive, &rLibrary](auto& a_comp)
     {
         size_t size;
         archive(cereal::make_nvp("ScriptAmount", (size_t)size)); 
@@ -899,7 +901,9 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
         {
             std::string scriptPath = "ScriptPath" + std::to_string(i);
             std::string script;
+            
             archive(cereal::make_nvp(scriptPath.c_str(), script));  
+            rLibrary->LoadResource<Resources::Script>(script);
             a_comp->AddScript(script);
         } 
 

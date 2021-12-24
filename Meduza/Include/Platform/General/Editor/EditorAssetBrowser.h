@@ -11,11 +11,11 @@ namespace Me
 
     namespace Editor
     {
-        class EditorResourceBrowser : public EditorWidget
+        class EditorAssetBrowser : public EditorWidget
         {
         public:
-            EditorResourceBrowser();
-            ~EditorResourceBrowser();
+            EditorAssetBrowser();
+            ~EditorAssetBrowser();
 
             void Update(float a_dt) override;
             void Draw() override;

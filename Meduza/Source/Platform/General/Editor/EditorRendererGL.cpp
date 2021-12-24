@@ -18,6 +18,7 @@
 #include "Platform/General/Editor/EditorViewport.h"
 #include "Platform/General/Editor/EditorStats.h"
 #include "Platform/General/Editor/EditorResourceBrowser.h"
+#include "Platform/General/Editor/EditorAssetBrowser.h"
 
 #include "Platform/General/Graphics/FrameBuffer.h"
 
@@ -30,7 +31,7 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	m_imguiIO->IniFilename = "Resources/EditorLayout/Default_Layout.ini";
 
     m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; 
 	
 	static ImWchar s_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 	ImFontConfig config;
@@ -51,7 +52,6 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 		style.WindowRounding = 0.0f;
 		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
-
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
@@ -76,6 +76,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 	AddWidget(stats);
 	EditorResourceBrowser* resourceBrowser = new EditorResourceBrowser();
 	AddWidget(resourceBrowser);
+	EditorAssetBrowser* assetBrowser = new EditorAssetBrowser();
+	AddWidget(assetBrowser);
 
 	m_renderLayer = a_renderLayer;
 }

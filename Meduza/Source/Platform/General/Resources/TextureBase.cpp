@@ -53,6 +53,8 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::OnCreate(std::string con
     }
     break;
     }
+
+    return nullptr;
 }
 
 Me::Resources::TextureBase* Me::Resources::TextureBase::Create(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
@@ -85,4 +87,6 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::Create(std::vector<unsig
     }
     break;
     }
+
+    return nullptr;
 }

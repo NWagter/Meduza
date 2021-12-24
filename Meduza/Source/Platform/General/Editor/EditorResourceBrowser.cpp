@@ -8,6 +8,10 @@
 
 Me::Editor::EditorResourceBrowser::EditorResourceBrowser()
 {
+	for (uint8_t i = 0; i < uint8_t(Resources::ResourceType::LAST); i++)
+	{
+		m_filter[uint8_t(i)] = true;
+	}
 }
 
 Me::Editor::EditorResourceBrowser::~EditorResourceBrowser()
@@ -21,22 +25,32 @@ void Me::Editor::EditorResourceBrowser::Update(float)
 void Me::Editor::EditorResourceBrowser::Draw()
 {
 	Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
-	ImGui::Begin("Resource Browser");    
-	
-	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_AllowItemOverlap;
-
-	for (auto r : rLibrary->GetResources())
+	ImGuiID resourceBrowserDockSpace;
+	resourceBrowserDockSpace = ImGui::GetID("Resource_Space");
+	if (ImGui::Begin("Resource Browser"))
 	{
-		std::string name;
+		ImGui::DockSpace(resourceBrowserDockSpace, ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
 
-		switch (r.second->GetType())
+		ImGui::SetNextWindowDockID(resourceBrowserDockSpace);
+		ImGui::Begin("##ResourceBrowser");
+
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_AllowItemOverlap;
+
+		for (auto r : rLibrary->GetResources())
 		{
+			std::string name;
+
+			if (!m_filter[uint8_t(r.second->GetType())])
+				continue;
+
+			switch (r.second->GetType())
+			{
 			case Resources::ResourceType::Audio:
 				name.append("[Audio]   ");
-			break;
+				break;
 			case Resources::ResourceType::Mesh:
 				name.append("[Mesh]    ");
-			break;
+				break;
 			case Resources::ResourceType::Script:
 				name.append("[Script]  ");
 				break;
@@ -49,30 +63,41 @@ void Me::Editor::EditorResourceBrowser::Draw()
 			default:
 				name.append("[Unknow]  ");
 				break;
+			}
+
+			name.append(r.second->GetFileName());
+
+			bool open = ImGui::TreeNodeEx(name.c_str(), treeNodeFlags);
+			if (open)
+			{
+				ImGui::Text("Resource ID : %u", r.second->GetID());
+				ImGui::Text("Resource Name : %s", r.second->GetFileName().c_str());
+				if (!r.second->GetPath().empty())
+				{
+					ImGui::Text("File : %s", r.second->GetPath().c_str());
+				}
+
+				if (r.second->GetType() == Resources::ResourceType::Mesh)
+				{
+					Resources::MeshBase* mesh = static_cast<Resources::MeshBase*>(r.second);
+					ImGui::Text("Vertices : %i", mesh->GetVerticesSize());
+					ImGui::Text("Indices : %i", mesh->GetIndicesSize());
+				}
+
+				ImGui::TreePop();
+			}
 		}
 
-		name.append(r.second->GetFileName());
-
-		bool open = ImGui::TreeNodeEx(name.c_str(), treeNodeFlags);
-		if (open)
+		if (ImGui::Begin("Filters ##Resources"))
 		{
-			ImGui::Text("Resource ID : %u", r.second->GetID());
-			ImGui::Text("Resource Name : %s", r.second->GetFileName().c_str());
-			if (!r.second->GetPath().empty())
+			for (uint8_t i = 0; i < uint8_t(Resources::ResourceType::LAST); i++)
 			{
-				ImGui::Text("File : %s", r.second->GetPath().c_str());
+				ImGui::Checkbox(Resources::gs_resourceTypes[uint8_t(i)], &m_filter[uint8_t(i)]);
 			}
-
-			if (r.second->GetType() == Resources::ResourceType::Mesh)
-			{
-				Resources::MeshBase* mesh = static_cast<Resources::MeshBase*>(r.second);
-				ImGui::Text("Vertices : %i", mesh->GetVerticesSize());
-				ImGui::Text("Indices : %i", mesh->GetIndicesSize());
-			}
-			
-			ImGui::TreePop();
+			ImGui::End();
 		}
-	}
 
+		ImGui::End();
+	}
 	ImGui::End();
 }

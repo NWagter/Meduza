@@ -3,15 +3,20 @@ namespace Me
 {
     namespace Resources
     {
-        enum class ResourceType
+        enum class ResourceType : uint8_t
         {
-            Unkown = 0,
-            Texture,
-            Shader,
+            Audio,
             Mesh,
+            Scene,
             Script,
-            Audio
+            Shader,
+            Texture,
+
+            LAST,
+            Unknown
         };
+        static const char* gs_resourceTypes[] =
+        { "Audio", "Mesh", "Scene", "Script", "Shader", "Texture"};
 
         class ResourceBase
         {
@@ -26,7 +31,7 @@ namespace Me
             virtual ResourceBase* OnCreate(const std::string& a_path) = 0;
 
         protected:
-            ResourceBase() : m_type(ResourceType::Unkown) {}
+            ResourceBase() : m_type(ResourceType::Unknown) {}
             ResourceBase(ResourceType a_type) : 
                 m_type(a_type)
             {}

@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 #include <algorithm>
+#include <random>
 
 #include <cassert>
 #include <string>
@@ -23,7 +24,6 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
-#include <random>
 
 #include <cereal/archives/xml.hpp>
 #include <FontAwesome/FontAwesome.h>

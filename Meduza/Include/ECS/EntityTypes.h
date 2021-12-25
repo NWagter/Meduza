@@ -8,6 +8,7 @@ using EntityFilter = std::set<ComponentID>;
 
 enum class Components : uint16_t
 {
+    UIDComponent = 0,
     Tag = 1,
     Transform = 2,
     Editor = 3,

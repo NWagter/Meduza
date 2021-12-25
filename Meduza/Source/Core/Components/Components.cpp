@@ -18,6 +18,7 @@
 #include "AI/Components/NavSurfaceComponent.h"
 
 
+ComponentID Me::UIDComponent::s_componentID = static_cast<ComponentID>(Components::UIDComponent);
 ComponentID Me::TagComponent::s_componentID = static_cast<ComponentID>(Components::Tag);
 ComponentID Me::EditorComponent::s_componentID = static_cast<ComponentID>(Components::Editor);
 ComponentID Me::TransformComponent::s_componentID = static_cast<ComponentID>(Components::Transform);

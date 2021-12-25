@@ -19,7 +19,7 @@ namespace Me
         static bool EntityExists(EntityID const a_entityID);
 
         static void AddSystem(ECSSystem* a_system);
-        static EntityID CreateEntity(std::string a_tag = "");
+        static EntityID CreateEntity(std::string a_tag = "", uint64_t const a_guid = 0);
         static void DestroyEntity(EntityID const a_entityID);
 
         static void CleanGame();

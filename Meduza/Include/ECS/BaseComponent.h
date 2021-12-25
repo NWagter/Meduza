@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EntityTypes.h"
+#include "Core/GUID.h"
 
 namespace Me
 {
@@ -12,6 +13,12 @@ namespace Me
         static ComponentID s_componentID;
     };
 
+    struct UIDComponent : public BaseComponent
+    {
+        UUID m_guid;
+
+        static ComponentID s_componentID;
+    };
 
     struct TagComponent : public BaseComponent
     {

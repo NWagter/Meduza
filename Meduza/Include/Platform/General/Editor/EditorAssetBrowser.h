@@ -31,6 +31,8 @@ namespace Me
             std::unordered_map<uint8_t, bool> m_filter; 
             std::string m_browserPath;
             Files::BrowseData m_browserData;
+            float m_timer;
+            float const m_reloadTime;
         };
     }
 }

@@ -4,7 +4,7 @@
 #include "MeduzaIncluder.h"
 #include "Platform/General/Resources/Resource.h"
 
-Me::Editor::EditorAssetBrowser::EditorAssetBrowser()
+Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f)
 {
 	for (uint8_t i = 0; i < uint8_t(Resources::ResourceType::LAST); i++)
 	{
@@ -14,15 +14,23 @@ Me::Editor::EditorAssetBrowser::EditorAssetBrowser()
 	m_browserData = Files::BrowseData();
 	m_browserPath = "Assets";
 	Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
-
+	m_timer = 0;
 }
 
 Me::Editor::EditorAssetBrowser::~EditorAssetBrowser()
 {
 }
 
-void Me::Editor::EditorAssetBrowser::Update(float)
+void Me::Editor::EditorAssetBrowser::Update(float a_dt)
 {
+	if (m_timer >= m_reloadTime)
+	{
+		m_browserData.Clear();
+		Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
+		m_timer = 0;
+	}
+
+	m_timer += a_dt;
 }
 
 void Me::Editor::EditorAssetBrowser::Draw()

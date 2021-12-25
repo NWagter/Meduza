@@ -30,12 +30,18 @@ namespace Me
 		{
 			std::string m_path;
 			std::vector<std::string> m_folders;
-			std::vector<MeduzaFile> m_files;
+			std::vector<MeduzaFile*> m_files;
 
 			void Clear()
 			{
 				m_path.clear(); 
 				m_folders.clear();
+
+				for (auto f : m_files)
+				{
+					delete f;
+				}
+
 				m_files.clear();
 			}
 		};

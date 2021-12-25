@@ -140,7 +140,7 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 		{
 			std::replace( path.begin(), path.end(), '\\', '/');
 
-			MeduzaFile file(path, name, extention, type);
+			MeduzaFile* file = new MeduzaFile(path, name, extention, type);
 			a_data.m_files.push_back(file);
 		}
 

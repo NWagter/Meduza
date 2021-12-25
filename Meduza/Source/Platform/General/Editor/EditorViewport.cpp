@@ -12,6 +12,8 @@
 #include "Platform/General/Graphics/FramebufferGL.h"
 #include "Platform/Windows/Graphics/FramebufferDx12.h"
 
+#include "Platform/General/Resources/Resource.h"
+
 Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderLayer)
 {
     m_renderLayer = &a_renderLayer;
@@ -61,6 +63,21 @@ void Me::Editor::EditorViewport::Draw()
             ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });   
     default:
         break;
+    }
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+        {
+            Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+
+            if (file->m_type == Resources::ResourceType::Scene)
+            {
+                Serialization::Serializer::GetInstance()->DeserializeScene(file->m_path);
+            }
+        }
+        
+        ImGui::EndDragDropTarget();
     }
 
 

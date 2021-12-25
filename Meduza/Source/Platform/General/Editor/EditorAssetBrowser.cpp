@@ -97,6 +97,8 @@ void Me::Editor::EditorAssetBrowser::Draw()
 				m_browserPath.append(folder);
 				m_browserData.Clear();
 				Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
+				ImGui::NextColumn();
+				ImGui::PopID();
 				break;
 			}
 			ImGui::Text(folder.c_str());
@@ -106,16 +108,21 @@ void Me::Editor::EditorAssetBrowser::Draw()
 
 		for (auto file : m_browserData.m_files)
 		{
-			if (!m_filter[uint8_t(file.m_type)])
+			if (!m_filter[uint8_t(file->m_type)])
 			{
 				continue;
 			}
-			ImGui::PushID(file.m_name.c_str());
-			if (ImGui::ImageButton((void*)(fileIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize }))
-			{
 
+			ImGui::PushID(file->m_name.c_str()); 
+			ImGui::ImageButton((void*)(fileIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize });
+			if (ImGui::BeginDragDropSource())
+			{
+				ImGui::SetDragDropPayload("ASSET_ITEM", file, sizeof(Files::MeduzaFile), ImGuiCond_Always);
+				ImGui::EndDragDropSource();
 			}
-			ImGui::Text(file.m_name.c_str());
+
+			ImGui::Text(file->m_name.c_str());
+
 			ImGui::NextColumn();
 			ImGui::PopID();
 		}

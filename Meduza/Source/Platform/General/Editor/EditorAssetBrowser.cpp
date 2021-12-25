@@ -4,7 +4,14 @@
 #include "MeduzaIncluder.h"
 #include "Platform/General/Resources/Resource.h"
 
-Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f)
+#include "Platform/General/Resources/Texture.h"
+#ifdef PLATFORM_WINDOWS
+#include "Platform/Windows/Resources/Texture.h"
+#include "Platform/Windows/Helper/Helper.h"
+#endif // PLATFORM_WINDOWS
+
+
+Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f), m_padding(16.0f)
 {
 	for (uint8_t i = 0; i < uint8_t(Resources::ResourceType::LAST); i++)
 	{
@@ -15,6 +22,11 @@ Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f)
 	m_browserPath = "Assets";
 	Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
 	m_timer = 0;
+
+	m_thumbnailSize = 64.0f;
+
+	m_folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
+	m_fileIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FileIcon.png");
 }
 
 Me::Editor::EditorAssetBrowser::~EditorAssetBrowser()
@@ -45,6 +57,8 @@ void Me::Editor::EditorAssetBrowser::Draw()
 		ImGui::SetNextWindowDockID(assetBrowserDockSpace);
 		ImGui::Begin("##AssetBrowser");
 
+		ImGui::DragFloat("Scale", &m_thumbnailSize, 1.0f, 4.0f, 256.0f);
+
 		if (ImGui::Begin("Filters ##Assets"))
 		{
 			for (uint8_t i = 0; i < uint8_t(Resources::ResourceType::LAST); i++)
@@ -64,9 +78,20 @@ void Me::Editor::EditorAssetBrowser::Draw()
 			}
 		}
 
+		float cellSize = m_thumbnailSize + m_padding;
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columns = int(panelWidth / cellSize);
+
+		ImGui::Columns(columns < 1 ? 1 : columns, 0, false);
+
+		Resources::GL::Texture* folderIcon = static_cast<Resources::GL::Texture*>(m_folderIcon);
+		Resources::GL::Texture* fileIcon = static_cast<Resources::GL::Texture*>(m_fileIcon);
+
 		for (auto folder : m_browserData.m_folders)
 		{
-			if (ImGui::Button(folder.c_str()))
+			ImGui::PushID(folder.c_str());
+			float canvasWidth = ImGui::GetWindowContentRegionWidth();
+			if (ImGui::ImageButton((void*)(folderIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize }))
 			{
 				m_browserPath.append("/");
 				m_browserPath.append(folder);
@@ -74,6 +99,9 @@ void Me::Editor::EditorAssetBrowser::Draw()
 				Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
 				break;
 			}
+			ImGui::Text(folder.c_str());
+			ImGui::NextColumn();
+			ImGui::PopID();
 		}
 
 		for (auto file : m_browserData.m_files)
@@ -82,9 +110,16 @@ void Me::Editor::EditorAssetBrowser::Draw()
 			{
 				continue;
 			}
+			ImGui::PushID(file.m_name.c_str());
+			if (ImGui::ImageButton((void*)(fileIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize }))
+			{
 
+			}
 			ImGui::Text(file.m_name.c_str());
+			ImGui::NextColumn();
+			ImGui::PopID();
 		}
+		ImGui::Columns(1);
 
 		ImGui::End();
 	}

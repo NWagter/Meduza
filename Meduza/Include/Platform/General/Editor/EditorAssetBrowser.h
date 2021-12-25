@@ -16,6 +16,11 @@ namespace Me
         std::string m_fileName;
     };
 
+    namespace Resources
+    {
+        class TextureBase;
+    }
+
     namespace Editor
     {
         class EditorAssetBrowser : public EditorWidget
@@ -33,6 +38,12 @@ namespace Me
             Files::BrowseData m_browserData;
             float m_timer;
             float const m_reloadTime;
+
+            float const m_padding;
+            float m_thumbnailSize;
+
+            Resources::TextureBase* m_folderIcon;
+            Resources::TextureBase* m_fileIcon;
         };
     }
 }

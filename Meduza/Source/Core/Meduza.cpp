@@ -55,29 +55,31 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	if(m_window != nullptr)
 	{
 		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, a_api);
-#ifdef PLATFORM_WINDOWS
-	#ifdef EDITOR
-		m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
-	#endif
-#endif
-		if(m_renderLayer == nullptr)
-		{			
-			ME_CORE_ASSERT_M(false, "No Renderer Available!");
-			m_window->Quit();
-		}
+
 	}
 
+	if (m_renderLayer == nullptr)
+	{
+		ME_CORE_ASSERT_M(false, "No Renderer Available!");
+		m_window->Quit();
+	}
+
+	Resources::ResourceLibrary::CreateResourceLibrary();
+	Event::EventSystem::Create(m_window);
 	m_meduzaDebugger = Debug::MeduzaDebug::CreateDebugger(*m_renderLayer);
 
-	Event::EventSystem::Create(m_window);
-	Resources::ResourceLibrary::CreateResourceLibrary();
 	EntityManager::CreateEntityManager();
 	m_serializer = new Serialization::Serializer();
-
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
-
 	m_luaScripting = new Scripting::LuaScripting();
 
+
+
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
+	m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
+#endif
+#endif
 	m_renderLayer->Init();
 
 

@@ -20,6 +20,8 @@ namespace Me
 
                     void Bind(int);
                     void UnBind(int);
+
+                    unsigned int GetTexture() { return m_texture; }
                 private:
                     unsigned int m_texture;
                 };

@@ -14,6 +14,8 @@
 
 #include "Platform/General/Resources/Resource.h"
 
+#include "Core/Meduza.h"
+
 Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar& a_toolbar, Renderer::RenderLayer& a_renderLayer)
 {
     m_renderLayer = &a_renderLayer;
@@ -73,6 +75,7 @@ void Me::Editor::EditorViewport::Draw()
 
             if (file->m_type == Resources::ResourceType::Scene)
             {
+                Meduza::ms_engineState = RUN_EDITOR;
                 Serialization::Serializer::GetInstance()->DeserializeScene(file->m_path);
             }
         }

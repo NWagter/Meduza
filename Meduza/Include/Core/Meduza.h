@@ -35,6 +35,7 @@ namespace Me {
 	namespace Editor
 	{
 		class EditorToolbar;
+		class EditorViewport;
 #ifdef PLATFORM_WINDOWS
 		class EditorRenderer;
 #endif
@@ -74,5 +75,6 @@ namespace Me {
 #endif
 		Window* m_window;
 		friend Editor::EditorToolbar;
+		friend Editor::EditorViewport;
 	};
 }

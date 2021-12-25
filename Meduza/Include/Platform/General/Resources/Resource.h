@@ -7,6 +7,7 @@ namespace Me
         {
             Audio,
             Mesh,
+            Prefab,
             Scene,
             Script,
             Shader,
@@ -16,7 +17,7 @@ namespace Me
             Unknown
         };
         static const char* gs_resourceTypes[] =
-        { "Audio", "Mesh", "Scene", "Script", "Shader", "Texture"};
+        { "Audio", "Mesh", "Prefab", "Scene", "Script", "Shader", "Texture"};
 
         class ResourceBase
         {

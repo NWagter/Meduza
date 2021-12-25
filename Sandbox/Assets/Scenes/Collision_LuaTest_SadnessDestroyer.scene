@@ -4,8 +4,11 @@
 		<EntityAmount>4</EntityAmount>
 	</SceneData>
 	<value0>
-		<ComponentAmount>4</ComponentAmount>
+		<ComponentAmount>5</ComponentAmount>
 		<value0>
+			<0>
+				<UUID>10907316735514311477</UUID>
+			</0>
 			<1>
 				<Tag>Camera</Tag>
 			</1>
@@ -44,8 +47,11 @@
 		</value0>
 	</value0>
 	<value1>
-		<ComponentAmount>8</ComponentAmount>
+		<ComponentAmount>9</ComponentAmount>
 		<value0>
+			<0>
+				<UUID>10370466110585203615</UUID>
+			</0>
 			<1>
 				<Tag>SadnessDestroyer</Tag>
 			</1>
@@ -113,8 +119,11 @@
 		</value0>
 	</value1>
 	<value2>
-		<ComponentAmount>7</ComponentAmount>
+		<ComponentAmount>8</ComponentAmount>
 		<value0>
+			<0>
+				<UUID>9469867862475153266</UUID>
+			</0>
 			<1>
 				<Tag>SadBox</Tag>
 			</1>
@@ -178,8 +187,11 @@
 		</value0>
 	</value2>
 	<value3>
-		<ComponentAmount>7</ComponentAmount>
+		<ComponentAmount>8</ComponentAmount>
 		<value0>
+			<0>
+				<UUID>2831443365905936341</UUID>
+			</0>
 			<1>
 				<Tag>SadBox</Tag>
 			</1>

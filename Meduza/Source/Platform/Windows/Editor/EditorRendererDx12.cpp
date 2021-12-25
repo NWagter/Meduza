@@ -14,6 +14,9 @@
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
 #include "Platform/General/Editor/EditorViewport.h"
+#include "Platform/General/Editor/EditorStats.h"
+#include "Platform/General/Editor/EditorResourceBrowser.h"
+#include "Platform/General/Editor/EditorAssetBrowser.h"
 
 
 Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::RenderLayerDx12* a_renderLayer)
@@ -69,7 +72,13 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	EntityEditor* entEditor = new EntityEditor(*entHierarchy);
 	AddWidget(entEditor);
 	EditorViewport* viewPort = new EditorViewport(*entEditor, *toolbar, *m_renderLayer);
-	AddWidget(viewPort);
+	AddWidget(viewPort);	
+	EditorStats* stats = new EditorStats(*a_renderLayer);
+	AddWidget(stats);
+	EditorResourceBrowser* resourceBrowser = new EditorResourceBrowser();
+	AddWidget(resourceBrowser);
+	EditorAssetBrowser* assetBrowser = new EditorAssetBrowser();
+	AddWidget(assetBrowser);
 }
 
 Me::Editor::Dx12::EditorRendererDx12::~EditorRendererDx12()

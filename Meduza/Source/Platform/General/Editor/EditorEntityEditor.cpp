@@ -189,9 +189,9 @@ void Me::Editor::EntityEditor::Draw()
 
                 for(auto file : data.m_files)
                 {
-                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    if (ImGui::Selectable(file.m_name.c_str(), &is_selected))
                     {
-                        newModelPath = file.second;
+                        newModelPath = file.m_path;
                     }
                 }
                 
@@ -233,9 +233,9 @@ void Me::Editor::EntityEditor::Draw()
 
                 for(auto file : data.m_files)
                 {
-                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    if (ImGui::Selectable(file.m_name.c_str(), &is_selected))
                     {
-                        newShaderPath = file.second;
+                        newShaderPath = file.m_path;
                     }
                 }
 
@@ -257,9 +257,9 @@ void Me::Editor::EntityEditor::Draw()
 
                 for(auto file : data.m_files)
                 {
-                    if (ImGui::Selectable(file.first.c_str(), &is_selected))
+                    if (ImGui::Selectable(file.m_name.c_str(), &is_selected))
                     {
-                        newTexturePath = file.second;
+                        newTexturePath = file.m_path;
                     }
                 }
 
@@ -508,9 +508,9 @@ void Me::Editor::EntityEditor::Draw()
 
                     for(auto file : data.m_files)
                     {
-                        if (ImGui::Selectable(Files::FileSystem::GetFileName(file.first).c_str(), &is_selected))
+                        if (ImGui::Selectable(file.m_name.c_str(), &is_selected))
                         {
-                            newScriptPath = file.second;
+                            newScriptPath = file.m_path;
                         }
                     }
 

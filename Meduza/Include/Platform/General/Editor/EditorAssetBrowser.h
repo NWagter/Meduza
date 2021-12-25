@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Platform/General/Editor/EditorWidget.h"
+#include "Platform/Windows/FileSystem/FileSystem.h"
 
 namespace Me
 {
@@ -8,6 +9,12 @@ namespace Me
     {
         class RenderLayer;
     }
+
+    struct File
+    {
+        std::string m_path;
+        std::string m_fileName;
+    };
 
     namespace Editor
     {
@@ -21,7 +28,9 @@ namespace Me
             void Draw() override;
 
         private:
-            std::unordered_map<uint8_t, bool> m_filter;
+            std::unordered_map<uint8_t, bool> m_filter; 
+            std::string m_browserPath;
+            Files::BrowseData m_browserData;
         };
     }
 }

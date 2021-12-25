@@ -2,6 +2,7 @@
 #include "Platform/Windows/FileSystem/FileSystem.h"
 
 #include <filesystem>
+#include "Platform/General/Resources/Resource.h"
 
 std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND const a_hwnd)
 {
@@ -66,7 +67,7 @@ std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND 
 	return std::string();
 }
 
-void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType const a_type, std::string const& a_path)
+void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType const a_type, bool const a_recursive, std::string const& a_path)
 {
 	a_data.m_path = a_path;
 
@@ -74,25 +75,63 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 	{
 		std::string extention = GetFileExtention(p.path().string());
 		std::string path = "";
+		Resources::ResourceType type = Resources::ResourceType::Unknown;
 		
 		std::string name = GetFileName(p.path().filename().string());
 		name.append(" (");
 		name.append(extention);
 		name.append(")");
 
-		if(a_type == Files::FileType::Model && (extention == "glb" || extention == "gltf"))
+		if(extention == "glb" || extention == "gltf")
 		{
-			path = p.path().string();
+			if (a_type == Files::FileType::Model)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Mesh;
 		}
-		if(a_type == Files::FileType::Texture && (extention == "png" || extention == "dds"))
+		else if(extention == "png" || extention == "dds")
 		{
-			path = p.path().string();
+			if (a_type == Files::FileType::Texture)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Texture;
 		}
-		if(a_type == Files::FileType::Shader && (extention == "glsl" || extention == "hlsl"))
+		else if(extention == "glsl" || extention == "hlsl")
 		{
-			path = p.path().string();
+			if (a_type == Files::FileType::Shader)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Shader;
 		}
-		if(a_type == Files::FileType::Script && (extention == "lua"))
+		else if(extention == "lua")
+		{
+			if (a_type == Files::FileType::Script)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Script;
+		}
+		else if (extention == "scene")
+		{
+			if (a_type == Files::FileType::Scene)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Scene;
+		}
+		else if (extention == "prefab")
+		{
+			if (a_type == Files::FileType::Prefab)
+			{
+				path = p.path().string();
+			}
+			type = Resources::ResourceType::Prefab;
+		}
+		
+		if (a_type == Files::FileType::Any && !extention.empty())
 		{
 			path = p.path().string();
 		}
@@ -100,21 +139,33 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 		if(!path.empty())
 		{
 			std::replace( path.begin(), path.end(), '\\', '/');
-			a_data.m_files.push_back(std::pair<std::string, std::string>(name, path));
+
+			MeduzaFile file(path, name, extention, type);
+			a_data.m_files.push_back(file);
 		}
 
 		std::string s = p.path().filename().string();
 
-		if(s.front() != '!' && p.is_directory())
+		if (s.front() != '!' && p.is_directory())
 		{
-			GetFilesOfType(a_data, a_type, p.path().string());
+			a_data.m_folders.push_back(s);
+			if (a_recursive)
+			{
+				GetFilesOfType(a_data, a_type, a_recursive, p.path().string());
+			}
 		}
 	}
 
-	if (a_path == "Assets" && 
+	if (a_recursive && a_path == "Assets" &&
 		(a_type == Files::FileType::Texture || a_type == Files::FileType::Shader))
 	{
-		GetFilesOfType(a_data, a_type, "Resources");
+		GetFilesOfType(a_data, a_type, a_recursive, "Resources");
 	}
 
+}
+
+std::string Me::Files::Windows::FileSystem::GetParentPath(std::string const& a_path)
+{
+	std::string parentPath = std::filesystem::path(a_path).parent_path().string();
+	return parentPath;
 }

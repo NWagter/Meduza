@@ -2,14 +2,42 @@
 
 namespace Me
 {
+	namespace Resources
+	{
+		enum class ResourceType : uint8_t;
+	}
+
 	namespace Files
 	{
+
+		struct MeduzaFile
+		{
+			std::string m_path;
+			std::string m_name;
+			std::string m_extention;
+			Resources::ResourceType m_type;
+
+			MeduzaFile(std::string const& a_path, std::string const& a_name, std::string const& a_extention, Resources::ResourceType const a_type)
+			{
+				m_path = a_path;
+				m_name = a_name;
+				m_extention = a_extention;
+				m_type = a_type;
+			}
+		};
 
 		struct BrowseData
 		{
 			std::string m_path;
 			std::vector<std::string> m_folders;
-			std::vector<std::pair<std::string, std::string>> m_files;
+			std::vector<MeduzaFile> m_files;
+
+			void Clear()
+			{
+				m_path.clear(); 
+				m_folders.clear();
+				m_files.clear();
+			}
 		};
 
 		class FileSystem

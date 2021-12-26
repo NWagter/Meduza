@@ -4,6 +4,8 @@
 #include "MeduzaIncluder.h"
 #include "Platform/General/Resources/Resource.h"
 
+#include "Platform/General/Graphics/RenderLayer.h"
+
 #include "Platform/General/Resources/Texture.h"
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Resources/Texture.h"
@@ -84,14 +86,35 @@ void Me::Editor::EditorAssetBrowser::Draw()
 
 		ImGui::Columns(columns < 1 ? 1 : columns, 0, false);
 
-		Resources::GL::Texture* folderIcon = static_cast<Resources::GL::Texture*>(m_folderIcon);
-		Resources::GL::Texture* fileIcon = static_cast<Resources::GL::Texture*>(m_fileIcon);
+		Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
+
+		ImTextureID folderTextureID = 0;
+		ImTextureID fileTextureID = 0;
+
+		if (api == Me::GFX_API::OpenGL)
+		{
+			folderTextureID = (void*)(static_cast<Resources::GL::Texture*>(m_folderIcon)->GetTexture());
+			fileTextureID = (void*)(static_cast<Resources::GL::Texture*>(m_fileIcon)->GetTexture());
+		}
+		else if (api == Me::GFX_API::DX12)
+		{
+			auto folderTexture = static_cast<Resources::Dx12::Texture*>(m_folderIcon);
+			CD3DX12_GPU_DESCRIPTOR_HANDLE folderHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(folderTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
+			folderHandle.Offset(folderTexture->GetTexture().m_srvOffset, folderTexture->GetTexture().m_handleIncrementer);
+
+			auto fileTexture = static_cast<Resources::Dx12::Texture*>(m_fileIcon);
+			CD3DX12_GPU_DESCRIPTOR_HANDLE fileHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(fileTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
+			fileHandle.Offset(fileTexture->GetTexture().m_srvOffset, fileTexture->GetTexture().m_handleIncrementer);
+
+			folderTextureID = (ImTextureID)folderHandle.ptr;
+			fileTextureID = (ImTextureID)fileHandle.ptr;
+		}
 
 		for (auto folder : m_browserData.m_folders)
 		{
 			ImGui::PushID(folder.c_str());
 			float canvasWidth = ImGui::GetWindowContentRegionWidth();
-			if (ImGui::ImageButton((void*)(folderIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize }))
+			if (ImGui::ImageButton(folderTextureID, { m_thumbnailSize, m_thumbnailSize }))
 			{
 				m_browserPath.append("/");
 				m_browserPath.append(folder);
@@ -114,7 +137,7 @@ void Me::Editor::EditorAssetBrowser::Draw()
 			}
 
 			ImGui::PushID(file->m_name.c_str()); 
-			ImGui::ImageButton((void*)(fileIcon->GetTexture()), { m_thumbnailSize, m_thumbnailSize });
+			ImGui::ImageButton(fileTextureID, { m_thumbnailSize, m_thumbnailSize });
 			if (ImGui::BeginDragDropSource())
 			{
 				ImGui::SetDragDropPayload("ASSET_ITEM", file, sizeof(Files::MeduzaFile), ImGuiCond_Always);

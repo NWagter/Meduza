@@ -25,12 +25,14 @@ namespace Me
             {
                 unsigned int m_resourceId;
                 unsigned int m_srvOffset = 0;
+                unsigned int m_handleIncrementer = 0;
 
                 std::string m_filename;
                 std::string m_filePath;
 
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_resource = nullptr;
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_uploadHeap = nullptr;
+                Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_srv;
             };
 
             class Helper

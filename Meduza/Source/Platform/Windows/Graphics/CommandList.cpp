@@ -84,7 +84,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> Me::Renderer::Dx12::CommandList::
 	return commandAllocator;
 }
 
-void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh)
+unsigned int Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh)
 {
 	D3D12_VERTEX_BUFFER_VIEW vBuffer = a_mesh->GetVertexBuffer();
 	m_cmdList->IASetVertexBuffers(0, 1, &vBuffer);
@@ -96,9 +96,10 @@ void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh)
 
 	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
 	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), 1, 0, 0, 0);
+	return a_mesh->GetVerticesSize();
 }
 
-void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count)
+unsigned int Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count)
 {	
 	// set the root descriptor table 0 to the constant buffer descriptor heap
 	m_cmdList->SetGraphicsRootShaderResourceView(2, a_heaps->GetGPUVirtualAddress());
@@ -113,4 +114,5 @@ void Me::Renderer::Dx12::CommandList::Draw(Resources::Dx12::Mesh* a_mesh, ID3D12
 
 	//m_cmdList->DrawInstanced(a_mesh->GetIndicesSize(), 1, 0, 0);
 	m_cmdList->DrawIndexedInstanced(a_mesh->GetIndicesSize(), a_count, 0, 0, 0);
+	return a_mesh->GetVerticesSize();
 }

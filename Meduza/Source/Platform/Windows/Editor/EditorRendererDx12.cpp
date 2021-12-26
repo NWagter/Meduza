@@ -114,6 +114,7 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 	}
 
 	ImGui::EndFrame();
+
 	// Render ImGui
 	ID3D12DescriptorHeap* imGuiHeap[] = { m_renderLayer->GetSRV().GetHeap().Get() };
 	m_renderLayer->GetCmd().GetList()->SetDescriptorHeaps(_countof(imGuiHeap), imGuiHeap);
@@ -121,7 +122,6 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_renderLayer->GetCmd().GetList());
 
-	
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		ImGui::UpdatePlatformWindows();

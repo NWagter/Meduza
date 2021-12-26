@@ -30,8 +30,8 @@ namespace Me
                 void SetViewAndScissor(float const a_width, float const a_height);
                 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetCurrentAllocator(unsigned int const a_index);
 
-                void Draw(Resources::Dx12::Mesh* a_mesh);
-                void Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count);
+                unsigned int Draw(Resources::Dx12::Mesh* a_mesh);
+                unsigned int Draw(Resources::Dx12::Mesh* a_mesh, ID3D12Resource* a_heaps, int const a_count);
 
                 bool m_closedList = false;
             private:

@@ -13,7 +13,7 @@
 #include <codecvt>
 #include <regex>
 
-static constexpr size_t MAX_TEXTURES = 1;
+static constexpr size_t MAX_TEXTURES = 8;
 static constexpr size_t RGBA_SIZE = 4;
 
 Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
@@ -57,8 +57,10 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
     data->m_textureData = CreateTexture(a_file, ext);
 
     data->m_srvId = m_currentID;
-    
-	LoadToSRV(*data->m_textureData, data->m_srvId);
+
+    auto srv = LoadToSRV(*data->m_textureData, data->m_srvId);
+    data->m_textureData->m_srv = srv.m_srv->GetHeap();
+    data->m_textureData->m_handleIncrementer = srv.m_srv->GetSize();
 
     data->m_size = Math::Vec2(float(data->m_textureData->m_resource->GetDesc().Width), float(data->m_textureData->m_resource->GetDesc().Height));
 
@@ -70,7 +72,6 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
 const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height)
 {
     TextureReturnData* data = new TextureReturnData();
-
 
     if(true)
     {
@@ -141,8 +142,10 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
 
         data->m_textureData = textureData;
         
-        data->m_srvId = m_currentID;    
-        LoadToSRV(*data->m_textureData, data->m_srvId);
+        data->m_srvId = m_currentID;
+        auto srv = LoadToSRV(*data->m_textureData, data->m_srvId);
+        data->m_textureData->m_srv = srv.m_srv->GetHeap();
+        data->m_textureData->m_handleIncrementer = srv.m_srv->GetSize();
     }
     
     ME_CORE_LOG("Loaded Binary texture with Succes! \n");
@@ -222,13 +225,12 @@ Me::Helper::Dx12::TextureData* Me::Helper::Dx12::TextureLoader::CreateTexture(st
         ME_GFX_ASSERT_M(false, "Don't Reconize the extention!");
     }
 
-
     SRVOffset(&texture->m_srvOffset, *texture);
 
     return texture;
 }
 
-void Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a_srv, TextureData& a_texture)
+Me::Helper::Dx12::SRV Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a_srv, TextureData& a_texture)
 {
     auto srv = m_srvs.at(m_currentID);
 
@@ -236,11 +238,12 @@ void Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a_srv, TextureData
     {
         *a_srv = unsigned int(srv.m_textures.size());
         srv.m_textures.push_back(&a_texture);
+        return srv;
     }
     else
     {
         D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
-        srvDesc.NumDescriptors = 256;
+        srvDesc.NumDescriptors = 2;
         srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         srvDesc.NodeMask = 0;
@@ -250,11 +253,11 @@ void Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a_srv, TextureData
         m_srvs.push_back(srv);
 
         m_currentID++;
-        SRVOffset(a_srv, a_texture);
+        return SRVOffset(a_srv, a_texture);
     }
 }
 
-void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned int const a_index)
+Me::Helper::Dx12::SRV Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned int const a_index)
 {
     auto t = &a_texture;
     auto srv = m_srvs.at(a_index).m_srv;
@@ -266,17 +269,18 @@ void Me::Helper::Dx12::TextureLoader::LoadToSRV(TextureData& a_texture, unsigned
 		hDescriptor.Offset(t->m_srvOffset, srv->GetSize());
 	}
 
+    auto tResource = t->m_resource;
+    m_srvs.at(a_index).m_textures.push_back(t);
+
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
+    srvDesc.Texture2D.MipLevels = tResource->GetDesc().MipLevels;
+    srvDesc.Format = tResource->GetDesc().Format;
 
-	auto tResource = t->m_resource;
-    m_srvs.at(a_index).m_textures.push_back(t);
-
-	srvDesc.Texture2D.MipLevels = tResource->GetDesc().MipLevels;
-	srvDesc.Format = tResource->GetDesc().Format;
 
 	m_device->GetDevice()->CreateShaderResourceView(tResource.Get(), &srvDesc, hDescriptor);
+    return m_srvs.at(a_index);
 }

@@ -32,7 +32,7 @@ namespace Me
                     m_instancedData.clear();
                 }
 
-                void Draw(CommandList*);
+                unsigned int Draw(CommandList*);
                 bool AddData(InstancedData);
                 void ClearBuffer() override
                 {
@@ -45,6 +45,7 @@ namespace Me
                 unsigned int GetSRVID() { return m_srvId;}
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES);}
                 bool Empty() override { return m_alignmentItem == 0; }
+                int Amount() override { return m_alignmentItem; }
             protected:
                 Mesh m_meshIndex;
                 Shader m_shaderIndex;
@@ -57,10 +58,10 @@ namespace Me
             };
 
             template<typename InstancedData>
-            void InstancedRenderCall<InstancedData>::Draw(CommandList* a_cmd)
+            unsigned int InstancedRenderCall<InstancedData>::Draw(CommandList* a_cmd)
             {
                 auto m = static_cast<Resources::Dx12::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
-                a_cmd->Draw(m, m_instancedBuffer->GetResource().Get() ,m_alignmentItem);
+                return a_cmd->Draw(m, m_instancedBuffer->GetResource().Get() ,m_alignmentItem);
             }
 
             template<typename InstancedData>

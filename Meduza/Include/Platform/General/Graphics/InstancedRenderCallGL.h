@@ -47,7 +47,7 @@ namespace Me
                 Mesh GetMesh() override { return m_meshIndex; }
                 Shader GetShader() override { return m_shaderIndex; }
 
-                int Amount() { return m_alignmentItem; }
+                int Amount() override { return m_alignmentItem; }
                 bool ReachedMaxSize() override { return (m_alignmentItem >= MAX_INSTANCES); }
                 bool Empty() override { return m_alignmentItem == 0; }
             private:

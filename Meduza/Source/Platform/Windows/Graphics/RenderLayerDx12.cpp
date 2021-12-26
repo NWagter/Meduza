@@ -178,6 +178,10 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour const a_clearColour)
 	{
 		instanced->ClearBuffer();
 	}	
+
+#ifdef EDITOR  
+	m_renderStats.Reset();
+#endif
 }
 
 void Me::Renderer::Dx12::RenderLayerDx12::Present()
@@ -186,7 +190,6 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
 
 	if (m_context->GetResize())
 	{
-
 		Math::Vec2 size = m_context->Resize();
 		
 		GetCmd().SetViewAndScissor(size.m_x, size.m_y);
@@ -244,13 +247,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_render
 		}
 	}
 
-
 	auto iB = Helper::Dx12::DefaultInstancedBuffer();
 
 	iB.m_colour = DirectX::XMFLOAT4(a_renderable.m_colour.m_colour);
 	iB.m_textureId = textureId;
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
-
 
 	Math::Mat4 model = a_transformComponent.GetTransform();
 
@@ -345,7 +346,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 		cmd->GetList()->SetGraphicsRootDescriptorTable(0, srv.m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart());
 		
 		cmd->GetList()->SetGraphicsRootConstantBufferView(1, m_camBuffer->GetResource().Get()->GetGPUVirtualAddress());
-		dxInstanced->Draw(cmd);
+		unsigned int vertices = dxInstanced->Draw(cmd);
+#ifdef EDITOR  
+		m_renderStats.m_drawCalls++;
+		m_renderStats.m_vertices += vertices * instanced->Amount();
+#endif
 	}
 }
 

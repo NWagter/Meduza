@@ -16,7 +16,8 @@ namespace Me
             virtual Mesh GetMesh() = 0;
             virtual Shader GetShader() = 0;
             virtual bool ReachedMaxSize() = 0;
-            virtual bool Empty() = 0;
+            virtual bool Empty() = 0; 
+            virtual int Amount() = 0;
         };
     }
 }

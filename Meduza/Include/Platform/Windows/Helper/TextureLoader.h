@@ -44,8 +44,8 @@ namespace Me
                 inline SRV GetSRV(unsigned int const a_index) {return m_srvs.at(a_index);}
             private:
                 TextureData* CreateTexture(std::string const& a_file, std::string const& a_ext);
-                void SRVOffset(unsigned int* a_srv, TextureData& a_texture);
-                void LoadToSRV(TextureData& a_texture, unsigned int a_index);
+                SRV SRVOffset(unsigned int* a_srv, TextureData& a_texture);
+                SRV LoadToSRV(TextureData& a_texture, unsigned int a_index);
 
                 Renderer::Dx12::Device* m_device;
                 Renderer::Dx12::CommandList* m_cmd;

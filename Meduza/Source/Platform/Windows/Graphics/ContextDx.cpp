@@ -39,7 +39,7 @@ void Me::Renderer::Dx12::Context::SwapBuffer(CommandList& a_cmd)
 {
 	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		GetCurrentBuffer(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COMMON);
 
 	a_cmd.GetList()->ResourceBarrier(1, &barrier);
 

@@ -19,6 +19,7 @@ namespace Me
 
                 void SetBuffer(Device& a_device, CommandList& a_cmd, int const a_width, int const a_height);
                 D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView()const;
+                Microsoft::WRL::ComPtr<ID3D12Resource> GetResource() const { return m_dsBuffer; }
             private:
                 Microsoft::WRL::ComPtr<ID3D12Resource> m_dsBuffer;
                 DXGI_FORMAT m_dsFormat = DXGI_FORMAT_D32_FLOAT;

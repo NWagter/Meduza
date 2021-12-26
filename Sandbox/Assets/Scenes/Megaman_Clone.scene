@@ -15,7 +15,7 @@
 			<2>
 				<Translation>
 					<value0>0</value0>
-					<value1>-2</value1>
+					<value1>0</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -58,7 +58,7 @@
 			<2>
 				<Translation>
 					<value0>-3.1084775924682617</value0>
-					<value1>-7.8000001907348633</value1>
+					<value1>-5.8000001907348633</value1>
 					<value2>0.50940120220184326</value2>
 				</Translation>
 				<Rotation>
@@ -126,7 +126,7 @@
 			<2>
 				<Translation>
 					<value0>20.5</value0>
-					<value1>0</value1>
+					<value1>2</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -175,7 +175,7 @@
 			<2>
 				<Translation>
 					<value0>26.799999237060547</value0>
-					<value1>-8.1000003814697266</value1>
+					<value1>-6.0999999046325684</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -243,7 +243,7 @@
 			<2>
 				<Translation>
 					<value0>11.699999809265137</value0>
-					<value1>-15.800000190734863</value1>
+					<value1>-13.800000190734863</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -307,7 +307,7 @@
 			<2>
 				<Translation>
 					<value0>14.300000190734863</value0>
-					<value1>0.30000001192092896</value1>
+					<value1>2</value1>
 					<value2>10</value2>
 				</Translation>
 				<Rotation>
@@ -352,7 +352,7 @@
 			<2>
 				<Translation>
 					<value0>15.5</value0>
-					<value1>-8.1000003814697266</value1>
+					<value1>-6.0999999046325684</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -420,7 +420,7 @@
 			<2>
 				<Translation>
 					<value0>42.900001525878906</value0>
-					<value1>-9</value1>
+					<value1>-7</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -484,7 +484,7 @@
 			<2>
 				<Translation>
 					<value0>-13.283170700073242</value0>
-					<value1>-9.0936565399169922</value1>
+					<value1>-7</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>

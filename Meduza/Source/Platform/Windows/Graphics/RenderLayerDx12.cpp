@@ -155,20 +155,18 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour const a_clearColour)
     CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		backBuffer,
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
 	cmd.GetList()->ResourceBarrier(1, &barrier);
 	
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		m_context->GetCurrentFrameIndex(), m_rtv->GetSize());
-
 	D3D12_CPU_DESCRIPTOR_HANDLE dvsHandle = m_dsBuffer->DepthStencilView();
 
 
-	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_clearColour.m_colour, 0, nullptr);
 	cmd.GetList()->ClearDepthStencilView(dvsHandle,
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-
 	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, 1, &dvsHandle);
+
+	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_clearColour.m_colour, 0, nullptr);
 
 	
 	m_renderables.clear();
@@ -319,11 +317,12 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 	auto cmd = &GetCmd();
 	Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
-	unsigned int srvId = 0;
-	Helper::Dx12::SRV srv = m_textureLoader->GetSRV(srvId);
-	ID3D12DescriptorHeap* DescHeap[] = { srv.m_srv->GetHeap().Get() };
-	cmd->GetList()->SetDescriptorHeaps(_countof(DescHeap), DescHeap);
+	ID3D12DescriptorHeap* srvHeap[] = { m_srv->GetHeap().Get() };
+	cmd->GetList()->SetDescriptorHeaps(_countof(srvHeap), srvHeap);
 
+
+	int srvId = -1;
+	Helper::Dx12::SRV srv;
 	for(auto instanced : m_instancedRenderer)
 	{
 		auto dxInstanced = static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instanced);

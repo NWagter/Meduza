@@ -13,7 +13,7 @@
 #include <codecvt>
 #include <regex>
 
-static constexpr size_t MAX_TEXTURES = 8;
+static constexpr size_t MAX_TEXTURES = 1;
 static constexpr size_t RGBA_SIZE = 4;
 
 Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
@@ -137,7 +137,8 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
             0, 0, 1,
             &textureResourceData);
 
-              
+
+        textureData->m_resource->SetName(L"Texture");
         SRVOffset(&textureData->m_srvOffset, *textureData);
 
         data->m_textureData = textureData;

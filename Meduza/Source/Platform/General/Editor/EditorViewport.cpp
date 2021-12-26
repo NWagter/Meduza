@@ -13,6 +13,10 @@
 #include "Platform/Windows/Graphics/FramebufferDx12.h"
 
 #include "Platform/General/Resources/Resource.h"
+#ifdef PLATFORM_WINDOWS
+#include "Platform/Windows/Resources/Texture.h"
+#include "Platform/Windows/Helper/Helper.h"
+#endif
 
 #include "Core/Meduza.h"
 
@@ -34,9 +38,6 @@ void Me::Editor::EditorViewport::Draw()
 {
 	auto frameBuffer = m_renderLayer->GetFrameBuffer();
 
-    if(frameBuffer->GetColourAttachment()->m_api == GFX_API::DX12)
-    return;
-
 	ImGui::Begin("Viewport");
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
@@ -51,14 +52,12 @@ void Me::Editor::EditorViewport::Draw()
     switch (colourAttachment->m_api)
     {
     case GFX_API::DX12:
-        D3D12_GPU_DESCRIPTOR_HANDLE handle = static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment)->m_texture;
-        if(handle.ptr != 0)
-        {
-            ImGui::Image(
-                (ImTextureID)handle.ptr, 
-                ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-        }
+    {
+        ImGui::Image(
+            (ImTextureID)static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment)->m_texture.ptr,
+            ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y });
         break;
+    }
     case GFX_API::OpenGL:
 	    ImGui::Image(
             reinterpret_cast<void*>(static_cast<Renderer::ColourAttachmentGL*>(colourAttachment)->m_texture), 

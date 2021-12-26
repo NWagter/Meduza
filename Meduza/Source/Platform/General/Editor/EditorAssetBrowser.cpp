@@ -97,12 +97,13 @@ void Me::Editor::EditorAssetBrowser::Draw()
 			fileTextureID = (void*)(static_cast<Resources::GL::Texture*>(m_fileIcon)->GetTexture());
 		}
 		else if (api == Me::GFX_API::DX12)
-		{
+		{	
 			auto folderTexture = static_cast<Resources::Dx12::Texture*>(m_folderIcon);
+			auto fileTexture = static_cast<Resources::Dx12::Texture*>(m_fileIcon);
+
 			CD3DX12_GPU_DESCRIPTOR_HANDLE folderHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(folderTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
 			folderHandle.Offset(folderTexture->GetTexture().m_srvOffset, folderTexture->GetTexture().m_handleIncrementer);
 
-			auto fileTexture = static_cast<Resources::Dx12::Texture*>(m_fileIcon);
 			CD3DX12_GPU_DESCRIPTOR_HANDLE fileHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(fileTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
 			fileHandle.Offset(fileTexture->GetTexture().m_srvOffset, fileTexture->GetTexture().m_handleIncrementer);
 

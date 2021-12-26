@@ -25,7 +25,7 @@ void Me::Editor::EditorCameraSystem::OnCreate()
     EntityID editorCam = eManager->CreateEntity("Editor Camera");
 
     auto cComp = new CameraComponent();
-    cComp->m_cameraType = CameraType::Perspective;
+    cComp->m_cameraType = CameraType::Orthographic;
     cComp->m_size = Event::EventSystem::GetEventSystem()->ScreenSize();
 
     eManager->AddComponent<EditorComponent>(editorCam);

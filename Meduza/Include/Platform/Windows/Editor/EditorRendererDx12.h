@@ -12,6 +12,7 @@ namespace Me
         namespace Dx12
         {
             class RenderLayerDx12;
+            class Descriptor;
         }
     }
 
@@ -32,6 +33,7 @@ namespace Me
                 private:
                     ImGuiContext* m_imGuiContext;
 		            ImGuiIO* m_imguiIO;
+                    Renderer::Dx12::Descriptor* m_srv = nullptr;
 
                     Renderer::Dx12::RenderLayerDx12* m_renderLayer;
             };

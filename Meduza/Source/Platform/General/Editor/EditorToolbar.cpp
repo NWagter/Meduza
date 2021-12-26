@@ -26,7 +26,7 @@
 Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
 {
     m_window = &a_window;
-    m_activeCameraType = CameraType::Perspective;
+    m_activeCameraType = CameraType::Orthographic;
     m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
 }
 

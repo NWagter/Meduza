@@ -3,6 +3,7 @@
 
 #include "Platform/Windows/Graphics/ContextDx.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
+#include "Platform/Windows/Graphics/RenderLayerDx12.h"
 
 Me::Renderer::Dx12::FrameBufferDx12::FrameBufferDx12(FrameBufferSpecs const& a_spec, ContextBase& a_context) : m_spec(a_spec)
 {
@@ -26,9 +27,9 @@ Me::Renderer::ColourAttachment* Me::Renderer::Dx12::FrameBufferDx12::GetColourAt
     {
         m_attachment = new ColourAttachmentDx12();
     }
-    auto frameBuffer = static_cast<Context*>(m_context)->GetRTV();
     m_attachment->m_api = GFX_API::DX12;
-    m_attachment->m_texture = CD3DX12_GPU_DESCRIPTOR_HANDLE(frameBuffer->GetHeap()->GetGPUDescriptorHandleForHeapStart());
-
+    auto srv = static_cast<RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->GetSRV();
+    D3D12_GPU_DESCRIPTOR_HANDLE handle = srv.GetHeap()->GetGPUDescriptorHandleForHeapStart();
+    m_attachment->m_texture = handle;
     return m_attachment;
 }

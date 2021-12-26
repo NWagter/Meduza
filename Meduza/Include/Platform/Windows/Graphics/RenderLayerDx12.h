@@ -57,6 +57,7 @@ namespace Me
                 Resources::MeshBase* CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
                 Resources::Dx12::Texture* LoadTexture(std::string const& a_file);
                 Resources::Dx12::Texture* LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
+                Helper::Dx12::TextureLoader* GetTextureLoader() { return m_textureLoader; }
 
                 CommandList& GetCmd(int a_id = 0);
                 Device& GetDevice();

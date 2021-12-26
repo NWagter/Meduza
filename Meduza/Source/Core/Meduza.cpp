@@ -96,17 +96,17 @@ Me::Meduza::~Meduza()
 void Me::Meduza::Clear()
 {
 	if(m_renderLayer != nullptr)
-	{		
-		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
-
+	{
 #ifdef PLATFORM_WINDOWS
-	#ifdef EDITOR
-		if(m_editor != nullptr)
+#ifdef EDITOR
+		if (m_editor != nullptr)
 		{
 			m_editor->Clear();
 		}
-	#endif
 #endif
+#endif
+		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
+
 		return;
 	}
 

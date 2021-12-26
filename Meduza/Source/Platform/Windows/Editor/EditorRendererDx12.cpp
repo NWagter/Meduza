@@ -6,6 +6,7 @@
 #include "Platform/Windows/Graphics/ContextDx.h"
 #include "Platform/Windows/Graphics/Descriptor.h"
 #include "Platform/Windows/Graphics/CommandList.h"
+#include "Platform/Windows/Helper/TextureLoader.h"
 
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
@@ -49,7 +50,13 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
     
-    auto srv = a_renderLayer->GetSRV().GetHeap();
+	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
+	srvDesc.NumDescriptors = 2;
+	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	srvDesc.NodeMask = 0;
+
+	m_srv = new Renderer::Dx12::Descriptor(srvDesc, a_renderLayer->GetDevice());
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplWin32_Init(a_renderLayer->GetContext().GetHWND());
@@ -57,9 +64,9 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 		a_renderLayer->GetDevice().GetDevice(),
 		3,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
-		srv.Get(),
-		srv.Get()->GetCPUDescriptorHandleForHeapStart(),
-		srv.Get()->GetGPUDescriptorHandleForHeapStart()
+		m_srv->GetHeap().Get(),
+		m_srv->GetHeap().Get()->GetCPUDescriptorHandleForHeapStart(),
+		m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart()
 	);
 
 	// Setup Dear ImGui style
@@ -86,6 +93,8 @@ Me::Editor::Dx12::EditorRendererDx12::~EditorRendererDx12()
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	delete m_srv;
 	
 }
 
@@ -107,20 +116,31 @@ void Me::Editor::Dx12::EditorRendererDx12::Update(float a_dt)
 void Me::Editor::Dx12::EditorRendererDx12::Populate()
 {
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
+	auto cmd = m_renderLayer->GetCmd();
 
+	ID3D12DescriptorHeap* inlineDesHeap[] = { m_srv->GetHeap().Get() };
+	cmd.GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{
+		if (i == 3)
+		{
+			ME_LOG("STOP! \n");
+		}
+
 		m_editorWidgets[i]->Draw();
 	}
 
-	ImGui::EndFrame();
+	ImGui::Render();
+
+	//ImGui::Begin("DirectX12 Texture Test");
+	//ImGui::Text("CPU handle = %p", folderHandleCPU.ptr);
+	//ImGui::Text("GPU handle = %p", folderHandle.ptr);
+	//ImGui::Text("size = %f x %f", folderTexture->GetSize().m_x, folderTexture->GetSize().m_y);
+	//ImGui::Image((ImTextureID)folderHandle.ptr, { 256, 256 });
+	//ImGui::End();
 
 	// Render ImGui
-	ID3D12DescriptorHeap* imGuiHeap[] = { m_renderLayer->GetSRV().GetHeap().Get() };
-	m_renderLayer->GetCmd().GetList()->SetDescriptorHeaps(_countof(imGuiHeap), imGuiHeap);
-
-	ImGui::Render();
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_renderLayer->GetCmd().GetList());
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmd.GetList());
 
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{

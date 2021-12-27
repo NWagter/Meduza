@@ -29,7 +29,9 @@ Me::Resources::MeshBase::~MeshBase()
 
 Me::Resources::MeshBase* Me::Resources::MeshBase::OnCreate(const std::string& a_path)
 {
+	ResourceLibrary* rLib = ResourceLibrary::GetInstance();
 	std::vector<Utils::Resources::MeshPrimitives> meshes;
+	MeshBase* mesh = nullptr;
 
 	if (!Me::Utils::Resources::ResourceLoaderUtils::LoadModel(a_path, meshes))
 	{
@@ -39,11 +41,10 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::OnCreate(const std::string& a_
 
 	if (meshes.size() <= 1)
 	{
-		return Create(meshes.at(0).m_vertices, meshes.at(0).m_indices);
+		mesh = rLib->AddResource<MeshBase>(Create(meshes.at(0).m_vertices, meshes.at(0).m_indices), a_path, Files::FileSystem::GetFileName(a_path));
+		return mesh;
 	}
 
-	MeshBase* mesh = nullptr;
-	ResourceLibrary* rLib = ResourceLibrary::GetInstance();
 	bool first = false;
 	for (auto m : meshes)
 	{

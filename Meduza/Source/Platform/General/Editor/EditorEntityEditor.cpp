@@ -214,6 +214,21 @@ void Me::Editor::EntityEditor::Draw()
 
                 ImGui::EndCombo();
             }
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+                {
+                    Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+
+                    if (file->m_type == Resources::ResourceType::Mesh)
+                    {
+                        newModelPath = file->m_path;
+                    }
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+            
             if(!newModelPath.empty())
             {
                 a_comp.m_mesh = rLibrary->LoadResource<Resources::MeshBase>(newModelPath)->GetID();
@@ -241,6 +256,21 @@ void Me::Editor::EntityEditor::Draw()
 
                 ImGui::EndCombo();
             }
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+                {
+                    Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+
+                    if (file->m_type == Resources::ResourceType::Shader)
+                    {
+                        newShaderPath = file->m_path;
+                    }
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+            
             if(!newShaderPath.empty())
             {
                 a_comp.m_shader = rLibrary->LoadResource<Resources::ShaderBase>(newShaderPath)->GetID();
@@ -265,6 +295,21 @@ void Me::Editor::EntityEditor::Draw()
 
                 ImGui::EndCombo();
             }
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+                {
+                    Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+
+                    if (file->m_type == Resources::ResourceType::Texture)
+                    {
+                        newTexturePath = file->m_path;
+                    }
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+            
             if(!newTexturePath.empty())
             {
                 a_comp.m_texture = rLibrary->LoadResource<Resources::TextureBase>(newTexturePath)->GetID();

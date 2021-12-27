@@ -198,11 +198,12 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_p
 
 					Me::Resources::ResourceLibrary::GetInstance()->LoadResource<Me::Resources::TextureBase>(directory + "/" + image.uri);
 				}
-				else
-				{
-					auto texture = Me::Resources::TextureBase().Create(image.image, image.width, image.height);
-					Me::Resources::ResourceLibrary::GetInstance()->AddResource<Me::Resources::TextureBase>(texture, a_path, Me::Files::FileSystem::GetFileName(a_path));
-				}
+				// Load bin texture
+				//else
+				//{
+				//	auto texture = Me::Resources::TextureBase().Create(image.image, image.width, image.height);
+				//	Me::Resources::ResourceLibrary::GetInstance()->AddResource<Me::Resources::TextureBase>(texture, a_path, Me::Files::FileSystem::GetFileName(a_path));
+				//}
 			}
 		}
 	}
@@ -252,7 +253,6 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLTFModelFromPath(std::strin
 bool Me::Utils::Resources::ResourceLoaderUtils::LoadGLBModelFromPath(std::string const& a_path, tinygltf::Model& a_model)
 {
     tinygltf::TinyGLTF loader;
-    tinygltf::Model model;
     std::string err;
     std::string warn;
 

@@ -14,7 +14,7 @@ uniform mat4 u_projectionView;
 
 out vec4 colour;
 out vec2 texC;
-out float texId;
+flat out float texId;
 
 void main()
 {
@@ -32,7 +32,7 @@ void main()
 
 in vec4 colour;
 in vec2 texC;
-in float texId;
+flat in float texId;
 
 uniform sampler2D u_texture0;
 uniform sampler2D u_texture1;

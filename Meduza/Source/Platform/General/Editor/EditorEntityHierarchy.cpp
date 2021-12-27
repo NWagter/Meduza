@@ -3,6 +3,8 @@
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "ECS/EntityManager.h"
 
+#include "Platform/General/Editor/EditorHelper.h"
+
 #include "Core/Serialization/Serializer.h"
 #include "Platform/General/Window.h"
 
@@ -12,10 +14,12 @@
 #endif
 
 #include "Core/Components/TransformComponent.h"
+#include "Platform/General/Resources/Resource.h"
 
 Me::Editor::EntityHierarchy::EntityHierarchy(Me::Window& a_window)
 {
     m_window = &a_window;
+	m_selectedEntity = 0;
 }
 
 Me::Editor::EntityHierarchy::~EntityHierarchy()
@@ -29,6 +33,12 @@ bool DrawEnt(EntityID& a_selected, EntityID a_ent, std::string a_tag, bool& a_sh
 
 	ImGui::PushID(a_ent);
 	ImGui::Selectable(a_tag.c_str(), &isSelected);	
+	if (ImGui::BeginDragDropSource())
+	{
+		Me::Editor::Helper::EntityPayload payload(a_tag, a_ent);
+		ImGui::SetDragDropPayload("ENTITY_HIERARCHY_ITEM", &payload, sizeof(Me::Editor::Helper::EntityPayload), ImGuiCond_Always);
+		ImGui::EndDragDropSource();
+	}
 	ImGui::PopID();
 
 	if(ImGui::BeginPopupContextItem())
@@ -67,7 +77,20 @@ void Me::Editor::EntityHierarchy::Draw()
 	auto eManager = EntityManager::GetEntityManager();
 	
 	ImGui::Begin("Entities");
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+		{
+			Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
 
+			if (file->m_type == Resources::ResourceType::Prefab)
+			{
+				Serialization::Serializer::GetInstance()->DeserializeEntity(file->m_path);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
 	if(ImGui::BeginPopupContextWindow(0, 1, false))
 	{
 		if(ImGui::MenuItem("Create Entity"))
@@ -75,7 +98,6 @@ void Me::Editor::EntityHierarchy::Draw()
 			EntityID newEnt = eManager->CreateEntity("New Entity");
 			eManager->AddComponent<TransformComponent>(newEnt);
 		}
-
 		ImGui::EndPopup();
 	}
 

@@ -2,10 +2,24 @@
 
 namespace Me
 {
+    using EntityID = uint64_t;
+
     namespace Editor
     {
         namespace Helper
         {
+            struct EntityPayload
+            {
+                std::string m_entityName;
+                EntityID m_entityID;
+
+                EntityPayload(std::string const& a_name, EntityID const a_id)
+                {
+                    m_entityName = a_name;
+                    m_entityID = a_id;
+                }
+            };
+
             class EditorHelper
             {
             public:

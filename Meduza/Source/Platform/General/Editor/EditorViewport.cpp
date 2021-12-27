@@ -77,6 +77,10 @@ void Me::Editor::EditorViewport::Draw()
                 Meduza::ms_engineState = RUN_EDITOR;
                 Serialization::Serializer::GetInstance()->DeserializeScene(file->m_path);
             }
+            else if (file->m_type == Resources::ResourceType::Prefab)
+            {
+                Serialization::Serializer::GetInstance()->DeserializeEntity(file->m_path);
+            }
         }
         
         ImGui::EndDragDropTarget();

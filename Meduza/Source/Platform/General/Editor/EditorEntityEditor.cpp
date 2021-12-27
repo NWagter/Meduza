@@ -36,7 +36,7 @@
 Me::Editor::EntityEditor::EntityEditor(EntityHierarchy& a_entityHierarchy)
 {
     m_hierarchy = &a_entityHierarchy;
-    m_selectedEntity = -1;
+    m_selectedEntity = 0;
 }
 
 Me::Editor::EntityEditor::~EntityEditor()
@@ -121,22 +121,43 @@ void Me::Editor::EntityEditor::Draw()
 	auto eManager = EntityManager::GetEntityManager();
     Me::Resources::ResourceLibrary* rLibrary = Me::Resources::ResourceLibrary::GetInstance();
 	
-	ImGui::Begin("Entity Editor");
-
-    ImGui::Checkbox("Locked", &m_locked);
-    
-    if(!m_locked)
+    if (!m_locked)
     {
-        if(m_selectedEntity != m_hierarchy->GetSelected())
+        if (m_selectedEntity != m_hierarchy->GetSelected())
         {
-            s_uv = Math::Vec4(0,0,0,0);
+            s_uv = Math::Vec4(0, 0, 0, 0);
         }
 
         m_selectedEntity = m_hierarchy->GetSelected();
     }
 
-    if(m_selectedEntity > 0)
+	ImGui::Begin("Entity Editor");
+
+    if (m_selectedEntity > 0)
     {
+        std::string script;
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+            {
+                Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+
+                if (file->m_type == Resources::ResourceType::Script)
+                {
+                    script = file->m_path;
+                }
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        if (!script.empty())
+        {
+            ME_LOG("Add Script : %s \n", script.c_str());
+        }
+
+        ImGui::Checkbox("Locked", &m_locked);
+
         DrawComponent<TagComponent>(eManager, "Tag Component", m_selectedEntity, [](auto& a_comp)
         {
             char buffer[256];
@@ -613,9 +634,12 @@ void Me::Editor::EntityEditor::Draw()
         });
     }
 
-    if(eManager->EntityExists(m_selectedEntity) && ImGui::Button("Add Component"))
+    if(eManager->EntityExists(m_selectedEntity))
     {
-        ImGui::OpenPopup("AddComponent");
+        if (ImGui::Button("Add Component"))
+        {
+            ImGui::OpenPopup("AddComponent");
+        }
     }
 
     if(ImGui::BeginPopup("AddComponent"))

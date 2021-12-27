@@ -42,3 +42,15 @@ std::string Me::Files::FileSystem::GetFileExtention(std::string const& a_path)
 
 	return("");
 }
+
+std::string Me::Files::FileSystem::CreateNewFile(std::string a_fileName, std::string a_path)
+{
+	std::string fullPath = a_path;
+	fullPath.append("/");
+	fullPath.append(a_fileName);
+	fullPath.append(".prefab");
+	std::ofstream newFile(fullPath);
+	newFile.close();
+
+	return fullPath;
+}

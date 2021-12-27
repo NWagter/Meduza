@@ -52,6 +52,7 @@ namespace Me
 			static std::string ReadFile(std::string const& a_path);
 			static std::string GetFileName(std::string const& a_path);
 			static std::string GetFileExtention(std::string const& a_path);
+			static std::string CreateNewFile(std::string a_fileName, std::string a_path);
 		};
 	}
 }

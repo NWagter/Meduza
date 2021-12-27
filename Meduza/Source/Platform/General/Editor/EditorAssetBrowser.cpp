@@ -1,6 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/Editor/EditorAssetBrowser.h"
 
+#include "Platform/General/Editor/EditorHelper.h"
 #include "MeduzaIncluder.h"
 #include "Platform/General/Resources/Resource.h"
 
@@ -55,6 +56,20 @@ void Me::Editor::EditorAssetBrowser::Draw()
 		ImGuiID assetBrowserDockSpace;
 		assetBrowserDockSpace = ImGui::GetID("Asset_Space");
 		ImGui::DockSpace(assetBrowserDockSpace, ImVec2(0,0), ImGuiDockNodeFlags_NoTabBar);
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ENTITY_HIERARCHY_ITEM"))
+			{
+				Helper::EntityPayload* payload = (Helper::EntityPayload*)(payLoad->Data);
+
+				if (!m_browserPath.empty())
+				{
+					Me::Serialization::Serializer::GetInstance()->SerializeEntity(Files::FileSystem::CreateNewFile(payload->m_entityName, m_browserPath), payload->m_entityID);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		ImGui::SetNextWindowDockID(assetBrowserDockSpace);
 		ImGui::Begin("##AssetBrowser");

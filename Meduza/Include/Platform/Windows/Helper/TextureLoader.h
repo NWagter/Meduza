@@ -35,7 +35,7 @@ namespace Me
             class TextureLoader
             {
             public:
-                TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd);
+                TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd, Renderer::Dx12::Descriptor& a_srv);
                 ~TextureLoader();
 
                 const TextureReturnData* LoadTexture(std::string const& a_file);

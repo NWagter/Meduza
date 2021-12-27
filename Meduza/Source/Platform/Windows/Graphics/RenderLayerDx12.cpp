@@ -70,8 +70,15 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	m_cmd.push_back(new CommandList(m_context->GetQueue()->GetDesc().Type, m_device, m_context->m_width, m_context->m_height));
 
     m_context->CreateSwapchain();
-    
-	m_textureLoader = new Helper::Dx12::TextureLoader(*m_device, GetCmd());
+
+	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
+	srvDesc.NumDescriptors = 256;
+	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	srvDesc.NodeMask = 0;
+
+	m_srv = new Descriptor(srvDesc, *m_device);
+	m_textureLoader = new Helper::Dx12::TextureLoader(*m_device, GetCmd(), GetSRV());
 
     D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.NumDescriptors = 3;
@@ -80,15 +87,6 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 
 	m_rtv = new Descriptor(desc, *m_device);
 	m_context->CreateRTV(*m_rtv);
-
-
-    D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
-	srvDesc.NumDescriptors = 1;
-	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDesc.NodeMask = 0;
-	
-	m_srv = new Descriptor(srvDesc, *m_device);
 
 	RECT rect;
 	::GetClientRect(m_context->GetHWND(), &rect);
@@ -118,7 +116,6 @@ Me::Renderer::Dx12::RenderLayerDx12::~RenderLayerDx12()
     delete m_device;
     delete m_queue;
 	delete m_dsBuffer;
-	delete m_srv;
 	delete m_frameBuffer;
 
 	for (auto instanced : m_instancedRenderer)
@@ -165,7 +162,6 @@ void Me::Renderer::Dx12::RenderLayerDx12::Clear(Colour const a_clearColour)
 	cmd.GetList()->ClearDepthStencilView(dvsHandle,
 		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 	cmd.GetList()->OMSetRenderTargets(1, &rtvHandle, 1, &dvsHandle);
-
 	cmd.GetList()->ClearRenderTargetView(rtvHandle, a_clearColour.m_colour, 0, nullptr);
 
 	
@@ -325,6 +321,11 @@ void Me::Renderer::Dx12::RenderLayerDx12::Populate()
 	Helper::Dx12::SRV srv;
 	for(auto instanced : m_instancedRenderer)
 	{
+		if (instanced->Amount() <= 0)
+		{
+			continue;
+		}
+
 		auto dxInstanced = static_cast<InstancedRenderCall<Helper::Dx12::DefaultInstancedBuffer>*>(instanced);
 		// TODO : Get Material and set the correct SRV
 		auto shader = static_cast<Resources::Dx12::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(dxInstanced->GetShader()));

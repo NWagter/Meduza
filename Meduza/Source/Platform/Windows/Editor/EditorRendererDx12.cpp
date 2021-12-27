@@ -19,6 +19,16 @@
 #include "Platform/General/Editor/EditorResourceBrowser.h"
 #include "Platform/General/Editor/EditorAssetBrowser.h"
 
+#include "Platform/General/Graphics/RenderLayer.h"
+
+#include "MeduzaIncluder.h"
+
+#include "Platform/General/Resources/Texture.h"
+#ifdef PLATFORM_WINDOWS
+#include "Platform/Windows/Resources/Texture.h"
+#include "Platform/Windows/Helper/Helper.h"
+#endif // PLATFORM_WINDOWS
+
 
 Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::RenderLayerDx12* a_renderLayer)
 {
@@ -56,13 +66,13 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvDesc.NodeMask = 0;
 
-	m_srv = new Renderer::Dx12::Descriptor(srvDesc, a_renderLayer->GetDevice());
+	m_srv = &m_renderLayer->GetSRV();
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplWin32_Init(a_renderLayer->GetContext().GetHWND());
 	ImGui_ImplDX12_Init(
 		a_renderLayer->GetDevice().GetDevice(),
-		3,
+		256,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		m_srv->GetHeap().Get(),
 		m_srv->GetHeap().Get()->GetCPUDescriptorHandleForHeapStart(),
@@ -92,10 +102,7 @@ Me::Editor::Dx12::EditorRendererDx12::~EditorRendererDx12()
 {
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
-
-	delete m_srv;
-	
+	ImGui::DestroyContext();	
 }
 
 void Me::Editor::Dx12::EditorRendererDx12::Clear()
@@ -118,28 +125,16 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 	auto cmd = m_renderLayer->GetCmd();
 
-	ID3D12DescriptorHeap* inlineDesHeap[] = { m_srv->GetHeap().Get() };
-	cmd.GetList()->SetDescriptorHeaps(_countof(inlineDesHeap), inlineDesHeap);
+	auto folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
+	auto folderTexture = static_cast<Resources::Dx12::Texture*>(folderIcon);
+
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{
-		if (i == 3)
-		{
-			ME_LOG("STOP! \n");
-		}
-
 		m_editorWidgets[i]->Draw();
 	}
 
-	ImGui::Render();
-
-	//ImGui::Begin("DirectX12 Texture Test");
-	//ImGui::Text("CPU handle = %p", folderHandleCPU.ptr);
-	//ImGui::Text("GPU handle = %p", folderHandle.ptr);
-	//ImGui::Text("size = %f x %f", folderTexture->GetSize().m_x, folderTexture->GetSize().m_y);
-	//ImGui::Image((ImTextureID)folderHandle.ptr, { 256, 256 });
-	//ImGui::End();
-
 	// Render ImGui
+	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmd.GetList());
 
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

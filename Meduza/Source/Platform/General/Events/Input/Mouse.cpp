@@ -89,9 +89,4 @@ void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent const& a_camera, Tra
     rayEye = Math::Vec4(rayEye.m_x, rayEye.m_y, -1.0, 0.0);
     Math::Vec4 rayWorld = (view.Inverse() * rayEye);
     m_screenRay->m_origin = Math::Vec3(rayWorld.m_x,rayWorld.m_y,rayWorld.m_z).Normalize();
-
-    if(m_mouse[MouseButton::RButton] == MouseEvent::MouseDown)
-    {
-        ME_LOG("Hello \n");
-    }
 }

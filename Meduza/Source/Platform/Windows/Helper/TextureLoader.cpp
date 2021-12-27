@@ -13,22 +13,16 @@
 #include <codecvt>
 #include <regex>
 
-static constexpr size_t MAX_TEXTURES = 1;
+static constexpr size_t MAX_TEXTURES = 256;
 static constexpr size_t RGBA_SIZE = 4;
 
-Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd)
+Me::Helper::Dx12::TextureLoader::TextureLoader(Renderer::Dx12::Device& a_device, Renderer::Dx12::CommandList& a_cmd, Renderer::Dx12::Descriptor& a_srv)
 {
 	m_device = &a_device;
 	m_cmd = &a_cmd;
-	//SRVHeap(Descriptor)
-	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
-	srvDesc.NumDescriptors = 256;
-	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDesc.NodeMask = 0;
 
     SRV srv;
-    srv.m_srv = new Renderer::Dx12::Descriptor(srvDesc, a_device);
+    srv.m_srv = &a_srv;
 
     m_srvs.push_back(srv);
     m_currentID = 0;
@@ -237,14 +231,14 @@ Me::Helper::Dx12::SRV Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a
 
     if(srv.m_textures.size() < MAX_TEXTURES)
     {
-        *a_srv = unsigned int(srv.m_textures.size());
+        *a_srv = unsigned int(srv.m_textures.size() + 1);
         srv.m_textures.push_back(&a_texture);
         return srv;
     }
     else
     {
         D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
-        srvDesc.NumDescriptors = 2;
+        srvDesc.NumDescriptors = MAX_TEXTURES;
         srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         srvDesc.NodeMask = 0;

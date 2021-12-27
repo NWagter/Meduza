@@ -54,3 +54,10 @@ std::string Me::Files::FileSystem::CreateNewFile(std::string a_fileName, std::st
 
 	return fullPath;
 }
+void Me::Files::FileSystem::DeleteAsset(std::string a_path)
+{
+	if (!std::remove(a_path.c_str()))
+	{
+		ME_ASSERT_M(true, "Failed to delete %s \n", a_path.c_str());
+	}
+}

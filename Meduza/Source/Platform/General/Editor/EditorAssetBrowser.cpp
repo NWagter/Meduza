@@ -134,9 +134,16 @@ void Me::Editor::EditorAssetBrowser::Draw()
 				ImGui::SetDragDropPayload("ASSET_ITEM", file, sizeof(Files::MeduzaFile), ImGuiCond_Always);
 				ImGui::EndDragDropSource();
 			}
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Delete File"))
+				{
+					Files::FileSystem::DeleteAsset(file->m_path);
+				}
+				ImGui::EndPopup();
+			}
 
 			ImGui::Text(file->m_name.c_str());
-
 			ImGui::NextColumn();
 			ImGui::PopID();
 		}

@@ -33,6 +33,7 @@ namespace Me
             void Draw() override;
 
         private:
+            void LoadIcons();
             std::unordered_map<uint8_t, bool> m_filter; 
             std::string m_browserPath;
             Files::BrowseData m_browserData;
@@ -42,8 +43,8 @@ namespace Me
             float const m_padding;
             float m_thumbnailSize;
 
-            Resources::TextureBase* m_folderIcon;
-            Resources::TextureBase* m_fileIcon;
+            ImTextureID folderTextureID = 0;
+            ImTextureID fileTextureID = 0;
         };
     }
 }

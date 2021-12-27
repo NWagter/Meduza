@@ -232,7 +232,7 @@ void Me::Editor::EntityEditor::Draw()
                 {
                     primitive = (Mesh)Primitives::Quad;
                 }
-
+                data.Clear();
                 ImGui::EndCombo();
             }
             if (ImGui::BeginDragDropTarget())
@@ -275,6 +275,7 @@ void Me::Editor::EntityEditor::Draw()
                     }
                 }
 
+                data.Clear();
                 ImGui::EndCombo();
             }
             if (ImGui::BeginDragDropTarget())
@@ -314,6 +315,7 @@ void Me::Editor::EntityEditor::Draw()
                     }
                 }
 
+                data.Clear();
                 ImGui::EndCombo();
             }
             if (ImGui::BeginDragDropTarget())
@@ -580,6 +582,7 @@ void Me::Editor::EntityEditor::Draw()
                         }
                     }
 
+                    data.Clear();
                     ImGui::EndCombo();
                 }
 

@@ -28,12 +28,12 @@ Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f), m_pad
 
 	m_thumbnailSize = 64.0f;
 
-	m_folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
-	m_fileIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FileIcon.png");
+	LoadIcons();
 }
 
 Me::Editor::EditorAssetBrowser::~EditorAssetBrowser()
 {
+	m_browserData.Clear();
 }
 
 void Me::Editor::EditorAssetBrowser::Update(float a_dt)
@@ -101,31 +101,6 @@ void Me::Editor::EditorAssetBrowser::Draw()
 
 		ImGui::Columns(columns < 1 ? 1 : columns, 0, false);
 
-		Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
-
-		ImTextureID folderTextureID = 0;
-		ImTextureID fileTextureID = 0;
-
-		if (api == Me::GFX_API::OpenGL)
-		{
-			folderTextureID = (void*)(static_cast<Resources::GL::Texture*>(m_folderIcon)->GetTexture());
-			fileTextureID = (void*)(static_cast<Resources::GL::Texture*>(m_fileIcon)->GetTexture());
-		}
-		else if (api == Me::GFX_API::DX12)
-		{	
-			auto folderTexture = static_cast<Resources::Dx12::Texture*>(m_folderIcon);
-			auto fileTexture = static_cast<Resources::Dx12::Texture*>(m_fileIcon);
-
-			CD3DX12_GPU_DESCRIPTOR_HANDLE folderHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(folderTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
-			folderHandle.Offset(folderTexture->GetTexture().m_srvOffset, folderTexture->GetTexture().m_handleIncrementer);
-
-			CD3DX12_GPU_DESCRIPTOR_HANDLE fileHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(fileTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
-			fileHandle.Offset(fileTexture->GetTexture().m_srvOffset, fileTexture->GetTexture().m_handleIncrementer);
-
-			folderTextureID = (ImTextureID)folderHandle.ptr;
-			fileTextureID = (ImTextureID)fileHandle.ptr;
-		}
-
 		for (auto folder : m_browserData.m_folders)
 		{
 			ImGui::PushID(folder.c_str());
@@ -170,4 +145,34 @@ void Me::Editor::EditorAssetBrowser::Draw()
 		ImGui::End();
 	}
 	ImGui::End();
+}
+
+void Me::Editor::EditorAssetBrowser::LoadIcons()
+{
+	auto folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
+	auto fileIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FileIcon.png");
+
+	Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
+
+	if (api == Me::GFX_API::OpenGL)
+	{
+		folderTextureID = (void*)(static_cast<Resources::GL::Texture*>(folderIcon)->GetTexture());
+		fileTextureID = (void*)(static_cast<Resources::GL::Texture*>(fileIcon)->GetTexture());
+	}
+	else if (api == Me::GFX_API::DX12)
+	{
+#ifdef PLATFORM_WINDOWS
+		auto folderTexture = static_cast<Resources::Dx12::Texture*>(folderIcon);
+		auto fileTexture = static_cast<Resources::Dx12::Texture*>(fileIcon);
+
+		CD3DX12_GPU_DESCRIPTOR_HANDLE folderHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(folderTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
+		folderHandle.Offset(folderTexture->GetTexture().m_srvOffset, folderTexture->GetTexture().m_handleIncrementer);
+
+		CD3DX12_GPU_DESCRIPTOR_HANDLE fileHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(fileTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
+		fileHandle.Offset(fileTexture->GetTexture().m_srvOffset, fileTexture->GetTexture().m_handleIncrementer);
+
+		folderTextureID = (ImTextureID)folderHandle.ptr;
+		fileTextureID = (ImTextureID)fileHandle.ptr;
+#endif // PLATFORM_WINDOWS
+	}
 }

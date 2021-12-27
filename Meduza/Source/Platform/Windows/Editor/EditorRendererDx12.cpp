@@ -21,14 +21,6 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
-#include "MeduzaIncluder.h"
-
-#include "Platform/General/Resources/Texture.h"
-#ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/Resources/Texture.h"
-#include "Platform/Windows/Helper/Helper.h"
-#endif // PLATFORM_WINDOWS
-
 
 Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::RenderLayerDx12* a_renderLayer)
 {
@@ -124,9 +116,6 @@ void Me::Editor::Dx12::EditorRendererDx12::Populate()
 {
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 	auto cmd = m_renderLayer->GetCmd();
-
-	auto folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
-	auto folderTexture = static_cast<Resources::Dx12::Texture*>(folderIcon);
 
 	for(int i = 0; i < m_editorWidgets.size();i++)
 	{

@@ -52,9 +52,13 @@ void Me::Editor::EditorViewport::Draw()
     switch (colourAttachment->m_api)
     {
     case GFX_API::DX12:
-    {
+    {		
+        auto attachment = static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment);
+        CD3DX12_GPU_DESCRIPTOR_HANDLE attachmenthandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(attachment->m_texture);
+        attachmenthandle.Offset(attachment->m_frameIndex, attachment->m_srvSize);
+
         ImGui::Image(
-            (ImTextureID)static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment)->m_texture.ptr,
+            (ImTextureID)attachmenthandle.ptr,
             ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y });
         break;
     }

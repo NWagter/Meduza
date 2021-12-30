@@ -77,7 +77,7 @@ Me::Math::Vec2 Me::Renderer::Dx12::Context::Resize()
     //Resize renderer
 
 
-	CreateRTV(*m_rtv);
+	CreateRTV(*m_rtv, *m_srv);
 	m_currentframeBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
 	m_resize = false;
@@ -95,12 +95,13 @@ void Me::Renderer::Dx12::Context::ClearRTV()
 	}
 }
 
-void Me::Renderer::Dx12::Context::CreateRTV(Descriptor& a_rtv)
+void Me::Renderer::Dx12::Context::CreateRTV(Descriptor& a_rtv, Descriptor& a_srv)
 {
 	m_rtv = &a_rtv;
-	auto rtvDescriptorSize = m_device->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	m_srv = &a_srv;
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE srvHandle(m_srv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
 	int i = 0;
 	for (auto& buffer : m_frameBuffer)
@@ -109,10 +110,12 @@ void Me::Renderer::Dx12::Context::CreateRTV(Descriptor& a_rtv)
 		m_swapChain->GetBuffer(i, IID_PPV_ARGS(&backBuffer));
 
 		m_device->GetDevice()->CreateRenderTargetView(backBuffer.Get(), nullptr, rtvHandle);
+		m_device->GetDevice()->CreateShaderResourceView(backBuffer.Get(), nullptr, srvHandle);
 
 		buffer = backBuffer;
 
-		rtvHandle.Offset(rtvDescriptorSize);
+		rtvHandle.Offset(m_rtv->GetSize());
+		srvHandle.Offset(m_srv->GetSize());
 		i++;
 	}
 }

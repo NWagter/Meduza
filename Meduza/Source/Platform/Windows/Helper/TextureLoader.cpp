@@ -231,7 +231,7 @@ Me::Helper::Dx12::SRV Me::Helper::Dx12::TextureLoader::SRVOffset(unsigned int* a
 
     if(srv.m_textures.size() < MAX_TEXTURES)
     {
-        *a_srv = unsigned int(srv.m_textures.size() + 1);
+        *a_srv = unsigned int(srv.m_textures.size() + 4);
         srv.m_textures.push_back(&a_texture);
         return srv;
     }

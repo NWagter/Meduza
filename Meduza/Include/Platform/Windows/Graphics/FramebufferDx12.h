@@ -10,6 +10,8 @@ namespace Me
         struct ColourAttachmentDx12 : public ColourAttachment
         {
             D3D12_GPU_DESCRIPTOR_HANDLE m_texture;
+            unsigned int m_frameIndex;
+            unsigned int m_srvSize;
         };
 
         namespace Dx12

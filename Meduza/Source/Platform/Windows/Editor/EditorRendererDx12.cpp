@@ -51,24 +51,24 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
-    
-	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
-	srvDesc.NumDescriptors = 2;
-	srvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDesc.NodeMask = 0;
 
 	m_srv = &m_renderLayer->GetSRV();
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE srvCPUHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(m_srv->GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE srvGPUHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(m_srv->GetHeap()->GetGPUDescriptorHandleForHeapStart());
+
+	srvCPUHandle.Offset(m_srv->GetSize(), 3);
+	srvGPUHandle.Offset(m_srv->GetSize(), 3);
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplWin32_Init(a_renderLayer->GetContext().GetHWND());
 	ImGui_ImplDX12_Init(
 		a_renderLayer->GetDevice().GetDevice(),
-		256,
+		3,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		m_srv->GetHeap().Get(),
-		m_srv->GetHeap().Get()->GetCPUDescriptorHandleForHeapStart(),
-		m_srv->GetHeap().Get()->GetGPUDescriptorHandleForHeapStart()
+		srvCPUHandle,
+		srvGPUHandle
 	);
 
 	// Setup Dear ImGui style

@@ -68,7 +68,6 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
     m_context->SetQueue(*m_queue);
     
 	m_cmd.push_back(new CommandList(m_context->GetQueue()->GetDesc().Type, m_device, m_context->m_width, m_context->m_height));
-
     m_context->CreateSwapchain();
 
 	D3D12_DESCRIPTOR_HEAP_DESC srvDesc = {};
@@ -86,7 +85,7 @@ Me::Renderer::Dx12::RenderLayerDx12::RenderLayerDx12(Me::Window* a_window)
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	m_rtv = new Descriptor(desc, *m_device);
-	m_context->CreateRTV(*m_rtv);
+	m_context->CreateRTV(*m_rtv, *m_srv);
 
 	RECT rect;
 	::GetClientRect(m_context->GetHWND(), &rect);

@@ -31,7 +31,7 @@ namespace Me
         inline CommandQueue* GetQueue() { return m_queue; }
 
         void ClearRTV();
-        void CreateRTV(Descriptor& a_rtv);
+        void CreateRTV(Descriptor& a_rtv, Descriptor& a_srv);
         void Resize(int const a_width, int const a_height);
         Math::Vec2 Resize();
 
@@ -49,6 +49,7 @@ namespace Me
         Device* m_device;
         CommandQueue* m_queue;
         Descriptor* m_rtv;
+        Descriptor* m_srv;
 
         DXGI_FORMAT m_backBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 

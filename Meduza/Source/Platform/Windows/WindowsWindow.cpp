@@ -2,6 +2,7 @@
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "Platform/General/ContextBase.h"
+#include "Platform/General/Graphics/RenderLayer.h"
 
 #include "Platform/General/Events/EventSystem.h"
 
@@ -61,8 +62,23 @@ void Me::WindowsWindow::Quit()
 
 void Me::WindowsWindow::SetTitle(std::string const& a_title)
 {
+	std::string api;
+
+	switch (Renderer::RenderLayer::GetAPI())
+	{
+	case Me::GFX_API::OpenGL:
+		api = "OpenGL";
+		break;
+	case Me::GFX_API::DX12:
+		api = "DX12";
+		break;
+	default:
+		api = "Unknown";
+		break;
+	}
+
 	std::string title = a_title;
-	title.append(" | Windows");
+	title.append(" | Windows | " + api);
 	SetWindowText(m_hWnd, title.c_str());
 	ME_GFX_LOG("Change name of window to : %s \n", title.c_str());
 } 

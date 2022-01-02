@@ -19,7 +19,7 @@ namespace Me
         static bool EntityExists(EntityID const a_entityID);
 
         static void AddSystem(ECSSystem* a_system);
-        static EntityID CreateEntity(std::string a_tag = "", uint64_t const a_guid = 0);
+        static EntityID CreateEntity(std::string a_tag = "", uint32_t const a_guid = 0);
         static void DestroyEntity(EntityID const a_entityID);
 
         static void CleanGame();
@@ -181,7 +181,14 @@ namespace Me
             return nullptr;
         }
 
-		return container->GetComponent(a_entityID);
+        auto component = container->GetComponent(a_entityID);
+
+        if (component == nullptr)
+        {
+            return nullptr;
+        }
+
+        return component;
     }
 
     template<class C>

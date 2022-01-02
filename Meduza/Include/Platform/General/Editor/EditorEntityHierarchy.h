@@ -5,7 +5,7 @@
 namespace Me
 {
     class Window;
-    using EntityID = uint64_t;
+    using EntityID = uint32_t;
 
     namespace Editor
     {

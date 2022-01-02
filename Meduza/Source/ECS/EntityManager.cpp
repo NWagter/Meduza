@@ -6,8 +6,6 @@
 
 #include "Core/Meduza.h"
 
-static EntityID m_entityId = 0;
-
 Me::EntityManager* Me::EntityManager::ms_entityManager = nullptr;
 
 Me::EntityManager* Me::EntityManager::CreateEntityManager()
@@ -182,32 +180,35 @@ void Me::EntityManager::AddSystem(ECSSystem* a_system)
     }    
 }
 
-EntityID Me::EntityManager::CreateEntity(std::string a_tag, uint64_t const a_guid)
+EntityID Me::EntityManager::CreateEntity(std::string a_tag, uint32_t const a_guid)
 {
-    m_entityId++;
-    ms_entityManager->m_entities.insert(std::pair<EntityID, std::set<ComponentID>>(m_entityId,{}));
+    TagComponent* tag = nullptr;
+    UIDComponent* guidComp = nullptr;
 
-    if(a_tag != "")
+
+    if (a_tag != "")
     {
-        TagComponent* tag = new TagComponent();
+        tag = new TagComponent();
         tag->m_tag = a_tag;
-        ms_entityManager->AddComponent(m_entityId, tag);
     }
 
     if (a_guid == 0)
     {
-        UIDComponent* guidComp = new UIDComponent();
+        guidComp = new UIDComponent();
         guidComp->m_guid = UUID();
-        ms_entityManager->AddComponent(m_entityId, guidComp);
     }
     else
     {
-        UIDComponent* guidComp = new UIDComponent();
+        guidComp = new UIDComponent();
         guidComp->m_guid = UUID(a_guid);
-        ms_entityManager->AddComponent(m_entityId, guidComp);
     }
 
-    return m_entityId;
+    ms_entityManager->m_entities.insert(std::pair<EntityID, std::set<ComponentID>>(guidComp->m_guid,{}));
+    ms_entityManager->AddComponent(guidComp->m_guid, tag);
+    ms_entityManager->AddComponent(guidComp->m_guid, guidComp);
+
+
+    return guidComp->m_guid;
 }
 
 void Me::EntityManager::DestroyEntity(EntityID const a_entityID)
@@ -227,6 +228,8 @@ void Me::EntityManager::CleanGame()
 
         ms_entityManager->DestroyEntity(ent.first);
     }
+
+    ms_entityManager->DestroyEntities();
 }
 
 int Me::EntityManager::GetGameEntityAmount()

@@ -6,9 +6,6 @@
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>16810976958739484703</UUID>
-			</0>
 			<1>
 				<Tag>Camera</Tag>
 			</1>
@@ -49,9 +46,6 @@
 	<value1>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>15492172940780604633</UUID>
-			</0>
 			<1>
 				<Tag>Quad_Red</Tag>
 			</1>
@@ -115,9 +109,6 @@
 	<value2>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>16815340494093760656</UUID>
-			</0>
 			<1>
 				<Tag>Quad_Blue</Tag>
 			</1>

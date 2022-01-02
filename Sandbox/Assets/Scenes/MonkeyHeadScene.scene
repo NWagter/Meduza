@@ -6,9 +6,6 @@
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>879058765903176136</UUID>
-			</0>
 			<1>
 				<Tag>Camera</Tag>
 			</1>
@@ -49,9 +46,6 @@
 	<value1>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>3244380501575009355</UUID>
-			</0>
 			<1>
 				<Tag>Floor</Tag>
 			</1>
@@ -115,9 +109,6 @@
 	<value2>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>7873043687250431097</UUID>
-			</0>
 			<1>
 				<Tag>MonkeyHeadSpawner</Tag>
 			</1>
@@ -147,9 +138,6 @@
 	<value3>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>13614128433236292316</UUID>
-			</0>
 			<1>
 				<Tag>Wall</Tag>
 			</1>
@@ -213,9 +201,6 @@
 	<value4>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>16134060288381658231</UUID>
-			</0>
 			<1>
 				<Tag>Wall</Tag>
 			</1>

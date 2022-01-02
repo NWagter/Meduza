@@ -2,7 +2,7 @@
 
 #include "Math/MeduzaMath.h"
 
-using ComponentID = uint64_t;
+using ComponentID = uint32_t;
 
 namespace Me
 {

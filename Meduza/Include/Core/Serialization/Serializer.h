@@ -1,6 +1,6 @@
 #pragma once
 
-using EntityID = uint64_t;
+using EntityID = uint32_t;
 
 namespace Me
 {

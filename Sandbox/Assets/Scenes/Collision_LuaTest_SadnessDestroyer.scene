@@ -6,9 +6,6 @@
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>10907316735514311477</UUID>
-			</0>
 			<1>
 				<Tag>Camera</Tag>
 			</1>
@@ -49,9 +46,6 @@
 	<value1>
 		<ComponentAmount>9</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>10370466110585203615</UUID>
-			</0>
 			<1>
 				<Tag>SadnessDestroyer</Tag>
 			</1>
@@ -121,9 +115,6 @@
 	<value2>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>9469867862475153266</UUID>
-			</0>
 			<1>
 				<Tag>SadBox</Tag>
 			</1>
@@ -189,9 +180,6 @@
 	<value3>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>2831443365905936341</UUID>
-			</0>
 			<1>
 				<Tag>SadBox</Tag>
 			</1>

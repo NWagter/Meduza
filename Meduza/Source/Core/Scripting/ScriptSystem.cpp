@@ -50,7 +50,7 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
             if(lua_isfunction(lScript, -1) )
             {
                 lua_pushlightuserdata(lScript, this);
-                lua_pushnumber(lScript, (uint64_t)m_entities[i]);
+                lua_pushnumber(lScript, (uint32_t)m_entities[i]);
                 lua_pushnumber(lScript, a_dt);
                 lua_pcall(lScript,3,0,0);
             }
@@ -76,7 +76,7 @@ void Me::Scripting::ScriptSystem::Start(ScriptComponent* a_scriptComponent, Enti
             if(lua_isfunction(lScript, -1) )
             {
                 lua_pushlightuserdata(lScript, this);
-                lua_pushnumber(lScript, (uint64_t)a_entId);
+                lua_pushnumber(lScript, (uint32_t)a_entId);
                 lua_pcall(lScript,2,0,0);
             }
         }

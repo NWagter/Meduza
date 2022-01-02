@@ -115,7 +115,7 @@ bool SerializeSceneA(std::string a_path)
         archive.startNode(); 
         CanSerialize<Me::UIDComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {
-            uint64_t a_id = static_cast<uint64_t>(a_comp->m_guid);
+            uint32_t a_id = static_cast<uint32_t>(a_comp->m_guid);
             archive(cereal::make_nvp("UUID", a_id));
         });
 
@@ -290,7 +290,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
     
     CanSerialize<Me::UIDComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
     {
-        uint64_t a_id = static_cast<uint64_t>(a_comp->m_guid);
+        uint32_t a_id = static_cast<uint32_t>(a_comp->m_guid);
         archive(cereal::make_nvp("UUID", a_id));
     });
 
@@ -497,25 +497,25 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
         archive(cereal::make_nvp("ComponentAmount", compAmount));
         archive.startNode(); 
         
-        EntityID ent = eManager->CreateEntity();
-
+        std::string name = "Entity";
+        UUID guid = UUID();
         
-        if (CanDeserialize<UIDComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        if (CanDeserialize<UIDComponent>(archive, [&guid, &eManager, &archive](auto& a_comp)
         {
-            uint64_t a_id;
+            uint32_t a_id;
             archive(cereal::make_nvp("UUID", a_id));
-            a_comp->m_guid = UUID(a_id);
-            eManager->AddComponent(ent, a_comp);
+            guid = UUID(a_id);
         })) compAmount--;
         
 
-        if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<TagComponent>(archive, [&name, &eManager, &archive](auto& a_comp)
         {
             std::string tag;
             archive(cereal::make_nvp("Tag", tag));
-            a_comp->m_tag = tag;
-            eManager->AddComponent(ent, a_comp);
+            name = tag;
         })) compAmount--;
+
+        EntityID ent = eManager->CreateEntity(name, guid);
 
         if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
@@ -751,7 +751,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     
     if (CanDeserialize<UIDComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {
-        uint64_t a_id;
+        uint32_t a_id;
         archive(cereal::make_nvp("UUID", a_id));
         a_comp->m_guid = UUID(a_id);
         eManager->AddComponent(ent, a_comp);

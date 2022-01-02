@@ -40,7 +40,7 @@ int Me::Scripting::Lua_API::Lua_Entities::lua_GetEntityByName(lua_State* a_luaSt
 
         if(t->m_tag == name)
         {            
-            lua_pushnumber(a_luaState, (uint64_t)e); 
+            lua_pushnumber(a_luaState, (uint32_t)e);
             return 1;
         }
     }

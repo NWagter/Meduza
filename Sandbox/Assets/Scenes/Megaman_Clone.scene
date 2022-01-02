@@ -6,9 +6,6 @@
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>1958825295083558290</UUID>
-			</0>
 			<1>
 				<Tag>Camera</Tag>
 			</1>
@@ -49,9 +46,6 @@
 	<value1>
 		<ComponentAmount>9</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>2566360164387997670</UUID>
-			</0>
 			<1>
 				<Tag>Megamen</Tag>
 			</1>
@@ -117,9 +111,6 @@
 	<value2>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>5115273856605883381</UUID>
-			</0>
 			<1>
 				<Tag>Background_Ship_Green</Tag>
 			</1>
@@ -166,9 +157,6 @@
 	<value3>
 		<ComponentAmount>9</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>8242000044775451685</UUID>
-			</0>
 			<1>
 				<Tag>SpikeBall_Enemy</Tag>
 			</1>
@@ -234,9 +222,6 @@
 	<value4>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>6939693966038967639</UUID>
-			</0>
 			<1>
 				<Tag>Floor</Tag>
 			</1>
@@ -298,9 +283,6 @@
 	<value5>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>11095704383924897041</UUID>
-			</0>
 			<1>
 				<Tag>BackGround</Tag>
 			</1>
@@ -343,9 +325,6 @@
 	<value6>
 		<ComponentAmount>9</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>16877095589530597056</UUID>
-			</0>
 			<1>
 				<Tag>SpikeBall_Enemy</Tag>
 			</1>
@@ -411,9 +390,6 @@
 	<value7>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>10757058177872355138</UUID>
-			</0>
 			<1>
 				<Tag>Platform</Tag>
 			</1>
@@ -475,9 +451,6 @@
 	<value8>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
-			<0>
-				<UUID>7545313525201844729</UUID>
-			</0>
 			<1>
 				<Tag>Wall</Tag>
 			</1>

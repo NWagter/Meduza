@@ -73,7 +73,7 @@ int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)
 
     if(lua_isfunction(lScript, -1) )
     {
-        lua_pushnumber(lScript, (uint64_t)entFrom);
+        lua_pushnumber(lScript, (uint32_t)entFrom);
         lua_pcall(lScript,1,0,0);
     }
 

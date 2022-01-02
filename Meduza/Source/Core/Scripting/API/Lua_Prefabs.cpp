@@ -33,6 +33,6 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
 
     trans->m_translation = location;
 
-    lua_pushnumber(a_luaState, (uint64_t)newEntity); 
+    lua_pushnumber(a_luaState, (uint32_t)newEntity);
     return 1;
 }

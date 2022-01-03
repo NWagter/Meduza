@@ -101,8 +101,8 @@ int Me::Scripting::Lua_API::Lua_Math::Add_Vec3(lua_State* a_luaState)
         return -1;
     }
 
-    Math::Vec3 lhs = Lua_Helper::GetVector(a_luaState, 1);
-    Math::Vec3 rhs = Lua_Helper::GetVector(a_luaState, 2);
+    Math::Vec3 lhs = Lua_Helper::GetVector3(a_luaState, 1);
+    Math::Vec3 rhs = Lua_Helper::GetVector3(a_luaState, 2);
 
     Math::Vec3 result = lhs + rhs;
 
@@ -118,8 +118,8 @@ int Me::Scripting::Lua_API::Lua_Math::Sub_Vec3(lua_State* a_luaState)
         return -1;
     }
 
-    Math::Vec3 lhs = Lua_Helper::GetVector(a_luaState, 1);
-    Math::Vec3 rhs = Lua_Helper::GetVector(a_luaState, 2);
+    Math::Vec3 lhs = Lua_Helper::GetVector3(a_luaState, 1);
+    Math::Vec3 rhs = Lua_Helper::GetVector3(a_luaState, 2);
 
     Math::Vec3 result = lhs - rhs;
 
@@ -135,7 +135,7 @@ int Me::Scripting::Lua_API::Lua_Math::Mul_Vec3(lua_State* a_luaState)
         return -1;
     }
 
-    Math::Vec3 lhs = Lua_Helper::GetVector(a_luaState, 1);
+    Math::Vec3 lhs = Lua_Helper::GetVector3(a_luaState, 1);
     float rhs = lua_tonumber(a_luaState, 2);
 
     Math::Vec3 result = lhs * rhs;

@@ -33,6 +33,7 @@ int Me::Scripting::Lua_API::Lua_Entities::lua_GetEntityByName(lua_State* a_luaSt
     
     EntityManager* eManager = EntityManager::GetEntityManager();
     std::vector<EntityID> const& ents = eManager->GetEntities(filter);
+    filter.clear();
 
     for(auto e : ents)
     {

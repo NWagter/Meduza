@@ -1,7 +1,7 @@
 #include "MePCH.h"
 #include "Core/Scripting/API/Lua_APIHelper.h"
 
-Me::Math::Vec3 Me::Scripting::Lua_API::Lua_Helper::GetVector(lua_State* a_luaState, int a_id)
+Me::Math::Vec3 Me::Scripting::Lua_API::Lua_Helper::GetVector3(lua_State* a_luaState, int a_id)
 {
     Math::Vec3 value;
 

@@ -564,10 +564,10 @@ void Me::Editor::EntityEditor::Draw()
             std::vector<size_t> itemsToRemove;
             for(size_t i = 0; i < size; i++)
             {
-                std::string fileName = Files::FileSystem::GetFileName(a_comp.m_scripts[i]);
+                std::string fileName = Files::FileSystem::GetFileName(a_comp.m_scripts[i]->m_script);
                 ImGui::PushID(fileName.c_str());
 
-                std::string newScriptPath = a_comp.m_scripts[i];
+                std::string newScriptPath = a_comp.m_scripts[i]->m_script;
                 if (ImGui::BeginCombo(("##" + fileName).c_str(), fileName.c_str())) // The second parameter is the label previewed before opening the combo.
                 {
                     bool is_selected;
@@ -586,9 +586,9 @@ void Me::Editor::EntityEditor::Draw()
                     ImGui::EndCombo();
                 }
 
-                if(newScriptPath != a_comp.m_scripts[i])
+                if(newScriptPath != a_comp.m_scripts[i]->m_script)
                 {
-                    a_comp.m_scripts[i] = newScriptPath;
+                    a_comp.m_scripts[i]->m_script = newScriptPath;
                 }
                 
                 ImGui::SameLine();

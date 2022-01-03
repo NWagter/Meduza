@@ -11,7 +11,7 @@ namespace Me
 	{
 		struct Settings
 		{
-			float m_debugLineLenght = 1.0f;
+			float m_debugLineLenght = 0.5f;
 			bool m_lineDebugger = true;
 			bool m_collisionDebugger = false;
 			bool m_showStats = false;

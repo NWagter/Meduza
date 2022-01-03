@@ -43,27 +43,28 @@ int Me::Scripting::LuaFunctions::lua_CallFunction(lua_State* a_luaState)
     if(lua_gettop(a_luaState) != 4) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    std::string script = lua_tostring(a_luaState, 2);
+    std::string scriptName = lua_tostring(a_luaState, 2);
     std::string function = lua_tostring(a_luaState, 3);
     EntityID entFrom = (EntityID)lua_tonumber(a_luaState, 4);
 
     auto sC =  EntityManager::GetEntityManager()->GetComponent<ScriptComponent>(ent);
     
-    if(sC == nullptr || sC->m_luastates.empty())
+    if(sC == nullptr || sC->m_scripts.empty())
     {
         return -1;
     }
 
     lua_State* lScript = nullptr;
 
-    for(size_t i = 0; i < sC->m_scripts.size(); i++)
+    for (auto script : sC->m_scripts)
     {
-        if(Files::FileSystem::GetFileName(sC->m_scripts[i]) == script)
+        if (Files::FileSystem::GetFileName(script->m_script) == scriptName)
         {
-            lScript = sC->m_luastates.at(i);
+            lScript = script->m_luaState;
             break;
         }
     }
+
     if(lScript == nullptr)
     {
         return -1;

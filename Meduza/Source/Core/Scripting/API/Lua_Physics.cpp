@@ -53,7 +53,7 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
     }    
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Me::Math::Vec3 force = Lua_Helper::GetVector(a_luaState, 2);
+    Me::Math::Vec3 force = Lua_Helper::GetVector3(a_luaState, 2);
 
     auto physicsComp =  EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
     physicsComp->m_velocity += force;    

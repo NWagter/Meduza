@@ -32,18 +32,20 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
     {
         ScriptComponent* rC = std::get<ScriptComponent*>(m_components[i]);
 
-        if(!rC->m_scripts.empty() && rC->m_luastates.empty())
+
+        if(!rC->m_scripts.empty() && !rC->m_inited)
         {
             Start(rC, m_entities[i]);
         }
 
-        for(auto lScript : rC->m_luastates)
+        for(auto script : rC->m_scripts)
         {
-            if(lScript == nullptr)
+            if(script->m_luaState == nullptr)
             {  
                 continue;
             }
 
+            auto lScript = script->m_luaState;
                       
             lua_getglobal(lScript, "OnUpdate");
     
@@ -62,10 +64,12 @@ void Me::Scripting::ScriptSystem::Start(ScriptComponent* a_scriptComponent, Enti
 {
     a_scriptComponent->Init();
 
-    for(auto lScript : a_scriptComponent->m_luastates)
+    for(auto script : a_scriptComponent->m_scripts)
     {
-        if(lScript != nullptr)
+        if(script->m_luaState != nullptr)
         {
+            auto lScript = script->m_luaState;
+
             if(!a_scriptComponent->m_functionsRegistered)
             {
                 LuaFunctions::RegisterFunctions(lScript);

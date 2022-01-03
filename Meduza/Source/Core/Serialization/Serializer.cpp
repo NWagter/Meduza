@@ -249,7 +249,7 @@ bool SerializeSceneA(std::string a_path)
             for(size_t i = 0; i < a_comp->m_scripts.size();i++)
             {
                 std::string scriptPath = "ScriptPath" + std::to_string(i);
-                archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]));  
+                archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]->m_script));  
             }          
         }); 
 
@@ -424,7 +424,7 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
         for(size_t i = 0; i < a_comp->m_scripts.size();i++)
         {
             std::string scriptPath = "ScriptPath" + std::to_string(i);
-            archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]));  
+            archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]->m_script));
         }            
     }); 
 
@@ -499,23 +499,37 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
         
         std::string name = "Entity";
         UUID guid = UUID();
+
+        BaseComponent* guidComp = nullptr;
+        BaseComponent* tagComp = nullptr;
         
-        if (CanDeserialize<UIDComponent>(archive, [&guid, &eManager, &archive](auto& a_comp)
+        if (CanDeserialize<UIDComponent>(archive, [&guid, &guidComp, &eManager, &archive](auto& a_comp)
         {
             uint32_t a_id;
             archive(cereal::make_nvp("UUID", a_id));
             guid = UUID(a_id);
+            guidComp = a_comp;
         })) compAmount--;
         
 
-        if(CanDeserialize<TagComponent>(archive, [&name, &eManager, &archive](auto& a_comp)
+        if(CanDeserialize<TagComponent>(archive, [&name, &tagComp, &eManager, &archive](auto& a_comp)
         {
             std::string tag;
             archive(cereal::make_nvp("Tag", tag));
             name = tag;
+            tagComp = a_comp;
         })) compAmount--;
 
         EntityID ent = eManager->CreateEntity(name, guid);
+
+        if (guidComp != nullptr)
+        {
+            delete guidComp;
+        }        
+        if (tagComp != nullptr)
+        {
+            delete tagComp;
+        }
 
         if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {
@@ -747,23 +761,39 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     archive(cereal::make_nvp("ComponentAmount", compAmount));
     archive.startNode(); 
     
-    EntityID ent = eManager->CreateEntity();
-    
-    if (CanDeserialize<UIDComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
-    {
-        uint32_t a_id;
-        archive(cereal::make_nvp("UUID", a_id));
-        a_comp->m_guid = UUID(a_id);
-        eManager->AddComponent(ent, a_comp);
-    })) compAmount--;    
+    std::string entityTag = name;
+    UUID guid = UUID();
 
-    if(CanDeserialize<TagComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
+    BaseComponent* guidComp = nullptr;
+    BaseComponent* tagComp = nullptr;
+
+    if (CanDeserialize<UIDComponent>(archive, [&guid, &guidComp, &eManager, &archive](auto& a_comp)
+        {
+            uint32_t a_id;
+            archive(cereal::make_nvp("UUID", a_id));
+            guid = UUID(a_id);
+            guidComp = a_comp;
+        })) compAmount--;
+
+
+    if (CanDeserialize<TagComponent>(archive, [&entityTag, &tagComp, &eManager, &archive](auto& a_comp)
+        {
+            std::string tag;
+            archive(cereal::make_nvp("Tag", tag));
+            entityTag = tag;
+            tagComp = a_comp;
+        })) compAmount--;
+
+    EntityID ent = eManager->CreateEntity(entityTag, guid);
+
+    if (guidComp != nullptr)
     {
-        std::string tag;
-        archive(cereal::make_nvp("Tag", tag));
-        a_comp->m_tag = tag;
-        eManager->AddComponent(ent, a_comp);
-    })) compAmount--;
+        delete guidComp;
+    }
+    if (tagComp != nullptr)
+    {
+        delete tagComp;
+    }
 
     if(CanDeserialize<TransformComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
     {

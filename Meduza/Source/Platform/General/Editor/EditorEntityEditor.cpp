@@ -562,41 +562,130 @@ void Me::Editor::EntityEditor::Draw()
         {
             size_t size = a_comp.m_scripts.size();
             std::vector<size_t> itemsToRemove;
-            for(size_t i = 0; i < size; i++)
+            for (size_t i = 0; i < size; i++)
             {
+                const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+                    ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+
                 std::string fileName = Files::FileSystem::GetFileName(a_comp.m_scripts[i]->m_script);
-                ImGui::PushID(fileName.c_str());
+                std::string scriptId = fileName + "##" + std::to_string(i);
+                bool opened = ImGui::TreeNodeEx(scriptId.c_str(), treeNodeFlags, ("[Lua Script] " + fileName).c_str());
 
-                std::string newScriptPath = a_comp.m_scripts[i]->m_script;
-                if (ImGui::BeginCombo(("##" + fileName).c_str(), fileName.c_str())) // The second parameter is the label previewed before opening the combo.
+                if (opened)
                 {
-                    bool is_selected;
-                    Files::BrowseData data = Files::BrowseData();
-                    Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Script);
-
-                    for(auto file : data.m_files)
+                    ImGui::PushID(fileName.c_str());
+                    std::string newScriptPath = a_comp.m_scripts[i]->m_script;
+                    if (ImGui::BeginCombo(("##" + fileName).c_str(), fileName.c_str())) // The second parameter is the label previewed before opening the combo.
                     {
-                        if (ImGui::Selectable(file->m_name.c_str(), &is_selected))
+                        bool is_selected;
+                        Files::BrowseData data = Files::BrowseData();
+                        Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Script);
+
+                        for (auto file : data.m_files)
                         {
-                            newScriptPath = file->m_path;
+                            if (ImGui::Selectable(file->m_name.c_str(), &is_selected))
+                            {
+                                newScriptPath = file->m_path;
+                            }
+                        }
+
+                        data.Clear();
+                        ImGui::EndCombo();
+                    }
+
+                    if (newScriptPath != a_comp.m_scripts[i]->m_script)
+                    {
+                        a_comp.m_scripts[i]->m_script = newScriptPath;
+                    }
+
+                    ImGui::SameLine();
+                    if (ImGui::Button("X"))
+                    {
+                        itemsToRemove.push_back(i);
+                    }
+
+                    size_t inputFieldSize = a_comp.m_scripts.at(i)->m_inputFields.size();
+                    for (size_t j = 0; j < inputFieldSize; j++)
+                    {
+                        auto value = a_comp.m_scripts.at(i)->m_inputFields.at(j);
+                        std::string argumentName = value->m_argumentName;
+
+                        // Change Type
+                        const char* valueTypes[] = { "Unkown", "Number", "String", "Bool" };
+                        const char* currentType = valueTypes[int(value->m_type)];
+
+                        std::string idType = "Type ##" + argumentName;
+                        if (ImGui::BeginCombo(idType.c_str(), currentType))
+                        {
+                            for (size_t t = 1; t < (size_t)Scripting::ValueType::Last; t++)
+                            {
+                                bool isSelected = currentType == valueTypes[t];
+
+                                if (ImGui::Selectable(valueTypes[t], isSelected))
+                                {
+                                    currentType = valueTypes[t];
+                                    value = a_comp.m_scripts.at(i)->ChangeType(j, (Scripting::ValueType)t);
+                                }
+
+                                if (isSelected)
+                                {
+                                    ImGui::SetItemDefaultFocus();
+                                }
+                            }
+
+                            ImGui::EndCombo();
+                        }
+
+                        std::string idInputName = "InputName ##" + argumentName;
+                        char buffer[256];
+                        strncpy(buffer, argumentName.c_str(), sizeof(buffer) - 1);
+                        ImGui::InputText(idInputName.c_str(), buffer, 256);
+                        if (buffer != "")
+                        {
+                            value->m_argumentName = buffer;
+                        }
+
+                        if (value->m_type == Scripting::ValueType::String)
+                        {
+                            auto valueString = static_cast<Scripting::ValueString*>(value);
+
+                            char bufferValue[256];
+                            strncpy(bufferValue, valueString->m_value.c_str(), sizeof(bufferValue) - 1);
+                            std::string idValue = "Value ##" + valueString->m_value;
+                            ImGui::InputText(idValue.c_str(), bufferValue, 256);
+
+                            valueString->m_value = bufferValue;
+                        }
+                        else if (value->m_type == Scripting::ValueType::Number)
+                        {
+                            auto valueNumber = static_cast<Scripting::ValueNumber*>(value);
+                            std::string idValue = "Value ##Number" + argumentName;
+                            ImGui::InputFloat(idValue.c_str(), &valueNumber->m_value);
+                        }
+                        else if (value->m_type == Scripting::ValueType::Bool)
+                        {
+                            auto valueBool = static_cast<Scripting::ValueBool*>(value);
+                            std::string idValue = "Value ##Bool" + argumentName;
+                            ImGui::Checkbox(idValue.c_str(), &valueBool->m_value);
+                        }
+
+                        ImGui::SameLine();
+                        std::string deleteId = "X##Value" + std::to_string(j);
+                        if (ImGui::Button(deleteId.c_str()))
+                        {
+                            a_comp.m_scripts.at(i)->RemoveInputField(j);
+                            break;
                         }
                     }
 
-                    data.Clear();
-                    ImGui::EndCombo();
-                }
+                    if (ImGui::Button("+"))
+                    {
+                        a_comp.m_scripts.at(i)->AddInputField();
+                    }
 
-                if(newScriptPath != a_comp.m_scripts[i]->m_script)
-                {
-                    a_comp.m_scripts[i]->m_script = newScriptPath;
+                    ImGui::PopID();            
+                    ImGui::TreePop();
                 }
-                
-                ImGui::SameLine();
-                if(ImGui::Button("X"))
-                {
-                    itemsToRemove.push_back(i);
-                }
-                ImGui::PopID();
             }
 
             if(ImGui::Button("Add New Script"))

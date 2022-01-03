@@ -4,7 +4,7 @@ namespace Me
 {
     namespace Scripting
     {
-        enum ValueType : uint8_t
+        enum class ValueType : uint8_t
         {
             Unkown = 0,
             Number,
@@ -18,21 +18,42 @@ namespace Me
         {
             ValueType m_type;
             std::string m_argumentName;
+
+            Value(std::string const& a_argumentName, ValueType const a_type)
+            {
+                m_type = a_type;
+                m_argumentName = a_argumentName;
+            }
         };
 
-        struct ValueInt : public Value
+        struct ValueNumber : public Value
         {
-            int m_value;
+            float m_value = 0;
+
+            ValueNumber(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Number)
+            {
+                m_value = 0;
+            };
         };        
         
         struct ValueBool : public Value
         {
-            bool m_value;
+            bool m_value = true;
+
+            ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Bool) 
+            {
+                m_value = true;
+            };
         };        
         
         struct ValueString : public Value
         {
             std::string m_value;
+
+            ValueString(std::string const& a_argumentName) : Value(a_argumentName, ValueType::String)
+            {
+                m_value = "";
+            };
         };
 
 
@@ -55,6 +76,46 @@ namespace Me
                     delete value;
                 }
                 m_inputFields.clear();
+            }
+        
+            void AddInputField()
+            {
+                std::string name = "InputName" + std::to_string(m_inputFields.size());
+                m_inputFields.push_back(new ValueString(name));
+            }
+
+            Value* ChangeType(size_t a_id, ValueType a_type)
+            {
+                auto inputField = m_inputFields.at(a_id);
+                std::string name = inputField->m_argumentName;
+                if (inputField->m_type == a_type)
+                {
+                    return m_inputFields.at(a_id);
+                }
+
+                delete inputField;
+                
+                switch (a_type)
+                {
+                case ValueType::Bool:
+                    m_inputFields.at(a_id) = new ValueBool(name);
+                    break;
+                case ValueType::Number:
+                    m_inputFields.at(a_id) = new ValueNumber(name);
+                    break;
+                case ValueType::String:
+                    m_inputFields.at(a_id) = new ValueString(name);
+                    break;
+                }
+
+                return m_inputFields.at(a_id);
+            }
+
+            void RemoveInputField(size_t a_id)
+            {
+                auto inputField = m_inputFields.at(a_id);
+                delete inputField;
+                m_inputFields.erase(m_inputFields.begin() + a_id);
             }
         };
 

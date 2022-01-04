@@ -33,7 +33,7 @@ namespace Me
             ValueNumber(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Number)
             {
                 m_value = 0;
-            };
+            }
         };        
         
         struct ValueBool : public Value
@@ -43,7 +43,7 @@ namespace Me
             ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Bool) 
             {
                 m_value = true;
-            };
+            }
         };        
         
         struct ValueString : public Value
@@ -53,7 +53,7 @@ namespace Me
             ValueString(std::string const& a_argumentName) : Value(a_argumentName, ValueType::String)
             {
                 m_value = "";
-            };
+            }
         };
 
 

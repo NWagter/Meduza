@@ -9,7 +9,7 @@ namespace Me
             Unkown = 0,
             Number,
             String,
-            Bool,
+            Boolean,
 
             Last
         };
@@ -40,7 +40,7 @@ namespace Me
         {
             bool m_value = true;
 
-            ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Bool) 
+            ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Boolean)
             {
                 m_value = true;
             }
@@ -97,7 +97,7 @@ namespace Me
                 
                 switch (a_type)
                 {
-                case ValueType::Bool:
+                case ValueType::Boolean:
                     m_inputFields.at(a_id) = new ValueBool(name);
                     break;
                 case ValueType::Number:

@@ -4,7 +4,7 @@ namespace Me
 {
     namespace Scripting
     {
-        enum class ValueType : uint8_t
+        enum class ValueType
         {
             Unkown = 0,
             Number,

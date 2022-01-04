@@ -662,7 +662,7 @@ void Me::Editor::EntityEditor::Draw()
                             std::string idValue = "Value ##Number" + argumentName;
                             ImGui::InputFloat(idValue.c_str(), &valueNumber->m_value);
                         }
-                        else if (value->m_type == Scripting::ValueType::Bool)
+                        else if (value->m_type == Scripting::ValueType::Boolean)
                         {
                             auto valueBool = static_cast<Scripting::ValueBool*>(value);
                             std::string idValue = "Value ##Bool" + argumentName;

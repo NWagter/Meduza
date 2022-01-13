@@ -10,7 +10,7 @@ release/
 Intermediate/
 Executable/
 Documentation/
-Sandbox/Projects/Megaman
+Sandbox/Projects/Megaman/
 
 # Prerequisites
 *.d

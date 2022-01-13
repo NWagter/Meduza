@@ -17,7 +17,7 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
     std::string path = lua_tostring(a_luaState, 1);
     Me::Math::Vec3 location = Lua_Helper::GetVector3(a_luaState, 2);
 
-    size_t pos = path.find("Assets"); //find location of word
+    size_t pos = path.find("Projects"); //find location of word
     path.erase(0,pos); //delete everything prior to location found
     std::replace(path.begin(), path.end(), '\\', '/');
 

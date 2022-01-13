@@ -74,7 +74,7 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 	m_luaScripting = new Scripting::LuaScripting();
 
-	m_projectManager = new Project::ProjectManager();
+	m_projectManager = Project::ProjectManager::CreateProjectManager();
 
 
 #ifdef PLATFORM_WINDOWS
@@ -205,6 +205,7 @@ void Me::Meduza::Destroy()
 	}
 
 	delete m_meduzaDebugger;
+	delete m_projectManager;
 	EntityManager::DestroyEntityManager();
 }
 

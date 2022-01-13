@@ -12,6 +12,7 @@
 
 #endif
 
+#include "Platform/General/Editor/EditorProjectManager.h"
 #include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
@@ -64,7 +65,9 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
 
     ImGui_ImplOpenGL3_Init("#version 330");
     
-	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
+	EditorProjectManager* projectManager = new EditorProjectManager();
+	AddWidget(projectManager);
+	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow(), *projectManager);
 	AddWidget(toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());
 	AddWidget(entHierarchy);

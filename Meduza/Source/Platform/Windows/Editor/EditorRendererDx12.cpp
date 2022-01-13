@@ -11,6 +11,7 @@
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
 
+#include "Platform/General/Editor/EditorProjectManager.h"
 #include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
@@ -74,7 +75,9 @@ Me::Editor::Dx12::EditorRendererDx12::EditorRendererDx12(Me::Renderer::Dx12::Ren
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 
-	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow());
+	EditorProjectManager* projectManager = new EditorProjectManager();
+	AddWidget(projectManager);
+	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow(), *projectManager);
 	AddWidget(toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());
 	AddWidget(entHierarchy);

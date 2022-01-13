@@ -1,6 +1,8 @@
 #include "MePCH.h"
 #include "Platform/General/Editor/EditorAssetBrowser.h"
 
+#include "Core/Project/ProjectManager.h"
+
 #include "Platform/General/Editor/EditorHelper.h"
 #include "MeduzaIncluder.h"
 #include "Platform/General/Resources/Resource.h"
@@ -22,7 +24,7 @@ Me::Editor::EditorAssetBrowser::EditorAssetBrowser() : m_reloadTime(0.5f), m_pad
 	}
 
 	m_browserData = Files::BrowseData();
-	m_browserPath = "Assets";
+	m_browserBase = m_browserPath = Project::ProjectManager::GetAssetBrowserPath();
 	Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
 	m_timer = 0;
 
@@ -53,6 +55,13 @@ void Me::Editor::EditorAssetBrowser::Draw()
 	Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 	if (ImGui::Begin("AssetBrowser"))
 	{
+		if (m_browserPath.empty() || m_browserBase != Project::ProjectManager::GetAssetBrowserPath())
+		{
+			m_browserBase = m_browserPath = Project::ProjectManager::GetAssetBrowserPath();
+			ImGui::End();
+			return;
+		}
+
 		ImGuiID assetBrowserDockSpace;
 		assetBrowserDockSpace = ImGui::GetID("Asset_Space");
 		ImGui::DockSpace(assetBrowserDockSpace, ImVec2(0,0), ImGuiDockNodeFlags_NoTabBar);
@@ -87,7 +96,7 @@ void Me::Editor::EditorAssetBrowser::Draw()
 			ImGui::End();
 		}
 
-		if (m_browserData.m_path != "Assets")
+		if (m_browserData.m_path != Project::ProjectManager::GetAssetBrowserPath())
 		{
 			if (ImGui::Button("../"))
 			{

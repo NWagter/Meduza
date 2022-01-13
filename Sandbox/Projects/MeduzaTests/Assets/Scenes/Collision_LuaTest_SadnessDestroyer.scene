@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<SceneData>
-		<EntityAmount>3</EntityAmount>
+		<EntityAmount>4</EntityAmount>
 	</SceneData>
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
@@ -13,7 +13,7 @@
 				<Translation>
 					<value0>0</value0>
 					<value1>0</value1>
-					<value2>0</value2>
+					<value2>-10</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -35,25 +35,25 @@
 				</Size>
 				<OrthoScale>10</OrthoScale>
 				<CameraLayer>0</CameraLayer>
-				<CameraType>0</CameraType>
+				<CameraType>1</CameraType>
 			</6>
 			<7>
 				<ScriptAmount>1</ScriptAmount>
-				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
+				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/CameraMovement.lua</ScriptPath0>
 			</7>
 		</value0>
 	</value0>
 	<value1>
-		<ComponentAmount>8</ComponentAmount>
+		<ComponentAmount>9</ComponentAmount>
 		<value0>
 			<1>
-				<Tag>Quad_Red</Tag>
+				<Tag>SadnessDestroyer</Tag>
 			</1>
 			<2>
 				<Translation>
 					<value0>0</value0>
-					<value1>0</value1>
-					<value2>10</value2>
+					<value1>4.3000001907348633</value1>
+					<value2>0</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -68,12 +68,81 @@
 			</2>
 			<4>
 				<Colour>
-					<value0>0.97549021244049072</value0>
-					<value1>0</value1>
-					<value2>0</value2>
+					<value0>0.073048822581768036</value0>
+					<value1>0.27752089500427246</value1>
+					<value2>0.93137252330780029</value2>
 					<value3>1</value3>
 				</Colour>
-				<Mesh>0</Mesh>
+				<Mesh>1</Mesh>
+				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
+				<Texture>
+					<value0></value0>
+				</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
+			</4>
+			<8>
+				<Gravity>true</Gravity>
+				<Body_Mass>10</Body_Mass>
+				<Body_Drag>10</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
+			</8>
+			<12>
+				<CollisionType>0</CollisionType>
+				<CollisionLayer>0</CollisionLayer>
+				<CollisionScale>
+					<value0>1</value0>
+					<value1>1</value1>
+					<value2>1</value2>
+				</CollisionScale>
+				<CollisionOffset>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</CollisionOffset>
+			</12>
+			<7>
+				<ScriptAmount>1</ScriptAmount>
+				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/DestroySadBox.lua</ScriptPath0>
+			</7>
+		</value0>
+	</value1>
+	<value2>
+		<ComponentAmount>8</ComponentAmount>
+		<value0>
+			<1>
+				<Tag>SadBox</Tag>
+			</1>
+			<2>
+				<Translation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Translation>
+				<Rotation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Rotation>
+				<Scale>
+					<value0>1</value0>
+					<value1>1</value1>
+					<value2>1</value2>
+				</Scale>
+			</2>
+			<4>
+				<Colour>
+					<value0>1</value0>
+					<value1>0.99998998641967773</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</Colour>
+				<Mesh>1</Mesh>
 				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
 				<Texture>
 					<value0></value0>
@@ -92,31 +161,33 @@
 				<Body_Friction>1</Body_Friction>
 				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
-			<11>
-				<CollisionType>1</CollisionType>
+			<12>
+				<CollisionType>0</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
 				<CollisionScale>
-					<value0>1.0099999904632568</value0>
-					<value1>1.0099999904632568</value1>
+					<value0>1</value0>
+					<value1>1</value1>
+					<value2>1</value2>
 				</CollisionScale>
 				<CollisionOffset>
 					<value0>0</value0>
 					<value1>0</value1>
+					<value2>0</value2>
 				</CollisionOffset>
-			</11>
+			</12>
 		</value0>
-	</value1>
-	<value2>
+	</value2>
+	<value3>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
-				<Tag>Quad_Blue</Tag>
+				<Tag>SadBox</Tag>
 			</1>
 			<2>
 				<Translation>
-					<value0>0</value0>
-					<value1>4</value1>
-					<value2>10</value2>
+					<value0>1</value0>
+					<value1>-2.2000000476837158</value1>
+					<value2>0</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -131,12 +202,12 @@
 			</2>
 			<4>
 				<Colour>
-					<value0>0</value0>
-					<value1>0.029412031173706055</value1>
+					<value0>0.99999850988388062</value0>
+					<value1>0.91176468133926392</value1>
 					<value2>1</value2>
 					<value3>1</value3>
 				</Colour>
-				<Mesh>0</Mesh>
+				<Mesh>3</Mesh>
 				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
 				<Texture>
 					<value0></value0>
@@ -149,25 +220,23 @@
 				</UV>
 			</4>
 			<8>
-				<Gravity>true</Gravity>
-				<Body_Mass>0.80000001192092896</Body_Mass>
+				<Gravity>false</Gravity>
+				<Body_Mass>10</Body_Mass>
 				<Body_Drag>1</Body_Drag>
 				<Body_Friction>1</Body_Friction>
 				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
-			<11>
-				<CollisionType>1</CollisionType>
+			<14>
+				<CollisionType>0</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
-				<CollisionScale>
-					<value0>1.0099999904632568</value0>
-					<value1>1.0099999904632568</value1>
-				</CollisionScale>
+				<CollisionScale>0.5</CollisionScale>
 				<CollisionOffset>
 					<value0>0</value0>
 					<value1>0</value1>
+					<value2>0</value2>
 				</CollisionOffset>
-			</11>
+			</14>
 		</value0>
-	</value2>
+	</value3>
 </cereal>
 

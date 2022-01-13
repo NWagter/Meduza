@@ -30,6 +30,26 @@ Me::Resources::ResourceLibrary::ResourceLibrary()
 {
 	ms_instance = this;
 
+	BaseLoad();
+}
+
+void Me::Resources::ResourceLibrary::Cleanup(bool a_baseLoad)
+{
+	for (auto r : ms_instance->m_resources)
+	{
+		delete r.second;
+	}
+
+	ms_instance->m_resources.clear();
+
+	if (a_baseLoad)
+	{
+		BaseLoad();
+	}
+}
+
+void Me::Resources::ResourceLibrary::BaseLoad()
+{
 	CreateQuad();
 	CreatePlane();
 	CreateCube();
@@ -38,12 +58,8 @@ Me::Resources::ResourceLibrary::ResourceLibrary()
 
 void Me::Resources::ResourceLibrary::Destroy()
 {
-	for (auto r : ms_instance->m_resources)
-	{
-		delete r.second;
-	}
+	ms_instance->Cleanup(false);
 
-	ms_instance->m_resources.clear();
 	delete ms_instance;
 }
 

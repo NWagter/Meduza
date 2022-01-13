@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<SceneData>
-		<EntityAmount>4</EntityAmount>
+		<EntityAmount>5</EntityAmount>
 	</SceneData>
 	<value0>
 		<ComponentAmount>5</ComponentAmount>
@@ -13,7 +13,7 @@
 				<Translation>
 					<value0>0</value0>
 					<value1>0</value1>
-					<value2>-10</value2>
+					<value2>0</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -39,20 +39,83 @@
 			</6>
 			<7>
 				<ScriptAmount>1</ScriptAmount>
-				<ScriptPath0>Assets/Scripts/CameraMovement.lua</ScriptPath0>
+				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/CameraMovement.lua</ScriptPath0>
 			</7>
 		</value0>
 	</value0>
 	<value1>
-		<ComponentAmount>9</ComponentAmount>
+		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
-				<Tag>SadnessDestroyer</Tag>
+				<Tag>Floor</Tag>
 			</1>
 			<2>
 				<Translation>
 					<value0>0</value0>
-					<value1>4.3000001907348633</value1>
+					<value1>-2</value1>
+					<value2>10</value2>
+				</Translation>
+				<Rotation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Rotation>
+				<Scale>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
+				</Scale>
+			</2>
+			<4>
+				<Colour>
+					<value0>1</value0>
+					<value1>0.99998998641967773</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</Colour>
+				<Mesh>2</Mesh>
+				<Shader>Resources/Shaders/Lit_Shader.glsl</Shader>
+				<Texture>Projects/MeduzaTests/Assets/Textures/DefaultTex.png</Texture>
+				<UV>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>1</value2>
+					<value3>1</value3>
+				</UV>
+			</4>
+			<8>
+				<Gravity>false</Gravity>
+				<Body_Mass>10</Body_Mass>
+				<Body_Drag>10</Body_Drag>
+				<Body_Friction>1</Body_Friction>
+				<DrawCollisionLines>false</DrawCollisionLines>
+			</8>
+			<12>
+				<CollisionType>1</CollisionType>
+				<CollisionLayer>0</CollisionLayer>
+				<CollisionScale>
+					<value0>10</value0>
+					<value1>0.0099999997764825821</value1>
+					<value2>10</value2>
+				</CollisionScale>
+				<CollisionOffset>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</CollisionOffset>
+			</12>
+		</value0>
+	</value1>
+	<value2>
+		<ComponentAmount>4</ComponentAmount>
+		<value0>
+			<1>
+				<Tag>MonkeyHeadSpawner</Tag>
+			</1>
+			<2>
+				<Translation>
+					<value0>0</value0>
+					<value1>0</value1>
 					<value2>0</value2>
 				</Translation>
 				<Rotation>
@@ -66,63 +129,23 @@
 					<value2>1</value2>
 				</Scale>
 			</2>
-			<4>
-				<Colour>
-					<value0>0.073048822581768036</value0>
-					<value1>0.27752089500427246</value1>
-					<value2>0.93137252330780029</value2>
-					<value3>1</value3>
-				</Colour>
-				<Mesh>1</Mesh>
-				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
-				<Texture>
-					<value0></value0>
-				</Texture>
-				<UV>
-					<value0>0</value0>
-					<value1>0</value1>
-					<value2>1</value2>
-					<value3>1</value3>
-				</UV>
-			</4>
-			<8>
-				<Gravity>true</Gravity>
-				<Body_Mass>10</Body_Mass>
-				<Body_Drag>10</Body_Drag>
-				<Body_Friction>1</Body_Friction>
-				<DrawCollisionLines>false</DrawCollisionLines>
-			</8>
-			<12>
-				<CollisionType>0</CollisionType>
-				<CollisionLayer>0</CollisionLayer>
-				<CollisionScale>
-					<value0>1</value0>
-					<value1>1</value1>
-					<value2>1</value2>
-				</CollisionScale>
-				<CollisionOffset>
-					<value0>0</value0>
-					<value1>0</value1>
-					<value2>0</value2>
-				</CollisionOffset>
-			</12>
 			<7>
 				<ScriptAmount>1</ScriptAmount>
-				<ScriptPath0>Assets/Scripts/DestroySadBox.lua</ScriptPath0>
+				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/CreateMonkeyHead.lua</ScriptPath0>
 			</7>
 		</value0>
-	</value1>
-	<value2>
+	</value2>
+	<value3>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
-				<Tag>SadBox</Tag>
+				<Tag>Wall</Tag>
 			</1>
 			<2>
 				<Translation>
-					<value0>0</value0>
+					<value0>-10</value0>
 					<value1>0</value1>
-					<value2>0</value2>
+					<value2>10</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -130,9 +153,9 @@
 					<value2>0</value2>
 				</Rotation>
 				<Scale>
-					<value0>1</value0>
-					<value1>1</value1>
-					<value2>1</value2>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
 				</Scale>
 			</2>
 			<4>
@@ -143,10 +166,8 @@
 					<value3>1</value3>
 				</Colour>
 				<Mesh>1</Mesh>
-				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
-				<Texture>
-					<value0></value0>
-				</Texture>
+				<Shader>Resources/Shaders/Lit_Shader.glsl</Shader>
+				<Texture>Projects/MeduzaTests/Assets/Textures/Crate.png</Texture>
 				<UV>
 					<value0>0</value0>
 					<value1>0</value1>
@@ -156,18 +177,18 @@
 			</4>
 			<8>
 				<Gravity>false</Gravity>
-				<Body_Mass>10</Body_Mass>
+				<Body_Mass>1</Body_Mass>
 				<Body_Drag>1</Body_Drag>
 				<Body_Friction>1</Body_Friction>
 				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
 			<12>
-				<CollisionType>0</CollisionType>
+				<CollisionType>1</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
 				<CollisionScale>
-					<value0>1</value0>
-					<value1>1</value1>
-					<value2>1</value2>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
 				</CollisionScale>
 				<CollisionOffset>
 					<value0>0</value0>
@@ -176,18 +197,18 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</value2>
-	<value3>
+	</value3>
+	<value4>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<1>
-				<Tag>SadBox</Tag>
+				<Tag>Wall</Tag>
 			</1>
 			<2>
 				<Translation>
-					<value0>1</value0>
-					<value1>-2.2000000476837158</value1>
-					<value2>0</value2>
+					<value0>10</value0>
+					<value1>0</value1>
+					<value2>10</value2>
 				</Translation>
 				<Rotation>
 					<value0>0</value0>
@@ -195,23 +216,21 @@
 					<value2>0</value2>
 				</Rotation>
 				<Scale>
-					<value0>1</value0>
-					<value1>1</value1>
-					<value2>1</value2>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
 				</Scale>
 			</2>
 			<4>
 				<Colour>
-					<value0>0.99999850988388062</value0>
-					<value1>0.91176468133926392</value1>
+					<value0>1</value0>
+					<value1>0.99998998641967773</value1>
 					<value2>1</value2>
 					<value3>1</value3>
 				</Colour>
-				<Mesh>3</Mesh>
-				<Shader>Resources/Shaders/LitColour_Shader.glsl</Shader>
-				<Texture>
-					<value0></value0>
-				</Texture>
+				<Mesh>1</Mesh>
+				<Shader>Resources/Shaders/Lit_Shader.glsl</Shader>
+				<Texture>Projects/MeduzaTests/Assets/Textures/Crate.png</Texture>
 				<UV>
 					<value0>0</value0>
 					<value1>0</value1>
@@ -221,22 +240,26 @@
 			</4>
 			<8>
 				<Gravity>false</Gravity>
-				<Body_Mass>10</Body_Mass>
+				<Body_Mass>1</Body_Mass>
 				<Body_Drag>1</Body_Drag>
 				<Body_Friction>1</Body_Friction>
 				<DrawCollisionLines>false</DrawCollisionLines>
 			</8>
-			<14>
-				<CollisionType>0</CollisionType>
+			<12>
+				<CollisionType>1</CollisionType>
 				<CollisionLayer>0</CollisionLayer>
-				<CollisionScale>0.5</CollisionScale>
+				<CollisionScale>
+					<value0>10</value0>
+					<value1>10</value1>
+					<value2>10</value2>
+				</CollisionScale>
 				<CollisionOffset>
 					<value0>0</value0>
 					<value1>0</value1>
 					<value2>0</value2>
 				</CollisionOffset>
-			</14>
+			</12>
 		</value0>
-	</value3>
+	</value4>
 </cereal>
 

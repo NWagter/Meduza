@@ -36,6 +36,7 @@ namespace Me
             void LoadIcons();
             std::unordered_map<uint8_t, bool> m_filter; 
             std::string m_browserPath;
+            std::string m_browserBase;
             Files::BrowseData m_browserData;
             float m_timer;
             float const m_reloadTime;

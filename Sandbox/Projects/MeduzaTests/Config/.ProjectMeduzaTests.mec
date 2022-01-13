@@ -1,0 +1,5 @@
+#ProjectName MeduzaTests
+
+#ScriptConfig Projects/MeduzaTests/Config/.ScriptMeduzaTests.mec
+
+#StartupScene Projects/MeduzaTests/Assets/Scenes/MonkeyHeadScene.scene

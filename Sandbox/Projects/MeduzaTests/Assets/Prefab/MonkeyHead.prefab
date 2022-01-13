@@ -32,9 +32,9 @@
 						<value2>1</value2>
 						<value3>1</value3>
 					</Colour>
-					<Mesh>Assets/Models/Suzanne/Suzanne.gltf</Mesh>
-					<Shader>Assets/Shaders/Lit_Shader.glsl</Shader>
-					<Texture>Assets/Models/Suzanne/Suzanne_BaseColor.png</Texture>
+					<Mesh>Projects/MeduzaTests/Assets/Models/Suzanne/Suzanne.gltf</Mesh>
+					<Shader>Projects/MeduzaTests/Assets/Shaders/Lit_Shader.glsl</Shader>
+					<Texture>Projects/MeduzaTests/Assets/Models/Suzanne/Suzanne_BaseColor.png</Texture>
 					<UV>
 						<value0>0</value0>
 						<value1>0</value1>
@@ -65,7 +65,7 @@
 				</12>
 				<7>
 					<ScriptAmount>1</ScriptAmount>
-					<ScriptPath0>Assets/Scripts/MoveSideways.lua</ScriptPath0>
+					<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/MoveSideways.lua</ScriptPath0>
 				</7>
 			</value0>
 		</Entity>

@@ -11,6 +11,7 @@
 
 #include "Core/Serialization/Serializer.h"
 
+#include "Platform/General/Editor/EditorProjectManager.h"
 #include "Platform/General/Window.h"
 #include "Platform/General/ResourceLibrary.h"
 #include "Platform/General/Resources/ShaderBase.h"
@@ -23,9 +24,10 @@
 #include "Core/Meduza.h"
 
 
-Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window)
+Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window, EditorProjectManager& a_projectManager)
 {
     m_window = &a_window;
+    m_projectManager = &a_projectManager;
     m_activeCameraType = CameraType::Orthographic;
     m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
 }
@@ -41,9 +43,23 @@ void Me::Editor::EditorToolbar::Draw()
 
     if(ImGui::BeginMainMenuBar())
     {
+        if (ImGui::BeginMenu("Project"))
+        {
+            if (ImGui::Button("New Project"))
+            {
+                m_projectManager->SetEditorState(ProjectManagerState::CreateNew, true);
+            }
+            if (ImGui::Button("Load Project"))
+            {
+                m_projectManager->SetEditorState(ProjectManagerState::LoadProject, true);
+            }
+
+            ImGui::EndMenu();
+        }
+
         if(ImGui::BeginMenu("File"))
         {
-            if(ImGui::MenuItem("New"))
+            if(ImGui::MenuItem("New Scene"))
             {
                 eManager->CleanGame();
 
@@ -52,7 +68,7 @@ void Me::Editor::EditorToolbar::Draw()
                     "Meduza Scene \0*.xml*\0Scene\0*.xml\0",
                      static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
 
-                size_t pos = filePath.find("Assets"); //find location of word
+                size_t pos = filePath.find("Projects"); //find location of word
                 filePath.erase(0,pos); //delete everything prior to location found
                 std::replace(filePath.begin(), filePath.end(), '\\', '/');
 
@@ -79,7 +95,7 @@ void Me::Editor::EditorToolbar::Draw()
                     "Meduza Scene \0*.scene*\0Scene\0*.scene\0",
                      static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
 
-                size_t pos = filePath.find("Assets"); //find location of word
+                size_t pos = filePath.find("Projects"); //find location of word
                 filePath.erase(0,pos); //delete everything prior to location found
                 std::replace(filePath.begin(), filePath.end(), '\\', '/');
 
@@ -98,7 +114,7 @@ void Me::Editor::EditorToolbar::Draw()
                     "Meduza Scene \0*.scene*\0Scene\0*.scene\0",
                      static_cast<WindowsWindow*>(m_window)->GetWindowHandle());
 
-                size_t pos = filePath.find("Assets"); //find location of word
+                size_t pos = filePath.find("Projects"); //find location of word
                 filePath.erase(0,pos); //delete everything prior to location found
                 std::replace(filePath.begin(), filePath.end(), '\\', '/');
                 

@@ -4,6 +4,8 @@
 #include <filesystem>
 #include "Platform/General/Resources/Resource.h"
 
+#include "Core/Project/ProjectManager.h"
+
 std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND const a_hwnd)
 {
 	char path[260];
@@ -16,7 +18,7 @@ std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND 
 
 	size_t pos = initalDir.find("Sandbox.exe"); //find location of word
     initalDir.erase(pos,initalDir.size() - pos); //delete everything prior to location found
-	initalDir.append("Assets");
+	initalDir.append(Project::ProjectManager::GetAssetBrowserPath());
 
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
@@ -47,7 +49,7 @@ std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND 
 
 	size_t pos = initalDir.find("Sandbox.exe"); //find location of word
     initalDir.erase(pos,initalDir.size() - pos); //delete everything prior to location found
-	initalDir.append("Assets");
+	initalDir.append(Project::ProjectManager::GetAssetBrowserPath());
 	
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
@@ -69,9 +71,19 @@ std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND 
 
 void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType const a_type, bool const a_recursive, std::string const& a_path)
 {
-	a_data.m_path = a_path;
+	std::string basePath = a_path;
+	if (basePath.empty())
+	{
+		basePath = Project::ProjectManager::GetAssetBrowserPath();
+		if (basePath.empty())
+		{
+			return;
+		}
+	}
 
-	for(auto& p : std::filesystem::directory_iterator(a_path))
+	a_data.m_path = basePath;
+
+	for(auto& p : std::filesystem::directory_iterator(basePath))
 	{
 		std::string extention = GetFileExtention(p.path().string());
 		std::string path = "";
@@ -130,6 +142,13 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 			}
 			type = Resources::ResourceType::Prefab;
 		}
+		else if (extention == "mec")
+		{
+			if (a_type == Files::FileType::Project)
+			{
+				path = p.path().string();
+			}
+		}
 		
 		if (a_type == Files::FileType::Any && !extention.empty())
 		{
@@ -156,7 +175,7 @@ void Me::Files::Windows::FileSystem::GetFilesOfType(BrowseData& a_data, FileType
 		}
 	}
 
-	if (a_recursive && a_path == "Assets" &&
+	if (a_recursive && a_path == "" &&
 		(a_type == Files::FileType::Texture || a_type == Files::FileType::Shader))
 	{
 		GetFilesOfType(a_data, a_type, a_recursive, "Resources");

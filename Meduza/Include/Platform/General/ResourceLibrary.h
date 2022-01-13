@@ -27,10 +27,12 @@ namespace Me
 
 			std::unordered_map<Resource, ResourceBase*> const& GetResources() const { return m_resources; }
 
+			void Cleanup(bool a_baseLoad);
         private:
 			ResourceLibrary();
 			~ResourceLibrary() = default;
 
+			void BaseLoad();
 			//Base Geometry
 			void CreateQuad();
 			void CreatePlane();

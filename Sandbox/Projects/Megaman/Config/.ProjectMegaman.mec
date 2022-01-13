@@ -1,5 +1,0 @@
-#ProjectName Megaman
-
-#ScriptConfig Projects/Megaman/Config/.ScriptTest.mec
-
-#StartupScene Projects/Megaman/Assets/Scenes/Megaman_Clone.scene

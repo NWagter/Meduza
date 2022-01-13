@@ -4,6 +4,7 @@
 #include "Platform/General/FileSystem/FileSystem.h"
 #include "Core/Serialization/Serializer.h"
 #include "Platform/General/ResourceLibrary.h"
+#include "Platform/General/Graphics/RenderLayer.h"
 
 constexpr char* gc_projectPrefix = ".Project";
 constexpr char* gc_scriptPrefix = ".Script";
@@ -42,6 +43,8 @@ void Me::Project::ProjectManager::LoadProject(std::string const& a_path)
 {
 	//Load out the file
 	Resources::ResourceLibrary::GetInstance()->Cleanup(true);
+	Renderer::RenderLayer::GetRenderLayer()->Init();
+
 	std::string configFile = Files::FileSystem::ReadFile(a_path);
 
 	m_projectName = Files::FileSystem::GetFromToken(configFile, gc_projectName);

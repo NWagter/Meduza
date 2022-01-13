@@ -76,17 +76,15 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 
 	m_projectManager = Project::ProjectManager::CreateProjectManager();
 
-
 #ifdef PLATFORM_WINDOWS
 #ifdef EDITOR
 	m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
 #endif
 #endif
-	m_renderLayer->Init();
-
 
 #ifndef EDITOR
 	ms_engineState = RUN_GAME;
+	m_projectManager->LoadProject("Projects/MeduzaTests/Config/.ProjectMeduzaTests.mec");
 #endif
 }
 

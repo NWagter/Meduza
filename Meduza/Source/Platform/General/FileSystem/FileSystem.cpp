@@ -23,6 +23,24 @@ std::string Me::Files::FileSystem::ReadFile(std::string const& a_path)
 	return result;
 }
 
+std::string Me::Files::FileSystem::GetFromToken(std::string const& a_source, std::string const& a_token)
+{
+	std::string result = "";
+	size_t typeTokenLenght = strlen(a_token.c_str());
+	size_t pos = a_source.find(a_token.c_str(), 0);
+
+	while (pos != std::string::npos)
+	{
+		size_t eol = a_source.find_first_of("\r\n", pos);
+		ME_CORE_ASSERT_M(eol != std::string::npos, "Syntax Error");
+		size_t begin = pos + typeTokenLenght + 1;
+		result = a_source.substr(begin, eol - begin);
+		break;
+	}
+
+	return result;
+}
+
 std::string Me::Files::FileSystem::GetFileName(std::string const& a_path)
 {
 	auto lastSlash = a_path.find_last_of("/\\");
@@ -43,12 +61,18 @@ std::string Me::Files::FileSystem::GetFileExtention(std::string const& a_path)
 	return("");
 }
 
+bool Me::Files::FileSystem::DoesFileExist(std::string const& a_path)
+{
+	return std::filesystem::exists(a_path);
+}
+
 std::string Me::Files::FileSystem::CreateNewFile(std::string a_fileName, std::string a_path)
 {
 	std::string fullPath = a_path;
 	fullPath.append("/");
 	fullPath.append(a_fileName);
-	fullPath.append(".prefab");
+
+	std::filesystem::create_directories(a_path);
 	std::ofstream newFile(fullPath);
 	newFile.close();
 

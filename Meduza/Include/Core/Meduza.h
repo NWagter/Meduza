@@ -5,6 +5,11 @@ namespace Me {
 	class Window;
 	class SystemInitializer;
 
+	namespace Project
+	{
+		class ProjectManager;
+	}
+
 	namespace Event
 	{
 		class EventSystem;
@@ -69,6 +74,7 @@ namespace Me {
 		Serialization::Serializer* m_serializer;
 		SystemInitializer* m_systemInitializer;
 		Scripting::LuaScripting* m_luaScripting;
+		Project::ProjectManager* m_projectManager;
 
 #ifdef PLATFORM_WINDOWS
 		Editor::EditorRenderer* m_editor;

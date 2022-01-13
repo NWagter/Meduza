@@ -24,6 +24,7 @@
 #include <chrono>
 #include <bitset>
 #include <fstream>
+#include <filesystem>
 
 #include <cereal/archives/xml.hpp>
 #include <FontAwesome/FontAwesome.h>

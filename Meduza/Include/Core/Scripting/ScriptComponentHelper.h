@@ -60,6 +60,7 @@ namespace Me
         struct Script
         {
             std::string m_script;
+            Resource m_scriptID;
             lua_State* m_luaState;
             std::vector<Value*> m_inputFields;
 

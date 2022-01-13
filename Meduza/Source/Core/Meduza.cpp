@@ -9,6 +9,7 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
+#include "Core//Project/ProjectManager.h"
 #include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/Events/EventSystem.h"
@@ -73,6 +74,7 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 	m_luaScripting = new Scripting::LuaScripting();
 
+	m_projectManager = new Project::ProjectManager();
 
 
 #ifdef PLATFORM_WINDOWS

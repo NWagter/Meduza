@@ -64,7 +64,9 @@ void Me::Editor::EditorAssetBrowser::Draw()
 
 				if (!m_browserPath.empty())
 				{
-					Me::Serialization::Serializer::GetInstance()->SerializeEntity(Files::FileSystem::CreateNewFile(payload->m_entityName, m_browserPath), payload->m_entityID);
+					std::string file = payload->m_entityName;
+					file.append(".prefab");
+					Me::Serialization::Serializer::GetInstance()->SerializeEntity(Files::FileSystem::CreateNewFile(file, m_browserPath), payload->m_entityID);
 				}
 			}
 

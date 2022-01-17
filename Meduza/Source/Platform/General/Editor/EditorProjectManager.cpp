@@ -64,10 +64,6 @@ void Me::Editor::EditorProjectManager::DrawInitialPage()
 		{
 			m_lastState = m_state;
 			m_state = ProjectManagerState::LoadProject;
-		}		
-		if (ImGui::Button("Exit Meduza"))
-		{
-
 		}
 
 		ImGui::End();

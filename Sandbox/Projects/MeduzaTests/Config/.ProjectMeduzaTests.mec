@@ -1,5 +1,9 @@
-#ProjectName MeduzaTests
+<?xml version="1.0" encoding="utf-8"?>
+<cereal>
+	<Project>
+		<#ProjectName>MeduzaTests</#ProjectName>
+		<#ScriptConfig>Projects/MeduzaTests/Config/.ScriptMeduzaTests.mec</#ScriptConfig>
+		<#StartupScene>Projects/MeduzaTests/Assets/Scenes/MonkeyHeadScene.scene</#StartupScene>
+	</Project>
+</cereal>
 
-#ScriptConfig Projects/MeduzaTests/Config/.ScriptMeduzaTests.mec
-
-#StartupScene Projects/MeduzaTests/Assets/Scenes/MonkeyHeadScene.scene

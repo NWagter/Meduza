@@ -47,10 +47,12 @@ void Me::Editor::EditorToolbar::Draw()
         {
             if (ImGui::Button("New Project"))
             {
+                Meduza::ms_engineState = RUN_EDITOR;
                 m_projectManager->SetEditorState(ProjectManagerState::CreateNew, true);
             }
             if (ImGui::Button("Load Project"))
             {
+                Meduza::ms_engineState = RUN_EDITOR;
                 m_projectManager->SetEditorState(ProjectManagerState::LoadProject, true);
             }
 
@@ -61,6 +63,7 @@ void Me::Editor::EditorToolbar::Draw()
         {
             if(ImGui::MenuItem("New Scene"))
             {
+                Meduza::ms_engineState = RUN_EDITOR;
                 eManager->CleanGame();
 
                 #ifdef PLATFORM_WINDOWS
@@ -80,16 +83,12 @@ void Me::Editor::EditorToolbar::Draw()
             }
             if(ImGui::MenuItem("Save"))
             {
-                Meduza::ms_engineState = RUN_EDITOR; 
-
                 #ifdef PLATFORM_WINDOWS
                     Serialization::Serializer::GetInstance()->SerializeScene();
                 #endif
             }
             if(ImGui::MenuItem("Save as"))
             {
-                Meduza::ms_engineState = RUN_EDITOR; 
-                
                 #ifdef PLATFORM_WINDOWS
                 std::string filePath = Files::Windows::FileSystem::SaveFile(
                     "Meduza Scene \0*.scene*\0Scene\0*.scene\0",

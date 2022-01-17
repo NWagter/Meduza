@@ -47,9 +47,27 @@ void Me::Project::ProjectManager::LoadProject(std::string const& a_path)
 
 	std::string configFile = Files::FileSystem::ReadFile(a_path);
 
-	m_projectName = Files::FileSystem::GetFromToken(configFile, gc_projectName);
-	std::string scriptConfig = Files::FileSystem::GetFromToken(configFile, gc_scriptConfig);
-	std::string startupScene = Files::FileSystem::GetFromToken(configFile, gc_startUpScene);
+	std::ifstream is(a_path.c_str());
+	is.open(a_path);
+
+	if (!is.is_open())
+	{
+		ME_LOG("Can't Open File! \n");
+	}
+
+	cereal::XMLInputArchive archive(is);
+
+	std::string scriptConfig; 
+	std::string startupScene;
+
+	archive.setNextName("Project");
+	archive.startNode();
+
+	archive(cereal::make_nvp(gc_projectName, m_projectName));
+	archive(cereal::make_nvp(gc_scriptConfig, scriptConfig));
+	archive(cereal::make_nvp(gc_startUpScene, startupScene));
+
+	archive.finishNode();
 
 	Serialization::Serializer::GetInstance()->DeserializeScene(startupScene);
 
@@ -76,15 +94,18 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 
 	std::string assetPath = "Projects/";
 	assetPath.append(a_name);
-	assetPath.append("/Assets/");
+	assetPath.append("/Assets");
 
 	std::string scenePath;
 
 	if (!Files::FileSystem::DoesFileExist(projectPath + projectName))
 	{
+		Resources::ResourceLibrary::GetInstance()->Cleanup(true);
+		Renderer::RenderLayer::GetRenderLayer()->Init();
+
 		Files::FileSystem::CreateNewFile(projectName, projectPath);
 		Files::FileSystem::CreateNewFile(scriptName, projectPath);
-		scenePath = Files::FileSystem::CreateNewFile("NewScene.scene", assetPath + "Scenes");
+		scenePath = Files::FileSystem::CreateNewFile("NewScene.scene", assetPath + "/Scenes");
 		//Create Scene
 		Serialization::Serializer::GetInstance()->SerializeSceneAs(scenePath);
 	}
@@ -93,15 +114,21 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 		LoadProject(projectPath + projectName);
 		return;
 	}
-	std::ofstream configFile;
-	configFile.open(projectPath + projectName);
-	configFile << gc_projectName << " " << a_name << "\n";
-	configFile << "\n";
-	configFile << gc_scriptConfig << " " << projectPath << scriptName << "\n";
-	configFile << "\n";
-	configFile << gc_startUpScene << " " << scenePath << "\n";
-	configFile << "\n";
 
-	configFile.close();
-	LoadProject(projectPath + projectName);
+	std::string path = projectPath + projectName;
+	std::ofstream configFile(path.c_str());
+
+	cereal::XMLOutputArchive archive(configFile);
+
+	archive.setNextName("Project");
+	archive.startNode();
+
+	archive(cereal::make_nvp(gc_projectName, a_name));
+	archive(cereal::make_nvp(gc_scriptConfig, projectPath + scriptName));
+	archive(cereal::make_nvp(gc_startUpScene, scenePath));
+
+	archive.finishNode();
+
+	m_projectName = projectName;
+	m_assetBrowserBase = assetPath;
 }

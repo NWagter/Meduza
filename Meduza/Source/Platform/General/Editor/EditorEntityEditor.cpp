@@ -741,10 +741,10 @@ void Me::Editor::EntityEditor::Draw()
             auto rComp = new RenderComponent();
             rComp->m_mesh = Mesh(Primitives::Quad);
 
-            Me::Shader shader = rLibrary->LoadResource<Resources::ShaderBase>("Assets/Shaders/LitColour_Shader.hlsl")->GetID();
+            Me::Shader shader = rLibrary->LoadResource<Resources::ShaderBase>("Resources/Shaders/LitColour_Shader.hlsl")->GetID();
             if(shader == 0)
             {      
-                shader = rLibrary->LoadResource<Resources::ShaderBase>("Assets/Shaders/LitColour_Shader.glsl")->GetID();
+                shader = rLibrary->LoadResource<Resources::ShaderBase>("Resources/Shaders/LitColour_Shader.glsl")->GetID();
             }
 
             rComp->m_shader = shader;

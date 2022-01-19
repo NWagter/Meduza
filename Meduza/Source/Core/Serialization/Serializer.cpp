@@ -311,13 +311,6 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
 
     archive.startNode(); 
 
-    
-    CanSerialize<Me::UIDComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
-    {
-        uint32_t a_id = static_cast<uint32_t>(a_comp->m_guid);
-        archive(cereal::make_nvp("UUID", a_id));
-    });
-
     CanSerialize<Me::TagComponent>(eManager, a_entity, archive, [&archive](auto& a_comp)
     {  
         archive(cereal::make_nvp("Tag", a_comp->m_tag));

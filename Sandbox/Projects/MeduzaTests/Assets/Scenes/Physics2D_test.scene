@@ -40,6 +40,7 @@
 			<7>
 				<ScriptAmount>1</ScriptAmount>
 				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/CameraMovement.lua</ScriptPath0>
+				<#AmountOfValues>0</#AmountOfValues>
 			</7>
 		</value0>
 	</value0>

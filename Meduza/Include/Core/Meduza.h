@@ -29,6 +29,7 @@ namespace Me {
 
 	namespace Scripting
 	{
+		class ScriptConfig;
 		class LuaScripting;
 	}
 
@@ -74,7 +75,9 @@ namespace Me {
 		Serialization::Serializer* m_serializer;
 		SystemInitializer* m_systemInitializer;
 		Scripting::LuaScripting* m_luaScripting;
+
 		Project::ProjectManager* m_projectManager;
+		Scripting::ScriptConfig* m_scriptConfig;
 
 #ifdef PLATFORM_WINDOWS
 		Editor::EditorRenderer* m_editor;

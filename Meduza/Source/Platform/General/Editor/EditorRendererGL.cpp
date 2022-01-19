@@ -13,6 +13,7 @@
 #endif
 
 #include "Platform/General/Editor/EditorProjectManager.h"
+#include "Platform/General/Editor/EditorScriptConfig.h"
 #include "Platform/General/Editor/EditorToolbar.h"
 #include "Platform/General/Editor/EditorEntityHierarchy.h"
 #include "Platform/General/Editor/EditorEntityEditor.h"
@@ -67,6 +68,8 @@ Me::Editor::GL::EditorRendererGL::EditorRendererGL(Renderer::GL::RenderLayerGL* 
     
 	EditorProjectManager* projectManager = new EditorProjectManager();
 	AddWidget(projectManager);
+	EditorScriptConfig* scriptConfig = new EditorScriptConfig();
+	AddWidget(scriptConfig);
 	EditorToolbar* toolbar = new EditorToolbar(*a_renderLayer->GetWindow(), *projectManager);
 	AddWidget(toolbar);
 	EntityHierarchy* entHierarchy = new EntityHierarchy(*a_renderLayer->GetWindow());

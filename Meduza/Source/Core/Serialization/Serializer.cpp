@@ -8,6 +8,7 @@
 #include "Core/Components/CameraComponent.h"
 
 #include "Core/Scripting/ScriptComponent.h"
+#include "Core/Scripting/ScriptComponentHelper.h"
 
 #include "Particles/Components/ParticleSystemComponent.h"
 
@@ -249,7 +250,30 @@ bool SerializeSceneA(std::string a_path)
             for(size_t i = 0; i < a_comp->m_scripts.size();i++)
             {
                 std::string scriptPath = "ScriptPath" + std::to_string(i);
-                archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]->m_script));  
+                archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]->m_script));
+
+                archive(cereal::make_nvp("#AmountOfValues", a_comp->m_scripts.at(i)->m_inputFields.size()));
+                for (auto value : a_comp->m_scripts.at(i)->m_inputFields)
+                {
+                    archive.startNode();
+                    archive(cereal::make_nvp("Argument", value->m_argumentName));
+                    archive(cereal::make_nvp("Type", static_cast<int>(value->m_type)));
+
+                    switch (value->m_type)
+                    {
+                    case Me::Scripting::ValueType::Boolean:
+                        archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueBool*>(value)->m_value));
+                        break;
+                    case Me::Scripting::ValueType::Number:
+                        archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueNumber*>(value)->m_value));
+                        break;
+                    case Me::Scripting::ValueType::String:
+                        archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueString*>(value)->m_value));
+                        break;
+                    }
+
+                    archive.finishNode();
+                }
             }          
         }); 
 
@@ -425,6 +449,29 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
         {
             std::string scriptPath = "ScriptPath" + std::to_string(i);
             archive(cereal::make_nvp(scriptPath.c_str(), a_comp->m_scripts[i]->m_script));
+
+            archive(cereal::make_nvp("#AmountOfValues", a_comp->m_scripts.at(i)->m_inputFields.size()));
+            for (auto value : a_comp->m_scripts.at(i)->m_inputFields)
+            {
+                archive.startNode();
+                archive(cereal::make_nvp("Argument", value->m_argumentName));
+                archive(cereal::make_nvp("Type", static_cast<int>(value->m_type)));
+
+                switch (value->m_type)
+                {
+                case Me::Scripting::ValueType::Boolean:
+                    archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueBool*>(value)->m_value));
+                    break;
+                case Me::Scripting::ValueType::Number:
+                    archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueNumber*>(value)->m_value));
+                    break;
+                case Me::Scripting::ValueType::String:
+                    archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueString*>(value)->m_value));
+                    break;
+                }
+
+                archive.finishNode();
+            }
         }            
     }); 
 
@@ -701,8 +748,54 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
                 std::string scriptPath = "ScriptPath" + std::to_string(i);
                 std::string script;
                 archive(cereal::make_nvp(scriptPath.c_str(), script));
-                rLibrary->LoadResource<Resources::Script>(script);
+                Me::Resource resourceID = rLibrary->LoadResource<Resources::Script>(script)->GetID();
                 a_comp->AddScript(script);
+
+                int amountOfValues = 0;
+                archive(cereal::make_nvp("#AmountOfValues", amountOfValues));
+                Me::Scripting::ScriptConfigData* data = new Me::Scripting::ScriptConfigData();
+                data->m_resourceId = resourceID;
+                for (int j = 0; j < amountOfValues; j++)
+                {
+                    Me::Scripting::Value* inputValue = nullptr;
+                    archive.startNode();
+                    std::string argumentName;
+                    archive(cereal::make_nvp("Argument", argumentName));
+                    int type = 0;
+                    archive(cereal::make_nvp("Type", type));
+
+                    switch (static_cast<Me::Scripting::ValueType>(type))
+                    {
+                    case Me::Scripting::ValueType::Boolean:
+                    {
+                        bool value;
+                        archive(cereal::make_nvp("Value", value));
+                        inputValue = new Me::Scripting::ValueBool(argumentName, value);
+                    }
+                    break;
+                    case Me::Scripting::ValueType::Number:
+                    {
+                        float value;
+                        archive(cereal::make_nvp("Value", value));
+                        inputValue = new Me::Scripting::ValueNumber(argumentName, value);
+                    }
+                    break;
+                    case Me::Scripting::ValueType::String:
+                    {
+                        std::string value;
+                        archive(cereal::make_nvp("Value", value));
+                        inputValue = new Me::Scripting::ValueString(argumentName, value);
+                    }
+                    break;
+                    }
+
+                    if (inputValue != nullptr)
+                    {
+                        data->m_inputValues.push_back(inputValue);
+                    }
+                    archive.finishNode();
+                }
+                a_comp->m_scripts.at(i)->SetInputField(*data);
             }  
             
             eManager->AddComponent(ent, a_comp);
@@ -764,17 +857,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     std::string entityTag = name;
     UUID guid = UUID();
 
-    BaseComponent* guidComp = nullptr;
     BaseComponent* tagComp = nullptr;
-
-    if (CanDeserialize<UIDComponent>(archive, [&guid, &guidComp, &eManager, &archive](auto& a_comp)
-        {
-            uint32_t a_id;
-            archive(cereal::make_nvp("UUID", a_id));
-            guid = UUID(a_id);
-            guidComp = a_comp;
-        })) compAmount--;
-
 
     if (CanDeserialize<TagComponent>(archive, [&entityTag, &tagComp, &eManager, &archive](auto& a_comp)
         {
@@ -786,10 +869,6 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
 
     EntityID ent = eManager->CreateEntity(entityTag, guid);
 
-    if (guidComp != nullptr)
-    {
-        delete guidComp;
-    }
     if (tagComp != nullptr)
     {
         delete tagComp;
@@ -965,8 +1044,54 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
             std::string script;
             
             archive(cereal::make_nvp(scriptPath.c_str(), script));  
-            rLibrary->LoadResource<Resources::Script>(script);
+            Me::Resource resourceID = rLibrary->LoadResource<Resources::Script>(script)->GetID();
             a_comp->AddScript(script);
+
+            int amountOfValues = 0;
+            archive(cereal::make_nvp("#AmountOfValues", amountOfValues));
+            Me::Scripting::ScriptConfigData* data = new Me::Scripting::ScriptConfigData();
+            data->m_resourceId = resourceID;
+            for (int j = 0; j < amountOfValues; j++)
+            {
+                Me::Scripting::Value* inputValue = nullptr;
+                archive.startNode();
+                std::string argumentName;
+                archive(cereal::make_nvp("Argument", argumentName));
+                int type = 0;
+                archive(cereal::make_nvp("Type", type));
+
+                switch (static_cast<Me::Scripting::ValueType>(type))
+                {
+                case Me::Scripting::ValueType::Boolean:
+                {
+                    bool value;
+                    archive(cereal::make_nvp("Value", value));
+                    inputValue = new Me::Scripting::ValueBool(argumentName, value);
+                }
+                break;
+                case Me::Scripting::ValueType::Number:
+                {
+                    float value;
+                    archive(cereal::make_nvp("Value", value));
+                    inputValue = new Me::Scripting::ValueNumber(argumentName, value);
+                }
+                break;
+                case Me::Scripting::ValueType::String:
+                {
+                    std::string value;
+                    archive(cereal::make_nvp("Value", value));
+                    inputValue = new Me::Scripting::ValueString(argumentName, value);
+                }
+                break;
+                }
+
+                if (inputValue != nullptr)
+                {
+                    data->m_inputValues.push_back(inputValue);
+                }
+                archive.finishNode();
+            }
+            a_comp->m_scripts.at(i)->SetInputField(*data);
         } 
 
         eManager->AddComponent(ent, a_comp);

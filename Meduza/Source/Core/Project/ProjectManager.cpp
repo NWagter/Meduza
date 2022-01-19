@@ -5,6 +5,7 @@
 #include "Core/Serialization/Serializer.h"
 #include "Platform/General/ResourceLibrary.h"
 #include "Platform/General/Graphics/RenderLayer.h"
+#include "Core/Scripting/ScriptConfig.h"
 
 constexpr char* gc_projectPrefix = ".Project";
 constexpr char* gc_scriptPrefix = ".Script";
@@ -69,13 +70,18 @@ void Me::Project::ProjectManager::LoadProject(std::string const& a_path)
 
 	archive.finishNode();
 
-	Serialization::Serializer::GetInstance()->DeserializeScene(startupScene);
-
 	std::string assetPath = "Projects/";
 	assetPath.append(m_projectName);
 	assetPath.append("/Assets");
 
 	m_assetBrowserBase = assetPath;
+
+	if (Scripting::ScriptConfig::GetScriptConfig()->LoadScriptConfig(scriptConfig, m_projectName, assetPath))
+	{
+
+	}
+
+	Serialization::Serializer::GetInstance()->DeserializeScene(startupScene);
 }
 
 void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
@@ -115,20 +121,27 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 		return;
 	}
 
-	std::string path = projectPath + projectName;
-	std::ofstream configFile(path.c_str());
+	std::string newProjectPath = projectPath + projectName;
+	std::string newScriptPath = projectPath + scriptName;
 
-	cereal::XMLOutputArchive archive(configFile);
+	std::ofstream configFile(newProjectPath.c_str());
 
-	archive.setNextName("Project");
-	archive.startNode();
+	cereal::XMLOutputArchive archiveProject(configFile);
 
-	archive(cereal::make_nvp(gc_projectName, a_name));
-	archive(cereal::make_nvp(gc_scriptConfig, projectPath + scriptName));
-	archive(cereal::make_nvp(gc_startUpScene, scenePath));
+	archiveProject.setNextName("Project");
+	archiveProject.startNode();
 
-	archive.finishNode();
+	archiveProject(cereal::make_nvp(gc_projectName, a_name));
+	archiveProject(cereal::make_nvp(gc_scriptConfig, newScriptPath));
+	archiveProject(cereal::make_nvp(gc_startUpScene, scenePath));
+
+	archiveProject.finishNode();
 
 	m_projectName = projectName;
 	m_assetBrowserBase = assetPath;
+
+	if (Scripting::ScriptConfig::GetScriptConfig()->InitializeScriptConfig(newScriptPath, a_name))
+	{
+
+	}
 }

@@ -9,7 +9,7 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
-#include "Core//Project/ProjectManager.h"
+#include "Core/Project/ProjectManager.h"
 #include "Platform/General/ResourceLibrary.h"
 
 #include "Platform/General/Events/EventSystem.h"
@@ -24,6 +24,7 @@
 #include "Platform/MacOS/MacOsWindow.h"
 #endif
 
+#include "Core/Scripting/ScriptConfig.h"
 #include "Core/Scripting/LuaScripting.h"
 #include "Core/Scripting/ScriptSystem.h"
 
@@ -73,6 +74,8 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	m_serializer = new Serialization::Serializer();
 	m_systemInitializer = new SystemInitializer(*m_renderLayer);
 	m_luaScripting = new Scripting::LuaScripting();
+
+	m_scriptConfig = Scripting::ScriptConfig::CreateScriptConfig();
 
 	m_projectManager = Project::ProjectManager::CreateProjectManager();
 
@@ -204,6 +207,8 @@ void Me::Meduza::Destroy()
 
 	delete m_meduzaDebugger;
 	delete m_projectManager;
+	delete m_scriptConfig;
+
 	EntityManager::DestroyEntityManager();
 }
 

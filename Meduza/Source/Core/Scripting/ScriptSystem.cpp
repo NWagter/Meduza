@@ -2,6 +2,7 @@
 #include "Core/Scripting/ScriptSystem.h"
 #include "Core/Scripting/LuaScripting.h"
 #include "Core/Scripting/LuaFunctions.h"
+#include "Core/Scripting/API/Lua_APIHelper.h"
 
 Me::Scripting::ScriptSystem::ScriptSystem()
 {
@@ -81,7 +82,8 @@ void Me::Scripting::ScriptSystem::Start(ScriptComponent* a_scriptComponent, Enti
             {
                 lua_pushlightuserdata(lScript, this);
                 lua_pushnumber(lScript, (uint32_t)a_entId);
-                lua_pcall(lScript,2,0,0);
+                Lua_API::Lua_Helper::CreateInitializationTable(lScript, script->m_inputFields);
+                lua_pcall(lScript,3,0,0);
             }
         }
     }   

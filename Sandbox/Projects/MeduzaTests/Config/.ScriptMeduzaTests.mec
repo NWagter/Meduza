@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cereal>
+	<Script>
+		<#ScriptsConfigured>6</#ScriptsConfigured>
+		<value0>
+			<Script0>51406</Script0>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value0>
+		<value1>
+			<Script1>18303</Script1>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value1>
+		<value2>
+			<Script2>40626</Script2>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value2>
+		<value3>
+			<Script3>14936</Script3>
+			<#AmountOfValues>1</#AmountOfValues>
+			<value0>
+				<Argument>sEntityName</Argument>
+				<Type>2</Type>
+				<DefaultValue></DefaultValue>
+			</value0>
+		</value3>
+		<value4>
+			<Script4>36911</Script4>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value4>
+		<value5>
+			<Script5>28193</Script5>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value5>
+	</Script>
+</cereal>
+

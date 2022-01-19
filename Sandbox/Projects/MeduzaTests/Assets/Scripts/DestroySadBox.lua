@@ -1,7 +1,7 @@
 local sName
 
-function OnStart(a_host, a_eEntity)
-    sName = "SadBox"
+function OnStart(a_host, a_eEntity, a_initTable)
+    sName = a_initTable.sEntityName
 end
 
 function OnUpdate(a_host, a_eEntity, a_nDt)

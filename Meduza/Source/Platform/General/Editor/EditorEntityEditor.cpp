@@ -608,42 +608,17 @@ void Me::Editor::EntityEditor::Draw()
                     for (size_t j = 0; j < inputFieldSize; j++)
                     {
                         auto value = a_comp.m_scripts.at(i)->m_inputFields.at(j);
+
+                        if (value == nullptr || value->m_argumentName.empty() || value->m_type > Scripting::ValueType::Last)
+                        {
+                            continue;
+                        }
+
                         std::string argumentName = value->m_argumentName;
+                        ImGui::PushID(argumentName.c_str());
 
-                        // Change Type
-                        const char* valueTypes[] = { "Unkown", "Number", "String", "Bool" };
-                        const char* currentType = valueTypes[int(value->m_type)];
-
-                        std::string idType = "Type ##" + argumentName;
-                        if (ImGui::BeginCombo(idType.c_str(), currentType))
-                        {
-                            for (size_t t = 1; t < (size_t)Scripting::ValueType::Last; t++)
-                            {
-                                bool isSelected = currentType == valueTypes[t];
-
-                                if (ImGui::Selectable(valueTypes[t], isSelected))
-                                {
-                                    currentType = valueTypes[t];
-                                    value = a_comp.m_scripts.at(i)->ChangeType(j, (Scripting::ValueType)t);
-                                }
-
-                                if (isSelected)
-                                {
-                                    ImGui::SetItemDefaultFocus();
-                                }
-                            }
-
-                            ImGui::EndCombo();
-                        }
-
-                        std::string idInputName = "InputName ##" + argumentName;
-                        char buffer[256];
-                        strncpy(buffer, argumentName.c_str(), sizeof(buffer) - 1);
-                        ImGui::InputText(idInputName.c_str(), buffer, 256);
-                        if (buffer != "")
-                        {
-                            value->m_argumentName = buffer;
-                        }
+                        ImGui::Text(argumentName.c_str());
+                        ImGui::SameLine(); 
 
                         if (value->m_type == Scripting::ValueType::String)
                         {
@@ -669,18 +644,7 @@ void Me::Editor::EntityEditor::Draw()
                             ImGui::Checkbox(idValue.c_str(), &valueBool->m_value);
                         }
 
-                        ImGui::SameLine();
-                        std::string deleteId = "X##Value" + std::to_string(j);
-                        if (ImGui::Button(deleteId.c_str()))
-                        {
-                            a_comp.m_scripts.at(i)->RemoveInputField(j);
-                            break;
-                        }
-                    }
-
-                    if (ImGui::Button("+"))
-                    {
-                        a_comp.m_scripts.at(i)->AddInputField();
+                        ImGui::PopID();
                     }
 
                     ImGui::PopID();            

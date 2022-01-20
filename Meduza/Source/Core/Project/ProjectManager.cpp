@@ -7,12 +7,12 @@
 #include "Platform/General/Graphics/RenderLayer.h"
 #include "Core/Scripting/ScriptConfig.h"
 
-constexpr char* gc_projectPrefix = ".Project";
-constexpr char* gc_scriptPrefix = ".Script";
+std::string const gc_projectPrefix = ".Project";
+std::string const gc_scriptPrefix = ".Script";
 
-constexpr char* gc_projectName = "#ProjectName";
-constexpr char* gc_scriptConfig = "#ScriptConfig";
-constexpr char* gc_startUpScene = "#StartupScene";
+std::string const gc_projectName = "#ProjectName";
+std::string const gc_scriptConfig = "#ScriptConfig";
+std::string const gc_startUpScene = "#StartupScene";
 
 
 Me::Project::ProjectManager* Me::Project::ProjectManager::ms_instance = nullptr;

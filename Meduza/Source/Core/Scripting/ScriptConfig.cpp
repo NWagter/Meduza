@@ -15,8 +15,8 @@
 #endif // PLATFORM_WINDOWS
 
 
-constexpr char* gc_projectName = "#ProjectName";
-constexpr char* gc_scriptConfigured = "#ScriptsConfigured";
+std::string const gc_projectName = "#ProjectName";
+std::string const gc_scriptConfigured = "#ScriptsConfigured";
 
 Me::Scripting::ScriptConfig* Me::Scripting::ScriptConfig::ms_instance = nullptr;
 
@@ -76,10 +76,6 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 
 	m_projectName = a_projectName;
 
-	Files::BrowseData scripts = Files::BrowseData();
-	Files::Windows::FileSystem::GetFilesOfType(scripts, Files::FileType::Script, true, a_assetPath);
-
-
 	std::ifstream is(a_path.c_str());
 	is.open(a_path);
 
@@ -104,6 +100,7 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 
 		std::string script = "Script" + std::to_string(i);
 		archive(cereal::make_nvp(script.c_str(), scriptData->m_resourceId));
+		archive(cereal::make_nvp("ScriptPath", scriptData->m_scriptPath));
 
 		int values;
 		archive(cereal::make_nvp("#AmountOfValues", values));
@@ -149,11 +146,31 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 
 	archive.finishNode();
 
+
 	auto rLibrary = Resources::ResourceLibrary::GetInstance();
-	for (auto s : scripts.m_files)
+	bool noPath = false;
+	for (auto c : m_config)
 	{
-		rLibrary->LoadResource<Resources::Script>(s->m_path);
+		if (c.second->m_scriptPath.empty())
+		{
+			noPath = true;
+			continue;
+		}
+		rLibrary->LoadResource<Resources::Script>(c.second->m_scriptPath);
 	}
+
+#ifdef PLATFORM_WINDOWS
+	Files::BrowseData scripts = Files::BrowseData();
+	Files::Windows::FileSystem::GetFilesOfType(scripts, Files::FileType::Script, true, a_assetPath);
+
+	if (noPath || scripts.m_files.size() != m_config.size())
+	{
+		for (auto f : scripts.m_files)
+		{
+			rLibrary->LoadResource<Resources::Script>(f->m_path);
+		}
+	}
+#endif
 
 	return true;
 }
@@ -162,12 +179,20 @@ void Me::Scripting::ScriptConfig::AddScript(Me::Resources::Script& a_script)
 {
 	if (m_config[a_script.GetID()] != nullptr)
 	{
+		if (m_config[a_script.GetID()]->m_scriptPath.empty())
+		{
+			m_config[a_script.GetID()]->m_scriptPath = a_script.GetPath();
+			SerializeScriptData();
+
+		}
+
 		return;
 	}
 
 
 	ScriptConfigData* data = new ScriptConfigData();
 	data->m_resourceId = a_script.GetID();
+	data->m_scriptPath = a_script.GetPath();
 
 	m_config[a_script.GetID()] = data;
 
@@ -247,6 +272,7 @@ void Me::Scripting::ScriptConfig::SerializeScriptData()
 
 		std::string script = "Script" + std::to_string(i);
 		archiveScript(cereal::make_nvp(script.c_str(), c.second->m_resourceId));
+		archiveScript(cereal::make_nvp("ScriptPath", c.second->m_scriptPath));
 		archiveScript(cereal::make_nvp("#AmountOfValues", c.second->m_inputValues.size()));
 
 		for (auto value : c.second->m_inputValues)

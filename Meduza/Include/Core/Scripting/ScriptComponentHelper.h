@@ -12,6 +12,7 @@ namespace Me
         struct ScriptConfigData
         {
             Resource m_resourceId;
+            std::string m_scriptPath;
             std::vector<Value*> m_inputValues;
         };
 

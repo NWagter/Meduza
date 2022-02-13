@@ -41,6 +41,29 @@ namespace Me
                 m_rotation = Math::Vec3(0,0,0);
                 m_scale = Math::Vec3(0,0,0);
             }
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
+            void CustomGUI() override
+            {
+                bool isStatic = m_isStatic;
+                ImGui::Checkbox("Static", &isStatic);
+                m_isStatic = isStatic;
 
+                Editor::Helper::EditorHelper::DrawVec3Prop("Position", m_translation);
+                Editor::Helper::EditorHelper::DrawVec3Prop("Rotation", m_rotation);
+                Editor::Helper::EditorHelper::DrawVec3Prop("Scale", m_scale);
+            }
+#endif
+#endif
+            void serialize(cereal::XMLOutputArchive& a_archive) override
+            {
+                a_archive(cereal::make_nvp("Translation", m_translation.m_xyz));
+                a_archive(cereal::make_nvp("Rotation", m_rotation.m_xyz));
+                a_archive(cereal::make_nvp("Scale", m_scale.m_xyz));
+            }
+
+            virtual bool RenderCustomGUI() { return true; }
+            bool EditorRemoveable() override { return false; }
+            std::string EditorComponentName() override { return "TransformComponent"; }
     };
 }

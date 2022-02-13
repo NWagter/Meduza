@@ -19,6 +19,18 @@ namespace Me
             }
 
             static ComponentID s_componentID;
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
+            virtual void CustomGUI()
+            {
+                Editor::Helper::EditorHelper::DrawVec3Prop("ColliderScale", m_colliderSize);
+                Editor::Helper::EditorHelper::DrawVec3Prop("ColliderOffset", m_colliderOffset);
+                ColliderComponent::CustomGUI();
+            }
+#endif
+#endif
+            virtual bool RenderCustomGUI() { return true; }
+            std::string EditorComponentName() override { return "BoxCollider3DComponent"; }
         };
     }
 }

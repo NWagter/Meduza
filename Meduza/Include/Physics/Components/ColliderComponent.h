@@ -19,6 +19,37 @@ namespace Me
             }            
 
             static ComponentID s_componentID;
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
+            void CustomGUI() override 
+            {
+                const char* collisionTypes[] = { "Overlap", "Block" };
+                const char* currentCollisionType = collisionTypes[int(m_collisionType)];
+
+                if (ImGui::BeginCombo("CollisionType", currentCollisionType))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        bool isSelected = currentCollisionType == collisionTypes[i];
+
+                        if (ImGui::Selectable(collisionTypes[i], isSelected))
+                        {
+                            currentCollisionType = collisionTypes[i];
+                            m_collisionType = Physics::CollisionType(i);
+                        }
+
+                        if (isSelected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+
+
+                    ImGui::EndCombo();
+                }
+            }
+#endif
+#endif
         };
 
         struct ColliderTagComponent : public BaseComponent

@@ -272,3 +272,18 @@ void Me::EntityManager::UnRegisterEntity(EntityID a_entID)
         }        
 	}
 }
+
+std::vector<Me::BaseComponent*> Me::EntityManager::GetComponents(EntityID a_entID)
+{
+    std::vector<BaseComponent*> m_components;
+    for (auto container : m_containers)
+    {
+        BaseComponent* comp = container.second->GetBaseComponent(a_entID);
+        if (comp != nullptr)
+        {
+            m_components.push_back(comp);
+        }
+    }
+
+    return m_components;
+}

@@ -14,6 +14,8 @@ namespace Me
         Mesh m_mesh;
         Shader m_shader;
         Texture m_texture;
+
+        std::string EditorComponentName() override { return "RenderComponent"; }
     };
 
     struct DebugRenderComponent : BaseComponent

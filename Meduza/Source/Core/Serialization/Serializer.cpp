@@ -116,21 +116,17 @@ bool SerializeSceneA(std::string a_path)
         archive.startNode(); 
         CanSerialize<Me::UIDComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {
-            uint32_t a_id = static_cast<uint32_t>(a_comp->m_guid);
-            archive(cereal::make_nvp("UUID", a_id));
+                a_comp->serialize(archive);
         });
 
         CanSerialize<Me::TagComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
-        {  
-            archive(cereal::make_nvp("Tag", a_comp->m_tag));
+        { 
+                a_comp->serialize(archive);
         });        
         
         CanSerialize<Me::TransformComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
-        {          
-            archive(cereal::make_nvp("Translation", a_comp->m_translation.m_xyz));
-            archive(cereal::make_nvp("Rotation", a_comp->m_rotation.m_xyz));
-            archive(cereal::make_nvp("Scale", a_comp->m_scale.m_xyz));
-            
+        {
+                a_comp->serialize(archive);            
         });   
 
         CanSerialize<Me::RenderComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)
@@ -162,14 +158,8 @@ bool SerializeSceneA(std::string a_path)
         });   
 
         CanSerialize<Me::CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
-        {          
-            archive(cereal::make_nvp("Far", a_comp->m_far)); 
-            archive(cereal::make_nvp("Near", a_comp->m_near)); 
-            archive(cereal::make_nvp("Size", a_comp->m_size.m_xy)); 
-            archive(cereal::make_nvp("OrthoScale", a_comp->m_orthoScale)); 
-            archive(cereal::make_nvp("CameraLayer", a_comp->m_cameralayer)); 
-            archive(cereal::make_nvp("CameraType", (int)a_comp->m_cameraType));     
-                  
+        {
+                a_comp->serialize(archive);
         }); 
 
         CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)

@@ -77,7 +77,10 @@ namespace Me
                     RemoveScript(i);
                 }
             }
-        
+
+
+            virtual bool RenderCustomGUI() { return false; }
+            std::string EditorComponentName() override { return "ScriptComponent"; }
         };
     }
 }

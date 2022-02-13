@@ -27,6 +27,21 @@ namespace Me
             bool m_debugHitNormals = false;
 
             static ComponentID s_componentID;
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
+            virtual void CustomGUI()
+            {
+                ImGui::Checkbox("Gravity", &m_gravity);
+                ImGui::DragFloat("BodyMass", &m_bodyMass);
+                ImGui::DragFloat("Drag", &m_drag);
+                ImGui::DragFloat("Friction", &m_friction);
+
+                ImGui::Checkbox("Debug Hit Normals", &m_debugHitNormals);
+            }
+#endif
+#endif
+            virtual bool RenderCustomGUI() { return true; }
+            std::string EditorComponentName() override { return "PhysicsComponent"; }
 
         };
     }

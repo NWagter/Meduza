@@ -37,6 +37,8 @@ namespace Me
         template<class C = BaseComponent>
 		std::map<EntityID, C*> const& GetComponents();
 
+        std::vector<BaseComponent*> GetComponents(EntityID const a_entityID);
+
         void DestroyEntities();
         void Update(float a_dt);
         
@@ -203,5 +205,4 @@ namespace Me
 
 		return container->GetComponents();
     }
-
 }

@@ -34,6 +34,9 @@ namespace Me
                 m_generated = false;
                 m_printGrid = false;
             }
+
+            virtual bool RenderCustomGUI() { return false; }
+            std::string EditorComponentName() override { return "NavSurfaceComponent"; }
         };
         
     }

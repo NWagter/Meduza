@@ -79,7 +79,15 @@ static void DrawComponent(Me::EntityManager* a_eManager, const std::string a_nam
 
         if(open)
         {
-            a_function(*component);
+            if (component->RenderCustomGUI())
+            {
+                component->CustomGUI();
+            }
+            else
+            {
+                a_function(*component);
+            }
+
             ImGui::TreePop();
         }
 
@@ -117,7 +125,9 @@ void OnColliderAdded(EntityID a_ent, Me::EntityManager* a_eManager, Me::Physics:
 static Me::Math::Vec4 s_uv = Me::Math::Vec4(0,0,0,0);
 
 void Me::Editor::EntityEditor::Draw()
-{    
+{
+#ifdef PLATFORM_WINDOWS
+#ifdef EDITOR
 	auto eManager = EntityManager::GetEntityManager();
     Me::Resources::ResourceLibrary* rLibrary = Me::Resources::ResourceLibrary::GetInstance();
 	
@@ -157,35 +167,54 @@ void Me::Editor::EntityEditor::Draw()
         }
 
         ImGui::Checkbox("Locked", &m_locked);
+        auto components = eManager->GetComponents(m_selectedEntity);
 
-        DrawComponent<TagComponent>(eManager, "Tag Component", m_selectedEntity, [](auto& a_comp)
+        const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+            ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+
+        for (auto comp : components)
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
-            strcpy_s(buffer, sizeof(buffer), a_comp.m_tag.c_str());
-            if(ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+            if (!comp->RenderCustomGUI())
             {
-                a_comp.m_tag = std::string(buffer);
+                continue;
             }
 
-        }, false);
+            bool removeComponent = false;
 
-        DrawComponent<TransformComponent>(eManager, "Transform Component", m_selectedEntity, [](auto& a_comp)
-        {
-            bool isStatic = a_comp.m_isStatic;
-            ImGui::Checkbox("Static", &isStatic);
-            a_comp.m_isStatic = isStatic;
+            ImGui::PushID(comp->EditorComponentName().c_str());
+            bool open = ImGui::TreeNodeEx((void*)comp->s_componentID, treeNodeFlags, comp->EditorComponentName().c_str());
+            if (comp->EditorRemoveable())
+            {
+                ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+                if (ImGui::Button("...", ImVec2{ 20,20 }))
+                {
+                    ImGui::OpenPopup("Component Settings");
+                }
 
-            Helper::EditorHelper::DrawVec3Prop("Position", a_comp.m_translation);
-            Helper::EditorHelper::DrawVec3Prop("Rotation", a_comp.m_rotation);
-            Helper::EditorHelper::DrawVec3Prop("Scale", a_comp.m_scale);
-        }, false);
+                if (ImGui::BeginPopup("Component Settings"))
+                {
+                    if (ImGui::MenuItem("Remove Component"))
+                    {
+                        removeComponent = true;
+                    }
+
+                    ImGui::EndPopup();
+                }
+
+            }
+
+            if (open)
+            {
+                comp->CustomGUI();
+                ImGui::TreePop();
+            }
+            ImGui::PopID();
+        }
 
         DrawComponent<RenderComponent>(eManager, "Render Component", m_selectedEntity, [&rLibrary](auto& a_comp)
         {
             ImGui::ColorEdit4("Colour", a_comp.m_colour.m_colour);
 
-            
             std::string currentMesh = rLibrary->GetResource<Me::Resources::MeshBase>(a_comp.m_mesh)->GetFileName();
             std::string currentShader = rLibrary->GetResource<Me::Resources::ShaderBase>(a_comp.m_shader)->GetFileName();
             auto texture = rLibrary->GetResource<Me::Resources::TextureBase>(a_comp.m_texture);
@@ -370,194 +399,6 @@ void Me::Editor::EntityEditor::Draw()
 
         
         });
-
-        DrawComponent<CameraComponent>(eManager, "Camera Component", m_selectedEntity, [](auto& a_comp)
-        {
-            const char* projectionStrings[] = { "Orthographic", "Perspective"};
-            const char* currentProjectionString = projectionStrings[int(a_comp.m_cameraType)];
-
-            if(ImGui::BeginCombo("Projection", currentProjectionString))
-            {
-                for(int i = 0; i < 2;i++)
-                {
-                    bool isSelected = currentProjectionString == projectionStrings[i];
-
-                    if(ImGui::Selectable(projectionStrings[i], isSelected))
-                    {
-                        currentProjectionString = projectionStrings[i];
-                        a_comp.m_cameraType = CameraType(i);
-                    }
-
-                    if(isSelected)
-                    {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                
-                
-                ImGui::EndCombo();
-            }
-
-            if(a_comp.m_cameraType == CameraType::Perspective)
-            {
-                Helper::EditorHelper::DrawVec2Prop("Size", a_comp.m_size);
-            }else if(a_comp.m_cameraType == CameraType::Orthographic)
-            {
-                ImGui::DragFloat("Scale", &a_comp.m_orthoScale);
-            }
-
-            ImGui::DragFloat("Near", &a_comp.m_near);
-            ImGui::DragFloat("Far", &a_comp.m_far);
-            ImGui::DragInt("Camera Layer", &a_comp.m_cameralayer);
-        });
-
-        DrawComponent<Particle::ParticleSystemComponent>(eManager, "ParticleSystem Component", m_selectedEntity, [](auto& a_comp)
-        {
-                ImGui::DragFloat("spawnRate", &a_comp.m_spawnRate);
-                ImGui::DragInt("maxParticles", &a_comp.m_maxParticles);
-
-                ImGui::DragFloat("Lifetime", &a_comp.m_particle.m_initialLifeTime);
-                ImGui::DragFloat("Speed", &a_comp.m_particle.m_speed);
-                ImGui::ColorEdit4("Colour", a_comp.m_particle.m_initalColour.m_colour);
-                Helper::EditorHelper::DrawVec3Prop("Direction", a_comp.m_particle.m_direction);
-                ImGui::Checkbox("RandomRange", &a_comp.m_particle.m_randomDirection);
-                if (a_comp.m_particle.m_randomDirection)
-                {
-                    Helper::EditorHelper::DrawVec3Prop("DirectionRange", a_comp.m_particle.m_directionRange);
-                }
-        });
-
-        DrawComponent<Physics::PhysicsComponent>(eManager, "Physics Component", m_selectedEntity, [](auto& a_comp)
-        {
-            ImGui::Checkbox("Gravity", &a_comp.m_gravity);      
-            ImGui::DragFloat("BodyMass", &a_comp.m_bodyMass);
-            ImGui::DragFloat("Drag", &a_comp.m_drag);
-            ImGui::DragFloat("Friction", &a_comp.m_friction);
-
-            ImGui::Checkbox("Debug Hit Normals", &a_comp.m_debugHitNormals);
-        });
-
-        DrawComponent<Physics::BoxCollider2DComponent>(eManager, "Box2DCollider Component", m_selectedEntity, [](auto& a_comp)
-        {
-            Helper::EditorHelper::DrawVec2Prop("ColliderScale", a_comp.m_colliderSize);
-            Helper::EditorHelper::DrawVec2Prop("ColliderOffset", a_comp.m_colliderOffset);
-
-            const char* collisionTypes[] = { "Overlap", "Block"};
-            const char* currentCollisionType = collisionTypes[int(a_comp.m_collisionType)];
-
-            if(ImGui::BeginCombo("CollisionType", currentCollisionType))
-            {
-                for(int i = 0; i < 2;i++)
-                {
-                    bool isSelected = currentCollisionType == collisionTypes[i];
-
-                    if(ImGui::Selectable(collisionTypes[i], isSelected))
-                    {
-                        currentCollisionType = collisionTypes[i];
-                        a_comp.m_collisionType = Physics::CollisionType(i);
-                    }
-
-                    if(isSelected)
-                    {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                
-                
-                ImGui::EndCombo();
-            }
-        });     
-        DrawComponent<Physics::CircleColliderComponent>(eManager, "CircleCollider Component", m_selectedEntity, [](auto& a_comp)
-            {
-                ImGui::DragFloat("Radius", &a_comp.m_radius);
-                Helper::EditorHelper::DrawVec2Prop("ColliderOffset", a_comp.m_colliderOffset);
-
-                const char* collisionTypes[] = { "Overlap", "Block" };
-                const char* currentCollisionType = collisionTypes[int(a_comp.m_collisionType)];
-
-                if (ImGui::BeginCombo("CollisionType", currentCollisionType))
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        bool isSelected = currentCollisionType == collisionTypes[i];
-
-                        if (ImGui::Selectable(collisionTypes[i], isSelected))
-                        {
-                            currentCollisionType = collisionTypes[i];
-                            a_comp.m_collisionType = Physics::CollisionType(i);
-                        }
-
-                        if (isSelected)
-                        {
-                            ImGui::SetItemDefaultFocus();
-                        }
-                    }
-
-
-                    ImGui::EndCombo();
-                }
-            });
-        DrawComponent<Physics::BoxCollider3DComponent>(eManager, "Box3DCollider Component", m_selectedEntity, [](auto& a_comp)
-        {
-            Helper::EditorHelper::DrawVec3Prop("ColliderScale", a_comp.m_colliderSize);
-            Helper::EditorHelper::DrawVec3Prop("ColliderOffset", a_comp.m_colliderOffset);
-
-            const char* collisionTypes[] = { "Overlap", "Block"};
-            const char* currentCollisionType = collisionTypes[int(a_comp.m_collisionType)];
-
-            if(ImGui::BeginCombo("CollisionType", currentCollisionType))
-            {
-                for(int i = 0; i < 2;i++)
-                {
-                    bool isSelected = currentCollisionType == collisionTypes[i];
-
-                    if(ImGui::Selectable(collisionTypes[i], isSelected))
-                    {
-                        currentCollisionType = collisionTypes[i];
-                        a_comp.m_collisionType = Physics::CollisionType(i);
-                    }
-
-                    if(isSelected)
-                    {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                
-                
-                ImGui::EndCombo();
-            }
-        });
-        DrawComponent<Physics::SphereColliderComponent>(eManager, "SphereCollider Component", m_selectedEntity, [](auto& a_comp)
-        {
-            ImGui::DragFloat("Radius", &a_comp.m_radius);
-            Helper::EditorHelper::DrawVec3Prop("ColliderOffset", a_comp.m_colliderOffset);
-
-            const char* collisionTypes[] = { "Overlap", "Block"};
-            const char* currentCollisionType = collisionTypes[int(a_comp.m_collisionType)];
-
-            if(ImGui::BeginCombo("CollisionType", currentCollisionType))
-            {
-                for(int i = 0; i < 2;i++)
-                {
-                    bool isSelected = currentCollisionType == collisionTypes[i];
-
-                    if(ImGui::Selectable(collisionTypes[i], isSelected))
-                    {
-                        currentCollisionType = collisionTypes[i];
-                        a_comp.m_collisionType = Physics::CollisionType(i);
-                    }
-
-                    if(isSelected)
-                    {
-                        ImGui::SetItemDefaultFocus();
-                    }
-                }
-                
-                
-                ImGui::EndCombo();
-            }
-        }); 
-        
         DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [](auto& a_comp)
         {
             size_t size = a_comp.m_scripts.size();
@@ -814,4 +655,6 @@ void Me::Editor::EntityEditor::Draw()
     }
 
 	ImGui::End();
+#endif
+#endif
 }

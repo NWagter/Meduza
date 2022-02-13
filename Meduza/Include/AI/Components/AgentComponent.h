@@ -13,6 +13,9 @@ namespace Me
             float m_stopDistance;
 
             static ComponentID s_componentID;
+
+            virtual bool RenderCustomGUI() { return false; }
+            std::string EditorComponentName() override { return "AgentComponent"; }
         };
         
     }

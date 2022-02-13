@@ -1,5 +1,6 @@
 #include "MePCH.h"
 #include "Core/Scripting/API/Lua_APIHelper.h"
+#include "Core/Scripting/API/Lua_Math.h"
 
 #include "Core/Scripting/ScriptComponentHelper.h"
 
@@ -50,6 +51,11 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
         case ValueType::String:
         {
             lua_pushstring(a_luaState, static_cast<ValueString*>(value)->m_value.c_str());
+        }
+        break;
+        case ValueType::Vector3:
+        {
+            Lua_Math::CreateVector3(a_luaState, static_cast<ValueVector3*>(value)->m_value);
         }
         break;
         }

@@ -643,6 +643,12 @@ void Me::Editor::EntityEditor::Draw()
                             std::string idValue = "Value ##Bool" + argumentName;
                             ImGui::Checkbox(idValue.c_str(), &valueBool->m_value);
                         }
+                        else if (value->m_type == Scripting::ValueType::Vector3)
+                        {
+                            auto valueVec3 = static_cast<Scripting::ValueVector3*>(value);
+                            std::string idValue = "Value ##Vector" + argumentName;
+                            Helper::EditorHelper::DrawVec3Prop(argumentName, valueVec3->m_value);
+                        }
 
                         ImGui::PopID();
                     }

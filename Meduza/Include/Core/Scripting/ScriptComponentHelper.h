@@ -22,6 +22,7 @@ namespace Me
             Number,
             String,
             Boolean,
+            Vector3,
 
             Last
         };
@@ -81,6 +82,22 @@ namespace Me
             }
 
             ValueString(std::string const& a_argumentName, std::string const& a_value) : Value(a_argumentName, ValueType::String)
+            {
+                m_value = a_value;
+            }
+        };
+
+        struct ValueVector3 : public Value
+        {
+            Math::Vec3 m_value;
+            Math::Vec3 m_defaultValue;
+
+            ValueVector3(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Vector3)
+            {
+                m_value = Math::Vec3(0);
+            }
+
+            ValueVector3(std::string const& a_argumentName, Math::Vec3 const a_value) : Value(a_argumentName, ValueType::Vector3)
             {
                 m_value = a_value;
             }
@@ -171,6 +188,13 @@ namespace Me
                     return v;
                 }
                     break;
+                case ValueType::Vector3:
+                {
+                    auto oldValue = static_cast<ValueVector3*>(a_value);
+                    auto v = new ValueVector3(a_value->m_argumentName, oldValue->m_value);
+                    return v;
+                }
+                break;
                 }
 
                 return nullptr;

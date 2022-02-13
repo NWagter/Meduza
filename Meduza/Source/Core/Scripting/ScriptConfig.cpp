@@ -249,6 +249,9 @@ Me::Scripting::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* 
 	case ValueType::String:
 		return new ValueString(name);
 		break;
+	case ValueType::Vector3:
+		return new ValueVector3(name);
+		break;
 	}
 
 	return nullptr;
@@ -291,6 +294,9 @@ void Me::Scripting::ScriptConfig::SerializeScriptData()
 				break;
 			case ValueType::String:
 				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueString*>(value)->m_defaultValue));
+				break;
+			case ValueType::Vector3:
+				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueVector3*>(value)->m_defaultValue.m_xyz));
 				break;
 			}
 

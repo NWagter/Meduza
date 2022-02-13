@@ -270,6 +270,9 @@ bool SerializeSceneA(std::string a_path)
                     case Me::Scripting::ValueType::String:
                         archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueString*>(value)->m_value));
                         break;
+                    case Me::Scripting::ValueType::Vector3:
+                        archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueVector3*>(value)->m_value.m_xyz));
+                        break;
                     }
 
                     archive.finishNode();
@@ -460,6 +463,9 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
                     break;
                 case Me::Scripting::ValueType::String:
                     archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueString*>(value)->m_value));
+                    break;
+                case Me::Scripting::ValueType::Vector3:
+                    archive(cereal::make_nvp("Value", static_cast<Me::Scripting::ValueVector3*>(value)->m_value.m_xyz));
                     break;
                 }
 
@@ -780,6 +786,13 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
                         inputValue = new Me::Scripting::ValueString(argumentName, value);
                     }
                     break;
+                    case Me::Scripting::ValueType::Vector3:
+                    {
+                        Math::Vec3 value;
+                        archive(cereal::make_nvp("Value", value.m_xyz));
+                        inputValue = new Me::Scripting::ValueVector3(argumentName, value);
+                    }
+                    break;
                     }
 
                     if (inputValue != nullptr)
@@ -1074,6 +1087,13 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
                     std::string value;
                     archive(cereal::make_nvp("Value", value));
                     inputValue = new Me::Scripting::ValueString(argumentName, value);
+                }
+                break;
+                case Me::Scripting::ValueType::Vector3:
+                {
+                    Math::Vec3 value;
+                    archive(cereal::make_nvp("Value", value.m_xyz));
+                    inputValue = new Me::Scripting::ValueVector3(argumentName, value);
                 }
                 break;
                 }

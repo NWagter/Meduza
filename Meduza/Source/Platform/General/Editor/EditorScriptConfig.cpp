@@ -62,7 +62,7 @@ void Me::Editor::EditorScriptConfig::Draw()
 						toDelete.push_back(input);
 					}
 					// Change Type
-					const char* valueTypes[] = { "Unkown", "Number", "String", "Bool" };
+					const char* valueTypes[] = { "Unkown", "Number", "String", "Bool", "Vector3"};
 					const char* currentType = valueTypes[int(v->m_type)];
 
 					std::string idInputName = "InputName ##" + v->m_argumentName;

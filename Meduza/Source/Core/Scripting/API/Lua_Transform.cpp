@@ -15,6 +15,7 @@ void Me::Scripting::Lua_API::Lua_Transform::RegisterTransformFunctions(lua_State
 
     lua_register(a_luaState, "_Move", lua_Move);
     lua_register(a_luaState, "_Rotate", lua_Rotate);
+    lua_register(a_luaState, "_LookAt", lua_LookAt);
     lua_register(a_luaState, "_SetRotation", lua_SetRotation);
     lua_register(a_luaState, "_SetScale", lua_SetScale);
 
@@ -112,6 +113,22 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
     {
         trans->m_translation += movement;
     }
+
+    return 0;
+}
+
+int Me::Scripting::Lua_API::Lua_Transform::lua_LookAt(lua_State* a_luaState)
+{
+    if (lua_gettop(a_luaState) != 2)
+    {
+        return -1;
+    }
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+    Me::Math::Vec3 target = Lua_Helper::GetVector3(a_luaState, 2);
+
+    auto trans = EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
+    trans->m_rotation = Me::Math::LookAtRotation(target, trans->m_translation);
 
     return 0;
 }

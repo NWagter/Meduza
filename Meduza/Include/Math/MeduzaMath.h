@@ -3,6 +3,7 @@
 #include <cmath>
 
 #define GETRADIUS(a_degree) (a_degree * 3.141592654f / 180)
+#define GETDEGREE(a_radian) (a_radian * (180 / 3.141592654f))
 
 namespace Me
 {
@@ -1066,6 +1067,23 @@ namespace Me
 			returnValue.m_z = MoveTowards(a_rhs.m_z, a_lhs.m_z, a_delta);
 
 			return returnValue;
+		}
+
+		inline Vec3 LookAtRotation(Vec3 a_target, Vec3 a_origin)
+		{
+			Vec3 angles = Vec3(0);
+			// Axis in the game, need to know it to fix up:
+			//              : L - R  ; F - B ;  U - D
+			// Rotation Axis:   x        z        y
+			// Translation  :   y        x        z
+
+			Vec3 dir = a_target - a_origin;
+			Vec3 temp = dir * Math::Distance(a_target, a_origin);
+
+			angles.m_x = GETRADIUS(temp.m_y);
+			angles.m_y = GETRADIUS(temp.m_x);
+
+			return angles;
 		}
 
 		inline Mat4 GetOrthographicMatrix(const float a_bottom, const float a_top, const float a_left, const float a_right, const float a_near, const float a_far)

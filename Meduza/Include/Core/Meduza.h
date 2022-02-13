@@ -1,6 +1,7 @@
 #pragma once
 
-namespace Me {
+namespace Me 
+{
 
 	class Window;
 	class SystemInitializer;

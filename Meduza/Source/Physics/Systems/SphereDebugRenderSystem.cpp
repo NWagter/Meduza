@@ -40,6 +40,11 @@ void Me::SphereDebugRenderSystem::OnUpdate(float)
 
     ME_PROFILE_FUNC("SphereDebugRenderSystem");
 
+    if (!Resources::ResourceLibrary::GetInstance()->GetResource<Resources::ShaderBase>(m_debugShader))
+    {
+        m_debugShader = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::ShaderBase>("Resources/Shaders/UnlitColour_Shader.glsl")->GetID();
+    }
+
     for(auto& compTuple : m_components)
     {
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);

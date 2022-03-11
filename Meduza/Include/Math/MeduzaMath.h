@@ -64,6 +64,13 @@ namespace Me
 
 				return *this;
 			}
+			inline Vec2& operator*=(const Vec2& a_rhs)
+			{
+				m_x = m_x * a_rhs[0];
+				m_y = m_y * a_rhs[1];
+
+				return *this;
+			}
 			inline Vec2& operator-=(const Vec2& a_rhs)
 			{
 				m_x = m_x - a_rhs[0];
@@ -255,7 +262,16 @@ namespace Me
 				m_z = m_z - a_rhs[2];
 
 				return *this;
-			}			
+			}
+
+			inline Vec3& operator*=(const Vec3& a_rhs)
+			{
+				m_x = m_x * a_rhs[0];
+				m_y = m_y * a_rhs[1];
+				m_z = m_z * a_rhs[2];
+
+				return *this;
+			}
 
 			inline Vec3 operator+(float a_rhs)
 			{				
@@ -484,6 +500,14 @@ namespace Me
 				m_w = a_vec4[3];
 			}
 
+			inline Vec4(Vec3 const a_vec3, float a_w)
+			{
+				m_x = a_vec3[0];
+				m_y = a_vec3[1];
+				m_z = a_vec3[2];
+				m_w = a_w;
+			}
+
 			inline Vec4& operator=(const Vec4& a_rhs)
 			{
 				m_x = a_rhs[0];
@@ -623,6 +647,14 @@ namespace Me
 				m_10 = a_10; m_11 = a_11; m_12 = a_12; m_13 = a_13;
 				m_20 = a_20; m_21 = a_21; m_22 = a_22; m_23 = a_23;
 				m_30 = a_30; m_31 = a_31; m_32 = a_32; m_33 = a_33;			
+			}
+
+			Mat4(float a_matrix[16])
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					m_m[i] = a_matrix[i];
+				}
 			}
 
 			Mat4()
@@ -778,6 +810,12 @@ namespace Me
 				return value;
 			}
 
+			inline Vec3 operator *(const Vec3& a_rhs)
+			{
+				Vec4 result = Mat4(m_m) * Vec4(a_rhs, 1.0f);
+				return Vec3(result.m_x / result.m_w, result.m_y / result.m_w, result.m_z / result.m_w);
+			}
+
 			inline Mat4& Rotation(Vec3 a_rotation)
 			{
 				Mat4 newRotMat = Mat4::Identity();
@@ -858,9 +896,9 @@ namespace Me
 				return *this;
 			}
 
-            inline Math::Vec3 GetRight()
+            inline Vec3 GetRight()
             {
-                Math::Vec3 right;
+                Vec3 right;
                 
                 right.m_x = m_00;
                 right.m_y = m_01;
@@ -869,9 +907,9 @@ namespace Me
                 return right.Normalize();
             }    
 
-            inline Math::Vec3 GetUp()
+            inline Vec3 GetUp()
             {
-                Math::Vec3 up;
+                Vec3 up;
                 
                 up.m_x = m_10;
                 up.m_y = m_11;
@@ -880,9 +918,9 @@ namespace Me
                 return up.Normalize();
             }
 
-            inline Math::Vec3 GetForward()
+            inline Vec3 GetForward()
             {
-                Math::Vec3 forward;
+                Vec3 forward;
                 
                 forward.m_x = m_20;
                 forward.m_y = m_21;
@@ -890,8 +928,26 @@ namespace Me
 
                 return forward.Normalize();
             }  
-
 			
+			inline void SetInverseRotation(Vec3 const& a_euler)
+			{
+				Mat4 newRotMat = Mat4::Identity();
+				newRotMat.RotateZ(-a_euler.m_z);
+				newRotMat.RotateY(-a_euler.m_y);
+				newRotMat.RotateX(-a_euler.m_x);
+
+				m_00 = newRotMat.m_00;
+				m_01 = newRotMat.m_01;
+				m_02 = newRotMat.m_02;
+
+				m_10 = newRotMat.m_10;
+				m_11 = newRotMat.m_11;
+				m_12 = newRotMat.m_12;
+
+				m_20 = newRotMat.m_20;
+				m_21 = newRotMat.m_21;
+				m_22 = newRotMat.m_22;
+			}
 
 		private:
 			inline void RotateX(float a_radians)
@@ -1125,7 +1181,7 @@ namespace Me
 			return projection;
 		}
 
-		inline Mat4 Transpose(const Mat4 a_matrix)
+		inline Mat4 Transpose(Mat4 const& a_matrix)
 		{
 			Mat4 transposed = a_matrix;
 
@@ -1137,6 +1193,14 @@ namespace Me
 			std::swap(transposed.m_m[11], transposed.m_m[14]);
 
 			return transposed;
+		}
+
+		inline Mat4 SetInverseRotation(Mat4 const& a_matrix, Vec3 const& a_euler)
+		{
+			Mat4 result = a_matrix;
+			result.SetInverseRotation(a_euler);
+
+			return result;
 		}
 
 		inline float RandomRange(const float a_min, const float a_max)
@@ -1160,5 +1224,47 @@ namespace Me
 			return result;
 		}
 
+		inline float DotProduct(Vec2 const& a_rhs, Vec2 const& a_lhs)
+		{
+			float const x = a_rhs.m_x * a_lhs.m_x;
+			float const y = a_rhs.m_y * a_lhs.m_y;
+
+			float const dotProduct = x + y;
+
+			return dotProduct;
+		}
+
+		inline float DotProduct(Vec3 const& a_rhs, Vec3 const& a_lhs)
+		{
+			float const x = a_rhs.m_x * a_lhs.m_x;
+			float const y = a_rhs.m_y * a_lhs.m_y;
+			float const z = a_rhs.m_z * a_lhs.m_z;
+
+			float const dotProduct = x + y + z;
+
+			return dotProduct;
+		}
+
+		inline Vec3 CrossProduct(Vec3 const& a_rhs, Vec3 const& a_lhs)
+		{
+			float const cX = (a_rhs.m_y * a_lhs.m_z) - (a_rhs.m_z * a_lhs.m_y);
+			float const cY = (a_rhs.m_z * a_lhs.m_x) - (a_rhs.m_x * a_lhs.m_z);
+			float const cZ = (a_rhs.m_x * a_lhs.m_y) - (a_rhs.m_y * a_lhs.m_x);
+
+			Vec3 const crossProduct(cX, cY, cZ);
+
+			return crossProduct;
+		}
+
+		// == A X (b X C)
+		inline Vec3 TrippleCrossProduct(Vec3 const& a_vecA, Vec3 const& a_vecB, Vec3 const& a_vecC)
+		{
+			return CrossProduct(a_vecA, CrossProduct(a_vecB, a_vecC));
+		}
+
+		inline Vec3 Inverse(Vec3 const& a_rhs)
+		{
+			return Math::Vec3(-a_rhs.m_x, -a_rhs.m_y, -a_rhs.m_z);
+		}
 	}
 }

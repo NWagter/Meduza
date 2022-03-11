@@ -5,7 +5,6 @@
 #include "Core/Components/TransformComponent.h"
 
 #include "Physics/Physics.h"
-#include "Physics/Collision.h"
 
 Me::Physics::PhysicsSystemBegin::PhysicsSystemBegin()
 { 

@@ -2,7 +2,6 @@
 #include "Physics/Systems/CollisionSystem.h"
 
 #include "Physics/Physics.h"
-#include "Physics/Collision.h"
 
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/ColliderComponent.h"
@@ -45,18 +44,12 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 pC, physicsObjects[e]
             };
 
-            ColliderComponent* listBox2D[2] = 
+            ColliderComponent* listColliders[2] = 
             {
                 bC->m_collider, colliderComponents[e]->m_collider
             };
 
-            ComponentID components[2] =
-            {
-                bC->m_collider->GetColliderComponentID(),
-                colliderComponents[e]->m_collider->GetColliderComponentID()
-            };
-
-            if(Collision::AABB_CheckCollision(listPhysics, listBox2D, components, data))
+            if(Math::GJKAlgorithm::GJKIntersaction(listPhysics, listColliders, data))
             {
                 data.m_collisionLayerID = colliderComponents[e]->m_collider->m_collisionLayer;
 

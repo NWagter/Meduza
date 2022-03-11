@@ -18,6 +18,11 @@ namespace Me
                 return s_componentID;
             }
             
+            Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const override
+            {
+                return Math::Vec3(a_direction).Normalize() * m_radius;
+            }
+
             static ComponentID s_componentID;
 #ifdef PLATFORM_WINDOWS
 #ifdef EDITOR

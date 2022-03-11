@@ -16,7 +16,15 @@ namespace Me
             virtual ComponentID GetColliderComponentID()
             {
                 return s_componentID;
-            }            
+            }       
+
+            virtual Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const = 0;
+
+            ColliderComponent()
+            {
+                m_collisionType = CollisionType::Block;
+                m_collisionLayer = 8;
+            }
 
             static ComponentID s_componentID;
 #ifdef PLATFORM_WINDOWS

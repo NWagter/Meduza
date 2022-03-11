@@ -62,5 +62,11 @@ namespace Me
             std::string m_name;
             bool m_hit;
         };
+
+        class PhysicsHelper
+        {
+        public:
+            static Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction, std::vector<Math::Vec3> const& a_points);
+        };
     }
 }

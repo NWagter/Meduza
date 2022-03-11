@@ -79,6 +79,7 @@
 #endif
 
 #include "Math/MeduzaMath.h"
+#include "Math/GJKAlgorithm.h"
 
 #include "Core/Core.h"
 #include "Core/MeduzaCore.h"

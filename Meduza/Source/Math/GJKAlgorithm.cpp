@@ -35,7 +35,9 @@ bool Me::Math::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physic
 
 		if (simplex.HandleSimplex(direction))
 		{
-			a_data.m_otherPosition = a_physics[1]->m_position;
+			a_data.m_otherPosition = a_physics[1]->m_position; 
+			
+			// This is not Correct! TODO : I will need to look into getting the HitNormal and HitPosition!
 			a_data.m_hitNormal = (a_physics[0]->m_position - a_physics[1]->m_position).Normalize();
 			return true;
 		}

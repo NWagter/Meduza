@@ -48,15 +48,22 @@ bool Me::Math::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physic
 
 Me::Math::Vec3 Me::Math::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vec3 const a_direction)
 {
-	Vec3 const directionA = SetInverseRotation(Mat4::Identity(), a_physics[0]->m_rotation) * a_direction;
-	Math::Vec3 furthersPointA = a_physics[0]->m_position + (a_colliders[0]->GetFurthestPointInDirection(directionA));
-
-	Vec3 const directionB = SetInverseRotation(Mat4::Identity(), a_physics[1]->m_rotation) * Inverse(a_direction);
-	Math::Vec3 furthersPointB = a_physics[1]->m_position + a_colliders[1]->GetFurthestPointInDirection(directionB);
+	Vec3 direction = SetInverseRotation(Mat4::Identity(), a_physics[0]->m_rotation) * a_direction;
+	Math::Vec3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(direction);
+	direction = SetInverseRotation(Mat4::Identity(), a_physics[1]->m_rotation) * Inverse(a_direction);
+	Math::Vec3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(direction);
 
 	// TODO : Need to consider the transformation of a shape can be gotten from the body
 
-	return furthersPointA - furthersPointB;
+	Mat4 rotation;
+	rotation.Identity();
+	rotation.Rotation(a_physics[0]->m_rotation);
+	Vec3 pointA = rotation * (a_physics[0]->m_position + furthersPointA);
+	rotation.Identity();
+	rotation.Rotation(a_physics[1]->m_rotation);
+	Vec3 pointB = rotation * (a_physics[1]->m_position + furthersPointB);
+
+	return pointA - pointB;
 }
 
 bool Me::Math::Simplex::AddPoint(Math::Vec3 const& a_point)

@@ -266,6 +266,9 @@ bool SerializeSceneA(std::string a_path)
                     case Me::ValueType::Entity:
                         archive(cereal::make_nvp("Value", static_cast<Me::ValueEntity*>(value)->m_value));
                         break;
+                    case Me::ValueType::Asset:
+                        archive(cereal::make_nvp("Value", static_cast<Me::ValueAsset*>(value)->m_value));
+                        break;
                     }
 
                     archive.finishNode();
@@ -462,6 +465,9 @@ bool SerializeEntityA(std::string a_path, EntityID a_entity)
                     break;
                 case Me::ValueType::Entity:
                     archive(cereal::make_nvp("Value", static_cast<Me::ValueEntity*>(value)->m_value));
+                    break;
+                case Me::ValueType::Asset:
+                    archive(cereal::make_nvp("Value", static_cast<Me::ValueAsset*>(value)->m_value));
                     break;
                 }
 
@@ -796,6 +802,13 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
                         inputValue = new Me::ValueEntity(argumentName, value);
                     }
                     break;
+                    case Me::ValueType::Asset:
+                    {
+                        std::string value;
+                        archive(cereal::make_nvp("Value", value));
+                        inputValue = new Me::ValueAsset(argumentName, value);
+                    }
+                    break;
                     }
 
                     if (inputValue != nullptr)
@@ -1104,6 +1117,13 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
                     EntityID value;
                     archive(cereal::make_nvp("Value", value));
                     inputValue = new Me::ValueEntity(argumentName, value);
+                }
+                break;
+                case Me::ValueType::Asset:
+                {
+                    std::string value;
+                    archive(cereal::make_nvp("Value", value));
+                    inputValue = new Me::ValueAsset(argumentName, value);
                 }
                 break;
                 }

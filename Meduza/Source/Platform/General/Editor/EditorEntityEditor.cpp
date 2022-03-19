@@ -514,6 +514,55 @@ void Me::Editor::EntityEditor::Draw()
                                 ImGui::EndDragDropTarget();
                             }
                         }
+                        else if (value->m_type == ValueType::Asset)
+                        {
+                            std::string newAssetPath = "";
+                            auto valueAsset = static_cast<ValueAsset*>(value);
+                           
+                            std::string fileName = "No file";
+                            if (!valueAsset->m_value.empty())
+                            {
+                                fileName = Files::FileSystem::GetFileName(valueAsset->m_value);
+                                fileName.append(" (");
+                                fileName.append(Files::FileSystem::GetFileExtention(valueAsset->m_value));
+                                fileName.append(")");
+                            }
+
+                            if (ImGui::BeginCombo("Asset", fileName.c_str()))
+                            {
+                                Files::BrowseData data = Files::BrowseData();
+                                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Prefab);
+                                Files::Windows::FileSystem::GetFilesOfType(data, Files::FileType::Scene);
+
+                                bool is_selected = false;
+
+                                for (auto file : data.m_files)
+                                {
+                                    if (ImGui::Selectable(file->m_name.c_str(), &is_selected))
+                                    {
+                                        newAssetPath = file->m_path;
+                                    }
+                                }
+
+                                data.Clear();
+                                ImGui::EndCombo();
+                            }
+                            if (ImGui::BeginDragDropTarget())
+                            {
+                                if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ASSET_ITEM"))
+                                {
+                                    Files::MeduzaFile* file = (Files::MeduzaFile*)(payLoad->Data);
+                                    newAssetPath = file->m_path;
+                                }
+
+                                ImGui::EndDragDropTarget();
+                            }
+
+                            if (!newAssetPath.empty())
+                            {
+                                valueAsset->m_value = newAssetPath;
+                            }
+                        }
 
                         ImGui::PopID();
                     }
@@ -561,7 +610,7 @@ void Me::Editor::EntityEditor::Draw()
         });
     }
 
-    if(eManager->EntityExists(m_selectedEntity))
+    if(eManager->EntityExist(m_selectedEntity))
     {
         if (ImGui::Button("Add Component"))
         {

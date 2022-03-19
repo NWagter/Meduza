@@ -49,7 +49,7 @@ Me::EntityManager::~EntityManager()
     m_containers.clear();
 }
 
-bool Me::EntityManager::EntityExists(EntityID const a_entityID)
+bool Me::EntityManager::EntityExist(EntityID const a_entityID)
 {
     auto const& entities = ms_entityManager->m_entities;
     if(entities.size() <= 0)

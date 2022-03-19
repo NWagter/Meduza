@@ -149,6 +149,13 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 				scriptData->m_inputValues.push_back(value);
 			}
 				break;
+			case ValueType::Asset:
+			{
+				ValueAsset* value = new ValueAsset(argument);
+				archive(cereal::make_nvp("DefaultValue", value->m_defaultValue));
+				scriptData->m_inputValues.push_back(value);
+			}
+				break;
 			}
 			archive.finishNode();
 		}
@@ -269,6 +276,9 @@ Me::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* a_dataSet, 
 	case ValueType::Entity:
 		return new ValueEntity(name);
 		break;
+	case ValueType::Asset:
+		return new ValueAsset(name);
+		break;
 	}
 
 	return nullptr;
@@ -317,6 +327,9 @@ void Me::Scripting::ScriptConfig::SerializeScriptData()
 				break;
 			case ValueType::Entity:
 				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueEntity*>(value)->m_defaultValue));
+				break;
+			case ValueType::Asset:
+				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueAsset*>(value)->m_defaultValue));
 				break;
 			}
 

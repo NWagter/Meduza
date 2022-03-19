@@ -16,7 +16,7 @@ namespace Me
         static void DestroyEntityManager();
         inline static EntityManager* GetEntityManager() {return ms_entityManager;}
 
-        static bool EntityExists(EntityID const a_entityID);
+        static bool EntityExist(EntityID const a_entityID);
 
         static void AddSystem(ECSSystem* a_system);
         static EntityID CreateEntity(std::string a_tag = "", uint32_t const a_guid = 0);

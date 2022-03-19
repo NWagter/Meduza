@@ -114,7 +114,14 @@ namespace Me
                     auto v = new ValueEntity(a_value->m_argumentName, oldValue->m_value);
                     return v;
                 }
-                break;
+                    break;
+                case ValueType::Asset:
+                {
+                    auto oldValue = static_cast<ValueAsset*>(a_value);
+                    auto v = new ValueAsset(a_value->m_argumentName, oldValue->m_value);
+                    return v;
+                }
+                    break;
                 }
 
                 return nullptr;

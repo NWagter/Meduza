@@ -73,6 +73,19 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
             lua_pushnumber(a_luaState, (uint32_t)entID);
         }
         break;
+        case ValueType::Asset:
+        {
+            std::string const assetPath = static_cast<ValueAsset*>(value)->m_value;
+
+            if(assetPath.empty())
+            {
+                lua_pushnil(a_luaState);
+                continue;
+            }
+
+            lua_pushstring(a_luaState, assetPath.c_str());
+        }
+        break;
         }
         lua_settable(a_luaState, -3);
     }

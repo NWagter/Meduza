@@ -11,6 +11,7 @@ namespace Me
         Boolean,
         Vector3,
         Entity,
+        Asset,
 
         Last
     };
@@ -102,6 +103,22 @@ namespace Me
         }
 
         ValueEntity(std::string const& a_argumentName, EntityID const a_value) : Value(a_argumentName, ValueType::Entity)
+        {
+            m_value = a_value;
+        }
+    };
+
+    struct ValueAsset : public Value
+    {
+        std::string m_value;
+        std::string m_defaultValue = "";
+
+        ValueAsset(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Asset)
+        {
+            m_value = m_defaultValue;
+        }
+
+        ValueAsset(std::string const& a_argumentName, std::string const& a_value) : Value(a_argumentName, ValueType::Asset)
         {
             m_value = a_value;
         }

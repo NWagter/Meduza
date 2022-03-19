@@ -6,7 +6,8 @@
 void Me::Scripting::Lua_API::Lua_Entities::RegisterEntityFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_DestroyEnt", lua_DestroyEnt);
-    lua_register(a_luaState, "_GetEntityByName", lua_GetEntityByName); 
+    lua_register(a_luaState, "_GetEntityByName", lua_GetEntityByName);
+    lua_register(a_luaState, "_DoesEntityExist", lua_DoesEntityExist);
 }
 
 int Me::Scripting::Lua_API::Lua_Entities::lua_DestroyEnt(lua_State* a_luaState)
@@ -19,6 +20,17 @@ int Me::Scripting::Lua_API::Lua_Entities::lua_DestroyEnt(lua_State* a_luaState)
 
     lua_pushnumber(a_luaState, 1);
      
+    return 1;
+}
+
+int Me::Scripting::Lua_API::Lua_Entities::lua_DoesEntityExist(lua_State* a_luaState)
+{
+    if (lua_gettop(a_luaState) != 1) return -1;
+
+    EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
+
+    lua_pushboolean(a_luaState, EntityManager::GetEntityManager()->EntityExist(ent));
+
     return 1;
 }
 

@@ -66,7 +66,8 @@ void Me::Editor::EditorScriptConfig::Draw()
 					const char* valueTypes[] = { "Unkown", "Number", "String", "Bool", "Vector3", "Entity"};
 					const char* currentType = valueTypes[int(v->m_type)];
 
-					std::string idInputName = "InputName ##" + v->m_argumentName;
+					std::string idInputName = "InputName ##" + std::to_string(input);
+
 					char buffer[256];
 					strncpy(buffer, v->m_argumentName.c_str(), sizeof(buffer) - 1);
 					ImGui::InputText(idInputName.c_str(), buffer, 256);

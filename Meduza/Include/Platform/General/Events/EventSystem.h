@@ -29,12 +29,14 @@ namespace Me
             static EventSystem* GetEventSystem() {return ms_eventSystem;}
             
             void ShowCursor(bool a_showCursor);
+            void SetViewportFocus(bool const a_focus) { m_viewportFocused = a_focus; }
 
             bool KeyDown(KeyCode const& a_key);
             bool KeyUp(KeyCode const& a_key);
             bool MouseButtonDown(MouseButton const& a_button);
             bool MouseButtonUp(MouseButton const& a_button);
             bool MouseButtonPressed(MouseButton const& a_button);
+            bool IsViewportFocussed() const { return m_viewportFocused; }
             Math::Vec2 MousePosition();
             Math::Vec2 ScreenSize();
             void Clear();
@@ -51,6 +53,7 @@ namespace Me
 
             Input::Mouse* m_mouse;
             Input::Keyboard* m_keyboard;
+            bool m_viewportFocused = false;
 
             Me::Math::Vec2 m_screenSize;
             Window* m_window;

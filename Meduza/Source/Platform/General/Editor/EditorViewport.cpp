@@ -39,6 +39,7 @@ void Me::Editor::EditorViewport::Draw()
 	auto frameBuffer = m_renderLayer->GetFrameBuffer();
 
 	ImGui::Begin("Viewport");
+    Me::Event::EventSystem::GetEventSystem()->SetViewportFocus(ImGui::IsWindowFocused());
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	Math::Vec2 panelSize = Math::Vec2(viewportPanelSize.x, viewportPanelSize.y);

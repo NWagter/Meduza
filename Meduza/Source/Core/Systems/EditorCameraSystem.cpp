@@ -35,6 +35,11 @@ void Me::Editor::EditorCameraSystem::OnCreate()
 
 void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
 {
+    if (!Me::Event::EventSystem::GetEventSystem()->IsViewportFocussed())
+    {
+        return;
+    }
+
     for(auto& compTuple : m_components)
     {    
         Me::TransformComponent* trans = std::get<Me::TransformComponent*>(compTuple);

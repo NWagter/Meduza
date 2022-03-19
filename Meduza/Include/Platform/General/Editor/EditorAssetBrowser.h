@@ -16,6 +16,12 @@ namespace Me
         std::string m_fileName;
     };
 
+    struct Options
+    {
+        bool m_folder;
+        std::string m_path;
+    };
+
     namespace Resources
     {
         class TextureBase;
@@ -43,6 +49,9 @@ namespace Me
 
             float const m_padding;
             float m_thumbnailSize;
+
+            bool m_showOptions;
+            Options m_options;
 
             ImTextureID folderTextureID = 0;
             ImTextureID fileTextureID = 0;

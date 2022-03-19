@@ -6,19 +6,44 @@
 
 #include "Core/Project/ProjectManager.h"
 
-std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND const a_hwnd)
+void Me::Files::Windows::FileSystem::OpenFolder(std::string const& a_path)
 {
-	char path[260];
+	std::string folderPath = a_path;
+	std::replace(folderPath.begin(), folderPath.end(), '/', '\\');
+
+	std::string pathToOpen = FindFullPath();
+	pathToOpen.append(folderPath);
+
+	std::string openCommand = "explorer ";
+	openCommand.append(pathToOpen);
+
+	system(openCommand.c_str());
+	
+}
+
+std::string Me::Files::Windows::FileSystem::FindFullPath()
+{
+	char path[256];
 	HMODULE hModule = GetModuleHandle(NULL);
 	GetModuleFileName(hModule, path, (sizeof(path)));
+
+	std::string fullPath = path;
+	size_t pos = fullPath.find("Sandbox.exe"); //find location of word
+	fullPath.erase(pos, fullPath.size() - pos); //delete everything prior to location found
+
+	return fullPath;
+}
+
+std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND const a_hwnd)
+{
+	std::string folderPath = Project::ProjectManager::GetAssetBrowserPath();
+	std::replace(folderPath.begin(), folderPath.end(), '/', '\\');
+
+	std::string initalDir = FindFullPath();
+	initalDir.append(folderPath);
+
 	OPENFILENAMEA ofn;
-	CHAR szFile[260] = {0};
-
-	std::string initalDir = path;
-
-	size_t pos = initalDir.find("Sandbox.exe"); //find location of word
-    initalDir.erase(pos,initalDir.size() - pos); //delete everything prior to location found
-	initalDir.append(Project::ProjectManager::GetAssetBrowserPath());
+	CHAR szFile[256] = { 0 };
 
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
@@ -39,18 +64,15 @@ std::string Me::Files::Windows::FileSystem::OpenFile(const char* a_filter, HWND 
 }
 std::string Me::Files::Windows::FileSystem::SaveFile(const char* a_filter, HWND const a_hwnd)
 {
-	char path[260];
-	HMODULE hModule = GetModuleHandle(NULL);
-	GetModuleFileName(hModule, path, (sizeof(path)));
+	std::string folderPath = Project::ProjectManager::GetAssetBrowserPath();
+	std::replace(folderPath.begin(), folderPath.end(), '/', '\\');
+
+	std::string initalDir = FindFullPath();
+	initalDir.append(folderPath);
+
 	OPENFILENAMEA ofn;
-	CHAR szFile[260] = {0};
+	CHAR szFile[256] = { 0 };
 
-	std::string initalDir = path;
-
-	size_t pos = initalDir.find("Sandbox.exe"); //find location of word
-    initalDir.erase(pos,initalDir.size() - pos); //delete everything prior to location found
-	initalDir.append(Project::ProjectManager::GetAssetBrowserPath());
-	
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = a_hwnd;

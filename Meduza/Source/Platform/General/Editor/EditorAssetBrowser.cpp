@@ -124,8 +124,21 @@ void Me::Editor::EditorAssetBrowser::Draw()
 				Files::Windows::FileSystem::GetFilesOfType(m_browserData, Files::FileType::Any, false, m_browserPath);
 				ImGui::NextColumn();
 				ImGui::PopID();
+				m_showOptions = false;
 				break;
 			}
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Open Folder"))
+				{
+					std::string folderToOpen = m_browserPath;
+					folderToOpen.append("/");
+					folderToOpen.append(folder);
+					Files::Windows::FileSystem::OpenFolder(folderToOpen);
+				}
+				ImGui::EndPopup();
+			}
+
 			ImGui::Text(folder.c_str());
 			ImGui::NextColumn();
 			ImGui::PopID();

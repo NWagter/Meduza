@@ -1,0 +1,1 @@
+start devenv /Edit %CD%/Assets

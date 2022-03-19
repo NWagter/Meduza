@@ -142,6 +142,17 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 
 	if (Scripting::ScriptConfig::GetScriptConfig()->InitializeScriptConfig(newScriptPath, a_name))
 	{
+		std::string path = "Projects/";
+		path.append(a_name);
 
+		std::string vsStudio = Files::FileSystem::CreateNewFile("Start_VisualStudio.bat", path);
+		std::string vsCode = Files::FileSystem::CreateNewFile("Start_VisualStudioCode.bat", path);
+		std::ofstream startupFile;
+		startupFile.open(vsStudio);
+		startupFile << "start devenv /Edit %CD%/Assets";
+		startupFile.close();
+		startupFile.open(vsCode);
+		startupFile << "code ./Assets";
+		startupFile.close();
 	}
 }

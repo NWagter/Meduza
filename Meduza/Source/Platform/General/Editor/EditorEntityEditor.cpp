@@ -399,7 +399,7 @@ void Me::Editor::EntityEditor::Draw()
 
         
         });
-        DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [](auto& a_comp)
+        DrawComponent<Scripting::ScriptComponent>(eManager, "Script Component", m_selectedEntity, [&eManager](auto& a_comp)
         {
             size_t size = a_comp.m_scripts.size();
             std::vector<size_t> itemsToRemove;
@@ -450,7 +450,7 @@ void Me::Editor::EntityEditor::Draw()
                     {
                         auto value = a_comp.m_scripts.at(i)->m_inputFields.at(j);
 
-                        if (value == nullptr || value->m_argumentName.empty() || value->m_type > Scripting::ValueType::Last)
+                        if (value == nullptr || value->m_argumentName.empty() || value->m_type > ValueType::Last)
                         {
                             continue;
                         }
@@ -461,9 +461,9 @@ void Me::Editor::EntityEditor::Draw()
                         ImGui::Text(argumentName.c_str());
                         ImGui::SameLine(); 
 
-                        if (value->m_type == Scripting::ValueType::String)
+                        if (value->m_type == ValueType::String)
                         {
-                            auto valueString = static_cast<Scripting::ValueString*>(value);
+                            auto valueString = static_cast<ValueString*>(value);
 
                             char bufferValue[256];
                             strncpy(bufferValue, valueString->m_value.c_str(), sizeof(bufferValue) - 1);
@@ -472,23 +472,47 @@ void Me::Editor::EntityEditor::Draw()
 
                             valueString->m_value = bufferValue;
                         }
-                        else if (value->m_type == Scripting::ValueType::Number)
+                        else if (value->m_type == ValueType::Number)
                         {
-                            auto valueNumber = static_cast<Scripting::ValueNumber*>(value);
+                            auto valueNumber = static_cast<ValueNumber*>(value);
                             std::string idValue = "Value ##Number" + argumentName;
                             ImGui::InputFloat(idValue.c_str(), &valueNumber->m_value);
                         }
-                        else if (value->m_type == Scripting::ValueType::Boolean)
+                        else if (value->m_type == ValueType::Boolean)
                         {
-                            auto valueBool = static_cast<Scripting::ValueBool*>(value);
+                            auto valueBool = static_cast<ValueBool*>(value);
                             std::string idValue = "Value ##Bool" + argumentName;
                             ImGui::Checkbox(idValue.c_str(), &valueBool->m_value);
                         }
-                        else if (value->m_type == Scripting::ValueType::Vector3)
+                        else if (value->m_type == ValueType::Vector3)
                         {
-                            auto valueVec3 = static_cast<Scripting::ValueVector3*>(value);
+                            auto valueVec3 = static_cast<ValueVector3*>(value);
                             std::string idValue = "Value ##Vector" + argumentName;
                             Helper::EditorHelper::DrawVec3Prop(argumentName, valueVec3->m_value);
+                        }
+                        else if (value->m_type == ValueType::Entity)
+                        {
+                            auto valueEntity = static_cast<ValueEntity*>(value);
+                            std::string idValue = "Value ##Entity" + argumentName;
+                            //Find Entity tag and print
+                            std::string tag = "Unassigned Entity";
+                            auto tagComp = eManager->GetComponent<TagComponent>(valueEntity->m_value);
+                            if (tagComp != nullptr)
+                            {
+                                tag = tagComp->m_tag;
+                            }
+
+                            ImGui::Text(tag.c_str());
+                            if (ImGui::BeginDragDropTarget())
+                            {
+                                if (ImGuiPayload const* payLoad = ImGui::AcceptDragDropPayload("ENTITY_HIERARCHY_ITEM"))
+                                {
+                                    Helper::EntityPayload* payload = (Helper::EntityPayload*)(payLoad->Data);
+                                    valueEntity->m_value = payload->m_entityID;
+                                }
+
+                                ImGui::EndDragDropTarget();
+                            }
                         }
 
                         ImGui::PopID();

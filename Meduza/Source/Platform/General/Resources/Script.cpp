@@ -1,6 +1,7 @@
 #include "MePCH.h"
 #include "Platform/General/Resources/Script.h"
 
+#include "Core/ValueContainer.h"
 #include "Core/Scripting/ScriptComponentHelper.h"
 #include "Core/Scripting/ScriptConfig.h"
 
@@ -19,7 +20,7 @@ Me::Resources::Script* Me::Resources::Script::OnCreate(std::string const& a_path
 	return new Script();
 }
 
-void Me::Resources::Script::AddInputField(Scripting::Value* a_input)
+void Me::Resources::Script::AddInputField(Value* a_input)
 {
 	m_inputFields.push_back(a_input);
 }

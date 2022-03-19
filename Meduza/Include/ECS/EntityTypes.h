@@ -1,11 +1,5 @@
 #pragma once
 
-using EntityID = uint32_t;
-using ComponentID = uint32_t;
-using SystemID = uint32_t;
-
-using EntityFilter = std::set<ComponentID>;
-
 enum class Components : uint16_t
 {
     UIDComponent = 0,

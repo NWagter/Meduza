@@ -4,8 +4,6 @@
 
 namespace Me
 {
-    using EntityID = uint32_t;
-
     namespace Editor
     {
         class EntityHierarchy;

@@ -2,10 +2,10 @@
 
 namespace Me
 {
+    struct Value;
+
     namespace Scripting
     {
-        struct Value;
-
         namespace Lua_API
         {
             class Lua_Helper

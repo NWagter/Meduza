@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/ValueContainer.h"
 #include "Core/Scripting/ScriptConfig.h"
 
 #include "Platform/General/Resources/Script.h"
@@ -15,94 +16,6 @@ namespace Me
             std::string m_scriptPath;
             std::vector<Value*> m_inputValues;
         };
-
-        enum class ValueType
-        {
-            Unkown = 0,
-            Number,
-            String,
-            Boolean,
-            Vector3,
-
-            Last
-        };
-
-        struct Value
-        {
-            ValueType m_type;
-            std::string m_argumentName;
-
-            Value(std::string const& a_argumentName, ValueType const a_type)
-            {
-                m_type = a_type;
-                m_argumentName = a_argumentName;
-            }
-        };
-
-        struct ValueNumber : public Value
-        {
-            float m_value = 0.0f;
-            float m_defaultValue;
-
-            ValueNumber(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Number)
-            {
-                m_value = 0.0f;
-            }
-
-            ValueNumber(std::string const& a_argumentName, float const a_value) : Value(a_argumentName, ValueType::Number)
-            {
-                m_value = a_value;
-            }
-        };        
-        
-        struct ValueBool : public Value
-        {
-            bool m_value = true;
-            bool m_defaultValue;
-
-            ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Boolean)
-            {
-                m_value = true;
-            }
-
-            ValueBool(std::string const& a_argumentName, bool const a_value) : Value(a_argumentName, ValueType::Boolean)
-            {
-                m_value = a_value;
-            }
-        };        
-        
-        struct ValueString : public Value
-        {
-            std::string m_value;
-            std::string m_defaultValue;
-
-            ValueString(std::string const& a_argumentName) : Value(a_argumentName, ValueType::String)
-            {
-                m_value = "";
-            }
-
-            ValueString(std::string const& a_argumentName, std::string const& a_value) : Value(a_argumentName, ValueType::String)
-            {
-                m_value = a_value;
-            }
-        };
-
-        struct ValueVector3 : public Value
-        {
-            Math::Vec3 m_value;
-            Math::Vec3 m_defaultValue;
-
-            ValueVector3(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Vector3)
-            {
-                m_value = Math::Vec3(0);
-            }
-
-            ValueVector3(std::string const& a_argumentName, Math::Vec3 const a_value) : Value(a_argumentName, ValueType::Vector3)
-            {
-                m_value = a_value;
-            }
-        };
-
 
         struct Script
         {
@@ -192,6 +105,13 @@ namespace Me
                 {
                     auto oldValue = static_cast<ValueVector3*>(a_value);
                     auto v = new ValueVector3(a_value->m_argumentName, oldValue->m_value);
+                    return v;
+                }
+                    break;
+                case ValueType::Entity:
+                {
+                    auto oldValue = static_cast<ValueEntity*>(a_value);
+                    auto v = new ValueEntity(a_value->m_argumentName, oldValue->m_value);
                     return v;
                 }
                 break;

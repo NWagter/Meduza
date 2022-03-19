@@ -42,6 +42,7 @@ void Me::Editor::EditorScriptConfig::Draw()
 				if (ImGui::Button("+"))
 				{
 					Scripting::ScriptConfig::GetScriptConfig()->AddValue(s.first);
+					Scripting::ScriptConfig::GetScriptConfig()->OnChange(s.second->m_resourceId);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Change Config"))
@@ -62,7 +63,7 @@ void Me::Editor::EditorScriptConfig::Draw()
 						toDelete.push_back(input);
 					}
 					// Change Type
-					const char* valueTypes[] = { "Unkown", "Number", "String", "Bool", "Vector3"};
+					const char* valueTypes[] = { "Unkown", "Number", "String", "Bool", "Vector3", "Entity"};
 					const char* currentType = valueTypes[int(v->m_type)];
 
 					std::string idInputName = "InputName ##" + v->m_argumentName;
@@ -77,14 +78,14 @@ void Me::Editor::EditorScriptConfig::Draw()
 					std::string idType = "Type ##" + v->m_argumentName;
 					if (ImGui::BeginCombo(idType.c_str(), currentType))
 					{
-						for (size_t t = 1; t < (size_t)Scripting::ValueType::Last; t++)
+						for (size_t t = 1; t < (size_t)ValueType::Last; t++)
 						{
 							bool isSelected = currentType == valueTypes[t];
 
 							if (ImGui::Selectable(valueTypes[t], isSelected))
 							{
 								currentType = valueTypes[t];
-								auto newValue = Scripting::ScriptConfig::GetScriptConfig()->ChangeType(s.second, input, (Scripting::ValueType)t);
+								auto newValue = Scripting::ScriptConfig::GetScriptConfig()->ChangeType(s.second, input, (ValueType)t);
 								s.second->m_inputValues.at(input) = newValue;
 							}
 

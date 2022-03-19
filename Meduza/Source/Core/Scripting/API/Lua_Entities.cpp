@@ -46,7 +46,7 @@ int Me::Scripting::Lua_API::Lua_Entities::lua_GetEntityByName(lua_State* a_luaSt
         }
     }
 
-    lua_pushnumber(a_luaState, 0); 
+    lua_pushnil(a_luaState);
 
     return 0;
 }

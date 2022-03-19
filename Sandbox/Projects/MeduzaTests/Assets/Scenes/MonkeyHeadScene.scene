@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<SceneData>
-		<EntityAmount>5</EntityAmount>
+		<EntityAmount>6</EntityAmount>
 	</SceneData>
 	<value0>
+		<ComponentAmount>3</ComponentAmount>
+		<value0>
+			<0>
+				<UUID>250599188</UUID>
+			</0>
+			<1>
+				<Tag>CamTarget</Tag>
+			</1>
+			<2>
+				<Translation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>10</value2>
+				</Translation>
+				<Rotation>
+					<value0>0</value0>
+					<value1>0</value1>
+					<value2>0</value2>
+				</Rotation>
+				<Scale>
+					<value0>1</value0>
+					<value1>1</value1>
+					<value2>1</value2>
+				</Scale>
+			</2>
+		</value0>
+	</value0>
+	<value1>
 		<ComponentAmount>4</ComponentAmount>
 		<value0>
 			<0>
@@ -35,8 +63,8 @@
 				<#AmountOfValues>0</#AmountOfValues>
 			</7>
 		</value0>
-	</value0>
-	<value1>
+	</value1>
+	<value2>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<0>
@@ -101,8 +129,8 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</value1>
-	<value2>
+	</value2>
+	<value3>
 		<ComponentAmount>5</ComponentAmount>
 		<value0>
 			<0>
@@ -144,14 +172,14 @@
 				<ScriptPath0>Projects/MeduzaTests/Assets/Scripts/CameraLookAt.lua</ScriptPath0>
 				<#AmountOfValues>1</#AmountOfValues>
 				<value0>
-					<Argument>sTargetEntityName</Argument>
-					<Type>2</Type>
-					<Value>Suzanne</Value>
+					<Argument>eTargetEntity</Argument>
+					<Type>5</Type>
+					<Value>250599188</Value>
 				</value0>
 			</7>
 		</value0>
-	</value2>
-	<value3>
+	</value3>
+	<value4>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<0>
@@ -216,8 +244,8 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</value3>
-	<value4>
+	</value4>
+	<value5>
 		<ComponentAmount>8</ComponentAmount>
 		<value0>
 			<0>
@@ -282,6 +310,6 @@
 				</CollisionOffset>
 			</12>
 		</value0>
-	</value4>
+	</value5>
 </cereal>
 

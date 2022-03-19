@@ -1,7 +1,5 @@
 #pragma once
 
-using EntityID = uint32_t;
-
 namespace Me
 {
     struct TagComponent;

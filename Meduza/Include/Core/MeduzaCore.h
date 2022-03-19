@@ -1,5 +1,12 @@
 #pragma once
 
+#define ENTITY_NULL 0u
+
+using EntityID = uint32_t;
+using ComponentID = uint32_t;
+using SystemID = uint32_t;
+using EntityFilter = std::set<ComponentID>;
+
 namespace Me
 {      
     enum GFX_API : int

@@ -125,7 +125,7 @@ void Me::Editor::EntityHierarchy::Draw()
 	ImGui::End();
 }
 
-Me::EntityID Me::Editor::EntityHierarchy::GetSelected()
+EntityID Me::Editor::EntityHierarchy::GetSelected()
 {
 	return m_selectedEntity;
 }

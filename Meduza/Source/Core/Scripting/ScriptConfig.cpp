@@ -135,6 +135,20 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 				scriptData->m_inputValues.push_back(value);
 			}
 				break;
+			case ValueType::Vector3:
+			{
+				ValueVector3* value = new ValueVector3(argument);
+				archive(cereal::make_nvp("DefaultValue", value->m_defaultValue.m_xyz));
+				scriptData->m_inputValues.push_back(value);
+			}
+				break;
+			case ValueType::Entity:
+			{
+				ValueEntity* value = new ValueEntity(argument);
+				archive(cereal::make_nvp("DefaultValue", value->m_defaultValue));
+				scriptData->m_inputValues.push_back(value);
+			}
+				break;
 			}
 			archive.finishNode();
 		}
@@ -227,7 +241,7 @@ void Me::Scripting::ScriptConfig::OnChange(Resource const a_resource)
 	}
 }
 
-Me::Scripting::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* a_dataSet, int a_index, ValueType a_newType)
+Me::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* a_dataSet, int a_index, ValueType a_newType)
 {
 	auto inputField = a_dataSet->m_inputValues.at(a_index);
 	std::string name = inputField->m_argumentName;
@@ -251,6 +265,9 @@ Me::Scripting::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* 
 		break;
 	case ValueType::Vector3:
 		return new ValueVector3(name);
+		break;
+	case ValueType::Entity:
+		return new ValueEntity(name);
 		break;
 	}
 
@@ -297,6 +314,9 @@ void Me::Scripting::ScriptConfig::SerializeScriptData()
 				break;
 			case ValueType::Vector3:
 				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueVector3*>(value)->m_defaultValue.m_xyz));
+				break;
+			case ValueType::Entity:
+				archiveScript(cereal::make_nvp("DefaultValue", static_cast<ValueEntity*>(value)->m_defaultValue));
 				break;
 			}
 

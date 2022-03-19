@@ -3,10 +3,7 @@
 
 namespace Me
 {
-    namespace Scripting
-    {
-        struct Value;
-    }
+    struct Value;
 
     namespace Resources
     {
@@ -17,12 +14,12 @@ namespace Me
             virtual ~Script();
 
             Script* OnCreate(const std::string& a_path) override;
-            void AddInputField(Scripting::Value* a_input);
+            void AddInputField(Value* a_input);
 
         protected:
             void OnInit() override;
         private:
-            std::vector<Scripting::Value*> m_inputFields;
+            std::vector<Value*> m_inputFields;
         };
     }
 }

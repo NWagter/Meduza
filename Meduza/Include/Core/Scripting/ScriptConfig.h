@@ -2,6 +2,9 @@
 
 namespace Me
 {
+	struct Value;
+	enum class ValueType;
+
 	namespace Resources
 	{
 		class Script;
@@ -9,8 +12,6 @@ namespace Me
 
 	namespace Scripting
 	{
-		struct Value;
-		enum class ValueType;
 		struct ScriptConfigData;
 
 		class ScriptConfig

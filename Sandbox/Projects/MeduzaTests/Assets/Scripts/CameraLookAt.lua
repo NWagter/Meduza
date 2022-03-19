@@ -5,20 +5,19 @@ local tCameraSettings
 local vCameraPos
 
 function OnStart(a_host, a_eEntity, a_initTable)
-    sTargetEntity = a_initTable.sTargetEntityName
-    eTargetEntity = nil
-
-    vCameraPos = _GetLocation(a_eEntity)
+    eTargetEntity = a_initTable.eTargetEntity
 end
 
 function OnUpdate(a_host, a_eEntity, a_nDt)
 
-    vTargetPos = vCameraPos
+    vTargetPos = _GetLocation(a_eEntity)
 
     if eTargetEntity == nil then
-        eTargetEntity = _GetEntityByName(sTargetEntity)
+		return
     else 
         vTargetPos.x = _GetLocation(eTargetEntity).x
+        vTargetPos.y = vTargetPos.y - _GetLocation(eTargetEntity).y
+		
         _LookAt(a_eEntity, vTargetPos)
     end
 end

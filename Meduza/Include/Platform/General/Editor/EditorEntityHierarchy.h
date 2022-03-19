@@ -5,7 +5,6 @@
 namespace Me
 {
     class Window;
-    using EntityID = uint32_t;
 
     namespace Editor
     {
@@ -16,7 +15,6 @@ namespace Me
                 ~EntityHierarchy();
 
                 void Draw() override;
-
 
                 EntityID GetSelected();
             private:

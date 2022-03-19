@@ -1,7 +1,9 @@
 #include "MePCH.h"
+
 #include "Core/Scripting/API/Lua_APIHelper.h"
 #include "Core/Scripting/API/Lua_Math.h"
 
+#include "Core/ValueContainer.h"
 #include "Core/Scripting/ScriptComponentHelper.h"
 
 Me::Math::Vec3 Me::Scripting::Lua_API::Lua_Helper::GetVector3(lua_State* a_luaState, int a_id)
@@ -56,6 +58,19 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
         case ValueType::Vector3:
         {
             Lua_Math::CreateVector3(a_luaState, static_cast<ValueVector3*>(value)->m_value);
+        }
+        break;
+        case ValueType::Entity:
+        {
+            EntityID entID = static_cast<ValueEntity*>(value)->m_value;
+
+            if (entID == ENTITY_NULL)
+            {
+                lua_pushnil(a_luaState);
+                continue;
+            }
+
+            lua_pushnumber(a_luaState, (uint32_t)entID);
         }
         break;
         }

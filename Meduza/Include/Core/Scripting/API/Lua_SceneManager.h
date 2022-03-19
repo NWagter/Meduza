@@ -14,7 +14,7 @@ namespace Me
             private:
                 static bool LoadScene(lua_State* a_luaState, std::string& a_scene);
                 static int lua_LoadScene(lua_State* a_luaState);
-                static int lua_LoadCleanScene(lua_State* a_luaState);
+                static int lua_LoadASyncScene(lua_State* a_luaState);
             };
         }
     }

@@ -56,6 +56,13 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
     Me::Math::Vec3 force = Lua_Helper::GetVector3(a_luaState, 2);
 
     auto physicsComp =  EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
+
+    if (physicsComp == nullptr)
+    {
+        lua_pushnil(a_luaState);
+        return 0;
+    }
+
     physicsComp->m_velocity += force;    
 
     return 1;
@@ -70,6 +77,12 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_OnTrigger(lua_State* a_luaState)
     EntityManager* eManager = EntityManager::GetEntityManager();
 
     Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(ent);
+
+    if (c == nullptr)
+    {
+        lua_pushnil(a_luaState);
+        return 0;
+    }
 
     lua_newtable(a_luaState);
     int it = 0;
@@ -97,6 +110,12 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_OnCollision(lua_State* a_luaState)
     EntityManager* eManager = EntityManager::GetEntityManager();
 
     Physics::PhysicsComponent* c = eManager->GetComponent<Physics::PhysicsComponent>(ent);
+
+    if (c == nullptr)
+    {
+        lua_pushnil(a_luaState);
+        return 0;
+    }
 
     lua_newtable(a_luaState);
     int it = 0;

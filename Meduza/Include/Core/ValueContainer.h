@@ -26,69 +26,91 @@ namespace Me
             m_type = a_type;
             m_argumentName = a_argumentName;
         }
+
+        virtual void Reset() = 0;
     };
 
     struct ValueNumber : public Value
     {
-        float m_value = 0.0f;
-        float m_defaultValue;
+        float m_value;
+        float m_defaultValue = 0.0f;;
 
         ValueNumber(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Number)
         {
-            m_value = 0.0f;
+            Reset();
         }
 
         ValueNumber(std::string const& a_argumentName, float const a_value) : Value(a_argumentName, ValueType::Number)
         {
             m_value = a_value;
         }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
+        }
     };
 
     struct ValueBool : public Value
     {
-        bool m_value = true;
-        bool m_defaultValue;
+        bool m_value;
+        bool m_defaultValue = false;
 
         ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Boolean)
         {
-            m_value = true;
+            Reset();
         }
 
         ValueBool(std::string const& a_argumentName, bool const a_value) : Value(a_argumentName, ValueType::Boolean)
         {
             m_value = a_value;
         }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
+        }
     };
 
     struct ValueString : public Value
     {
         std::string m_value;
-        std::string m_defaultValue;
+        std::string m_defaultValue = "";
 
         ValueString(std::string const& a_argumentName) : Value(a_argumentName, ValueType::String)
         {
-            m_value = "";
+            Reset();
         }
 
         ValueString(std::string const& a_argumentName, std::string const& a_value) : Value(a_argumentName, ValueType::String)
         {
             m_value = a_value;
         }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
+        }
     };
 
     struct ValueVector3 : public Value
     {
         Math::Vec3 m_value;
-        Math::Vec3 m_defaultValue;
+        Math::Vec3 m_defaultValue = Math::Vec3(0);
 
         ValueVector3(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Vector3)
         {
-            m_value = Math::Vec3(0);
+            Reset();
         }
 
         ValueVector3(std::string const& a_argumentName, Math::Vec3 const a_value) : Value(a_argumentName, ValueType::Vector3)
         {
             m_value = a_value;
+        }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
         }
     };
 
@@ -99,12 +121,17 @@ namespace Me
 
         ValueEntity(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Entity)
         {
-            m_value = m_defaultValue;
+            Reset();
         }
 
         ValueEntity(std::string const& a_argumentName, EntityID const a_value) : Value(a_argumentName, ValueType::Entity)
         {
             m_value = a_value;
+        }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
         }
     };
 
@@ -115,12 +142,17 @@ namespace Me
 
         ValueAsset(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Asset)
         {
-            m_value = m_defaultValue;
+            Reset();
         }
 
         ValueAsset(std::string const& a_argumentName, std::string const& a_value) : Value(a_argumentName, ValueType::Asset)
         {
             m_value = a_value;
+        }
+
+        void Reset() override
+        {
+            m_value = m_defaultValue;
         }
     };
 }

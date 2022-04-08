@@ -459,7 +459,16 @@ void Me::Editor::EntityEditor::Draw()
                         ImGui::PushID(argumentName.c_str());
 
                         ImGui::Text(argumentName.c_str());
-                        ImGui::SameLine(); 
+                        ImGui::SameLine();
+
+                        float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+                        ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+                        if (ImGui::Button("X", buttonSize))
+                        {
+                            value->Reset();
+                        }
+
+                        ImGui::SameLine();
 
                         if (value->m_type == ValueType::String)
                         {

@@ -3,6 +3,8 @@
 
 #include "MeduzaIncluder.h"
 
+#include "Core/Scripting/API/Lua_Debug.h"
+
 #include "Core/Scripting/API/Lua_Entities.h"
 #include "Core/Scripting/API/Lua_Prefabs.h"
 
@@ -24,6 +26,8 @@
 void Me::Scripting::LuaFunctions::RegisterFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_CallFunction", lua_CallFunction);
+
+    Lua_API::Lua_Debug::RegisterEntityFunctions(a_luaState);
 
     Lua_API::Lua_Entities::RegisterEntityFunctions(a_luaState);
     Lua_API::Lua_Prefabs::RegisterPrefabsFunctions(a_luaState);

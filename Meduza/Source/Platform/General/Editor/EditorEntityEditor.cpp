@@ -553,6 +553,11 @@ void Me::Editor::EntityEditor::Draw()
                                     }
                                 }
 
+                                if(ImGui::Selectable("None", &is_selected))
+                                {
+                                    value->Reset();
+                                }
+
                                 data.Clear();
                                 ImGui::EndCombo();
                             }

@@ -63,9 +63,9 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
         case ValueType::Entity:
         {
             EntityID entID = static_cast<ValueEntity*>(value)->m_value;
-
             if (entID == ENTITY_NULL)
             {
+                ME_LUA_WARNING("No Entity assigned to : %s \n", value->m_argumentName.c_str());
                 lua_pushnil(a_luaState);
                 continue;
             }
@@ -79,6 +79,7 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
 
             if(assetPath.empty())
             {
+                ME_LUA_WARNING("No Asset assigned to : %s \n", value->m_argumentName.c_str());
                 lua_pushnil(a_luaState);
                 continue;
             }

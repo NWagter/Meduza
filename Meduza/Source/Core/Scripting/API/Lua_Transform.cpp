@@ -185,6 +185,17 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_FlipX(lua_State* a_luaState)
 {
     if(lua_gettop(a_luaState) != 1) return -1;
 
+    if (lua_isnil(a_luaState, 1))
+    {
+        ME_LUA_ERROR("Entity is Nil!");
+        return -1;
+    }
+    else if (lua_tonumber(a_luaState, 1) <= 0)
+    {
+        ME_LUA_ERROR("Entity is Invalid! \n");
+        return -1;
+    }
+
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);

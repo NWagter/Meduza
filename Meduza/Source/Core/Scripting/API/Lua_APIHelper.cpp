@@ -67,7 +67,7 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
             {
                 ME_LUA_WARNING("No Entity assigned to : %s \n", value->m_argumentName.c_str());
                 lua_pushnil(a_luaState);
-                continue;
+                break;
             }
 
             lua_pushnumber(a_luaState, (uint32_t)entID);
@@ -81,7 +81,7 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
             {
                 ME_LUA_WARNING("No Asset assigned to : %s \n", value->m_argumentName.c_str());
                 lua_pushnil(a_luaState);
-                continue;
+                break;
             }
 
             lua_pushstring(a_luaState, assetPath.c_str());

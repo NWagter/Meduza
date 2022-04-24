@@ -44,25 +44,25 @@ Me::Math::Vec3 Me::Scripting::Lua_API::Lua_MathHelper::GetVector3(lua_State* a_l
     return value;
 }
 
-void Me::Scripting::Lua_API::Lua_MathHelper::CreateColour(lua_State* a_luaState, Colour a_vec)
+void Me::Scripting::Lua_API::Lua_MathHelper::CreateColour(lua_State* a_luaState, Colour a_colour)
 {
     lua_newtable(a_luaState);
 
     lua_pushstring(a_luaState, "r");
-    lua_pushnumber(a_luaState, a_vec.m_colour[0]);
-    lua_settable(a_luaState, -4);
+    lua_pushnumber(a_luaState, a_colour.m_colour[0]);
+    lua_settable(a_luaState, -3);
 
     lua_pushstring(a_luaState, "g");
-    lua_pushnumber(a_luaState, a_vec.m_colour[1]);
-    lua_settable(a_luaState, -4);
+    lua_pushnumber(a_luaState, a_colour.m_colour[1]);
+    lua_settable(a_luaState, -3);
 
     lua_pushstring(a_luaState, "b");
-    lua_pushnumber(a_luaState, a_vec.m_colour[2]);
-    lua_settable(a_luaState, -4);
+    lua_pushnumber(a_luaState, a_colour.m_colour[2]);
+    lua_settable(a_luaState, -3);
 
     lua_pushstring(a_luaState, "a");
-    lua_pushnumber(a_luaState, a_vec.m_colour[3]);
-    lua_settable(a_luaState, -4);
+    lua_pushnumber(a_luaState, a_colour.m_colour[3]);
+    lua_settable(a_luaState, -3);
 
     luaL_getmetatable(a_luaState, "Colour");
     lua_setmetatable(a_luaState, -2);

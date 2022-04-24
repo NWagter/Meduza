@@ -2,19 +2,29 @@
 <cereal>
 	<Script>
 		<#ProjectName>MeduzaTests</#ProjectName>
-		<#ScriptsConfigured>8</#ScriptsConfigured>
+		<#ScriptsConfigured>9</#ScriptsConfigured>
 		<value0>
 			<Script0>18303</Script0>
 			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/CameraMovement.lua</ScriptPath>
 			<#AmountOfValues>0</#AmountOfValues>
 		</value0>
 		<value1>
-			<Script1>51406</Script1>
-			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/ScaleObject.lua</ScriptPath>
-			<#AmountOfValues>0</#AmountOfValues>
+			<Script1>52840</Script1>
+			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/ChangeColourOverlap.lua</ScriptPath>
+			<#AmountOfValues>1</#AmountOfValues>
+			<value0>
+				<Argument>sEntityName</Argument>
+				<Type>2</Type>
+				<DefaultValue></DefaultValue>
+			</value0>
 		</value1>
 		<value2>
-			<Script2>40626</Script2>
+			<Script2>51406</Script2>
+			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/ScaleObject.lua</ScriptPath>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value2>
+		<value3>
+			<Script3>40626</Script3>
 			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/CreateMonkeyHead.lua</ScriptPath>
 			<#AmountOfValues>1</#AmountOfValues>
 			<value0>
@@ -22,9 +32,9 @@
 				<Type>6</Type>
 				<DefaultValue></DefaultValue>
 			</value0>
-		</value2>
-		<value3>
-			<Script3>5288</Script3>
+		</value3>
+		<value4>
+			<Script4>5288</Script4>
 			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/CameraLookAt.lua</ScriptPath>
 			<#AmountOfValues>1</#AmountOfValues>
 			<value0>
@@ -32,14 +42,14 @@
 				<Type>5</Type>
 				<DefaultValue>0</DefaultValue>
 			</value0>
-		</value3>
-		<value4>
-			<Script4>8997</Script4>
-			<ScriptPath></ScriptPath>
-			<#AmountOfValues>0</#AmountOfValues>
 		</value4>
 		<value5>
-			<Script5>14936</Script5>
+			<Script5>8997</Script5>
+			<ScriptPath></ScriptPath>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value5>
+		<value6>
+			<Script6>14936</Script6>
 			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/DestroySadBox.lua</ScriptPath>
 			<#AmountOfValues>1</#AmountOfValues>
 			<value0>
@@ -47,17 +57,17 @@
 				<Type>2</Type>
 				<DefaultValue></DefaultValue>
 			</value0>
-		</value5>
-		<value6>
-			<Script6>36911</Script6>
-			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/MoveSideways.lua</ScriptPath>
-			<#AmountOfValues>0</#AmountOfValues>
 		</value6>
 		<value7>
-			<Script7>28193</Script7>
-			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/RotateObject.lua</ScriptPath>
+			<Script7>36911</Script7>
+			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/MoveSideways.lua</ScriptPath>
 			<#AmountOfValues>0</#AmountOfValues>
 		</value7>
+		<value8>
+			<Script8>28193</Script8>
+			<ScriptPath>Projects/MeduzaTests/Assets/Scripts/RotateObject.lua</ScriptPath>
+			<#AmountOfValues>0</#AmountOfValues>
+		</value8>
 	</Script>
 </cereal>
 

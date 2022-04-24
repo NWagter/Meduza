@@ -12,7 +12,7 @@ void Me::Scripting::Lua_API::Lua_Graphics::RegisterGraphicsFunctions(lua_State* 
 {
     lua_register(a_luaState, "_SetUV", lua_SetUV);
 
-    lua_register(a_luaState, "_CreateColour", lua_SetColour);
+    lua_register(a_luaState, "_CreateColour", lua_CreateColour);
     lua_register(a_luaState, "_SetColour", lua_SetColour);
     lua_register(a_luaState, "_GetColour", lua_GetColour);
 }

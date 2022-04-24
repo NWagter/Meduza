@@ -7,7 +7,7 @@ end
 function OnUpdate(a_host, a_eEntity, a_nDt)
 
 	results = _OnTrigger(a_eEntity)
-	for i = 0, #results do
+	for i = 1, #results do
 		if results[i].hasHit then
 			if results[i].name == sName then
 				_DestroyEnt(results[i].entity)

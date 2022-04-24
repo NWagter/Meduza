@@ -85,7 +85,7 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_OnTrigger(lua_State* a_luaState)
     }
 
     lua_newtable(a_luaState);
-    int it = 0;
+    int it = 1;
 
     for (auto& data : c->m_triggered)
     {
@@ -118,7 +118,7 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_OnCollision(lua_State* a_luaState)
     }
 
     lua_newtable(a_luaState);
-    int it = 0;
+    int it = 1;
     for (auto& data : c->m_collided)
     {
         Physics::CollisionResult result;

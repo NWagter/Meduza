@@ -59,6 +59,7 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
                 {
                     std::string error = lua_tostring(lScript, -1);
                     ME_LUA_ERROR("%s \n", error.c_str());
+                    // Stop the game? Pause the Game?
                 }
             }
         }

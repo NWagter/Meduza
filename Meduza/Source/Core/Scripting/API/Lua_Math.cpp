@@ -7,7 +7,7 @@
 
 void Me::Scripting::Lua_API::Lua_Math::RegisterMathFunctions(lua_State* a_luaState)
 {
-    lua_register(a_luaState, "_CreateVector3", lua_GetDistance);
+    lua_register(a_luaState, "_CreateVector3", lua_CreateVector3);
     lua_register(a_luaState, "_GetDistance", lua_GetDistance);
 
     luaL_newmetatable(a_luaState, "Vector3");

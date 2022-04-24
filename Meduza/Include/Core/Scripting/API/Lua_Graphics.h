@@ -13,6 +13,8 @@ namespace Me
                 
                 private:
                     static int lua_SetUV(lua_State* a_luaState);
+
+                    static int lua_CreateColour(lua_State* a_luaState);
                     static int lua_SetColour(lua_State* a_luaState);
                     static int lua_GetColour(lua_State* a_luaState);
             }; 

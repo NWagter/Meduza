@@ -3,14 +3,18 @@
 
 #include "MeduzaIncluder.h"
 
+#include "Core/Scripting/API/Helpers/Lua_MathHelper.h"
+
 #include "Platform/General/ResourceLibrary.h"
 #include "Platform/General/Resources/TextureBase.h"
 
 void Me::Scripting::Lua_API::Lua_Graphics::RegisterGraphicsFunctions(lua_State* a_luaState)
 {
     lua_register(a_luaState, "_SetUV", lua_SetUV);
-    lua_register(a_luaState, "_SetUV", lua_SetColour);
-    lua_register(a_luaState, "_SetUV", lua_GetColour);
+
+    lua_register(a_luaState, "_CreateColour", lua_SetColour);
+    lua_register(a_luaState, "_SetColour", lua_SetColour);
+    lua_register(a_luaState, "_GetColour", lua_GetColour);
 }
 
 int Me::Scripting::Lua_API::Lua_Graphics::lua_SetUV(lua_State* a_luaState)
@@ -34,21 +38,34 @@ int Me::Scripting::Lua_API::Lua_Graphics::lua_SetUV(lua_State* a_luaState)
     return 1;
 }
 
+int Me::Scripting::Lua_API::Lua_Graphics::lua_CreateColour(lua_State* a_luaState)
+{
+    Me::Colour colour = Colours::MAGENTA;
+
+    if (lua_gettop(a_luaState) == 4)
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            colour.m_colour[i] = lua_tonumber(a_luaState, i + 1);
+        }
+    }
+
+    Lua_MathHelper::CreateColour(a_luaState, colour);
+    return 1;
+}
+
 int Me::Scripting::Lua_API::Lua_Graphics::lua_SetColour(lua_State* a_luaState)
 {
-    if (lua_gettop(a_luaState) != 5) return -1;
+    if (lua_gettop(a_luaState) != 2) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float r = lua_tonumber(a_luaState, 2);
-    float g = lua_tonumber(a_luaState, 3);
-    float b = lua_tonumber(a_luaState, 4);
-    float a = lua_tonumber(a_luaState, 5);
+    Colour colour = Lua_MathHelper::GetColour(a_luaState, 2);
 
     auto rC = EntityManager::GetEntityManager()->GetComponent<RenderComponent>(ent);
 
     if (rC != nullptr)
     {
-        rC->m_colour = Colour(r, g, b, a);
+        rC->m_colour = colour;
     }
 
     return 1;
@@ -56,19 +73,15 @@ int Me::Scripting::Lua_API::Lua_Graphics::lua_SetColour(lua_State* a_luaState)
 
 int Me::Scripting::Lua_API::Lua_Graphics::lua_GetColour(lua_State* a_luaState)
 {
-    if (lua_gettop(a_luaState) != 5) return -1;
+    if (lua_gettop(a_luaState) != 1) return -1;
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    float r = lua_tonumber(a_luaState, 2);
-    float g = lua_tonumber(a_luaState, 3);
-    float b = lua_tonumber(a_luaState, 4);
-    float a = lua_tonumber(a_luaState, 5);
 
     auto rC = EntityManager::GetEntityManager()->GetComponent<RenderComponent>(ent);
 
     if (rC != nullptr)
     {
-        rC->m_colour = Colour(r, g, b, a);
+        Lua_MathHelper::CreateColour(a_luaState, rC->m_colour);
     }
 
     return 1;

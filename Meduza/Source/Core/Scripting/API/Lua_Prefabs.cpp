@@ -2,7 +2,7 @@
 #include "Core/Scripting/API/Lua_Prefabs.h"
 
 #include "MeduzaIncluder.h"
-#include "Core/Scripting/API/Lua_APIHelper.h"
+#include "Core/Scripting/API/Helpers/Lua_MathHelper.h"
 
 
 void Me::Scripting::Lua_API::Lua_Prefabs::RegisterPrefabsFunctions(lua_State* a_luaState)
@@ -22,7 +22,7 @@ int Me::Scripting::Lua_API::Lua_Prefabs::lua_InstantiatePrefab(lua_State* a_luaS
     }
 
     std::string path = lua_tostring(a_luaState, 1);
-    Me::Math::Vec3 location = Lua_Helper::GetVector3(a_luaState, 2);
+    Me::Math::Vec3 location = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     size_t pos = path.find("Projects"); //find location of word
     path.erase(0,pos); //delete everything prior to location found

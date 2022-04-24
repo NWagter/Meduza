@@ -2,7 +2,7 @@
 #include "Core/Scripting/API/Lua_Physics.h"
 
 #include "MeduzaIncluder.h"
-#include "Core/Scripting/API/Lua_APIHelper.h"
+#include "Core/Scripting/API/Helpers/Lua_MathHelper.h"
 
 #include "Physics/Components/ColliderComponent.h"
 #include "Physics/Components/PhysicsComponent.h"
@@ -53,7 +53,7 @@ int Me::Scripting::Lua_API::Lua_Physics::lua_ApplyForce(lua_State* a_luaState)
     }    
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Me::Math::Vec3 force = Lua_Helper::GetVector3(a_luaState, 2);
+    Me::Math::Vec3 force = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto physicsComp =  EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
 

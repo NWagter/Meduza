@@ -1,32 +1,10 @@
 #include "MePCH.h"
 
-#include "Core/Scripting/API/Lua_APIHelper.h"
-#include "Core/Scripting/API/Lua_Math.h"
+#include "Core/Scripting/API/Helpers/Lua_APIHelper.h"
+#include "Core/Scripting/API/Helpers/Lua_MathHelper.h"
 
 #include "Core/ValueContainer.h"
 #include "Core/Scripting/ScriptComponentHelper.h"
-
-Me::Math::Vec3 Me::Scripting::Lua_API::Lua_Helper::GetVector3(lua_State* a_luaState, int a_id)
-{
-    Math::Vec3 value;
-
-    if(lua_istable(a_luaState, a_id))
-    {
-        lua_pushstring(a_luaState, "x");
-        lua_gettable(a_luaState, a_id);
-        value.m_x = lua_tonumber(a_luaState, -1);
-
-        lua_pushstring(a_luaState, "y");
-        lua_gettable(a_luaState, a_id);
-        value.m_y = lua_tonumber(a_luaState, -1);
-
-        lua_pushstring(a_luaState, "z");
-        lua_gettable(a_luaState, a_id);
-        value.m_z = lua_tonumber(a_luaState, -1);
-    }
-    
-    return value;
-}
 
 void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_luaState, std::vector<Value*> a_values)
 {
@@ -57,7 +35,7 @@ void Me::Scripting::Lua_API::Lua_Helper::CreateInitializationTable(lua_State* a_
         break;
         case ValueType::Vector3:
         {
-            Lua_Math::CreateVector3(a_luaState, static_cast<ValueVector3*>(value)->m_value);
+            Lua_MathHelper::CreateVector3(a_luaState, static_cast<ValueVector3*>(value)->m_value);
         }
         break;
         case ValueType::Entity:

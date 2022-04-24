@@ -57,6 +57,7 @@ file(GLOB PLATFORM_GENERAL_SOURCE
 	Source/Core/Serialization/*.cpp
 	Source/Core/Scripting/*.cpp
 	Source/Core/Scripting/API/*.cpp
+	Source/Core/Scripting/API/Helpers/*.cpp
 	
 	Source/Utils/*.cpp
 	Source/Platform/General/*.cpp

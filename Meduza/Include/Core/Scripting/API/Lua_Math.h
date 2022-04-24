@@ -11,9 +11,8 @@ namespace Me
                 public:
                     static void RegisterMathFunctions(lua_State* a_luaState);
 
-                    static int lua_CreateVector3(lua_State* a_luaState);
-                    static void CreateVector3(lua_State* a_luaState, Math::Vec3 a_vec);
                 private:
+                    static int lua_CreateVector3(lua_State* a_luaState);
                     static int lua_GetDistance(lua_State* a_luaState);
 
                     static int Add_Vec3(lua_State* a_luaState);

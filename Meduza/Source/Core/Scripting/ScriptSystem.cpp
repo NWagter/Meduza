@@ -2,7 +2,7 @@
 #include "Core/Scripting/ScriptSystem.h"
 #include "Core/Scripting/LuaScripting.h"
 #include "Core/Scripting/LuaFunctions.h"
-#include "Core/Scripting/API/Lua_APIHelper.h"
+#include "Core/Scripting/API/Helpers/Lua_APIHelper.h"
 
 Me::Scripting::ScriptSystem::ScriptSystem()
 {
@@ -55,7 +55,11 @@ void Me::Scripting::ScriptSystem::OnUpdate(float a_dt)
                 lua_pushlightuserdata(lScript, this);
                 lua_pushnumber(lScript, (uint32_t)m_entities[i]);
                 lua_pushnumber(lScript, a_dt);
-                lua_pcall(lScript,3,0,0);
+                if (lua_pcall(lScript, 3, 0, 0) != LUA_OK)
+                {
+                    std::string error = lua_tostring(lScript, -1);
+                    ME_LUA_ERROR("%s \n", error.c_str());
+                }
             }
         }
     }

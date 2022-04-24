@@ -16,5 +16,10 @@ Me::Math::Vec3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Me::Math:
 		}
 	}
 
-	return a_points[furthersPointIndexA];
+	if (furthersPointIndexA < a_points.size() && furthersPointIndexA >= 0)
+	{
+		return a_points[furthersPointIndexA];
+	}
+
+	return Math::Vec3(0);
 }

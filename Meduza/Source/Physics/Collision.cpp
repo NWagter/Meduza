@@ -3,6 +3,8 @@
 
 #include "Physics/Physics.h"
 
+#include "Math/GJKAlgorithm.h"
+
 #include "Physics/Components/PhysicsComponent.h"
 #include "Physics/Components/ColliderComponent.h"
 #include "Physics/Components/BoxCollider2DComponent.h"
@@ -10,9 +12,15 @@
 #include "Physics/Components/BoxCollider3DComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
+#define USE_GJK 0
 
 bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data)
 {
+#if USE_GJK
+    return Math::GJKAlgorithm::GJKIntersaction(a_physics, a_colliders, a_data);
+#endif // USE_GJK
+
+
     BodyType types[2] = { BodyType::Unkown, BodyType::Unkown };
 
     for (int i = 0; i < 2; i++)

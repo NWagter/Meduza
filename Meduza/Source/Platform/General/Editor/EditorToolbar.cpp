@@ -28,8 +28,21 @@ Me::Editor::EditorToolbar::EditorToolbar(Me::Window& a_window, EditorProjectMana
 {
     m_window = &a_window;
     m_projectManager = &a_projectManager;
-    m_activeCameraType = CameraType::Orthographic;
     m_currentOperationType = ImGuizmo::OPERATION::TRANSLATE;
+
+
+    auto eManager = EntityManager::GetEntityManager();
+    EntityFilter filter;
+    filter.insert(CameraComponent::s_componentID);
+    filter.insert(EditorComponent::s_componentID);
+    auto entities = eManager->GetEntities(filter);
+
+    for (auto ent : entities)
+    {
+        auto const& cameraComp = eManager->GetComponent<CameraComponent>(ent);
+
+        m_activeCameraType = cameraComp->m_cameraType;
+    }
 }
 
 Me::Editor::EditorToolbar::~EditorToolbar()
@@ -262,6 +275,14 @@ void Me::Editor::EditorToolbar::Draw()
                 {
                     auto cameraComp = eManager->GetComponent<CameraComponent>(ent);
                     auto transformComp = eManager->GetComponent<TransformComponent>(ent);
+
+                    if (cameraComp->m_cameraType != m_activeCameraType)
+                    {
+                        m_activeCameraType = cameraComp->m_cameraType;
+                    }
+
+                    cameraComp->Reset();
+                    transformComp->Reset();
                     
                     if(m_activeCameraType == CameraType::Perspective)
                     {
@@ -269,11 +290,9 @@ void Me::Editor::EditorToolbar::Draw()
                     } 
                     else
                     {
-                        m_activeCameraType =cameraComp->m_cameraType = CameraType::Perspective;
+                        m_activeCameraType = cameraComp->m_cameraType = CameraType::Perspective;
+                        transformComp->m_translation.m_z = -10;
                     }
-
-                    transformComp->Reset();
-                    cameraComp->Reset();
                 }
             }
 

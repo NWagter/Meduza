@@ -137,13 +137,13 @@ namespace Me
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;
 
-				return abs(sqrtf(x * x + y * y));
+				return std::abs(std::sqrtf(x * x + y * y));
 			}
 
 			inline Vector2& ABS()
 			{
-				m_x = abs(m_x);
-				m_y = abs(m_y);
+				m_x = std::abs(m_x);
+				m_y = std::abs(m_y);
 
 				return *this;
 			}
@@ -159,15 +159,15 @@ namespace Me
 
 			inline Vector2& Floor()
 			{
-				m_x = floorf(m_x);
-				m_y = floorf(m_y);
+				m_x = std::floorf(m_x);
+				m_y = std::floorf(m_y);
 
 				return *this;
 			}
 			inline Vector2& Ceil()
 			{
-				m_x = ceilf(m_x);
-				m_y = ceilf(m_y);
+				m_x = std::ceilf(m_x);
+				m_y = std::ceilf(m_y);
 
 				return *this;
 			}

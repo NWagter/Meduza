@@ -219,7 +219,7 @@ namespace Me
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;
 				float z = a_rhs.m_z - m_z;
-				return abs(sqrtf(x * x + y * y + z * z));
+				return std::abs(std::sqrtf(x * x + y * y + z * z));
 			}
 			
 			inline Vector3& Normalize()

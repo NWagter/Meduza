@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Core.h"
 
 namespace Me
 {
@@ -49,19 +50,6 @@ namespace Me
 				*this = Identity();
 			}
 
-			inline float TriangleRule(
-				float a_01, float a_02, float a_03,
-				float a_11, float a_12, float a_13,
-				float a_21, float a_22, float a_23)
-			{
-				return  (a_01 * a_12 * a_23) +
-					(a_02 * a_13 * a_21) +
-					(a_03 * a_11 * a_22) -
-					(a_03 * a_12 * a_21) -
-					(a_01 * a_13 * a_22) -
-					(a_02 * a_11 * a_23);
-			}
-
 			static inline Matrix4 Identity()
 			{
 				return Matrix4(1, 0, 0, 0,
@@ -73,67 +61,133 @@ namespace Me
 			{
 				Matrix4 temp = *this;
 
-				temp.m_00 = TriangleRule(m_11, m_12, m_13,
-					m_21, m_22, m_23,
-					m_31, m_32, m_33);
-				temp.m_10 = -TriangleRule(m_10, m_12, m_13,
-					m_20, m_22, m_23,
-					m_30, m_32, m_33);
-				temp.m_20 = TriangleRule(m_10, m_11, m_13,
-					m_20, m_21, m_23,
-					m_30, m_31, m_33);
-				temp.m_30 = -TriangleRule(m_10, m_11, m_12,
-					m_20, m_21, m_22,
-					m_30, m_31, m_32);
+				//Calculate matrix
+				{
+					temp.m_m[0] = m_m[5] * m_m[10] * m_m[15] -
+						m_m[5] * m_m[11] * m_m[14] -
+						m_m[9] * m_m[6] * m_m[15] +
+						m_m[9] * m_m[7] * m_m[14] +
+						m_m[13] * m_m[6] * m_m[11] -
+						m_m[13] * m_m[7] * m_m[10];
 
-				//colum 1
+					temp.m_m[4] = -m_m[4] * m_m[10] * m_m[15] +
+						m_m[4] * m_m[11] * m_m[14] +
+						m_m[8] * m_m[6] * m_m[15] -
+						m_m[8] * m_m[7] * m_m[14] -
+						m_m[12] * m_m[6] * m_m[11] +
+						m_m[12] * m_m[7] * m_m[10];
 
-				temp.m_01 = -TriangleRule(m_01, m_02, m_03,
-					m_21, m_22, m_23,
-					m_31, m_32, m_33);
-				temp.m_11 = TriangleRule(m_00, m_02, m_03,
-					m_20, m_22, m_23,
-					m_30, m_32, m_33);
-				temp.m_21 = -TriangleRule(m_00, m_01, m_03,
-					m_20, m_21, m_23,
-					m_30, m_31, m_33);
-				temp.m_31 = TriangleRule(m_00, m_01, m_02,
-					m_20, m_21, m_22,
-					m_30, m_31, m_32);
-				//colum 2
+					temp.m_m[8] = m_m[4] * m_m[9] * m_m[15] -
+						m_m[4] * m_m[11] * m_m[13] -
+						m_m[8] * m_m[5] * m_m[15] +
+						m_m[8] * m_m[7] * m_m[13] +
+						m_m[12] * m_m[5] * m_m[11] -
+						m_m[12] * m_m[7] * m_m[9];
 
-				temp.m_02 = TriangleRule(m_01, m_02, m_03,
-					m_11, m_12, m_13,
-					m_31, m_32, m_33);
-				temp.m_12 = -TriangleRule(m_00, m_02, m_03,
-					m_10, m_12, m_13,
-					m_30, m_32, m_33);
-				temp.m_22 = TriangleRule(m_00, m_01, m_03,
-					m_10, m_11, m_13,
-					m_30, m_31, m_33);
-				temp.m_32 = -TriangleRule(m_00, m_01, m_02,
-					m_10, m_11, m_12,
-					m_30, m_31, m_32);
+					temp.m_m[12] = -m_m[4] * m_m[9] * m_m[14] +
+						m_m[4] * m_m[10] * m_m[13] +
+						m_m[8] * m_m[5] * m_m[14] -
+						m_m[8] * m_m[6] * m_m[13] -
+						m_m[12] * m_m[5] * m_m[10] +
+						m_m[12] * m_m[6] * m_m[9];
 
-				//colum 3
+					temp.m_m[1] = -m_m[1] * m_m[10] * m_m[15] +
+						m_m[1] * m_m[11] * m_m[14] +
+						m_m[9] * m_m[2] * m_m[15] -
+						m_m[9] * m_m[3] * m_m[14] -
+						m_m[13] * m_m[2] * m_m[11] +
+						m_m[13] * m_m[3] * m_m[10];
 
-				temp.m_03 = -TriangleRule(m_01, m_02, m_03,
-					m_11, m_12, m_13,
-					m_21, m_22, m_23);
-				temp.m_13 = TriangleRule(m_00, m_02, m_03,
-					m_10, m_12, m_13,
-					m_20, m_22, m_23);
-				temp.m_23 = -TriangleRule(m_00, m_01, m_03,
-					m_10, m_11, m_13,
-					m_20, m_21, m_23);
-				temp.m_33 = TriangleRule(m_00, m_01, m_02,
-					m_10, m_11, m_12,
-					m_20, m_21, m_22);
+					temp.m_m[5] = m_m[0] * m_m[10] * m_m[15] -
+						m_m[0] * m_m[11] * m_m[14] -
+						m_m[8] * m_m[2] * m_m[15] +
+						m_m[8] * m_m[3] * m_m[14] +
+						m_m[12] * m_m[2] * m_m[11] -
+						m_m[12] * m_m[3] * m_m[10];
+
+					temp.m_m[9] = -m_m[0] * m_m[9] * m_m[15] +
+						m_m[0] * m_m[11] * m_m[13] +
+						m_m[8] * m_m[1] * m_m[15] -
+						m_m[8] * m_m[3] * m_m[13] -
+						m_m[12] * m_m[1] * m_m[11] +
+						m_m[12] * m_m[3] * m_m[9];
+
+					temp.m_m[13] = m_m[0] * m_m[9] * m_m[14] -
+						m_m[0] * m_m[10] * m_m[13] -
+						m_m[8] * m_m[1] * m_m[14] +
+						m_m[8] * m_m[2] * m_m[13] +
+						m_m[12] * m_m[1] * m_m[10] -
+						m_m[12] * m_m[2] * m_m[9];
+
+					temp.m_m[2] = m_m[1] * m_m[6] * m_m[15] -
+						m_m[1] * m_m[7] * m_m[14] -
+						m_m[5] * m_m[2] * m_m[15] +
+						m_m[5] * m_m[3] * m_m[14] +
+						m_m[13] * m_m[2] * m_m[7] -
+						m_m[13] * m_m[3] * m_m[6];
+
+					temp.m_m[6] = -m_m[0] * m_m[6] * m_m[15] +
+						m_m[0] * m_m[7] * m_m[14] +
+						m_m[4] * m_m[2] * m_m[15] -
+						m_m[4] * m_m[3] * m_m[14] -
+						m_m[12] * m_m[2] * m_m[7] +
+						m_m[12] * m_m[3] * m_m[6];
+
+					temp.m_m[10] = m_m[0] * m_m[5] * m_m[15] -
+						m_m[0] * m_m[7] * m_m[13] -
+						m_m[4] * m_m[1] * m_m[15] +
+						m_m[4] * m_m[3] * m_m[13] +
+						m_m[12] * m_m[1] * m_m[7] -
+						m_m[12] * m_m[3] * m_m[5];
+
+					temp.m_m[14] = -m_m[0] * m_m[5] * m_m[14] +
+						m_m[0] * m_m[6] * m_m[13] +
+						m_m[4] * m_m[1] * m_m[14] -
+						m_m[4] * m_m[2] * m_m[13] -
+						m_m[12] * m_m[1] * m_m[6] +
+						m_m[12] * m_m[2] * m_m[5];
+
+					temp.m_m[3] = -m_m[1] * m_m[6] * m_m[11] +
+						m_m[1] * m_m[7] * m_m[10] +
+						m_m[5] * m_m[2] * m_m[11] -
+						m_m[5] * m_m[3] * m_m[10] -
+						m_m[9] * m_m[2] * m_m[7] +
+						m_m[9] * m_m[3] * m_m[6];
+
+					temp.m_m[7] = m_m[0] * m_m[6] * m_m[11] -
+						m_m[0] * m_m[7] * m_m[10] -
+						m_m[4] * m_m[2] * m_m[11] +
+						m_m[4] * m_m[3] * m_m[10] +
+						m_m[8] * m_m[2] * m_m[7] -
+						m_m[8] * m_m[3] * m_m[6];
+
+					temp.m_m[11] = -m_m[0] * m_m[5] * m_m[11] +
+						m_m[0] * m_m[7] * m_m[9] +
+						m_m[4] * m_m[1] * m_m[11] -
+						m_m[4] * m_m[3] * m_m[9] -
+						m_m[8] * m_m[1] * m_m[7] +
+						m_m[8] * m_m[3] * m_m[5];
+
+					temp.m_m[15] = m_m[0] * m_m[5] * m_m[10] -
+						m_m[0] * m_m[6] * m_m[9] -
+						m_m[4] * m_m[1] * m_m[10] +
+						m_m[4] * m_m[2] * m_m[9] +
+						m_m[8] * m_m[1] * m_m[6] -
+						m_m[8] * m_m[2] * m_m[5];
+				}
+
+				float det = m_m[0] * temp.m_m[0] + m_m[1] * temp.m_m[4] + m_m[2] * temp.m_m[8] + m_m[3] * temp.m_m[12];
+
+				if (det == 0)
+				{
+					ME_CORE_ASSERT_M(true, "Invalid Inverse");
+					return *this;
+				}
+
+				det = 1.0f / det;
 
 				for (int i = 0; i < 16; i++)
-				{
-					m_m[i] = temp.m_m[i];
-				}
+					m_m[i] = temp.m_m[i] * det;
 
 				return *this;
 			}
@@ -243,11 +297,25 @@ namespace Me
 			}
 			inline Vector3 GetEuler()
 			{
-				Vector3 euler = Vector3(0, 0, 0);
+				float sy = std::sqrt(m_mat[0][0] * m_mat[0][0] + m_mat[1][0] * m_mat[1][0]);
 
-				//Calc Euler
+				bool singular = sy < 1e-6;
 
-				return euler;
+				float x, y, z;
+				if (!singular)
+				{
+					x = std::atan2(m_mat[2][1], m_mat[2][2]);
+					y = std::atan2(-m_mat[2][0], sy);
+					z = std::atan2(m_mat[1][0], m_mat[0][0]);
+				}
+				else
+				{
+					x = std::atan2(-m_mat[1][2], m_mat[1][1]);
+					y = std::atan2(-m_mat[2][0], sy);
+					z = 0;
+				}
+
+				return Vector3(-x, -y, -z);
 			}
 
 			inline Vector3 GetPosition()
@@ -330,8 +398,8 @@ namespace Me
 		private:
 			inline void RotateX(float a_radians)
 			{
-				const float c = cos(a_radians);
-				const float s = sin(a_radians);
+				const float c = std::cos(a_radians);
+				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
 				rot.m_11 = c; rot.m_21 = -s;
@@ -341,8 +409,8 @@ namespace Me
 			}
 			inline void RotateY(float a_radians)
 			{
-				const float c = cos(a_radians);
-				const float s = sin(a_radians);
+				const float c = std::cos(a_radians);
+				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
 				rot.m_00 = c;  rot.m_20 = s;
@@ -352,8 +420,8 @@ namespace Me
 			}
 			inline void RotateZ(float a_radians)
 			{
-				const float c = cos(a_radians);
-				const float s = sin(a_radians);
+				const float c = std::cos(a_radians);
+				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
 				rot.m_00 = c; rot.m_10 = -s;

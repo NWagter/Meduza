@@ -45,12 +45,9 @@ namespace Me
 		{
 			Matrix4 transposed = a_matrix;
 
-			std::swap(transposed.m_m[1], transposed.m_m[4]);
-			std::swap(transposed.m_m[2], transposed.m_m[8]);
-			std::swap(transposed.m_m[3], transposed.m_m[12]);
-			std::swap(transposed.m_m[6], transposed.m_m[9]);
-			std::swap(transposed.m_m[7], transposed.m_m[13]);
-			std::swap(transposed.m_m[11], transposed.m_m[14]);
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < i; j++)
+					std::swap(transposed.m_mat[i][j], transposed.m_mat[j][i]);
 
 			return transposed;
 		}

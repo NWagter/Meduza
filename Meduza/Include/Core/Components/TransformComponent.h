@@ -7,7 +7,7 @@ namespace Me
     struct TransformComponent : public BaseComponent
     {
             Math::Vector3 m_translation = Math::Vector3(0,0,0);
-            Math::Vector3 m_rotation = Math::Vector3(0,0,0); // Degree
+            Math::Vector3 m_rotation = Math::Vector3(0,0,0);
             Math::Vector3 m_scale = Math::Vector3(1,1,1);
 
             Math::Matrix4 m_transform = Math::Matrix4::Identity();
@@ -62,6 +62,10 @@ namespace Me
             {
                 Math::Matrix4 translationMat = Math::Matrix4::Identity();
                 translationMat.SetPosition(m_translation);
+
+                m_rotation.m_x = m_rotation.m_x > 360 ? m_rotation.m_x - 360 : m_rotation.m_x < 0 ? m_rotation.m_x + 360 : m_rotation.m_x;
+                m_rotation.m_y = m_rotation.m_y > 360 ? m_rotation.m_y - 360 : m_rotation.m_y < 0 ? m_rotation.m_y + 360 : m_rotation.m_y;
+                m_rotation.m_z = m_rotation.m_z > 360 ? m_rotation.m_z - 360 : m_rotation.m_z < 0 ? m_rotation.m_z + 360 : m_rotation.m_z;
 
                 Math::Matrix4 rotationMat = Math::Matrix4::Identity();
                 rotationMat.Rotation(m_rotation);

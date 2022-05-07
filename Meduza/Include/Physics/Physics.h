@@ -66,7 +66,7 @@ namespace Me
         class PhysicsHelper
         {
         public:
-            static Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points);
+            static Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points);
         };
     }
 }

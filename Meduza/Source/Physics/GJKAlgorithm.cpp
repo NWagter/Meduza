@@ -48,23 +48,11 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 
 Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
 {
-	Math::Vector3 direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[0]->m_transform.GetEulerRadian()) * a_direction;
-	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(direction);
-	direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[1]->m_transform.GetEulerRadian()) * Inverse(a_direction);
-	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(direction);
+	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(a_physics[0]->m_transform, a_direction);
+	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(a_physics[1]->m_transform, Inverse(a_direction));
 
 	// TODO : Need to consider the transformation of a shape can be gotten from the body
-
-	Math::Matrix4 rotation;
-	rotation.Identity();
-	rotation.Rotation(a_physics[0]->m_transform.GetEuler());
-	Math::Vector3 pointA = a_physics[0]->m_transform.GetPosition() + rotation * furthersPointA;
-	rotation.Identity();
-	rotation.Rotation(a_physics[1]->m_transform.GetEuler());
-	Math::Vector3 pointB = a_physics[1]->m_transform.GetPosition() + rotation * furthersPointB;
-
-
-	return pointA - pointB;
+	return furthersPointA - furthersPointB;
 }
 
 bool Me::Physics::Simplex::AddPoint(Math::Vector3 const& a_point)
@@ -108,7 +96,7 @@ bool Me::Physics::Simplex::Line(Math::Vector3& a_direction)
 
 	if (SameDirection(ab, ao))
 	{
-		a_direction = TrippleCrossProduct(ab, ao, ab);
+		a_direction = Math::CrossProduct(Math::CrossProduct(ab, ao), ab);
 	}
 	else
 	{
@@ -134,7 +122,7 @@ bool Me::Physics::Simplex::Triangle(Math::Vector3& a_direction)
 	{
 		if (SameDirection(ac, ao))
 		{
-			a_direction = TrippleCrossProduct(ac, ao, ac);
+			a_direction = Math::CrossProduct(Math::CrossProduct(ac, ao), ac);
 		}
 		else
 		{
@@ -187,7 +175,6 @@ bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 	{
 		m_points[1] = c;
 		m_points[2] = d;
-		m_amountOfPoints--;
 
 		return Triangle(a_direction);
 	}
@@ -195,7 +182,6 @@ bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 	{
 		m_points[1] = d;
 		m_points[2] = b;
-		m_amountOfPoints--;
 
 		return Triangle(a_direction);
 	}

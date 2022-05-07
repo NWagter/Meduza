@@ -178,7 +178,7 @@ namespace Me
 				}
 			}
 
-			inline float Lenght()
+			inline float Lenght() const
 			{
 				return sqrt(m_x * m_x + m_y * m_y + m_z * m_z);
 			}

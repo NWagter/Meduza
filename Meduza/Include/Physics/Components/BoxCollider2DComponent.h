@@ -19,9 +19,9 @@ namespace Me
                 return s_componentID;
             }
 
-            Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const override
+            Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction) const override
             {
-                Math::Vector2 point(PhysicsHelper::GetFurthestPointInDirection(a_direction, m_points));
+                Math::Vector2 point(PhysicsHelper::GetFurthestPointInDirection(a_transform, a_direction, m_points));
 
                 point *= m_colliderSize;
                 point += m_colliderOffset;

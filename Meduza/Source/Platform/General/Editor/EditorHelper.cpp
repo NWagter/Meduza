@@ -25,6 +25,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_labe
     if(ImGui::Button("X", buttonSize))
     {
         a_value.m_x = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -42,6 +43,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_labe
     if(ImGui::Button("Y", buttonSize))
     {
         a_value.m_y = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -80,6 +82,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     if(ImGui::Button("X", buttonSize))
     {
         a_value.m_x = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -97,6 +100,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     if(ImGui::Button("Y", buttonSize))
     {
         a_value.m_y = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -114,6 +118,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     if(ImGui::Button("Z", buttonSize))
     {
         a_value.m_z = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -152,6 +157,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_labe
     if(ImGui::Button("X", buttonSize))
     {
         a_value.m_x = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -169,6 +175,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_labe
     if(ImGui::Button("Y", buttonSize))
     {
         a_value.m_y = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -186,6 +193,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_labe
     if(ImGui::Button("Z", buttonSize))
     {
         a_value.m_z = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
@@ -203,6 +211,7 @@ bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_labe
     if(ImGui::Button("W", buttonSize))
     {
         a_value.m_z = a_resetValue;
+        changed = true;
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();

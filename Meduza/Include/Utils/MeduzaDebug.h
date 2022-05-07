@@ -16,6 +16,7 @@ namespace Me
 			bool m_collisionDebugger = false;
 			bool m_showStats = false;
 			bool m_debugCircle = true;
+			bool m_gjkDebugger = true;
 		};
 
 		class MeduzaDebug

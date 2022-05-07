@@ -584,6 +584,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             archive(cereal::make_nvp("Translation" , a_comp->m_translation.m_xyz));
             archive(cereal::make_nvp("Rotation" , a_comp->m_rotation.m_xyz));
             archive(cereal::make_nvp("Scale" , a_comp->m_scale.m_xyz));  
+            a_comp->m_isDirty = true;
             eManager->AddComponent(ent, a_comp);
         })) compAmount--; 
         
@@ -900,7 +901,8 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
     {
         archive(cereal::make_nvp("Translation" , a_comp->m_translation.m_xyz));
         archive(cereal::make_nvp("Rotation" , a_comp->m_rotation.m_xyz));
-        archive(cereal::make_nvp("Scale" , a_comp->m_scale.m_xyz));  
+        archive(cereal::make_nvp("Scale" , a_comp->m_scale.m_xyz));
+        a_comp->m_isDirty = true;
         eManager->AddComponent(ent, a_comp);
     })) compAmount--; 
     

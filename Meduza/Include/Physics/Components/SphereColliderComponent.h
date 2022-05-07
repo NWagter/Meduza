@@ -18,9 +18,9 @@ namespace Me
                 return s_componentID;
             }
             
-            Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const override
+            Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction) const override
             {
-                return Math::Vector3(a_direction).Normalize() * m_radius;
+                return (Math::Vector3(a_direction).Normalize() * m_radius) + a_transform.GetPosition();
             }
 
             static ComponentID s_componentID;

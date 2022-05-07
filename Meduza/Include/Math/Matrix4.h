@@ -258,9 +258,9 @@ namespace Me
 			{
 				Matrix4 newRotMat = Matrix4::Identity();
 
-				newRotMat.RotateX(a_rotation.m_x);
-				newRotMat.RotateY(a_rotation.m_y);
-				newRotMat.RotateZ(a_rotation.m_z);
+				newRotMat.RotateX(GETRADIAN(a_rotation.m_x));
+				newRotMat.RotateY(GETRADIAN(a_rotation.m_y));
+				newRotMat.RotateZ(GETRADIAN(a_rotation.m_z));
 
 				m_00 = newRotMat.m_00;
 				m_01 = newRotMat.m_01;
@@ -279,23 +279,21 @@ namespace Me
 			inline void SetInverseRotation(Vector3 const& a_euler)
 			{
 				Matrix4 newRotMat = Matrix4::Identity();
-				newRotMat.RotateZ(-a_euler.m_z);
-				newRotMat.RotateY(-a_euler.m_y);
-				newRotMat.RotateX(-a_euler.m_x);
-
-				m_00 = newRotMat.m_00;
-				m_01 = newRotMat.m_01;
-				m_02 = newRotMat.m_02;
-
-				m_10 = newRotMat.m_10;
-				m_11 = newRotMat.m_11;
-				m_12 = newRotMat.m_12;
-
-				m_20 = newRotMat.m_20;
-				m_21 = newRotMat.m_21;
-				m_22 = newRotMat.m_22;
+				newRotMat.RotateZ(GETRADIAN(-a_euler.m_z));
+				newRotMat.RotateY(GETRADIAN(-a_euler.m_y));
+				newRotMat.RotateX(GETRADIAN(-a_euler.m_x));
+				
+				m_m[0] = newRotMat.m_m[0];
+				m_m[1] = newRotMat.m_m[1];
+				m_m[2] = newRotMat.m_m[2];
+				m_m[4] = newRotMat.m_m[4];
+				m_m[5] = newRotMat.m_m[5];
+				m_m[6] = newRotMat.m_m[6];
+				m_m[8] = newRotMat.m_m[8];
+				m_m[9] = newRotMat.m_m[9];
+				m_m[10] = newRotMat.m_m[10];
 			}
-			inline Vector3 GetEuler()
+			inline Vector3 GetEuler() const
 			{
 				float sy = std::sqrt(m_mat[0][0] * m_mat[0][0] + m_mat[1][0] * m_mat[1][0]);
 
@@ -315,15 +313,10 @@ namespace Me
 					z = 0;
 				}
 
-				return Vector3(-x, -y, -z);
-			}
-			inline Vector3 GetEulerRadian()
-			{
-				Vector3 const euler = GetEuler();
-				return Vector3(GETRADIAN(euler.m_x), GETRADIAN(euler.m_y), GETRADIAN(euler.m_z));
+				return Vector3(GETDEGREE(-x), GETDEGREE(-y), GETDEGREE(-z));
 			}
 
-			inline Vector3 GetPosition()
+			inline Vector3 GetPosition() const
 			{
 				return Vector3(m_03, m_13, m_23);
 			}
@@ -344,7 +337,7 @@ namespace Me
 				return *this;
 			}
 
-			inline Vector3 GetScale()
+			inline Vector3 GetScale() const
 			{
 				Vector3 scale = Vector3(m_00, m_11, m_22);
 
@@ -369,7 +362,7 @@ namespace Me
 				return *this;
 			}
 
-			inline Vector3 GetRight()
+			inline Vector3 GetRight() const
 			{
 				Vector3 right;
 
@@ -379,7 +372,7 @@ namespace Me
 
 				return right.Normalize();
 			}
-			inline Vector3 GetUp()
+			inline Vector3 GetUp() const
 			{
 				Vector3 up;
 
@@ -389,7 +382,7 @@ namespace Me
 
 				return up.Normalize();
 			}
-			inline Vector3 GetForward()
+			inline Vector3 GetForward() const
 			{
 				Vector3 forward;
 

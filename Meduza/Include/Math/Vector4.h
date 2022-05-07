@@ -158,7 +158,7 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return std::sqrtf(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
+				return std::sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
 			}
 		};
 

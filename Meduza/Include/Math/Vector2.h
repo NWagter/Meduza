@@ -130,14 +130,14 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return sqrtf(m_x * m_x + m_y * m_y);
+				return std::sqrt(m_x * m_x + m_y * m_y);
 			}
 			inline float Distance(Vector2 a_rhs)
 			{
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;
 
-				return std::abs(std::sqrtf(x * x + y * y));
+				return std::abs(std::sqrt(x * x + y * y));
 			}
 
 			inline Vector2& ABS()
@@ -159,15 +159,15 @@ namespace Me
 
 			inline Vector2& Floor()
 			{
-				m_x = std::floorf(m_x);
-				m_y = std::floorf(m_y);
+				m_x = std::floor(m_x);
+				m_y = std::floor(m_y);
 
 				return *this;
 			}
 			inline Vector2& Ceil()
 			{
-				m_x = std::ceilf(m_x);
-				m_y = std::ceilf(m_y);
+				m_x = std::ceil(m_x);
+				m_y = std::ceil(m_y);
 
 				return *this;
 			}

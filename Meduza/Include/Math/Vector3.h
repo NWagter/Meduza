@@ -180,7 +180,7 @@ namespace Me
 
 			inline float Lenght()
 			{
-				return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);
+				return sqrt(m_x * m_x + m_y * m_y + m_z * m_z);
 			}
 
 			inline Vector3& Round()
@@ -219,7 +219,7 @@ namespace Me
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;
 				float z = a_rhs.m_z - m_z;
-				return std::abs(std::sqrtf(x * x + y * y + z * z));
+				return std::abs(std::sqrt(x * x + y * y + z * z));
 			}
 			
 			inline Vector3& Normalize()

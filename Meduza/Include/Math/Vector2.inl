@@ -28,7 +28,7 @@ namespace Me
 			float x = a_lhs.m_x - a_rhs.m_x;
 			float y = a_lhs.m_y - a_rhs.m_y;
 
-			return std::abs(std::sqrtf(x * x + y * y));
+			return std::abs(std::sqrt(x * x + y * y));
 		}
 		inline Vector2 Direction(Vector2 a_origin, Vector2 a_destination)
 		{

@@ -25,9 +25,9 @@ namespace Me
         {
             struct DefaultInstancedBuffer
             {
-                Math::Mat4 m_model = Math::Mat4::Identity();
-                Math::Vec4 m_colour = Math::Vec4(1, 0, 1, 1);
-                Math::Vec4 m_textureCoords = Math::Vec4(0, 0, 1, 1);
+                Math::Matrix4 m_model = Math::Matrix4::Identity();
+                Math::Vector4 m_colour = Math::Vector4(1, 0, 1, 1);
+                Math::Vector4 m_textureCoords = Math::Vector4(0, 0, 1, 1);
                 float m_textureId = 0;
             };
 
@@ -40,13 +40,13 @@ namespace Me
                 struct Renderable
                 {
                     RenderComponent* m_renderComponent;
-                    Math::Mat4 m_modelMatrix;
+                    Math::Matrix4 m_modelMatrix;
                 };
 
                 struct DebugRenderable
                 {
                     DebugRenderComponent* m_debugRenderComponent;
-                    Math::Mat4 m_modelMatrix;
+                    Math::Matrix4 m_modelMatrix;
                 };
 
                 struct DebugLine
@@ -72,11 +72,11 @@ namespace Me
                 };
                 struct DebugCricle
                 {
-                    Math::Mat4 m_trans;
+                    Math::Matrix4 m_trans;
                     float m_radius;
                     Colour m_colour;
 
-                    DebugCricle(Math::Mat4 const& a_trans, float const& a_rad, Colour const& a_colour = Colours::MAGENTA)
+                    DebugCricle(Math::Matrix4 const& a_trans, float const& a_rad, Colour const& a_colour = Colours::MAGENTA)
                     {
                         m_trans = a_trans;
                         m_radius = a_rad * 2;
@@ -86,7 +86,7 @@ namespace Me
 
                 struct Camera
                 {
-                    Math::Mat4 m_cameraMatrix;
+                    Math::Matrix4 m_cameraMatrix;
                 };
 
                 RenderLayerGL(Window* a_window);

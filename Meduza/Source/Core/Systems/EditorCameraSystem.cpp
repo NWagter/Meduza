@@ -88,7 +88,7 @@ void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
             upMovment--;
         }
 
-        Me::Math::Vec3 rotation = trans->m_rotation;
+        Me::Math::Vector3 rotation = trans->m_rotation;
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
         {
@@ -99,15 +99,15 @@ void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
             rotation.m_yaw += (2) * a_dt;
         }
         
-        Me::Math::Vec3 position = trans->m_translation;
+        Me::Math::Vector3 position = trans->m_translation;
 
 
-        Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
+        Me::Math::Matrix4 transform = Me::Math::Matrix4().Rotation(trans->m_rotation);
 
-        Me::Math::Vec3 forward = transform.GetForward() * (forwardMovment * 10);
-        Me::Math::Vec3 right = transform.GetRight() * (rightMovment * 10);
-        Me::Math::Vec3 up = transform.GetUp() * (upMovment * 10);
-        Me::Math::Vec3 movement = forward + right + up;
+        Me::Math::Vector3 forward = transform.GetForward() * (forwardMovment * 10);
+        Me::Math::Vector3 right = transform.GetRight() * (rightMovment * 10);
+        Me::Math::Vector3 up = transform.GetUp() * (upMovment * 10);
+        Me::Math::Vector3 movement = forward + right + up;
 
         trans->m_translation = trans->m_translation + (movement * a_dt);
         trans->m_rotation = rotation;

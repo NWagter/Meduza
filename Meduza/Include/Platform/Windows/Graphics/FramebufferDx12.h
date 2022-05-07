@@ -22,7 +22,7 @@ namespace Me
                 FrameBufferDx12(FrameBufferSpecs const& a_spec, ContextBase& a_context);
                 ~FrameBufferDx12();
 
-                void Resize(Math::Vec2 const& a_size) override;
+                void Resize(Math::Vector2 const& a_size) override;
 
                 inline const FrameBufferSpecs& GetFrameBufferSpec() const override
                 {

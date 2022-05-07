@@ -42,10 +42,10 @@ void Me::Editor::EditorViewport::Draw()
     Me::Event::EventSystem::GetEventSystem()->SetViewportFocus(ImGui::IsWindowFocused());
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	Math::Vec2 panelSize = Math::Vec2(viewportPanelSize.x, viewportPanelSize.y);
+	Math::Vector2 panelSize = Math::Vector2(viewportPanelSize.x, viewportPanelSize.y);
 	if(m_viewportSize != panelSize)
 	{
-		frameBuffer->Resize(Math::Vec2(viewportPanelSize.x, viewportPanelSize.y));
+		frameBuffer->Resize(Math::Vector2(viewportPanelSize.x, viewportPanelSize.y));
 	}
 	m_viewportSize = panelSize;
     auto colourAttachment = frameBuffer->GetColourAttachment();
@@ -114,15 +114,15 @@ void Me::Editor::EditorViewport::Draw()
     {
 
         auto camTrans = eManager->GetComponent<TransformComponent>(m_editorCamera);
-        Math::Mat4 rMat = Math::Mat4::Identity();
+        Math::Matrix4 rMat = Math::Matrix4::Identity();
         rMat.Rotation(camTrans->m_rotation);
 
-        Math::Mat4 pMat = Math::Mat4::Identity();
+        Math::Matrix4 pMat = Math::Matrix4::Identity();
         pMat.SetPosition(camTrans->m_translation);
 
-        Math::Mat4 view = Math::Transpose(rMat * pMat.Inverse());
-        Math::Mat4 projection;
-        Math::Vec2 size = m_renderLayer->GetWindow()->GetSize();
+        Math::Matrix4 view = Math::Transpose(rMat * pMat.Inverse());
+        Math::Matrix4 projection;
+        Math::Vector2 size = m_renderLayer->GetWindow()->GetSize();
         float aspect = size.m_x / size.m_y;
         
         switch (editorCam->m_cameraType)
@@ -148,7 +148,7 @@ void Me::Editor::EditorViewport::Draw()
         auto trans = eManager->GetComponent<TransformComponent>(m_editor->GetSelectedId());
         if(trans != nullptr)
         {
-            Math::Mat4 t =  Math::Transpose(trans->GetTransform());
+            Math::Matrix4 t =  Math::Transpose(trans->GetTransform());
             ImGuizmo::Manipulate(view.m_m, projection.m_m,
             m_toolbar->GetOperationType(), ImGuizmo::WORLD, t.m_m);
 
@@ -157,13 +157,13 @@ void Me::Editor::EditorViewport::Draw()
                 float matrixTranslation[3], matrixRotation[3], matrixScale[3];
                 ImGuizmo::DecomposeMatrixToComponents(t.m_m, matrixTranslation, matrixRotation, matrixScale);
 
-                Math::Vec3 deltaTrans = Math::Vec3(matrixTranslation[0], matrixTranslation[1], matrixTranslation[2]) - trans->m_translation;
+                Math::Vector3 deltaTrans = Math::Vector3(matrixTranslation[0], matrixTranslation[1], matrixTranslation[2]) - trans->m_translation;
                 trans->m_translation += deltaTrans;
 
-                Math::Vec3 deltaRot = Math::Vec3(std::abs(matrixRotation[0]), std::abs(matrixRotation[1]), std::abs(matrixRotation[2])) - trans->m_rotation;
+                Math::Vector3 deltaRot = Math::Vector3(std::abs(matrixRotation[0]), std::abs(matrixRotation[1]), std::abs(matrixRotation[2])) - trans->m_rotation;
                 trans->m_rotation += deltaRot;
 
-                Math::Vec3 deltaScale = Math::Vec3(matrixScale[0], matrixScale[1], matrixScale[2]) - trans->m_scale;
+                Math::Vector3 deltaScale = Math::Vector3(matrixScale[0], matrixScale[1], matrixScale[2]) - trans->m_scale;
                 trans->m_scale += deltaScale;
             }
         }

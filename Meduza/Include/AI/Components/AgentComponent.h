@@ -8,7 +8,7 @@ namespace Me
     {
         struct AgentComponent : public BaseComponent
         {
-            Math::Vec3 m_targetLocation;
+            Math::Vector3 m_targetLocation;
             float m_agentSpeed;
             float m_stopDistance;
 

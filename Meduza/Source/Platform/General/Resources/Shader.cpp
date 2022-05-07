@@ -101,17 +101,17 @@ void Me::Resources::GL::Shader::SetFloat(std::string const& a_location, float co
     glUniform1f(glGetUniformLocation(m_program, a_location.c_str()), a_value);
 }
 
-void Me::Resources::GL::Shader::SetVec3(std::string const& a_location, Math::Vec3 const& a_vec3)
+void Me::Resources::GL::Shader::SetVec3(std::string const& a_location, Math::Vector3 const& a_vec3)
 {
     glUniform3f(glGetUniformLocation(m_program, a_location.c_str()), a_vec3.m_x, a_vec3.m_y, a_vec3.m_z);
 }
-void Me::Resources::GL::Shader::SetVec4(std::string const& a_location, Math::Vec4 const& a_vec4)
+void Me::Resources::GL::Shader::SetVec4(std::string const& a_location, Math::Vector4 const& a_vec4)
 {
     glUniform4f(glGetUniformLocation(m_program, a_location.c_str()), a_vec4.m_x, a_vec4.m_y, a_vec4.m_z, a_vec4.m_w);
 }
-void Me::Resources::GL::Shader::SetMat4(std::string const& a_location, Math::Mat4 const& a_mat4, bool const a_transpose)
+void Me::Resources::GL::Shader::SetMat4(std::string const& a_location, Math::Matrix4 const& a_mat4, bool const a_transpose)
 {
-    Math::Mat4 glMat4 = a_mat4;
+    Math::Matrix4 glMat4 = a_mat4;
 
     glUniformMatrix4fv(glGetUniformLocation(m_program, a_location.c_str()), 1, a_transpose, &glMat4.m_mat[0][0]);
 }

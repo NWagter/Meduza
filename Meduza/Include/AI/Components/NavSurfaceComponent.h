@@ -10,8 +10,8 @@ namespace Me
     {
         struct NavSurfaceComponent : public BaseComponent
         {
-            Me::Math::Vec2 m_gridSize;
-            Me::Math::Vec2 m_cellSize;
+            Me::Math::Vector2 m_gridSize;
+            Me::Math::Vector2 m_cellSize;
 
             bool m_generated;
             bool m_printGrid;

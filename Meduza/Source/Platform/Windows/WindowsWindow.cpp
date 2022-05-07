@@ -147,7 +147,7 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 // ---- Mouse
 	case WM_MOUSEMOVE: {
 		const auto mousePos = MAKEPOINTS(a_lParam);
-		Math::Vec2 mPos;
+		Math::Vector2 mPos;
 		mPos.m_x = static_cast<float>(mousePos.x) - (m_size.m_x / 2);
 		mPos.m_y = (m_size.m_y / 2) - static_cast<float>(mousePos.y);
 

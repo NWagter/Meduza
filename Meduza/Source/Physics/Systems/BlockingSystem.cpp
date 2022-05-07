@@ -21,17 +21,17 @@ void Me::Physics::BlockingSystem::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(m_components.at(i));
         TransformComponent* tC = std::get<TransformComponent*>(m_components.at(i));
 
-        Math::Vec3 movementDir = pC->m_movement;
+        Math::Vector3 movementDir = pC->m_movement;
         movementDir.Normalize();
-        Math::Vec3 vel = pC->m_velocity;
+        Math::Vector3 vel = pC->m_velocity;
         vel.Normalize();
 
         for (const CollisionData& data : pC->m_collided)
         {
             // Velocity Collision
-            Math::Vec3 result = vel + data.m_hitNormal;
+            Math::Vector3 result = vel + data.m_hitNormal;
 
-            Math::Vec3 newVel = pC->m_velocity * (result * result);
+            Math::Vector3 newVel = pC->m_velocity * (result * result);
 
             if (!newVel.IsNan())
             {

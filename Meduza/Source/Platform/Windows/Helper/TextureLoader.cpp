@@ -56,7 +56,7 @@ const Me::Helper::Dx12::TextureReturnData* Me::Helper::Dx12::TextureLoader::Load
     data->m_textureData->m_srv = srv.m_srv->GetHeap();
     data->m_textureData->m_handleIncrementer = srv.m_srv->GetSize();
 
-    data->m_size = Math::Vec2(float(data->m_textureData->m_resource->GetDesc().Width), float(data->m_textureData->m_resource->GetDesc().Height));
+    data->m_size = Math::Vector2(float(data->m_textureData->m_resource->GetDesc().Width), float(data->m_textureData->m_resource->GetDesc().Height));
 
     ME_CORE_LOG("Loaded %s with Succes! \n", data->m_textureData->m_filename.c_str());
 

@@ -18,7 +18,7 @@ namespace Me
                 return s_componentID;
             }       
 
-            virtual Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const = 0;
+            virtual Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const = 0;
 
             ColliderComponent()
             {

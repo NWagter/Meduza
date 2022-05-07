@@ -29,7 +29,7 @@ namespace Me
                 Renderer::RenderLayer* m_renderLayer;
                 EntityID m_editorCamera;
 
-                Math::Vec2 m_viewportSize = { 0.0f, 0.0f };
+                Math::Vector2 m_viewportSize = { 0.0f, 0.0f };
         };
     }
 }

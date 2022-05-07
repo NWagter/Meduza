@@ -33,7 +33,7 @@ namespace Me
         void ClearRTV();
         void CreateRTV(Descriptor& a_rtv, Descriptor& a_srv);
         void Resize(int const a_width, int const a_height);
-        Math::Vec2 Resize();
+        Math::Vector2 Resize();
 
         inline DXGI_FORMAT GetFormat() { return m_backBufferFormat; }
         inline HWND GetHWND() const { return m_hwnd; }

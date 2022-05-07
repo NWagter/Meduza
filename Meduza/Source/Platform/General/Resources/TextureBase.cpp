@@ -13,7 +13,7 @@
 
 #endif
 
-Me::Resources::TextureBase::TextureBase(Math::Vec2 const& a_size) : ResourceBase(ResourceType::Texture)
+Me::Resources::TextureBase::TextureBase(Math::Vector2 const& a_size) : ResourceBase(ResourceType::Texture)
 {
     m_size = a_size;
 }

@@ -28,7 +28,7 @@ namespace Me
             struct TextureReturnData
             {
                 TextureData* m_textureData = nullptr;
-                Math::Vec2 m_size;
+                Math::Vector2 m_size;
                 unsigned int m_srvId;
             };
 

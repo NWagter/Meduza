@@ -2,7 +2,7 @@
 
 #include "Core/Scripting/API/Helpers/Lua_MathHelper.h"
 
-void Me::Scripting::Lua_API::Lua_MathHelper::CreateVector3(lua_State* a_luaState, Math::Vec3 a_vec)
+void Me::Scripting::Lua_API::Lua_MathHelper::CreateVector3(lua_State* a_luaState, Math::Vector3 a_vec)
 {
     lua_newtable(a_luaState);
 
@@ -22,9 +22,9 @@ void Me::Scripting::Lua_API::Lua_MathHelper::CreateVector3(lua_State* a_luaState
     lua_setmetatable(a_luaState, -2);
 }
 
-Me::Math::Vec3 Me::Scripting::Lua_API::Lua_MathHelper::GetVector3(lua_State* a_luaState, int a_id)
+Me::Math::Vector3 Me::Scripting::Lua_API::Lua_MathHelper::GetVector3(lua_State* a_luaState, int a_id)
 {
-    Math::Vec3 value;
+    Math::Vector3 value;
 
     if (lua_istable(a_luaState, a_id))
     {

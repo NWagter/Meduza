@@ -6,7 +6,7 @@ namespace Me
 
     namespace Math
     {
-        class Vec2;
+        class Vector2;
     }
 
     class Application
@@ -22,7 +22,7 @@ namespace Me
         bool Run();
     protected:
         virtual void SetName(std::string a_appName) final;
-        Math::Vec2 GetScreenSize();
+        Math::Vector2 GetScreenSize();
 
     private:
         Meduza* m_meduza;

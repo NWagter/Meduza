@@ -61,7 +61,7 @@ namespace Me
 		void Present();
 
 		void SetAppName(std::string a_appName);
-		Math::Vec2 GetScreenSize();
+		Math::Vector2 GetScreenSize();
 
 		inline static unsigned char GetEngineState() { return ms_engineState;}
 

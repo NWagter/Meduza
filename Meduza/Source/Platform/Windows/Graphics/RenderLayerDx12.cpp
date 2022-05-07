@@ -183,7 +183,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
 
 	if (m_context->GetResize())
 	{
-		Math::Vec2 size = m_context->Resize();
+		Math::Vector2 size = m_context->Resize();
 		
 		GetCmd().SetViewAndScissor(size.m_x, size.m_y);
 		m_dsBuffer->SetBuffer(*m_device, GetCmd(), (int)size.m_x, (int)size.m_y);
@@ -246,7 +246,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_render
 	iB.m_textureId = textureId;
 	iB.m_textureCoords = DirectX::XMFLOAT4(a_renderable.m_textureCoords.m_xyzw);
 
-	Math::Mat4 model = a_transformComponent.GetTransform();
+	Math::Matrix4 model = a_transformComponent.GetTransform();
 
 	DirectX::XMStoreFloat4x4(&iB.m_model, DirectX::XMMATRIX((model).m_m));
 
@@ -273,10 +273,10 @@ void Me::Renderer::Dx12::RenderLayerDx12::RenderCircle(CircleRender const&)
 
 void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent)
 {
-	Math::Mat4 camMat = Math::Mat4::Identity();
+	Math::Matrix4 camMat = Math::Matrix4::Identity();
 	if(a_cameraComponent.m_cameraType == CameraType::Orthographic)
 	{		
-        Me::Math::Vec2 size = m_window->GetSize();
+        Me::Math::Vector2 size = m_window->GetSize();
         float aspect = size.m_x / size.m_y;
 
         camMat = Math::GetOrthographicMatrix(-a_cameraComponent.m_orthoScale, a_cameraComponent.m_orthoScale,
@@ -289,15 +289,15 @@ void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent const& a_cam
          a_cameraComponent.m_near, a_cameraComponent.m_far);
 	}
     
-    Math::Mat4 rMat = Math::Mat4::Identity();
+    Math::Matrix4 rMat = Math::Matrix4::Identity();
     rMat.Rotation(a_transformComponent.m_rotation);
 
-    Math::Mat4 pMat = Math::Mat4::Identity();
+    Math::Matrix4 pMat = Math::Matrix4::Identity();
     pMat.SetPosition(a_transformComponent.m_translation);
 
-    Math::Mat4 view = rMat * pMat.Inverse();
+    Math::Matrix4 view = rMat * pMat.Inverse();
 
-    Math::Mat4 camViewProjection = camMat * view;
+    Math::Matrix4 camViewProjection = camMat * view;
 
 	Helper::Dx12::CameraBuffer cBuffer = Helper::Dx12::CameraBuffer();
 	DirectX::XMStoreFloat4x4(&cBuffer.m_viewProjection, DirectX::XMMATRIX(camViewProjection.m_m));

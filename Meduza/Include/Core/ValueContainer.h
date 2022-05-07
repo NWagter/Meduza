@@ -95,15 +95,15 @@ namespace Me
 
     struct ValueVector3 : public Value
     {
-        Math::Vec3 m_value;
-        Math::Vec3 m_defaultValue = Math::Vec3(0);
+        Math::Vector3 m_value;
+        Math::Vector3 m_defaultValue = Math::Vector3(0);
 
         ValueVector3(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Vector3)
         {
             Reset();
         }
 
-        ValueVector3(std::string const& a_argumentName, Math::Vec3 const a_value) : Value(a_argumentName, ValueType::Vector3)
+        ValueVector3(std::string const& a_argumentName, Math::Vector3 const a_value) : Value(a_argumentName, ValueType::Vector3)
         {
             m_value = a_value;
         }

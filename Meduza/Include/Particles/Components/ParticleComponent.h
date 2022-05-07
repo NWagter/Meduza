@@ -10,7 +10,7 @@ namespace Me
 
         struct ParticleComponent : public BaseComponent
         {
-            Math::Vec3 m_direction;
+            Math::Vector3 m_direction;
             float m_speed;
             float m_lifeTime;            
 

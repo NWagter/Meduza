@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/MeduzaMath.h"
+#include "Math/Math.h"
 #include "ECS/EntityTypes.h"
 
 namespace Me
@@ -30,8 +30,8 @@ namespace Me
 
         struct Ray
         {
-            Math::Vec3 m_origin;
-            Math::Vec3 m_direction;
+            Math::Vector3 m_origin;
+            Math::Vector3 m_direction;
         };
 
         struct CollisionData
@@ -39,9 +39,9 @@ namespace Me
             EntityID m_entity;
             CollisionLayerID m_collisionLayerID;
 
-            Math::Vec3 m_otherPosition;
-            Math::Vec3 m_hitPoint;
-            Math::Vec3 m_hitNormal;
+            Math::Vector3 m_otherPosition;
+            Math::Vector3 m_hitPoint;
+            Math::Vector3 m_hitNormal;
 
             CollisionData()
             {
@@ -66,7 +66,7 @@ namespace Me
         class PhysicsHelper
         {
         public:
-            static Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction, std::vector<Math::Vec3> const& a_points);
+            static Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points);
         };
     }
 }

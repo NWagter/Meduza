@@ -68,7 +68,7 @@ void Me::Application::SetName(std::string a_appName)
     m_meduza->SetAppName(a_appName);
 }
 
-Me::Math::Vec2 Me::Application::GetScreenSize()
+Me::Math::Vector2 Me::Application::GetScreenSize()
 {
     return m_meduza->GetScreenSize();
 }

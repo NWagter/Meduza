@@ -32,7 +32,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Translate(lua_State* a_luaState)
     }
     
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Math::Vec3 translation = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Math::Vector3 translation = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_translation += translation;
@@ -48,7 +48,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Rotate(lua_State* a_luaState)
     }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Math::Vec3 rotation = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Math::Vector3 rotation = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_rotation += rotation;
@@ -94,16 +94,16 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_Move(lua_State* a_luaState)
     }
           
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Me::Math::Vec3 move = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Me::Math::Vector3 move = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
-    Me::Math::Mat4 transform = Me::Math::Mat4().Rotation(trans->m_rotation);
+    Me::Math::Matrix4 transform = Me::Math::Matrix4().Rotation(trans->m_rotation);
     
-    Me::Math::Vec3 right = transform.GetRight() * move.m_x;
-    Me::Math::Vec3 up = transform.GetUp() * move.m_y;
-    Me::Math::Vec3 forward = transform.GetForward() * move.m_z;
+    Me::Math::Vector3 right = transform.GetRight() * move.m_x;
+    Me::Math::Vector3 up = transform.GetUp() * move.m_y;
+    Me::Math::Vector3 forward = transform.GetForward() * move.m_z;
 
-    Me::Math::Vec3 movement = forward + right + up;
+    Me::Math::Vector3 movement = forward + right + up;
 
     Physics::PhysicsComponent* pC = EntityManager::GetEntityManager()->GetComponent<Physics::PhysicsComponent>(ent);
     if (pC != nullptr)
@@ -126,7 +126,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_LookAt(lua_State* a_luaState)
     }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Me::Math::Vec3 target = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Me::Math::Vector3 target = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans = EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_rotation = Me::Math::LookAtRotation(target, trans->m_translation);
@@ -142,7 +142,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_SetLocation(lua_State* a_luaState
     }
     
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Math::Vec3 translation = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Math::Vector3 translation = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_translation = translation;
@@ -158,7 +158,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_SetRotation(lua_State* a_luaState
     }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Math::Vec3 euler = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Math::Vector3 euler = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_rotation = euler;
@@ -174,7 +174,7 @@ int Me::Scripting::Lua_API::Lua_Transform::lua_SetScale(lua_State* a_luaState)
     }
 
     EntityID ent = (EntityID)lua_tonumber(a_luaState, 1);
-    Math::Vec3 scale = Lua_MathHelper::GetVector3(a_luaState, 2);
+    Math::Vector3 scale = Lua_MathHelper::GetVector3(a_luaState, 2);
 
     auto trans =  EntityManager::GetEntityManager()->GetComponent<TransformComponent>(ent);
     trans->m_scale = scale;

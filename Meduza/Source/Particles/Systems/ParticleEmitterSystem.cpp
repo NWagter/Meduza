@@ -42,11 +42,11 @@ void Me::Particle::ParticleEmitterSystem::OnUpdate(float a_dt)
             particleSystem->m_currentParticles++;
             ParticleComponent* pComp = new ParticleComponent();
             Particle particle = particleSystem->m_particle;
-            Math::Vec3 dir = particle.m_direction;
+            Math::Vector3 dir = particle.m_direction;
 
             if (particle.m_randomDirection)
             {
-                dir = Math::RandomRange(dir, particle.m_directionRange);
+                dir = Math::Random::RandomRange(dir, particle.m_directionRange);
             }
 
 

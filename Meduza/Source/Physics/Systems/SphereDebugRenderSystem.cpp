@@ -63,7 +63,7 @@ void Me::SphereDebugRenderSystem::OnUpdate(float)
         TransformComponent trans = *tC;
 
         trans.m_translation += sC->m_colliderOffset;
-        trans.m_scale = Math::Vec3(sC->m_radius * 2);
+        trans.m_scale = Math::Vector3(sC->m_radius * 2);
 
         m_renderLayer->DebugSubmit(*dR, trans);
     }

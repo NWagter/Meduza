@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
-#include "Math/MeduzaMath.h"
+#include "Math/Math.h"
 #include "Core/MeduzaCore.h"
 
 #include "Core/Application.h"

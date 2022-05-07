@@ -39,11 +39,11 @@ void Me::CircleDebugRenderSystem::OnUpdate(float)
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
         Physics::CircleColliderComponent* cC = std::get<Physics::CircleColliderComponent*>(compTuple);
 
-        Math::Vec3 translation = tC->m_translation;
+        Math::Vector3 translation = tC->m_translation;
 
         translation += cC->m_colliderOffset;
         
-        Math::Mat4 trans = Math::Mat4::Identity();
+        Math::Matrix4 trans = Math::Matrix4::Identity();
         trans.SetPosition(translation);
 
         Debug::MeduzaDebug::RenderCircle(trans, cC->m_radius, m_debugColour);

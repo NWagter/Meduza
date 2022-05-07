@@ -1,7 +1,7 @@
 #include "MePCH.h"
 #include "Physics/Physics.h"
 
-Me::Math::Vec3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Me::Math::Vec3 const& a_direction, std::vector<Math::Vec3> const& a_points)
+Me::Math::Vector3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Me::Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points)
 {
 	float distance = std::numeric_limits<float>::lowest();
 	size_t furthersPointIndexA = -1;
@@ -21,5 +21,5 @@ Me::Math::Vec3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Me::Math:
 		return a_points[furthersPointIndexA];
 	}
 
-	return Math::Vec3(0);
+	return Math::Vector3(0);
 }

@@ -11,13 +11,13 @@ namespace Me
     {
         struct LineRender
         {
-            Math::Vec3 m_start;
-            Math::Vec3 m_end;
+            Math::Vector3 m_start;
+            Math::Vector3 m_end;
             Colour m_colour;
         };        
         struct CircleRender
         {
-            Math::Mat4 m_transform;
+            Math::Matrix4 m_transform;
             float m_radius;
             Colour m_colour;
         };

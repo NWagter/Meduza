@@ -28,7 +28,7 @@ namespace Me
             m_cameralayer = 0;
         }
 
-        Math::Vec2 m_size;
+        Math::Vector2 m_size;
         float m_orthoScale;
         float m_near;
         float m_far;
@@ -68,7 +68,7 @@ namespace Me
 
             if (m_cameraType == CameraType::Perspective)
             {
-                Editor::Helper::EditorHelper::DrawVec2Prop("Size", m_size);
+                Editor::Helper::EditorHelper::DrawVector2Prop("Size", m_size);
             }
             else if (m_cameraType == CameraType::Orthographic)
             {

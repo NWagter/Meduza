@@ -61,7 +61,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_p
 
 				for (std::size_t i = 0; i < count; i++)
 				{
-					Math::Vec3 normals = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
+					Math::Vector3 normals = *(GetElementFromBuffer<Math::Vector3>(&buffer.data[accessorByteOffset], start, i));
 
 					if (mesh.m_vertices.size() <= i)
 					{
@@ -89,7 +89,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_p
 
 				for (std::size_t i = 0; i < count; i++)
 				{
-					Math::Vec3 vertPos = *(GetElementFromBuffer<Math::Vec3>(&buffer.data[accessorByteOffset], start, i));
+					Math::Vector3 vertPos = *(GetElementFromBuffer<Math::Vector3>(&buffer.data[accessorByteOffset], start, i));
 
 					if (mesh.m_vertices.size() <= i)
 					{
@@ -117,7 +117,7 @@ bool Me::Utils::Resources::ResourceLoaderUtils::LoadModel(std::string const& a_p
 
 				for (std::size_t i = 0; i < count; i++)
 				{
-					Math::Vec2 textCoord = *(GetElementFromBuffer<Math::Vec2>(&buffer.data[accessorByteOffset], start, i));
+					Math::Vector2 textCoord = *(GetElementFromBuffer<Math::Vector2>(&buffer.data[accessorByteOffset], start, i));
 
 					if (mesh.m_vertices.size() <= i)
 					{

@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 #include <algorithm>
+#include <cmath>
 #include <random>
 
 #include <cassert>
@@ -78,8 +79,8 @@
 
 #endif
 
-#include "Math/MeduzaMath.h"
-#include "Math/GJKAlgorithm.h"
+#include "Math/Math.h"
+#include "Math/Vector2.h"
 
 #include "Core/Core.h"
 #include "Core/MeduzaCore.h"

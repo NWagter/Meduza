@@ -7,7 +7,7 @@ namespace Me
     struct RenderComponent : BaseComponent
     { 
         Colour m_colour;
-        Math::Vec4 m_textureCoords = Math::Vec4(0,0,1,1);
+        Math::Vector4 m_textureCoords = Math::Vector4(0,0,1,1);
 
         static ComponentID s_componentID;
 

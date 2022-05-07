@@ -31,8 +31,8 @@ int Me::Scripting::Lua_API::Lua_Graphics::lua_SetUV(lua_State* a_luaState)
     
     if(rC != nullptr && rC->m_texture > 0)
     {
-        Math::Vec2 size = Resources::ResourceLibrary::GetInstance()->GetResource<Resources::TextureBase>(rC->m_texture)->GetSize();
-        rC->m_textureCoords = Animation::GetUV(Math::Vec4(x,y,z,w), size);
+        Math::Vector2 size = Resources::ResourceLibrary::GetInstance()->GetResource<Resources::TextureBase>(rC->m_texture)->GetSize();
+        rC->m_textureCoords = Animation::GetUV(Math::Vector4(x,y,z,w), size);
     }
 
     return 1;

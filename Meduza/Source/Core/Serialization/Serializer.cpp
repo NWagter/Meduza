@@ -790,7 +790,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
                     break;
                     case Me::ValueType::Vector3:
                     {
-                        Math::Vec3 value;
+                        Math::Vector3 value;
                         archive(cereal::make_nvp("Value", value.m_xyz));
                         inputValue = new Me::ValueVector3(argumentName, value);
                     }
@@ -1107,7 +1107,7 @@ EntityID Me::Serialization::Serializer::DeserializeEntity(std::string a_file)
                 break;
                 case Me::ValueType::Vector3:
                 {
-                    Math::Vec3 value;
+                    Math::Vector3 value;
                     archive(cereal::make_nvp("Value", value.m_xyz));
                     inputValue = new Me::ValueVector3(argumentName, value);
                 }

@@ -65,7 +65,7 @@ void Me::Renderer::Dx12::Context::Resize(float const a_width, float const a_heig
 	}
 }
 
-Me::Math::Vec2 Me::Renderer::Dx12::Context::Resize()
+Me::Math::Vector2 Me::Renderer::Dx12::Context::Resize()
 {
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
 	m_swapChain.Get()->GetDesc1(&swapChainDesc);
@@ -82,7 +82,7 @@ Me::Math::Vec2 Me::Renderer::Dx12::Context::Resize()
 
 	m_resize = false;
 
-	return Math::Vec2(m_width,m_height);
+	return Math::Vector2(m_width,m_height);
 }
 
 void Me::Renderer::Dx12::Context::ClearRTV()

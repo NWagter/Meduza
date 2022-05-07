@@ -14,7 +14,7 @@ namespace Utils
         static uint16_t GetHashedID(std::string const& a_strToHash);
     };     
 
-    Math::Vec4 TextureSlice(Math::Vec2 const& a_textureSize, Math::Vec2 const& a_sliceBegin, Math::Vec2 const& a_sliceSize);
+    Math::Vector4 TextureSlice(Math::Vector2 const& a_textureSize, Math::Vector2 const& a_sliceBegin, Math::Vector2 const& a_sliceSize);
 }
 
   
@@ -37,9 +37,9 @@ namespace Utils
 
   namespace Animation
   {
-    static Me::Math::Vec4 GetUV(Me::Math::Vec4 const& a_texture, Me::Math::Vec2 const& a_textureSize)
+    static Me::Math::Vector4 GetUV(Me::Math::Vector4 const& a_texture, Me::Math::Vector2 const& a_textureSize)
     {
-      Me::Math::Vec4 uv;
+      Me::Math::Vector4 uv;
 
       if (a_texture.m_x != 0 || a_texture.m_z != 1)
       {

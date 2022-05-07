@@ -10,31 +10,31 @@ namespace Me
     {
         struct BoxCollider2DComponent : public ColliderComponent
         {
-            Math::Vec2 m_colliderSize = Math::Vec2(1,1);
-            Math::Vec2 m_colliderOffset = Math::Vec2(0,0);
-            std::vector<Math::Vec3> m_points;
+            Math::Vector2 m_colliderSize = Math::Vector2(1,1);
+            Math::Vector2 m_colliderOffset = Math::Vector2(0,0);
+            std::vector<Math::Vector3> m_points;
 
             ComponentID GetColliderComponentID() override
             {
                 return s_componentID;
             }
 
-            Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const override
+            Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const override
             {
-                Math::Vec2 point(PhysicsHelper::GetFurthestPointInDirection(a_direction, m_points));
+                Math::Vector2 point(PhysicsHelper::GetFurthestPointInDirection(a_direction, m_points));
 
                 point *= m_colliderSize;
                 point += m_colliderOffset;
 
-                return Math::Vec3(point.m_x,point.m_y, 0);
+                return Math::Vector3(point.m_x,point.m_y, 0);
             }
 
             BoxCollider2DComponent()
             {
-                m_points.push_back(Math::Vec3(-0.5f, 0.5f, 0));
-                m_points.push_back(Math::Vec3(0.5f, 0.5f, 0));
-                m_points.push_back(Math::Vec3(0.5f, -0.5f, 0));
-                m_points.push_back(Math::Vec3(-0.5f, -0.5f, 0));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0));
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0));
             }
             
             static ComponentID s_componentID;
@@ -42,8 +42,8 @@ namespace Me
 #ifdef EDITOR
             virtual void CustomGUI() 
             {
-                Editor::Helper::EditorHelper::DrawVec2Prop("ColliderScale", m_colliderSize);
-                Editor::Helper::EditorHelper::DrawVec2Prop("ColliderOffset", m_colliderOffset);
+                Editor::Helper::EditorHelper::DrawVector2Prop("ColliderScale", m_colliderSize);
+                Editor::Helper::EditorHelper::DrawVector2Prop("ColliderOffset", m_colliderOffset);
                 ColliderComponent::CustomGUI();
             }
 #endif

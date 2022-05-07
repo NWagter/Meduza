@@ -37,8 +37,8 @@ namespace Me
             bool MouseButtonUp(MouseButton const& a_button);
             bool MouseButtonPressed(MouseButton const& a_button);
             bool IsViewportFocussed() const { return m_viewportFocused; }
-            Math::Vec2 MousePosition();
-            Math::Vec2 ScreenSize();
+            Math::Vector2 MousePosition();
+            Math::Vector2 ScreenSize();
             void Clear();
         private:
             EventSystem(Window* a_window);
@@ -46,7 +46,7 @@ namespace Me
             
             void OnKeyEvent(KeyCode const& a_key, KeyState const& a_state);
             void OnMouseEvent(MouseButton const& a_button, MouseEvent const& a_event);
-            void OnMouseMove(Math::Vec2 const& a_position);
+            void OnMouseMove(Math::Vector2 const& a_position);
             void SetMouseWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_transform);
 
             static EventSystem* ms_eventSystem;
@@ -55,7 +55,7 @@ namespace Me
             Input::Keyboard* m_keyboard;
             bool m_viewportFocused = false;
 
-            Me::Math::Vec2 m_screenSize;
+            Me::Math::Vector2 m_screenSize;
             Window* m_window;
 
         friend Window;

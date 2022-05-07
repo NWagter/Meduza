@@ -10,15 +10,15 @@ namespace Me
     {
         struct NavField
         {
-            Me::Math::Vec2 m_gridSize;
-            Me::Math::Vec2 m_cellSize;
+            Me::Math::Vector2 m_gridSize;
+            Me::Math::Vector2 m_cellSize;
 
             int m_xCells;
             int m_yCells;
 
             char* m_grid;
 
-            NavField(Me::Math::Vec2 a_gridSize, Me::Math::Vec2 a_cellSize)
+            NavField(Me::Math::Vector2 a_gridSize, Me::Math::Vector2 a_cellSize)
             {
                 m_gridSize = a_gridSize;
                 m_cellSize = a_cellSize;

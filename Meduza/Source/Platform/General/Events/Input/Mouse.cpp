@@ -35,7 +35,7 @@ Me::Event::MouseEvent Me::Event::Input::Mouse::State(MouseButton const& a_button
     return mEvent->second;
 }
 
-Me::Math::Vec2 Me::Event::Input::Mouse::GetPosition()
+Me::Math::Vector2 Me::Event::Input::Mouse::GetPosition()
 {
     return m_position;
 }
@@ -62,7 +62,7 @@ void Me::Event::Input::Mouse::SetState(MouseButton const& a_button, MouseEvent c
     }
 }
 
-void Me::Event::Input::Mouse::SetPosition(Math::Vec2 const& a_position)
+void Me::Event::Input::Mouse::SetPosition(Math::Vector2 const& a_position)
 {
     m_position = a_position;
 }
@@ -72,21 +72,21 @@ void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent const& a_camera, Tra
     float x = (m_position.m_x * 2) / a_camera.m_size.m_x;
     float y = (m_position.m_y * 2) / a_camera.m_size.m_y;
 
-    Math::Vec4 ray_clip = Math::Vec4(x,y, -1, 1);
+    Math::Vector4 ray_clip = Math::Vector4(x,y, -1, 1);
 
-    Math::Mat4 pMat = Math::Mat4::Identity();
+    Math::Matrix4 pMat = Math::Matrix4::Identity();
     pMat.SetPosition(a_transform.m_translation);
 
-    Math::Mat4 rMat = Math::Mat4::Identity();
+    Math::Matrix4 rMat = Math::Matrix4::Identity();
     rMat.Rotation(a_transform.m_rotation);
 
-    Math::Mat4 view = rMat * pMat.Inverse();
+    Math::Matrix4 view = rMat * pMat.Inverse();
 
-    Math::Mat4 projection = Math::GetProjectionMatrix(45.0f,
+    Math::Matrix4 projection = Math::GetProjectionMatrix(45.0f,
     a_camera.m_size.m_x / a_camera.m_size.m_y, a_camera.m_near, a_camera.m_far);
 
-    Math::Vec4 rayEye = ( projection.Inverse() * ray_clip);
-    rayEye = Math::Vec4(rayEye.m_x, rayEye.m_y, -1.0, 0.0);
-    Math::Vec4 rayWorld = (view.Inverse() * rayEye);
-    m_screenRay->m_origin = Math::Vec3(rayWorld.m_x,rayWorld.m_y,rayWorld.m_z).Normalize();
+    Math::Vector4 rayEye = ( projection.Inverse() * ray_clip);
+    rayEye = Math::Vector4(rayEye.m_x, rayEye.m_y, -1.0, 0.0);
+    Math::Vector4 rayWorld = (view.Inverse() * rayEye);
+    m_screenRay->m_origin = Math::Vector3(rayWorld.m_x,rayWorld.m_y,rayWorld.m_z).Normalize();
 }

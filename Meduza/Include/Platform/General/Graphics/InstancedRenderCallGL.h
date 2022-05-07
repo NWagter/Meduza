@@ -32,7 +32,7 @@ namespace Me
                     m_textures.clear();
                 }
 
-                int Draw(Math::Mat4 const& a_cameraMatrix, bool const a_debugMode = false);
+                int Draw(Math::Matrix4 const& a_cameraMatrix, bool const a_debugMode = false);
                 bool AddData(InstancedData const& a_instanceData);
                 int AddTexture(Texture const& a_texture);
                 void ClearBuffer() override
@@ -65,7 +65,7 @@ namespace Me
             };
 
             template<typename InstancedData>
-            int InstancedRenderCall<InstancedData>::Draw(Math::Mat4 const& a_cameraMatrix, bool const a_debugMode)
+            int InstancedRenderCall<InstancedData>::Draw(Math::Matrix4 const& a_cameraMatrix, bool const a_debugMode)
             {
                 CreateInstancedBuffer();
 
@@ -159,21 +159,21 @@ namespace Me
                 glEnableVertexAttribArray(3);
                 glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
                 glEnableVertexAttribArray(4);
-                glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(1 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(1 * sizeof(Math::Vector4)));
                 glEnableVertexAttribArray(5);
-                glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(2 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(2 * sizeof(Math::Vector4)));
                 glEnableVertexAttribArray(6);
-                glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(3 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(3 * sizeof(Math::Vector4)));
                 //Colour
                 glEnableVertexAttribArray(7);
-                glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(4 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(4 * sizeof(Math::Vector4)));
                 //UV
                 glEnableVertexAttribArray(8);
-                glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(5 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(5 * sizeof(Math::Vector4)));
                 //textureID
 
                 glEnableVertexAttribArray(9);
-                glVertexAttribPointer(9, 1, GL_FLOAT, false, sizeof(InstancedData), (void*)(6 * sizeof(Math::Vec4)));
+                glVertexAttribPointer(9, 1, GL_FLOAT, false, sizeof(InstancedData), (void*)(6 * sizeof(Math::Vector4)));
 
 
                 // sent these attributes only once per instance to the program:

@@ -5,7 +5,7 @@
 
 Me::Window::Window(int const a_w, int const a_h, const char* a_title)
 {
-	m_size = Math::Vec2(a_w, a_h);
+	m_size = Math::Vector2(a_w, a_h);
 	m_title = a_title;
 
 	m_active = false;

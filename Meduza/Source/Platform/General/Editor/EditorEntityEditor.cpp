@@ -122,7 +122,7 @@ void OnColliderAdded(EntityID a_ent, Me::EntityManager* a_eManager, Me::Physics:
     }
 }
 
-static Me::Math::Vec4 s_uv = Me::Math::Vec4(0,0,0,0);
+static Me::Math::Vector4 s_uv = Me::Math::Vector4(0,0,0,0);
 
 void Me::Editor::EntityEditor::Draw()
 {
@@ -135,7 +135,7 @@ void Me::Editor::EntityEditor::Draw()
     {
         if (m_selectedEntity != m_hierarchy->GetSelected())
         {
-            s_uv = Math::Vec4(0, 0, 0, 0);
+            s_uv = Math::Vector4(0, 0, 0, 0);
         }
 
         m_selectedEntity = m_hierarchy->GetSelected();
@@ -369,10 +369,10 @@ void Me::Editor::EntityEditor::Draw()
 
             if(a_comp.m_texture > 0)
             {           
-                if(s_uv == Math::Vec4(0,0,0,0))
+                if(s_uv == Math::Vector4(0,0,0,0))
                 {
-                    Math::Vec2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
-                    Math::Vec4 tC = a_comp.m_textureCoords;
+                    Math::Vector2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
+                    Math::Vector4 tC = a_comp.m_textureCoords;
                     float y = 0;
                     if(tC.m_y != 0)
                     {
@@ -385,14 +385,14 @@ void Me::Editor::EntityEditor::Draw()
                     }
 
 
-                    s_uv = Math::Vec4(tC.m_x * size.m_x, y, tC.m_z * size.m_x, w);
+                    s_uv = Math::Vector4(tC.m_x * size.m_x, y, tC.m_z * size.m_x, w);
                 }
 
-                Helper::EditorHelper::DrawVec4Prop("TextureRect", s_uv);
+                Helper::EditorHelper::DrawVector4Prop("TextureRect", s_uv);
 
                 if(ImGui::Button("Apply TextureRect"))
                 {
-                    Math::Vec2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
+                    Math::Vector2 size = rLibrary->GetResource<Resources::TextureBase>(a_comp.m_texture)->GetSize();
                     a_comp.m_textureCoords = Animation::GetUV(s_uv, size);
                 }
             }
@@ -497,7 +497,7 @@ void Me::Editor::EntityEditor::Draw()
                         {
                             auto valueVec3 = static_cast<ValueVector3*>(value);
                             std::string idValue = "Value ##Vector" + argumentName;
-                            Helper::EditorHelper::DrawVec3Prop(argumentName, valueVec3->m_value);
+                            Helper::EditorHelper::DrawVector3Prop(argumentName, valueVec3->m_value);
                         }
                         else if (value->m_type == ValueType::Entity)
                         {
@@ -599,18 +599,18 @@ void Me::Editor::EntityEditor::Draw()
 
         DrawComponent<AI::AgentComponent>(eManager, "Agent Component", m_selectedEntity, [](auto& a_comp)
         {
-            Helper::EditorHelper::DrawVec3Prop("TargetPosition", a_comp.m_targetLocation);
+            Helper::EditorHelper::DrawVector3Prop("TargetPosition", a_comp.m_targetLocation);
 
             ImGui::DragFloat("AgentSpeed", &a_comp.m_agentSpeed);
             ImGui::DragFloat("AgentStopdistance", &a_comp.m_stopDistance);
         });
         DrawComponent<AI::NavSurfaceComponent>(eManager, "NavSurface Component", m_selectedEntity, [](auto& a_comp)
         {
-            Math::Vec2 gS = a_comp.m_gridSize;
-            Math::Vec2 cS = a_comp.m_cellSize;
+            Math::Vector2 gS = a_comp.m_gridSize;
+            Math::Vector2 cS = a_comp.m_cellSize;
 
-            Helper::EditorHelper::DrawVec2Prop("GridSize", a_comp.m_gridSize);
-            Helper::EditorHelper::DrawVec2Prop("CellSize", a_comp.m_cellSize);
+            Helper::EditorHelper::DrawVector2Prop("GridSize", a_comp.m_gridSize);
+            Helper::EditorHelper::DrawVector2Prop("CellSize", a_comp.m_cellSize);
             
             if(ImGui::Button("Print Grid"))
             {

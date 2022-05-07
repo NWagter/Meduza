@@ -2,7 +2,7 @@
 #include "Platform/Windows/Helper/Helper.h"
 #include "Platform/Windows/Resources/Texture.h"
 
-Me::Resources::Dx12::Texture::Texture(unsigned int const a_srvId, Helper::Dx12::TextureData& a_texture, Math::Vec2 const& a_size) : TextureBase(a_size)
+Me::Resources::Dx12::Texture::Texture(unsigned int const a_srvId, Helper::Dx12::TextureData& a_texture, Math::Vector2 const& a_size) : TextureBase(a_size)
 {
     m_srvId = a_srvId;
     m_texture = &a_texture;

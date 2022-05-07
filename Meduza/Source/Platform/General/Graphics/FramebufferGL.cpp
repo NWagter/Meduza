@@ -48,7 +48,7 @@ void Me::Renderer::GL::FrameBufferGL::Create()
 
 }
 
-void Me::Renderer::GL::FrameBufferGL::Resize(Math::Vec2 const& a_size)
+void Me::Renderer::GL::FrameBufferGL::Resize(Math::Vector2 const& a_size)
 {
 
     if( m_renderTextureID)

@@ -26,13 +26,13 @@ namespace Me
 		virtual void SetTitle(std::string const& a_title) = 0;
 		
 		inline bool IsActive() { return m_active; }
-		inline Math::Vec2 GetSize() { return m_size; }
+		inline Math::Vector2 GetSize() { return m_size; }
 
 	private:
 		void SetEventSystem(Event::EventSystem* a_eventSystem);
 	protected:
 		Renderer::ContextBase* m_context;
-		Math::Vec2 m_size;
+		Math::Vector2 m_size;
 		const char* m_title;
 
 		bool m_active;

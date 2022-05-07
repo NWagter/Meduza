@@ -10,18 +10,18 @@ namespace Me
     {
         struct BoxCollider3DComponent : public ColliderComponent
         {
-            Math::Vec3 m_colliderSize = Math::Vec3(1,1,1);
-            Math::Vec3 m_colliderOffset = Math::Vec3(0,0,0);
-            std::vector<Math::Vec3> m_points;
+            Math::Vector3 m_colliderSize = Math::Vector3(1,1,1);
+            Math::Vector3 m_colliderOffset = Math::Vector3(0,0,0);
+            std::vector<Math::Vector3> m_points;
 
             ComponentID GetColliderComponentID() override
             {
                 return s_componentID;
             }
 
-            Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const override
+            Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const override
             {
-                Math::Vec3 point(PhysicsHelper::GetFurthestPointInDirection(a_direction, m_points));
+                Math::Vector3 point(PhysicsHelper::GetFurthestPointInDirection(a_direction, m_points));
 
                 point *= m_colliderSize;
                 point += m_colliderOffset;
@@ -31,15 +31,15 @@ namespace Me
 
             BoxCollider3DComponent()
             {
-                m_points.push_back(Math::Vec3(-0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vec3(0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vec3(0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vec3(-0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
 
-                m_points.push_back(Math::Vec3(-0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vec3(0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vec3(0.5f, -0.5f, -0.5f));
-                m_points.push_back(Math::Vec3(-0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
             }
 
             static ComponentID s_componentID;
@@ -47,8 +47,8 @@ namespace Me
 #ifdef EDITOR
             virtual void CustomGUI()
             {
-                Editor::Helper::EditorHelper::DrawVec3Prop("ColliderScale", m_colliderSize);
-                Editor::Helper::EditorHelper::DrawVec3Prop("ColliderOffset", m_colliderOffset);
+                Editor::Helper::EditorHelper::DrawVector3Prop("ColliderScale", m_colliderSize);
+                Editor::Helper::EditorHelper::DrawVector3Prop("ColliderOffset", m_colliderOffset);
                 ColliderComponent::CustomGUI();
             }
 #endif

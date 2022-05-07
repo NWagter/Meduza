@@ -28,11 +28,11 @@ Me::Resources::GL::Texture::Texture(std::string const& a_file) : TextureBase()
         ME_GFX_ASSERT_M(true, "Failed to load Texture!");
     }
 
-    m_size = Math::Vec2(float(width), float(height));
+    m_size = Math::Vector2(float(width), float(height));
     Me::Utils::Resources::ResourceLoaderUtils::FreeImage(data);
 }
 
-Me::Resources::GL::Texture::Texture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height) : TextureBase(Math::Vec2(a_width,a_height))
+Me::Resources::GL::Texture::Texture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height) : TextureBase(Math::Vector2(a_width,a_height))
 {
     glGenTextures(1, &m_texture);  
     glBindTexture(GL_TEXTURE_2D, m_texture);  
@@ -52,7 +52,7 @@ Me::Resources::GL::Texture::Texture(std::vector<unsigned char> const& a_texture,
         ME_GFX_ASSERT_M(true, "Failed to load Texture!");
     }
 
-    m_size = Math::Vec2(float(a_width), float(a_height));
+    m_size = Math::Vector2(float(a_width), float(a_height));
 }
 
 Me::Resources::GL::Texture::~Texture()

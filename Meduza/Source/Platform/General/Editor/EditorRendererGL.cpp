@@ -122,7 +122,7 @@ void Me::Editor::GL::EditorRendererGL::Populate()
 {
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
-	Math::Vec2 size = m_renderLayer->GetWindow()->GetSize();
+	Math::Vector2 size = m_renderLayer->GetWindow()->GetSize();
 	m_imguiIO->DisplaySize = ImVec2(size.m_x,size.m_y);
 
 	for(int i = 0; i < m_editorWidgets.size();i++)

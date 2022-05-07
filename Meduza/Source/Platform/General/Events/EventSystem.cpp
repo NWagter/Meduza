@@ -106,12 +106,12 @@ bool Me::Event::EventSystem::MouseButtonPressed(MouseButton const& a_button)
     return false;
 }
 
-Me::Math::Vec2 Me::Event::EventSystem::MousePosition()
+Me::Math::Vector2 Me::Event::EventSystem::MousePosition()
 {
     return m_mouse->GetPosition();
 }
 
-Me::Math::Vec2 Me::Event::EventSystem::ScreenSize()
+Me::Math::Vector2 Me::Event::EventSystem::ScreenSize()
 {
     return m_screenSize;
 }
@@ -125,7 +125,7 @@ void Me::Event::EventSystem::OnMouseEvent(MouseButton const& a_button, MouseEven
 {
     m_mouse->SetState(a_button, a_event);
 }
-void Me::Event::EventSystem::OnMouseMove(Math::Vec2 const& a_position)
+void Me::Event::EventSystem::OnMouseMove(Math::Vector2 const& a_position)
 {
     m_mouse->SetPosition(a_position);
 }

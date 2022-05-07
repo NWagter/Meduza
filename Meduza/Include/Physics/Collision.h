@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/MeduzaMath.h"
+#include "Math/Math.h"
 
 using ComponentID = uint32_t;
 

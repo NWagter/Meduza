@@ -8,9 +8,9 @@ uint16_t Me::Utils::Utilities::GetHashedID(std::string const& a_strToHash)
     return hashedId;
 }
 
-Me::Math::Vec4 Me::Utils::TextureSlice(Math::Vec2 const& a_textureSize, Math::Vec2 const& a_sliceBegin, Math::Vec2 const& a_sliceSize)
+Me::Math::Vector4 Me::Utils::TextureSlice(Math::Vector2 const& a_textureSize, Math::Vector2 const& a_sliceBegin, Math::Vector2 const& a_sliceSize)
 {
-    Math::Vec4 slice = Math::Vec4(0,0,1,1);
+    Math::Vector4 slice = Math::Vector4(0,0,1,1);
 
     if(a_sliceBegin.m_x != 0)
     {

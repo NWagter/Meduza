@@ -19,7 +19,7 @@ void Me::Physics::FluidDragSystem::OnUpdate(float a_dt)
     {
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         
-        Math::Vec3 velocity = pC->m_velocity;
+        Math::Vector3 velocity = pC->m_velocity;
         float vel = velocity.Lenght();
 
         if(vel <= 0)
@@ -28,7 +28,7 @@ void Me::Physics::FluidDragSystem::OnUpdate(float a_dt)
         }
 
         float drag = pC->m_drag * std::pow(vel, gs_dragExponent);
-        Math::Vec3 dragForce = (velocity.Normalize() * drag).Inverse();
+        Math::Vector3 dragForce = (velocity.Normalize() * drag).Inverse();
 
         if (!dragForce.IsNan())
         {

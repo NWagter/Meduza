@@ -16,7 +16,7 @@ Me::Renderer::Dx12::FrameBufferDx12::~FrameBufferDx12()
 }
 
 
-void Me::Renderer::Dx12::FrameBufferDx12::Resize(Math::Vec2 const& a_size)
+void Me::Renderer::Dx12::FrameBufferDx12::Resize(Math::Vector2 const& a_size)
 {
 
 }

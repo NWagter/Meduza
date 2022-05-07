@@ -10,19 +10,19 @@ namespace Me
         {
         public:            
             TextureBase() : ResourceBase(ResourceType::Texture) {};
-            TextureBase(Math::Vec2 const& a_size);
+            TextureBase(Math::Vector2 const& a_size);
 
             virtual ~TextureBase();   
 
             virtual void Reload() {};
             virtual void Unload() {};
 
-            inline Math::Vec2 GetSize() const {return m_size;}
+            inline Math::Vector2 GetSize() const {return m_size;}
 
             TextureBase* OnCreate(const std::string& a_path) override;
             TextureBase* Create(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
         protected:
-            Math::Vec2 m_size;
+            Math::Vector2 m_size;
         };
     }
 }

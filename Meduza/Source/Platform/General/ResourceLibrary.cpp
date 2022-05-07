@@ -190,13 +190,13 @@ void Me::Resources::ResourceLibrary::CreateSphere()
 	uint16_t stackCount = sliceCount;
 
 	Vertex topVertex;
-	Me::Math::Vec3 vPos = Me::Math::Vec3(0, radius, 0);
+	Me::Math::Vector3 vPos = Me::Math::Vector3(0, radius, 0);
 	topVertex.m_vertexPos = vPos;
 	topVertex.m_normals = vPos.Normalize();
 	topVertex.SetUV(0, 0);
 
 	Vertex bottomVertex;
-	vPos = Me::Math::Vec3(0, -radius, 0);
+	vPos = Me::Math::Vector3(0, -radius, 0);
 	bottomVertex.m_vertexPos = vPos;
 	bottomVertex.m_normals = vPos.Normalize();
 	bottomVertex.SetUV(0, 1);
@@ -218,7 +218,7 @@ void Me::Resources::ResourceLibrary::CreateSphere()
 			Vertex v;
 
 			// spherical to cartesian
-			Math::Vec3 pos;
+			Math::Vector3 pos;
 			pos.m_x = sinf(phi) * cosf(theta);
 			pos.m_y = cosf(phi);
 			pos.m_z = sinf(phi) * sinf(theta);

@@ -20,7 +20,7 @@ namespace Me
                 ~FrameBufferGL();
 
                 void Create();
-                void Resize(Math::Vec2 const& a_size) override;
+                void Resize(Math::Vector2 const& a_size) override;
                 void Bind() override;
                 void UnBind() override;
 

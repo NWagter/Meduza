@@ -10,7 +10,7 @@ namespace Me
     {
         struct CircleColliderComponent : public ColliderComponent
         {
-            Math::Vec2 m_colliderOffset = Math::Vec2(0, 0);
+            Math::Vector2 m_colliderOffset = Math::Vector2(0, 0);
             float m_radius = 1;
 
             ComponentID GetColliderComponentID() override
@@ -18,9 +18,9 @@ namespace Me
                 return s_componentID;
             }
 
-            Math::Vec3 GetFurthestPointInDirection(Math::Vec3 const& a_direction) const override
+            Math::Vector3 GetFurthestPointInDirection(Math::Vector3 const& a_direction) const override
             {
-                return Math::Vec3(a_direction).Normalize() * m_radius;
+                return Math::Vector3(a_direction).Normalize() * m_radius;
             }
 
             static ComponentID s_componentID;
@@ -29,7 +29,7 @@ namespace Me
             virtual void CustomGUI()
             {
                 ImGui::DragFloat("Radius", &m_radius);
-                Editor::Helper::EditorHelper::DrawVec2Prop("ColliderOffset", m_colliderOffset);
+                Editor::Helper::EditorHelper::DrawVector2Prop("ColliderOffset", m_colliderOffset);
                 ColliderComponent::CustomGUI();
             }
 #endif

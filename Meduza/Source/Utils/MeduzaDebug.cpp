@@ -26,7 +26,7 @@ Me::Debug::MeduzaDebug::~MeduzaDebug()
 	ms_instance = nullptr;
 }
 
-void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 const& a_start, Math::Vec3 const& a_end, Colour const a_colour)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_end, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;
@@ -40,7 +40,7 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3 const& a_start, Math::Vec3 co
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3& a_start, Math::Vec3& a_direction, float const a_lenght, Colour const a_colour)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vector3& a_start, Math::Vector3& a_direction, float const a_lenght, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;
@@ -52,7 +52,7 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vec3& a_start, Math::Vec3& a_direc
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderCircle(Math::Mat4 const& a_trans, float const a_radius, Colour const a_colour)
+void Me::Debug::MeduzaDebug::RenderCircle(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;

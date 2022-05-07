@@ -24,9 +24,9 @@ namespace Me
                 void UnBind() override;
 
                 void SetFloat(std::string const& a_location, float const a_value);
-                void SetVec3(std::string const& a_location, Math::Vec3 const& a_vec3);
-                void SetVec4(std::string const& a_location, Math::Vec4 const& a_vec4);
-                void SetMat4(std::string const& a_location, Math::Mat4 const& a_mat4, bool const a_transpose);
+                void SetVec3(std::string const& a_location, Math::Vector3 const& a_vec3);
+                void SetVec4(std::string const& a_location, Math::Vector4 const& a_vec4);
+                void SetMat4(std::string const& a_location, Math::Matrix4 const& a_mat4, bool const a_transpose);
 
             private:
                 Helper::GL::ShaderSources m_source;

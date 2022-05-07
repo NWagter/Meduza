@@ -13,11 +13,11 @@ namespace Me
             std::vector<CollisionData> m_collided;
             std::vector<CollisionData> m_triggered;
             
-            Math::Vec3 m_position = Math::Vec3(0,0,0);
-            Math::Vec3 m_movement = Math::Vec3(0,0,0);
-            Math::Vec3 m_rotation = Math::Vec3(0,0,0);
+            Math::Vector3 m_position = Math::Vector3(0,0,0);
+            Math::Vector3 m_movement = Math::Vector3(0,0,0);
+            Math::Vector3 m_rotation = Math::Vector3(0,0,0);
 
-            Math::Vec3 m_velocity = Math::Vec3(0,0,0);
+            Math::Vector3 m_velocity = Math::Vector3(0,0,0);
 
             float m_bodyMass = 1.0f;
             float m_drag = 1.0f;

@@ -6,9 +6,9 @@
 
 const size_t gc_maxInterations = 5;
 
-bool Me::Collision::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
+bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
 {
-	Math::Vector3 direction = Math::Direction(a_physics[0]->m_position, a_physics[1]->m_position).Normalize();
+	Math::Vector3 direction = Math::Direction(a_physics[0]->m_transform.GetPosition(), a_physics[1]->m_transform.GetPosition()).Normalize();
 
 	if (direction.Lenght() == 0)
 	{
@@ -35,10 +35,10 @@ bool Me::Collision::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_p
 
 		if (simplex.HandleSimplex(direction))
 		{
-			a_data.m_otherPosition = a_physics[1]->m_position; 
+			a_data.m_otherPosition = a_physics[1]->m_transform.GetPosition();
 			
 			// This is not Correct! TODO : I will need to look into getting the HitNormal and HitPosition!
-			a_data.m_hitNormal = (a_physics[0]->m_position - a_physics[1]->m_position).Normalize();
+			a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
 			return true;
 		}
 	}
@@ -46,27 +46,28 @@ bool Me::Collision::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_p
 	return false;
 }
 
-Me::Math::Vector3 Me::Collision::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
+Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
 {
-	Math::Vector3 direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[0]->m_rotation) * a_direction;
+	Math::Vector3 direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[0]->m_transform.GetEulerRadian()) * a_direction;
 	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(direction);
-	direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[1]->m_rotation) * Inverse(a_direction);
+	direction = SetInverseRotation(Math::Matrix4::Identity(), a_physics[1]->m_transform.GetEulerRadian()) * Inverse(a_direction);
 	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(direction);
 
 	// TODO : Need to consider the transformation of a shape can be gotten from the body
 
 	Math::Matrix4 rotation;
 	rotation.Identity();
-	rotation.Rotation(a_physics[0]->m_rotation);
-	Math::Vector3 pointA = rotation * (a_physics[0]->m_position + furthersPointA);
+	rotation.Rotation(a_physics[0]->m_transform.GetEuler());
+	Math::Vector3 pointA = a_physics[0]->m_transform.GetPosition() + rotation * furthersPointA;
 	rotation.Identity();
-	rotation.Rotation(a_physics[1]->m_rotation);
-	Math::Vector3 pointB = rotation * (a_physics[1]->m_position + furthersPointB);
+	rotation.Rotation(a_physics[1]->m_transform.GetEuler());
+	Math::Vector3 pointB = a_physics[1]->m_transform.GetPosition() + rotation * furthersPointB;
+
 
 	return pointA - pointB;
 }
 
-bool Me::Collision::Simplex::AddPoint(Math::Vector3 const& a_point)
+bool Me::Physics::Simplex::AddPoint(Math::Vector3 const& a_point)
 {
 	if (m_amountOfPoints < 4)
 	{
@@ -78,7 +79,7 @@ bool Me::Collision::Simplex::AddPoint(Math::Vector3 const& a_point)
 	return false;
 }
 
-bool Me::Collision::Simplex::HandleSimplex(Math::Vector3& a_direction)
+bool Me::Physics::Simplex::HandleSimplex(Math::Vector3& a_direction)
 {
 	switch (m_amountOfPoints)
 	{
@@ -92,12 +93,12 @@ bool Me::Collision::Simplex::HandleSimplex(Math::Vector3& a_direction)
     return false;
 }
 
-bool Me::Collision::Simplex::SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao)
+bool Me::Physics::Simplex::SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao)
 {
 	return DotProduct(a_direction, a_ao) > 0.0f;
 }
 
-bool Me::Collision::Simplex::Line(Math::Vector3& a_direction)
+bool Me::Physics::Simplex::Line(Math::Vector3& a_direction)
 {
 	Math::Vector3 a = m_points[0];
 	Math::Vector3 b = m_points[1];
@@ -117,7 +118,7 @@ bool Me::Collision::Simplex::Line(Math::Vector3& a_direction)
 	return false;
 }
 
-bool Me::Collision::Simplex::Triangle(Math::Vector3& a_direction)
+bool Me::Physics::Simplex::Triangle(Math::Vector3& a_direction)
 {
 	Math::Vector3 a = m_points[0];
 	Math::Vector3 b = m_points[1];
@@ -162,7 +163,7 @@ bool Me::Collision::Simplex::Triangle(Math::Vector3& a_direction)
 	return false;
 }
 
-bool Me::Collision::Simplex::Tetrahedron(Math::Vector3& a_direction)
+bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 {
 	Math::Vector3 a = m_points[0];
 	Math::Vector3 b = m_points[1];

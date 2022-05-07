@@ -13,9 +13,8 @@ namespace Me
             std::vector<CollisionData> m_collided;
             std::vector<CollisionData> m_triggered;
             
-            Math::Vector3 m_position = Math::Vector3(0,0,0);
+            Math::Matrix4 m_transform = Math::Matrix4::Identity();
             Math::Vector3 m_movement = Math::Vector3(0,0,0);
-            Math::Vector3 m_rotation = Math::Vector3(0,0,0);
 
             Math::Vector3 m_velocity = Math::Vector3(0,0,0);
 

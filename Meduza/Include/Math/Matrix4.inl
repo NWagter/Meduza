@@ -27,7 +27,7 @@ namespace Me
 		{
 			Matrix4 projection = Matrix4::Identity();
 
-			float rad = GETRADIUS(a_angleOfView);
+			float rad = GETRADIAN(a_angleOfView);
 			float tanHalfFOV = std::tan(rad * 0.5f);
 
 			projection.m_mat[0][0] = 1 / (a_aspect * tanHalfFOV);

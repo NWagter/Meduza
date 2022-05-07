@@ -2,8 +2,10 @@
 
 #include "Platform/General/Editor/EditorHelper.h"
 
-void Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_label, Me::Math::Vector2& a_value, float const a_resetValue, float const a_columnWidth)
+bool Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_label, Me::Math::Vector2& a_value, float const a_resetValue, float const a_columnWidth)
 {
+    bool changed = false;
+
     ImGui::PushID(a_label.c_str());
     ImGui::Columns(2);
     ImGui::SetColumnWidth(0, a_columnWidth);
@@ -26,7 +28,10 @@ void Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_labe
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f");
+    if(ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -40,15 +45,22 @@ void Me::Editor::Helper::EditorHelper::DrawVector2Prop(std::string const& a_labe
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f");
+    if (ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f")) 
+    { 
+        changed = true; 
+    }
     ImGui::PopItemWidth();
 
     ImGui::PopStyleVar();
     ImGui::Columns(1);
     ImGui::PopID();
+
+    return changed;
 }
-void Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_label, Me::Math::Vector3& a_value, float const a_resetValue, float const a_columnWidth)
+bool Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_label, Me::Math::Vector3& a_value, float const a_resetValue, float const a_columnWidth)
 {
+    bool changed = false;
+
     ImGui::PushID(a_label.c_str());
     ImGui::Columns(2);
     ImGui::SetColumnWidth(0, a_columnWidth);
@@ -71,7 +83,10 @@ void Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f");
+    if (ImGui::DragFloat("##X", &a_value.m_x, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -85,7 +100,10 @@ void Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f");
+    if (ImGui::DragFloat("##Y", &a_value.m_y, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -99,12 +117,17 @@ void Me::Editor::Helper::EditorHelper::DrawVector3Prop(std::string const& a_labe
     }
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
-    ImGui::DragFloat("##Z", &a_value.m_z, 0.1f, 0.0f, 0.0f, "%.2f");
+    if (ImGui::DragFloat("##Z", &a_value.m_z, 0.1f, 0.0f, 0.0f, "%.2f"))
+    {
+        changed = true;
+    }
     ImGui::PopItemWidth();
 
     ImGui::PopStyleVar();
     ImGui::Columns(1);
     ImGui::PopID();
+
+    return changed;
 }
 bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_label, Me::Math::Vector4& a_value, float const a_resetValue, float const a_columnWidth)
 {

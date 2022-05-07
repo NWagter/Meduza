@@ -64,8 +64,8 @@ namespace Me
 			Vector3 dir = a_target - a_origin;
 			Vector3 temp = dir * Math::Distance(a_target, a_origin);
 
-			angles.m_x = GETRADIUS(temp.m_y);
-			angles.m_y = GETRADIUS(temp.m_x);
+			angles.m_x = GETRADIAN(temp.m_y);
+			angles.m_y = GETRADIAN(temp.m_x);
 
 			return angles;
 		}

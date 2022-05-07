@@ -1,6 +1,6 @@
 #pragma once
 
-#define GETRADIUS(a_degree) (a_degree * 3.141592654f / 180)
+#define GETRADIAN(a_degree) (a_degree * 3.141592654f / 180)
 #define GETDEGREE(a_radian) (a_radian * (180 / 3.141592654f))
 
 namespace Me

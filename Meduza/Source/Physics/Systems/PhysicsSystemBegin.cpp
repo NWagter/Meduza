@@ -24,7 +24,6 @@ void Me::Physics::PhysicsSystemBegin::OnUpdate(float a_dt)
         pC->m_triggered.clear();
 
         pC->m_movement = 0;
-        pC->m_position = tC->m_translation;
-        pC->m_rotation = tC->m_rotation;
+        pC->m_transform = tC->GetTransform();
     }
 }

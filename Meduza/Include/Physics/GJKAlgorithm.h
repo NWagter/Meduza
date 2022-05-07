@@ -7,10 +7,7 @@ namespace Me
 		struct ColliderComponent;
 		struct CollisionData;
 		struct PhysicsComponent;
-	}
 
-	namespace Collision
-	{
 		class GJKAlgorithm
 		{
 		public:

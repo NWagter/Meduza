@@ -10,36 +10,27 @@ namespace Me
             Math::Vector3 m_rotation = Math::Vector3(0,0,0); // Degree
             Math::Vector3 m_scale = Math::Vector3(1,1,1);
 
+            Math::Matrix4 m_transform = Math::Matrix4::Identity();
+            bool m_isDirty = true;
+
             static ComponentID s_componentID;
 
             bool m_isStatic = false;
 
             //Getting
-            Math::Matrix4 GetTransform() const
+            Math::Matrix4 GetTransform()
             {
-                Math::Matrix4 translationMat = Math::Matrix4::Identity();
-                translationMat.SetPosition(m_translation);
-                
-                // Degree to Radian
-                Me::Math::Vector3 newRot;
-                newRot.m_x = (Me::Math::gs_pi / 180) * m_rotation.m_x;
-                newRot.m_y = (Me::Math::gs_pi / 180) * m_rotation.m_y;
-                newRot.m_z = (Me::Math::gs_pi / 180) * m_rotation.m_z;
+                if (m_isDirty)
+                {
+                    CalculateTransform();
+                }
 
-                Math::Matrix4 rotationMat = Math::Matrix4::Identity();
-                rotationMat.Rotation(newRot);
-
-                Math::Matrix4 scaleMat = Math::Matrix4::Identity();
-                scaleMat.SetScale(m_scale);
-
-                return translationMat * rotationMat * scaleMat;
+                return m_transform;
             }
             
             void Reset() override
             {
-                m_translation = Math::Vector3(0,0,0);
-                m_rotation = Math::Vector3(0,0,0);
-                m_scale = Math::Vector3(0,0,0);
+                m_transform = Math::Matrix4::Identity();
             }
 #ifdef PLATFORM_WINDOWS
 #ifdef EDITOR
@@ -49,21 +40,37 @@ namespace Me
                 ImGui::Checkbox("Static", &isStatic);
                 m_isStatic = isStatic;
 
-                Editor::Helper::EditorHelper::DrawVector3Prop("Position", m_translation);
-                Editor::Helper::EditorHelper::DrawVector3Prop("Rotation", m_rotation);
-                Editor::Helper::EditorHelper::DrawVector3Prop("Scale", m_scale);
+                m_isDirty |= Editor::Helper::EditorHelper::DrawVector3Prop("Position", m_translation);
+                m_isDirty |= Editor::Helper::EditorHelper::DrawVector3Prop("Rotation", m_rotation);
+                m_isDirty |= Editor::Helper::EditorHelper::DrawVector3Prop("Scale", m_scale);
             }
 #endif
 #endif
             void serialize(cereal::XMLOutputArchive& a_archive) override
             {
-                a_archive(cereal::make_nvp("Translation", m_translation.m_xyz));
-                a_archive(cereal::make_nvp("Rotation", m_rotation.m_xyz));
-                a_archive(cereal::make_nvp("Scale", m_scale.m_xyz));
+                a_archive(cereal::make_nvp("Translation", m_transform.GetPosition().m_xyz));
+                a_archive(cereal::make_nvp("Rotation", m_transform.GetEuler().m_xyz));
+                a_archive(cereal::make_nvp("Scale", m_transform.GetScale().m_xyz));
             }
 
             virtual bool RenderCustomGUI() { return true; }
             bool EditorRemoveable() override { return false; }
             std::string EditorComponentName() override { return "TransformComponent"; }
+
+        private:
+            void CalculateTransform()
+            {
+                Math::Matrix4 translationMat = Math::Matrix4::Identity();
+                translationMat.SetPosition(m_translation);
+
+                Math::Matrix4 rotationMat = Math::Matrix4::Identity();
+                rotationMat.Rotation(m_rotation);
+
+                Math::Matrix4 scaleMat = Math::Matrix4::Identity();
+                scaleMat.SetScale(m_scale);
+
+                m_transform = translationMat * rotationMat * scaleMat;
+                m_isDirty = false;
+            }
     };
 }

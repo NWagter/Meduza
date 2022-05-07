@@ -48,11 +48,11 @@ namespace Me
                 virtual void Clear(Colour const a_clearColour) = 0;
                 virtual void Populate() = 0;
                 virtual void Present() = 0;
-                virtual void Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent) = 0;
-                virtual void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent) = 0;
+                virtual void Submit(RenderComponent const& a_renderComponent, TransformComponent& a_transformComponent) = 0;
+                virtual void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent) = 0;
                 virtual void RenderLine(LineRender const& a_lineRender) = 0;
                 virtual void RenderCircle(CircleRender const& a_circleRender) = 0;
-                virtual void SetCamera(CameraComponent const& a_cameraComponnet, TransformComponent const& a_transformComponent) = 0;
+                virtual void SetCamera(CameraComponent const& a_cameraComponnet, TransformComponent& a_transformComponent) = 0;
 
                 static GFX_API GetAPI() { return ms_api;}
                 static RenderLayer* GetRenderLayer() { return ms_instance; };

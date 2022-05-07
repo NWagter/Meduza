@@ -261,7 +261,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
     m_frameBuffer->UnBind();
 }
 
-void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent)
+void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComponent, TransformComponent& a_transformComponent)
 {
     // If no instanced Renderers we just create one
     BaseInstanced* instancedRenderer = nullptr;
@@ -315,7 +315,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComp
     static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
 }
 
-void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent)
+void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent)
 {
     BaseInstanced* instancedRenderer = nullptr;
 
@@ -406,7 +406,7 @@ void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender const& a_circleR
     m_debugCircle.push_back(new DebugCricle(a_circleRender.m_transform, a_circleRender.m_radius, a_circleRender.m_colour));
 }
 
-void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent)
+void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent& a_transformComponent)
 {
     Math::Matrix4 camMat = Math::Matrix4::Identity();
 

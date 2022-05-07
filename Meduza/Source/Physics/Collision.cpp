@@ -17,7 +17,7 @@
 bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data)
 {
 #if USE_GJK
-    return Math::GJKAlgorithm::GJKIntersaction(a_physics, a_colliders, a_data);
+    return Physics::GJKAlgorithm::GJKIntersaction(a_physics, a_colliders, a_data);
 #endif // USE_GJK
 
 
@@ -105,11 +105,11 @@ bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2],
 bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_colliders[2], CollisionData& a_data)
 {
     // box2d to box2d collision check
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
     sPos.m_z = 0;
     Math::Vector2 sHalfSize = a_colliders[0]->m_colliderSize / 2;
 
-    Math::Vector3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
+    Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
     oPos.m_z = 0;
     Math::Vector2 oHalfSize = a_colliders[1]->m_colliderSize / 2;
 
@@ -136,11 +136,11 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
 
 bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_boxColl, CircleColliderComponent* a_cirlceCol, CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector2 sHalfSize = a_boxColl->m_colliderSize / 2;
     sPos.m_z = 0;
 
-    Math::Vector3 circlePos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_cirlceCol->m_colliderOffset;
+    Math::Vector3 circlePos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_cirlceCol->m_colliderOffset;
     circlePos.m_z = 0;
 
     float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(circlePos.m_x, sPos.m_x + sHalfSize.m_x));
@@ -162,11 +162,11 @@ bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent* a_physics[2], 
 
 bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent* a_physics[2], CircleColliderComponent* a_cirlceCol, BoxCollider2DComponent* a_boxColl, CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector2 sHalfSize = a_boxColl->m_colliderSize / 2;
     sPos.m_z = 0;
 
-    Math::Vector3 circlePos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_cirlceCol->m_colliderOffset;
+    Math::Vector3 circlePos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_cirlceCol->m_colliderOffset;
     circlePos.m_z = 0;
 
     float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(circlePos.m_x, sPos.m_x + sHalfSize.m_x));
@@ -188,8 +188,8 @@ bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent* a_physics[2], 
 
 bool Me::Physics::Collision::CircleToCircle(PhysicsComponent* a_physics[2], CircleColliderComponent* a_colliders[2], CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
-    Math::Vector3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
+    Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
 
     sPos.m_z = 0;
     oPos.m_z = 0;
@@ -210,10 +210,10 @@ bool Me::Physics::Collision::CircleToCircle(PhysicsComponent* a_physics[2], Circ
 
 bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_colliders[2], CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
     Math::Vector3 sHalfSize = a_colliders[0]->m_colliderSize / 2;
 
-    Math::Vector3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
+    Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
     Math::Vector3 oHalfSize = a_colliders[1]->m_colliderSize / 2;
 
     if ((sPos.m_x - sHalfSize.m_x <= oPos.m_x + oHalfSize.m_x
@@ -239,10 +239,10 @@ bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], B
 
 bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_boxColl, SphereColliderComponent* a_sphereColl, CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector3 sHalfSize = a_boxColl->m_colliderSize / 2;
 
-    Math::Vector3 spherePos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_sphereColl->m_colliderOffset;
+    Math::Vector3 spherePos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_sphereColl->m_colliderOffset;
 
     float x = std::max(sPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, sPos.m_x + sHalfSize.m_x));
     float y = std::max(sPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, sPos.m_y + sHalfSize.m_y));
@@ -263,10 +263,10 @@ bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], 
 
 bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereColl, BoxCollider3DComponent* a_boxColl, CollisionData& a_data)
 {
-    Math::Vector3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
+    Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector3 sHalfSize = a_boxColl->m_colliderSize / 2;
 
-    Math::Vector3 spherePos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_sphereColl->m_colliderOffset;
+    Math::Vector3 spherePos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_sphereColl->m_colliderOffset;
 
     float x = std::max(oPos.m_x - sHalfSize.m_x, std::min(spherePos.m_x, oPos.m_x + sHalfSize.m_x));
     float y = std::max(oPos.m_y - sHalfSize.m_y, std::min(spherePos.m_y, oPos.m_y + sHalfSize.m_y));
@@ -288,8 +288,8 @@ bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], 
 
 bool Me::Physics::Collision::SphereToSphere(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereCollider[2], CollisionData& a_data)
 {
-    Math::Vector3 sPos = (a_physics[0]->m_position + a_physics[0]->m_movement) + a_sphereCollider[0]->m_colliderOffset;
-    Math::Vector3 oPos = (a_physics[1]->m_position + a_physics[1]->m_movement) + a_sphereCollider[1]->m_colliderOffset;
+    Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_sphereCollider[0]->m_colliderOffset;
+    Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_sphereCollider[1]->m_colliderOffset;
 
     float distance = Math::Distance(sPos, oPos);
     float rad = (a_sphereCollider[0]->m_radius) + (a_sphereCollider[1]->m_radius);

@@ -317,6 +317,11 @@ namespace Me
 
 				return Vector3(-x, -y, -z);
 			}
+			inline Vector3 GetEulerRadian()
+			{
+				Vector3 const euler = GetEuler();
+				return Vector3(GETRADIAN(euler.m_x), GETRADIAN(euler.m_y), GETRADIAN(euler.m_z));
+			}
 
 			inline Vector3 GetPosition()
 			{

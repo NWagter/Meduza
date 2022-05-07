@@ -96,11 +96,11 @@ namespace Me
                 void Clear(Colour const a_clearColour) override;
                 void Populate() override;    
                 void Present() override;                
-                void Submit(RenderComponent const& a_renderComponent, TransformComponent const& a_transformComponent) override;
-                void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent const& a_transformComponent) override;
+                void Submit(RenderComponent const& a_renderComponent, TransformComponent& a_transformComponent) override;
+                void DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent) override;
                 void RenderLine(LineRender const& a_lineRender) override;
                 void RenderCircle(CircleRender const& a_circleRender)  override;
-                void SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent) override;
+                void SetCamera(CameraComponent const& a_cameraComponent, TransformComponent& a_transformComponent) override;
 
                 Resources::MeshBase* CreateMesh(std::vector<Vertex> const& a_vertices, std::vector<uint16_t> const& a_indices);
                 

@@ -190,7 +190,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Present()
 	}
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_renderable, TransformComponent const& a_transformComponent)
+void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_renderable, TransformComponent& a_transformComponent)
 {
 	// If no instanced Renderers we just create one
 	BaseInstanced* instancedRenderer = nullptr;
@@ -255,7 +255,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::Submit(RenderComponent const& a_render
 
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent const&, TransformComponent const&)
+void Me::Renderer::Dx12::RenderLayerDx12::DebugSubmit(DebugRenderComponent const&, TransformComponent&)
 {
 
 }
@@ -271,7 +271,7 @@ void Me::Renderer::Dx12::RenderLayerDx12::RenderCircle(CircleRender const&)
 
 }
 
-void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent const& a_transformComponent)
+void Me::Renderer::Dx12::RenderLayerDx12::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent& a_transformComponent)
 {
 	Math::Matrix4 camMat = Math::Matrix4::Identity();
 	if(a_cameraComponent.m_cameraType == CameraType::Orthographic)

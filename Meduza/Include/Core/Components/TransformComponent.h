@@ -20,10 +20,7 @@ namespace Me
             //Getting
             Math::Matrix4 GetTransform()
             {
-                if (m_isDirty)
-                {
-                    CalculateTransform();
-                }
+                CalculateTransform();
 
                 return m_transform;
             }
@@ -48,9 +45,9 @@ namespace Me
 #endif
             void serialize(cereal::XMLOutputArchive& a_archive) override
             {
-                a_archive(cereal::make_nvp("Translation", m_transform.GetPosition().m_xyz));
-                a_archive(cereal::make_nvp("Rotation", m_transform.GetEuler().m_xyz));
-                a_archive(cereal::make_nvp("Scale", m_transform.GetScale().m_xyz));
+                a_archive(cereal::make_nvp("Translation", m_translation.m_xyz));
+                a_archive(cereal::make_nvp("Rotation", m_rotation.m_xyz));
+                a_archive(cereal::make_nvp("Scale", m_scale.m_xyz));
             }
 
             virtual bool RenderCustomGUI() { return true; }
@@ -60,20 +57,11 @@ namespace Me
         private:
             void CalculateTransform()
             {
-                Math::Matrix4 translationMat = Math::Matrix4::Identity();
-                translationMat.SetPosition(m_translation);
-
                 m_rotation.m_x = m_rotation.m_x > 360 ? m_rotation.m_x - 360 : m_rotation.m_x < 0 ? m_rotation.m_x + 360 : m_rotation.m_x;
                 m_rotation.m_y = m_rotation.m_y > 360 ? m_rotation.m_y - 360 : m_rotation.m_y < 0 ? m_rotation.m_y + 360 : m_rotation.m_y;
                 m_rotation.m_z = m_rotation.m_z > 360 ? m_rotation.m_z - 360 : m_rotation.m_z < 0 ? m_rotation.m_z + 360 : m_rotation.m_z;
 
-                Math::Matrix4 rotationMat = Math::Matrix4::Identity();
-                rotationMat.Rotation(m_rotation);
-
-                Math::Matrix4 scaleMat = Math::Matrix4::Identity();
-                scaleMat.SetScale(m_scale);
-
-                m_transform = translationMat * rotationMat * scaleMat;
+                m_transform = Math::CreateTransformationMatrix(m_translation, m_rotation, m_scale);
                 m_isDirty = false;
             }
     };

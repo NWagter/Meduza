@@ -315,6 +315,13 @@ namespace Me
 
 				return Vector3(GETDEGREE(-x), GETDEGREE(-y), GETDEGREE(-z));
 			}
+			inline Matrix4 GetRotationMatrix() const
+			{
+				Matrix4 temp = Matrix4::Identity();
+				temp.Rotation(GetEuler());
+
+				return temp;
+			}
 
 			inline Vector3 GetPosition() const
 			{
@@ -335,6 +342,13 @@ namespace Me
 				m_mat[2][3] += a_translation.m_z;
 
 				return *this;
+			}
+			inline Matrix4 GetTranslationMatrix() const
+			{
+				Matrix4 temp = Matrix4::Identity();
+				temp.SetPosition(GetPosition());
+
+				return temp;
 			}
 
 			inline Vector3 GetScale() const
@@ -360,6 +374,13 @@ namespace Me
 				m_22 = a_scale.m_z;
 
 				return *this;
+			}
+			inline Matrix4 GetScaleMatrix() const
+			{
+				Matrix4 temp = Matrix4::Identity();
+				temp.GetScale();
+
+				return temp;
 			}
 
 			inline Vector3 GetRight() const
@@ -430,12 +451,18 @@ namespace Me
 
 		};
 
+		inline Matrix4 TranslationMatrix(Vector3 const& a_position, Matrix4 a_matrix = Matrix4::Identity());
+		inline Matrix4 ScaleMatrix(Vector3 const& a_scale, Matrix4 a_matrix = Matrix4::Identity());
+		inline Matrix4 RotationMatrix(Vector3 const& a_euler, Matrix4 a_matrix = Matrix4::Identity());
+
 		inline Matrix4 GetOrthographicMatrix(const float a_bottom, const float a_top, const float a_left, const float a_right, const float a_near, const float a_far);
 		inline Matrix4 GetProjectionMatrix(const float a_angleOfView, const float a_aspect, const float a_near, const float a_far);
+		inline Matrix4 CreateLookAtMatrix(Vector3 const& a_eye, Vector3 const& a_target, Vector3 const& a_up);
 
 		inline Matrix4 Transpose(Matrix4 const& a_matrix);
 
 		inline Matrix4 SetInverseRotation(Matrix4 const& a_matrix, Vector3 const& a_euler);
+		inline Matrix4 CreateTransformationMatrix(Vector3 const& a_postion, Vector3 const& a_euler, Vector3 const& a_scale);
 
 	}
 }

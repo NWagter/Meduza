@@ -31,15 +31,36 @@ namespace Me
 
             BoxCollider3DComponent()
             {
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
-
+                // Front
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
                 m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));
                 m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
                 m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
+                // Back
                 m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
+                // Top
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));;
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
+                // Bot
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
+                // Left
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
+                // Right
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
+                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
+                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
             }
 
             static ComponentID s_componentID;

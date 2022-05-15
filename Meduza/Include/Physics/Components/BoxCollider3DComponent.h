@@ -12,7 +12,7 @@ namespace Me
         {
             Math::Vector3 m_colliderSize = Math::Vector3(1,1,1);
             Math::Vector3 m_colliderOffset = Math::Vector3(0,0,0);
-            std::vector<Math::Vector3> m_points;
+            std::vector<HullVertex> m_points;
 
             ComponentID GetColliderComponentID() override
             {
@@ -32,35 +32,15 @@ namespace Me
             BoxCollider3DComponent()
             {
                 // Front
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, -0.5f, 0.5f), Colours::TAUBMANS_WINTER_OAK));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, 0.5f, 0.5f), Colours::BLACK));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, 0.5f, 0.5f), Colours::AZURE_WHITE));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, -0.5f, 0.5f), Colours::MAGENTA));
                 // Back
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5));
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
-                // Top
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));;
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
-                // Bot
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
-                // Left
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, -0.5f));
-                // Right
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, -0.5f));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0.5f));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0.5f));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, -0.5f, -0.5f), Colours::RESENE_DARK_OAK));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, 0.5f, -0.5f), Colours::ROYAL_PURPLE));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, 0.5f, -0.5f), Colours::RED));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, -0.5f, -0.5f), Colours::GREEN));
             }
 
             static ComponentID s_componentID;

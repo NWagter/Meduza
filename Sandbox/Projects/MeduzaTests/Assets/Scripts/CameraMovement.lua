@@ -11,7 +11,7 @@ local tCameraSettings
 function OnStart(a_host, a_eEntity)
     print("Camera Start!")
     nMoveSpeed = 20
-    nRotateSpeed = 2
+    nRotateSpeed = 20
 end
 
 function OnUpdate(a_host, a_eEntity, a_nDt)

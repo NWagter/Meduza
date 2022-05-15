@@ -63,10 +63,21 @@ namespace Me
             bool m_hit;
         };
 
+        struct HullVertex
+        {
+            HullVertex(Math::Vector3 a_point, Me::Colour a_colour = Colours::MAGENTA)
+            {
+                m_point = a_point;
+                m_debugColour = a_colour;
+            }
+            Math::Vector3 m_point;
+            Me::Colour m_debugColour;
+        };
+
         class PhysicsHelper
         {
         public:
-            static Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points);
+            static Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction, std::vector<HullVertex> const& a_points);
         };
     }
 }

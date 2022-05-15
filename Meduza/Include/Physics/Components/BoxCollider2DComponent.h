@@ -12,7 +12,7 @@ namespace Me
         {
             Math::Vector2 m_colliderSize = Math::Vector2(1,1);
             Math::Vector2 m_colliderOffset = Math::Vector2(0,0);
-            std::vector<Math::Vector3> m_points;
+            std::vector<HullVertex> m_points;
 
             ComponentID GetColliderComponentID() override
             {
@@ -31,10 +31,10 @@ namespace Me
 
             BoxCollider2DComponent()
             {
-                m_points.push_back(Math::Vector3(-0.5f, 0.5f, 0));
-                m_points.push_back(Math::Vector3(0.5f, 0.5f, 0));
-                m_points.push_back(Math::Vector3(0.5f, -0.5f, 0));
-                m_points.push_back(Math::Vector3(-0.5f, -0.5f, 0));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, 0.5f, 0)));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, 0.5f, 0)));
+                m_points.push_back(HullVertex(Math::Vector3(0.5f, -0.5f, 0)));
+                m_points.push_back(HullVertex(Math::Vector3(-0.5f, -0.5f, 0)));
             }
             
             static ComponentID s_componentID;

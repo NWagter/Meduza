@@ -4,11 +4,13 @@
 #include "Physics/Components/ColliderComponent.h"
 #include "Physics/Components/PhysicsComponent.h"
 
+#include "Utils/MeduzaDebug.h"
+
 const size_t gc_maxInterations = 5;
 
 bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
 {
-	Math::Vector3 direction = Math::Direction(a_physics[0]->m_transform.GetPosition(), a_physics[1]->m_transform.GetPosition()).Normalize();
+	Math::Vector3 direction = Math::Direction(a_physics[0]->m_transform.GetPosition(), a_physics[1]->m_transform.GetPosition());
 
 	if (direction.Lenght() == 0)
 	{
@@ -51,7 +53,13 @@ Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* 
 	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(a_physics[0]->m_transform, a_direction);
 	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(a_physics[1]->m_transform, Inverse(a_direction));
 
-	// TODO : Need to consider the transformation of a shape can be gotten from the body
+
+	if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_gjkDebugger)
+	{
+		Me::Debug::MeduzaDebug::RenderLine(furthersPointA, furthersPointA + a_direction, Colours::RED);
+		Me::Debug::MeduzaDebug::RenderLine(furthersPointB, furthersPointB + Inverse(a_direction), Colours::WHITE);
+	}
+
 	return furthersPointA - furthersPointB;
 }
 

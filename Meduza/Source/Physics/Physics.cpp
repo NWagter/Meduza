@@ -3,34 +3,30 @@
 
 #include "Utils/MeduzaDebug.h"
 
-Me::Math::Vector3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Me::Math::Vector3 const& a_direction, std::vector<Math::Vector3> const& a_points)
+Me::Math::Vector3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Me::Math::Vector3 const& a_direction, std::vector<HullVertex> const& a_points)
 {
 	float distance = std::numeric_limits<float>::lowest();
-	Math::Vector3 const searchDirection = Math::SetInverseRotation(Math::Matrix4::Identity(), a_transform.GetEuler()) * a_direction;
+	Math::Vector3 const searchDirection = (Math::SetInverseRotation(a_transform.GetEuler()) * a_direction).Normalize();
 	Math::Vector3 point;
-	Math::Vector3 position = a_transform.GetPosition();
-	Math::Vector3 scale = a_transform.GetScale();
-	Math::Matrix4 rotation = Math::Matrix4::Identity();
-	rotation.Rotation(a_transform.GetEuler());
+	Math::Matrix4 rotation = Math::RotationMatrix(a_transform.GetEuler());
 
 	for (size_t i = 0; i < a_points.size(); i++)
 	{
 		if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_gjkDebugger)
 		{
-			Math::Vector3 newPoint = a_points[i];
-			Math::Vector3 pos = (position + rotation * (newPoint * scale));
-			Math::Vector3 pointB = pos;
-			pointB += searchDirection;
-			Me::Debug::MeduzaDebug::RenderLine(pos, pointB, Colours::RED);
+			Math::Vector3 const rotatedPoint = a_transform.GetPosition() +(rotation * a_points[i].m_point);
+			Math::Matrix4 trans = Math::CreateTransformationMatrix(rotatedPoint, Math::Vector3(0.0f), Math::Vector3(1.0f));
+			Me::Debug::MeduzaDebug::RenderCircle(trans, 0.1f, a_points[i].m_debugColour);
 		}
 
-		float d = Me::Math::DotProduct(searchDirection, a_points[i]);
+		float d = Me::Math::DotProduct(searchDirection, a_points[i].m_point);
 		if (d > distance)
 		{
 			distance = d;
-			point = a_points[i];
+			point = a_points[i].m_point;
 		}
 	}
 
-	return position + rotation * (point * scale);
+	Math::Vector3 rotatedPoint = rotation * point;
+	return (a_transform.GetPosition() + rotatedPoint);
 }

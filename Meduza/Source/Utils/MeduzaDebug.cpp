@@ -3,6 +3,9 @@
 
 #include "Platform/General/Graphics/RenderLayer.h"
 
+#include "Platform/General/ResourceLibrary.h"
+#include "Platform/General/Resources/ShaderBase.h"
+
 Me::Debug::MeduzaDebug* Me::Debug::MeduzaDebug::ms_instance = nullptr;
 
 Me::Debug::MeduzaDebug* Me::Debug::MeduzaDebug::CreateDebugger(Renderer::RenderLayer& a_renderLayer)
@@ -62,5 +65,16 @@ void Me::Debug::MeduzaDebug::RenderCircle(Math::Matrix4 const& a_trans, float co
 	circle.m_radius = a_radius;
 	circle.m_colour = a_colour;
 	ms_instance->m_renderLayer->RenderCircle(circle);
+}
+
+
+void Me::Debug::MeduzaDebug::RenderSphere(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour)
+{
+#ifndef EDITOR
+	return;
+#endif // !EDITOR
+
+	// DEBUG Sphere Radius, colour, location
+	// Should be Shader only
 }
 

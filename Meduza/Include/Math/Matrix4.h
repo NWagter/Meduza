@@ -235,10 +235,10 @@ namespace Me
 			{
 				Vector4 value;
 
-				value.m_x = a_rhs.m_x * m_00 + a_rhs.m_x * m_10 + a_rhs.m_x * m_20 + a_rhs.m_x * m_30;
-				value.m_y = a_rhs.m_y * m_01 + a_rhs.m_y * m_11 + a_rhs.m_y * m_21 + a_rhs.m_y * m_31;
-				value.m_z = a_rhs.m_z * m_02 + a_rhs.m_z * m_12 + a_rhs.m_z * m_22 + a_rhs.m_z * m_32;
-				value.m_w = a_rhs.m_w * m_03 + a_rhs.m_w * m_13 + a_rhs.m_w * m_23 + a_rhs.m_w * m_33;
+				value.m_x = a_rhs.m_x * m_00 + a_rhs.m_x * m_01 + a_rhs.m_x * m_02 + a_rhs.m_x * m_03;
+				value.m_y = a_rhs.m_y * m_10 + a_rhs.m_y * m_11 + a_rhs.m_y * m_12 + a_rhs.m_y * m_13;
+				value.m_z = a_rhs.m_z * m_20 + a_rhs.m_z * m_21 + a_rhs.m_z * m_22 + a_rhs.m_z * m_23;
+				value.m_w = a_rhs.m_w * m_30 + a_rhs.m_w * m_31 + a_rhs.m_w * m_32 + a_rhs.m_w * m_33;
 
 				return value;
 			}
@@ -313,7 +313,7 @@ namespace Me
 					z = 0;
 				}
 
-				return Vector3(GETDEGREE(-x), GETDEGREE(-y), GETDEGREE(-z));
+				return Vector3(GETDEGREE(x), GETDEGREE(y), GETDEGREE(z));
 			}
 			inline Matrix4 GetRotationMatrix() const
 			{
@@ -421,8 +421,8 @@ namespace Me
 				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
-				rot.m_11 = c; rot.m_21 = -s;
-				rot.m_12 = s; rot.m_22 = c;
+				rot.m_mat[1][1] = c; rot.m_mat[1][2] = -s;
+				rot.m_mat[2][1] = s; rot.m_mat[2][2] = c;
 
 				*this = rot * *this;
 			}
@@ -432,8 +432,8 @@ namespace Me
 				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
-				rot.m_00 = c;  rot.m_20 = s;
-				rot.m_02 = -s; rot.m_22 = c;
+				rot.m_mat[0][0] = c;  rot.m_mat[0][2] = s;
+				rot.m_mat[2][0] = -s; rot.m_mat[2][2] = c;
 
 				*this = rot * *this;
 			}
@@ -443,8 +443,8 @@ namespace Me
 				const float s = std::sin(a_radians);
 				Matrix4 rot = Matrix4::Identity();
 
-				rot.m_00 = c; rot.m_10 = -s;
-				rot.m_01 = s; rot.m_11 = c;
+				rot.m_mat[0][0] = c; rot.m_mat[0][1] = -s;
+				rot.m_mat[1][0] = s; rot.m_mat[1][1] = c;
 
 				*this = rot * *this;
 			}
@@ -461,7 +461,7 @@ namespace Me
 
 		inline Matrix4 Transpose(Matrix4 const& a_matrix);
 
-		inline Matrix4 SetInverseRotation(Matrix4 const& a_matrix, Vector3 const& a_euler);
+		inline Matrix4 SetInverseRotation(Vector3 const& a_euler, Matrix4 const& a_matrix = Matrix4::Identity());
 		inline Matrix4 CreateTransformationMatrix(Vector3 const& a_postion, Vector3 const& a_euler, Vector3 const& a_scale);
 
 	}

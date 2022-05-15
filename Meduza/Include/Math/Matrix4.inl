@@ -43,7 +43,8 @@ namespace Me
 		{
 			Matrix4 projection = Matrix4::Identity();
 
-			float tanHalfFOV = std::tan(a_angleOfView * 0.5f);
+			float rad = GETRADIAN(a_angleOfView);
+			float tanHalfFOV = std::tan(rad * 0.5f);
 
 			projection.m_mat[0][0] = 1 / (a_aspect * tanHalfFOV);
 			projection.m_mat[1][1] = 1 / (tanHalfFOV);
@@ -87,7 +88,7 @@ namespace Me
 			return transposed;
 		}
 
-		inline Matrix4 SetInverseRotation(Matrix4 const& a_matrix, Vector3 const& a_euler)
+		inline Matrix4 SetInverseRotation(Vector3 const& a_euler, Matrix4 const& a_matrix)
 		{
 			Matrix4 result = a_matrix;
 			result.SetInverseRotation(a_euler);

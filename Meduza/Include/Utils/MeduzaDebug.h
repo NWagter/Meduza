@@ -27,6 +27,7 @@ namespace Me
 			static void RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_end, Colour const a_colour = Colours::MAGENTA);
 			static void RenderLine(Math::Vector3& a_start, Math::Vector3& a_direction, float const a_lenght, Colour const a_colour = Colours::MAGENTA);
 			static void RenderCircle(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
+			static void RenderSphere(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
 			static Settings& GetDebuggingSettings() { return ms_instance->m_debuggingSettings; }
 		private:
 			MeduzaDebug(Renderer::RenderLayer& a_renderLayer);

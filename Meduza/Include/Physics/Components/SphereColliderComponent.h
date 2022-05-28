@@ -20,8 +20,9 @@ namespace Me
             
             Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction) const override
             {
-                return (Math::Vector3(a_direction).Normalize() * m_radius) + a_transform.GetPosition();
+                return (Math::Vector3(a_direction).Normalize() * m_radius) + (a_transform.GetPosition() + m_colliderOffset);
             }
+            virtual bool Is3DCollider() const { return true; }
 
             static ComponentID s_componentID;
 #ifdef PLATFORM_WINDOWS

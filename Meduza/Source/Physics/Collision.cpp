@@ -12,7 +12,7 @@
 #include "Physics/Components/BoxCollider3DComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
-#define USE_GJK 0
+#define USE_GJK 1
 
 bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data)
 {

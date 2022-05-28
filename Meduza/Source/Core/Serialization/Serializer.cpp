@@ -116,17 +116,17 @@ bool SerializeSceneA(std::string a_path)
         archive.startNode(); 
         CanSerialize<Me::UIDComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {
-                a_comp->serialize(archive);
+                a_comp->Serialize(archive);
         });
 
         CanSerialize<Me::TagComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         { 
-                a_comp->serialize(archive);
+                a_comp->Serialize(archive);
         });        
         
         CanSerialize<Me::TransformComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {
-                a_comp->serialize(archive);            
+                a_comp->Serialize(archive);            
         });   
 
         CanSerialize<Me::RenderComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)
@@ -159,7 +159,7 @@ bool SerializeSceneA(std::string a_path)
 
         CanSerialize<Me::CameraComponent>(eManager, ent.first, archive, [&archive](auto& a_comp)
         {
-                a_comp->serialize(archive);
+                a_comp->Serialize(archive);
         }); 
 
         CanSerialize<Me::Particle::ParticleSystemComponent>(eManager, ent.first, archive, [&archive, &rLibrary](auto& a_comp)

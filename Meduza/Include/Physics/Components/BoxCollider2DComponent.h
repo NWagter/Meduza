@@ -21,13 +21,14 @@ namespace Me
 
             Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction) const override
             {
-                Math::Vector2 point(PhysicsHelper::GetFurthestPointInDirection(a_transform, a_direction, m_points));
+                Math::Vector3 size = Math::Vector3(m_colliderSize.m_x, m_colliderSize.m_y, 1.0f);
+                Math::Vector3 offset = Math::Vector3(m_colliderOffset.m_x, m_colliderOffset.m_y, 1.0f);;
 
-                point *= m_colliderSize;
-                point += m_colliderOffset;
+                Math::Vector2 point(PhysicsHelper::GetFurthestPointInDirection(a_transform, a_direction, m_points, size, offset));
 
                 return Math::Vector3(point.m_x,point.m_y, 0);
             }
+            virtual bool Is3DCollider() const { return false; }
 
             BoxCollider2DComponent()
             {

@@ -79,7 +79,7 @@ namespace Me
             ImGui::DragFloat("Far", &m_far);
             ImGui::DragInt("Camera Layer", &m_cameralayer);
         }
-        virtual void serialize(cereal::XMLOutputArchive& a_archive)
+        virtual void Serialize(cereal::XMLOutputArchive& a_archive)
         {
             a_archive(cereal::make_nvp("Far", m_far));
             a_archive(cereal::make_nvp("Near", m_near));

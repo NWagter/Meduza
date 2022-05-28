@@ -43,7 +43,7 @@ namespace Me
             }
 #endif
 #endif
-            void serialize(cereal::XMLOutputArchive& a_archive) override
+            void Serialize(cereal::XMLOutputArchive& a_archive) override
             {
                 a_archive(cereal::make_nvp("Translation", m_translation.m_xyz));
                 a_archive(cereal::make_nvp("Rotation", m_rotation.m_xyz));

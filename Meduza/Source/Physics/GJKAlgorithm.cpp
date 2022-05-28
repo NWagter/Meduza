@@ -8,66 +8,11 @@
 
 const size_t gc_maxInterations = 5;
 
-bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
-{
-	Math::Vector3 direction = Math::Direction(a_physics[0]->m_transform.GetPosition(), a_physics[1]->m_transform.GetPosition());
-
-	if (direction.Lenght() == 0)
-	{
-		return true;
-	}
-
-	Simplex simplex;
-
-	Math::Vector3 pointA = Support(a_physics, a_colliders, direction);
-	simplex.AddPoint(pointA);
-
-	direction = Inverse(pointA);
-
-	for (size_t i = 0; i < gc_maxInterations; i++)
-	{
-		Math::Vector3 nextPoint = Support(a_physics, a_colliders, direction);
-
-		if (DotProduct(nextPoint, direction) < 0)
-		{
-			return false;
-		}
-
-		simplex.AddPoint(nextPoint);
-
-		if (simplex.HandleSimplex(direction))
-		{
-			a_data.m_otherPosition = a_physics[1]->m_transform.GetPosition();
-			
-			// This is not Correct! TODO : I will need to look into getting the HitNormal and HitPosition!
-			a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
-			return true;
-		}
-	}
-
-	return false;
-}
-
-Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
-{
-	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(a_physics[0]->m_transform, a_direction);
-	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(a_physics[1]->m_transform, Inverse(a_direction));
-
-
-	if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_gjkDebugger)
-	{
-		Me::Debug::MeduzaDebug::RenderLine(furthersPointA, furthersPointA + a_direction, Colours::RED);
-		Me::Debug::MeduzaDebug::RenderLine(furthersPointB, furthersPointB + Inverse(a_direction), Colours::WHITE);
-	}
-
-	return furthersPointA - furthersPointB;
-}
-
 bool Me::Physics::Simplex::AddPoint(Math::Vector3 const& a_point)
 {
 	if (m_amountOfPoints < 4)
 	{
-		m_points[m_amountOfPoints] = a_point;
+		m_points.push_back(a_point);
 		++m_amountOfPoints;
 		return true;
 	}
@@ -86,7 +31,24 @@ bool Me::Physics::Simplex::HandleSimplex(Math::Vector3& a_direction)
 	case 4:
 		return Tetrahedron(a_direction);
 	}
-    return false;
+	return false;
+}
+
+void Me::Physics::Simplex::InsertAfter(uint16_t const a_index, Math::Vector3 const a_point)
+{
+	std::vector<Math::Vector3> newList;
+
+	for (size_t i = 0; i < Length(); i++)
+	{
+		if (i == a_index)
+		{
+			newList.push_back(a_point);
+		}
+		newList.push_back(m_points.at(i));
+	}
+
+	m_amountOfPoints = newList.size();
+	m_points = newList;
 }
 
 bool Me::Physics::Simplex::SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao)
@@ -195,4 +157,64 @@ bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 	}
 
 	return true;
+}
+
+bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
+{
+	if (a_colliders[0]->Is3DCollider() != a_colliders[1]->Is3DCollider())
+	{
+		return false;
+	}
+
+	Math::Vector3 direction = Math::Direction(a_physics[0]->m_transform.GetPosition(), a_physics[1]->m_transform.GetPosition());
+
+	if (direction.Lenght() == 0)
+	{
+		return true;
+	}
+
+	Simplex simplex;
+
+	Math::Vector3 pointA = Support(a_physics, a_colliders, direction);
+	simplex.AddPoint(pointA);
+
+	direction = Inverse(pointA);
+
+	for (size_t i = 0; i < gc_maxInterations; i++)
+	{
+		Math::Vector3 nextPoint = Support(a_physics, a_colliders, direction);
+
+		if (DotProduct(nextPoint, direction) < 0)
+		{
+			return false;
+		}
+
+		simplex.AddPoint(nextPoint);
+
+		if (simplex.HandleSimplex(direction))
+		{
+			a_data.m_otherPosition = a_physics[1]->m_transform.GetPosition();
+			
+			a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
+{
+	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(a_physics[0]->m_transform, a_direction);
+	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(a_physics[1]->m_transform, Inverse(a_direction));
+
+
+	if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_gjkDebugger)
+	{
+		Me::Debug::MeduzaDebug::RenderLine(furthersPointA, furthersPointA + a_direction, Colours::RED);
+		Me::Debug::MeduzaDebug::RenderLine(furthersPointB, furthersPointB + Inverse(a_direction), Colours::WHITE);
+	}
+
+	return furthersPointA - furthersPointB;
 }

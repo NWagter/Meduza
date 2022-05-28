@@ -77,7 +77,11 @@ namespace Me
         class PhysicsHelper
         {
         public:
-            static Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction, std::vector<HullVertex> const& a_points);
+            static Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, 
+                Math::Vector3 const& a_direction, 
+                std::vector<HullVertex> const& a_points,
+                Math::Vector3 const a_scale = Math::Vector3(1),
+                Math::Vector3 const a_offset = Math::Vector3(0));
         };
     }
 }

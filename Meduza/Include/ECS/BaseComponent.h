@@ -18,7 +18,7 @@ namespace Me
         virtual void CustomGUI() {}
 #endif
 #endif
-        virtual void serialize(cereal::XMLOutputArchive& a_archive) {}
+        virtual void Serialize(cereal::XMLOutputArchive& a_archive) {}
         virtual bool RenderCustomGUI() { return false; }
         virtual bool EditorRemoveable() { return true; }
         virtual std::string EditorComponentName() { return "Component"; }
@@ -32,7 +32,7 @@ namespace Me
 
         static ComponentID s_componentID;
 
-        void serialize(cereal::XMLOutputArchive& a_archive) override
+        void Serialize(cereal::XMLOutputArchive& a_archive) override
         {
             a_archive(cereal::make_nvp("UUID", static_cast<uint32_t>(m_guid)));
         }
@@ -57,7 +57,7 @@ namespace Me
         }
 #endif
 #endif
-        void serialize(cereal::XMLOutputArchive& a_archive) override
+        void Serialize(cereal::XMLOutputArchive& a_archive) override
         {
             a_archive(cereal::make_nvp("Tag", m_tag));
         }

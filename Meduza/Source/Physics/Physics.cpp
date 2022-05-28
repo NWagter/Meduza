@@ -14,8 +14,8 @@ Me::Math::Vector3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection(Math::
 	{
 		if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_gjkDebugger)
 		{
-			Math::Vector3 const rotatedPoint = a_transform.GetPosition() +(rotation * a_points[i].m_point);
-			Math::Matrix4 trans = Math::CreateTransformationMatrix(rotatedPoint, Math::Vector3(0.0f), Math::Vector3(1.0f));
+			Math::Vector3 const rotatedPoint = a_transform.GetPosition() + (rotation * a_points[i].m_point);
+			Math::Matrix4 trans = Math::CreateTransformationMatrix(rotatedPoint, Math::Vector3(0.0f), Math::Vector3(0.2f));
 			Me::Debug::MeduzaDebug::RenderCircle(trans, 0.1f, a_points[i].m_debugColour);
 		}
 

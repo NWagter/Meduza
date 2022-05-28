@@ -235,10 +235,13 @@ namespace Me
 			{
 				Vector4 value;
 
-				value.m_x = a_rhs.m_x * m_00 + a_rhs.m_x * m_01 + a_rhs.m_x * m_02 + a_rhs.m_x * m_03;
-				value.m_y = a_rhs.m_y * m_10 + a_rhs.m_y * m_11 + a_rhs.m_y * m_12 + a_rhs.m_y * m_13;
-				value.m_z = a_rhs.m_z * m_20 + a_rhs.m_z * m_21 + a_rhs.m_z * m_22 + a_rhs.m_z * m_23;
-				value.m_w = a_rhs.m_w * m_30 + a_rhs.m_w * m_31 + a_rhs.m_w * m_32 + a_rhs.m_w * m_33;
+				for (auto i = 0; i < 4; ++i)
+				{
+					for (auto j = 0; j < 4; ++j)
+					{
+						value[i] += m_mat[i][j] * a_rhs[j];
+					}
+				}
 
 				return value;
 			}

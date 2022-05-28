@@ -20,6 +20,7 @@ namespace Me
 
             virtual Math::Vector3 GetFurthestPointInDirection(Math::Matrix4 const& a_transform, Math::Vector3 const& a_direction) const = 0;
             virtual bool Is3DCollider() const = 0;
+            virtual Math::Vector3 GetColliderScale() const = 0;
             ColliderComponent()
             {
                 m_collisionType = CollisionType::Block;

@@ -24,7 +24,8 @@ namespace Me
                 Math::Vector3 point(PhysicsHelper::GetFurthestPointInDirection(a_transform, a_direction, m_points, m_colliderSize, m_colliderOffset));
                 return point;
             }
-            virtual bool Is3DCollider() const { return true; }
+            bool Is3DCollider() const override { return true; }
+            Math::Vector3 GetColliderScale() const override { return Math::Vector3(m_colliderSize.m_x, m_colliderSize.m_y, m_colliderSize.m_z); }
 
             BoxCollider3DComponent()
             {

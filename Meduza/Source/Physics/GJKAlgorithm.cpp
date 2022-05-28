@@ -34,9 +34,10 @@ bool Me::Physics::Simplex::HandleSimplex(Math::Vector3& a_direction)
 	return false;
 }
 
-void Me::Physics::Simplex::InsertAfter(uint16_t const a_index, Math::Vector3 const a_point)
+void Me::Physics::Simplex::Splice(uint16_t const a_index, uint16_t a_indexToRemove, Math::Vector3 const a_point)
 {
 	std::vector<Math::Vector3> newList;
+	uint16_t counter = 0;
 
 	for (size_t i = 0; i < Length(); i++)
 	{
@@ -44,6 +45,13 @@ void Me::Physics::Simplex::InsertAfter(uint16_t const a_index, Math::Vector3 con
 		{
 			newList.push_back(a_point);
 		}
+
+		if (i > a_index && counter > 0)
+		{
+			counter--;
+			continue;
+		}
+
 		newList.push_back(m_points.at(i));
 	}
 
@@ -194,8 +202,28 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 		if (simplex.HandleSimplex(direction))
 		{
 			a_data.m_otherPosition = a_physics[1]->m_transform.GetPosition();
-			
-			a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
+			Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement);
+			Math::Vector3 sHalfSize = a_colliders[0]->GetColliderScale() / 2.0f;
+
+			if (!a_colliders[0]->Is3DCollider())
+			{
+
+				a_data.m_hitNormal = EPA2D(simplex, a_physics, a_colliders);
+				a_data.m_hitPoint = sPos - (sHalfSize * a_data.m_hitNormal);
+			}
+			else
+			{
+				//TODO : THIS IS NOT CORRECT!
+				a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
+				a_data.m_hitPoint = sPos - (sHalfSize * a_data.m_hitNormal);
+			}
+
+			if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_drawHitPoints)
+			{
+				Me::Debug::MeduzaDebug::RenderCircle(Math::CreateTransformationMatrix(a_data.m_hitPoint, Math::Vector3(0.0f), Math::Vector3(1.0f)),
+					Me::Debug::MeduzaDebug::GetDebuggingSettings().m_scaleVertices,
+					Colours::BLACK);
+			}
 
 			return true;
 		}
@@ -216,5 +244,56 @@ Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* 
 		Me::Debug::MeduzaDebug::RenderLine(furthersPointB, furthersPointB + Inverse(a_direction), Colours::WHITE);
 	}
 
-	return furthersPointA - furthersPointB;
+	return (furthersPointA - furthersPointB).Normalize();
+}
+
+Me::Math::Vector3 Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
+{
+	float const infinity = std::numeric_limits<float>::infinity();
+	Math::Vector3 minNormal;
+	uint16_t minIndex = 0;
+	float minDistance = infinity;
+
+	uint8_t maxItter = 5;
+
+	Simplex polytope = a_simplex;
+	while (minDistance == infinity && maxItter > 0)
+	{
+		for (size_t i = 0; i < polytope.Length(); i++)
+		{
+			size_t j = (i + 1) % polytope.Length();
+			Math::Vector3 vertexI = polytope.GetPoint(i);
+			Math::Vector3 vertexJ = polytope.GetPoint(j);
+
+			Math::Vector3 vertexIJ = vertexJ - vertexI;
+			Math::Vector3 normal = Math::Vector3(vertexIJ.m_y, -vertexIJ.m_x, 0.0f).Normalize();
+			float distance = Math::DotProduct(normal, vertexI);
+
+			if (distance < 0)
+			{
+				distance *= -1.0f;
+				normal.Inverse();
+			}
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minNormal = normal;
+				minIndex = j;
+			}
+		}
+	
+		Math::Vector3 support = Support(a_physics, a_colliders, minNormal);
+		float sDistance = Math::DotProduct(minNormal, support);
+
+		if (std::abs(sDistance - minDistance) > 0.001f)
+		{
+			minDistance = infinity;
+			polytope.Splice(minIndex, 0, support);
+			maxItter--;
+		}
+	}
+
+
+	return minNormal;
 }

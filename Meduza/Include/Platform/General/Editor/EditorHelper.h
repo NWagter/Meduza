@@ -25,6 +25,9 @@ namespace Me
                 static bool DrawVector2Prop(std::string const& a_label, Me::Math::Vector2& a_value, float const a_resetValue = 0, float const a_columnWidth = 100.0f);
                 static bool DrawVector3Prop(std::string const& a_label, Me::Math::Vector3& a_value, float const a_resetValue = 0, float const a_columnWidth = 100.0f);
                 static bool DrawVector4Prop(std::string const& a_label, Me::Math::Vector4& a_value, float const a_resetValue = 0, float const a_columnWidth = 100.0f);
+
+
+                static void DrawVector3(std::string const& a_label, Me::Math::Vector3 const a_value, float const a_resetValue = 0, float const a_columnWidth = 100.0f);
             };
         }
     }

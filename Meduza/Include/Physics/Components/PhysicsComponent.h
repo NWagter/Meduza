@@ -36,6 +36,8 @@ namespace Me
                 ImGui::DragFloat("Friction", &m_friction);
 
                 ImGui::Checkbox("Debug Hit Normals", &m_debugHitNormals);
+
+                Editor::Helper::EditorHelper::DrawVector3("Velocity", m_velocity);
             }
 #endif
 #endif

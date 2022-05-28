@@ -28,7 +28,8 @@ namespace Me
 
                 return Math::Vector3(point.m_x,point.m_y, 0);
             }
-            virtual bool Is3DCollider() const { return false; }
+            bool Is3DCollider() const override { return false; }
+            Math::Vector3 GetColliderScale() const override { return Math::Vector3(m_colliderSize.m_x, m_colliderSize.m_y, 1.0f); }
 
             BoxCollider2DComponent()
             {

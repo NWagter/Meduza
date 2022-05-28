@@ -227,3 +227,39 @@ bool Me::Editor::Helper::EditorHelper::DrawVector4Prop(std::string const& a_labe
 
     return changed;
 }
+
+void Me::Editor::Helper::EditorHelper::DrawVector3(std::string const& a_label, Me::Math::Vector3 const a_value, float const a_resetValue, float const a_columnWidth)
+{
+    ImGui::PushID(a_label.c_str());
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, a_columnWidth);
+    ImGui::Text(a_label.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0.0f, 0.0f });
+
+    ImGui::Text("X");
+    ImGui::SameLine();
+    ImGui::Text(" %.3f - ", a_value.m_x);
+
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::Text("Y");
+    ImGui::SameLine();
+    ImGui::Text(" %.3f - ", a_value.m_y);
+
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::Text("Z");
+    ImGui::SameLine();
+    ImGui::Text(" %.3f", a_value.m_z);
+
+    ImGui::PopItemWidth();
+
+    ImGui::PopStyleVar();
+    ImGui::Columns(1);
+    ImGui::PopID();
+}

@@ -22,7 +22,8 @@ namespace Me
             {
                 return (Math::Vector3(a_direction).Normalize() * m_radius) + (a_transform.GetPosition() + m_colliderOffset);
             }            
-            virtual bool Is3DCollider() const { return false; }
+            bool Is3DCollider() const override { return false; }
+            Math::Vector3 GetColliderScale() const override { return Math::Vector3(m_radius); }
 
             static ComponentID s_componentID;
 #ifdef PLATFORM_WINDOWS

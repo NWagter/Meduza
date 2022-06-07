@@ -247,7 +247,9 @@ void Me::Editor::EditorToolbar::Draw()
             ImGui::Text("Physics Debugging");
             ImGui::Checkbox("Collision", &settings.m_collisionDebugger);
             ImGui::Checkbox("Lines", &settings.m_lineDebugger);
-            ImGui::DragFloat("Line Lenght", &settings.m_debugLineLenght, 0.1f, 0, 5);
+            ImGui::DragFloat("Line Lenght", &settings.m_debugLineLenght, 0.1f, 0, 5.0f);
+            ImGui::Checkbox("Show Vertices", &settings.m_showVertices);
+            ImGui::DragFloat("Vertices Size", &settings.m_scaleVertices, 0.1f, 0, 5.0f);
 
             ImGui::EndMenu();
         }

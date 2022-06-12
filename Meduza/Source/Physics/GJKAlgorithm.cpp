@@ -207,9 +207,9 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 
 			if (!a_colliders[0]->Is3DCollider())
 			{
-
-				a_data.m_hitNormal = EPA2D(simplex, a_physics, a_colliders);
-				a_data.m_hitPoint = sPos - (sHalfSize * a_data.m_hitNormal);
+				EPAData data = EPA2D(simplex, a_physics, a_colliders);
+				a_data.m_hitNormal = data.m_normal;
+				a_data.m_hitPoint = sPos - (sHalfSize * data.m_normal);
 			}
 			else
 			{
@@ -247,17 +247,17 @@ Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* 
 	return (furthersPointA - furthersPointB).Normalize();
 }
 
-Me::Math::Vector3 Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
+Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
 {
+	EPAData data;
 	float const infinity = std::numeric_limits<float>::infinity();
-	Math::Vector3 minNormal;
 	uint16_t minIndex = 0;
-	float minDistance = infinity;
+	data.m_distance = infinity;
 
 	uint8_t maxItter = 5;
 
 	Simplex polytope = a_simplex;
-	while (minDistance == infinity && maxItter > 0)
+	while (data.m_distance == infinity && maxItter > 0)
 	{
 		for (size_t i = 0; i < polytope.Length(); i++)
 		{
@@ -275,25 +275,24 @@ Me::Math::Vector3 Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, Phys
 				normal.Inverse();
 			}
 
-			if (distance < minDistance)
+			if (distance < data.m_distance)
 			{
-				minDistance = distance;
-				minNormal = normal;
+				data.m_distance = distance;
+				data.m_normal = normal;
 				minIndex = j;
 			}
 		}
 	
-		Math::Vector3 support = Support(a_physics, a_colliders, minNormal);
-		float sDistance = Math::DotProduct(minNormal, support);
+		Math::Vector3 support = Support(a_physics, a_colliders, data.m_normal);
+		float sDistance = Math::DotProduct(data.m_normal, support);
 
-		if (std::abs(sDistance - minDistance) > 0.001f)
+		if (std::abs(sDistance - data.m_distance) > 0.001f)
 		{
-			minDistance = infinity;
+			data.m_distance = infinity;
 			polytope.Splice(minIndex, 0, support);
 			maxItter--;
 		}
 	}
 
-
-	return minNormal;
+	return data;
 }

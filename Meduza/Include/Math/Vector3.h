@@ -277,6 +277,9 @@ namespace Me
 		inline Vector3 TrippleCrossProduct(Vector3 const& a_vecA, Vector3 const& a_vecB, Vector3 const& a_vecC);
 
 		inline Vector3 Inverse(Vector3 const& a_rhs);
+		inline Vector3 Round(Vector3 const& a_value);
+		inline Vector3 Ceil(Vector3 const& a_value);
+		inline Vector3 Float(Vector3 const& a_value);
 
 		namespace Random
 		{

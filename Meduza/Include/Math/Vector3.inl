@@ -101,6 +101,24 @@ namespace Me
 			return Math::Vector3(-a_rhs.m_x, -a_rhs.m_y, -a_rhs.m_z);
 		}
 
+		inline Vector3 Round(Vector3 const& a_rhs)
+		{
+			Math::Vector3 vec = a_rhs;
+			return vec.Round();
+		}
+
+		inline Vector3 Ceil(Vector3 const& a_rhs)
+		{
+			Math::Vector3 vec = a_rhs;
+			return vec.Ceil();
+		}
+
+		inline Vector3 Floor(Vector3 const& a_rhs)
+		{
+			Math::Vector3 vec = a_rhs;
+			return vec.Floor();
+		}
+
 		namespace Random
 		{
 			inline Vector3 RandomRange(const Vector3 a_min, const Vector3 a_max)

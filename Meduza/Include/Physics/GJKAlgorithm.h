@@ -30,13 +30,19 @@ namespace Me
 			int m_amountOfPoints = 0;
 		};
 
+		struct EPAData
+		{
+			Math::Vector3 m_normal = Math::Vector3(0.0f);
+			float m_distance = 0.0f;
+		};
+
 		class GJKAlgorithm
 		{
 		public:
 			static bool GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data);
 		private:
 			static Math::Vector3 Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction);
-			static Math::Vector3 EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2]);
+			static EPAData EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2]);
 		};
 	}
 }

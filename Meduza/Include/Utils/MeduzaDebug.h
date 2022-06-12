@@ -17,8 +17,8 @@ namespace Me
 			bool m_showStats = false;
 			bool m_debugCircle = true;
 			bool m_gjkDebugger = false;
-			bool m_showVertices = true;
-			bool m_drawHitPoints = false;
+			bool m_showVertices = false;
+			bool m_drawHitPoints = true;
 			float m_scaleVertices = 0.2f;
 		};
 

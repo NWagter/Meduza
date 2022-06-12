@@ -20,6 +20,12 @@ void Me::Physics::PhysicsSystemEnd::OnUpdate(float a_dT)
         PhysicsComponent* pC = std::get<PhysicsComponent*>(compTuple);
         TransformComponent* tC = std::get<TransformComponent*>(compTuple);
 
+        // Small Bias
+        if (pC->m_velocity.Lenght() < 0.01f)
+        {
+            pC->m_velocity.Round();
+        }
+
         Math::Vector3 vP = pC->m_velocity * a_dT;
 
         if (!vP.IsNan())

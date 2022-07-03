@@ -244,6 +244,9 @@ void Me::Editor::EditorToolbar::Draw()
         {
             Debug::Settings& settings = Debug::MeduzaDebug::GetDebuggingSettings();
 
+            ImGui::Text("Time");
+            ImGui::DragFloat("TimeScale", &settings.m_timeScale, 0.1f, 0, 5.0f);
+
             ImGui::Text("Physics Debugging");
             ImGui::Checkbox("Collision", &settings.m_collisionDebugger);
             ImGui::Checkbox("HitPoints", &settings.m_drawHitPoints);

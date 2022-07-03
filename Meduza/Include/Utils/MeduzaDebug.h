@@ -20,6 +20,7 @@ namespace Me
 			bool m_showVertices = false;
 			bool m_drawHitPoints = true;
 			float m_scaleVertices = 0.2f;
+			float m_timeScale = 1.0f;
 		};
 
 		class MeduzaDebug

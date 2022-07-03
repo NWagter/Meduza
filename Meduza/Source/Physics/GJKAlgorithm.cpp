@@ -204,13 +204,13 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 			{
 				EPAData data = EPA2D(simplex, a_physics, a_colliders);
 				a_data.m_hitNormal = data.m_normal;
-				a_data.m_hitPoint = sPos - (sHalfSize * data.m_normal);
+				a_data.m_hitPoint = sPos - (data.m_normal * data.m_distance);
 			}
 			else
 			{
 				EPAData data = EPA3D(simplex, a_physics, a_colliders);
 				a_data.m_hitNormal = data.m_normal;
-				a_data.m_hitPoint = sPos - (sHalfSize * data.m_normal);
+				a_data.m_hitPoint = sPos - (data.m_normal * data.m_distance);
 			}
 
 			if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_drawHitPoints)

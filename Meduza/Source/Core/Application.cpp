@@ -9,6 +9,8 @@
 #include "Core/Components/TransformComponent.h"
 #include "Core/Components/CameraComponent.h"
 
+#include "Utils/MeduzaDebug.h"
+
 Me::Application::Application(int a_w,int a_h, int a_api)
 {
     m_meduza = new Meduza(a_w,a_h, static_cast<GFX_API>(a_api));
@@ -39,11 +41,19 @@ bool Me::Application::Run()
     while(m_meduza->IsRunning())
     {
         ME_PROFILE_FRAME("MainThread");
-        const float deltaSecond = deltaTimer.GetElapsedTime();
+
+        float const deltaSecond = deltaTimer.GetElapsedTime();
+
+        float timeScale = 1.0f;
+#ifdef EDITOR
+        timeScale = Me::Debug::MeduzaDebug::GetDebuggingSettings().m_timeScale;
+#endif // EDITOR
+
+        float const deltaTime = deltaSecond * timeScale;
         m_meduza->Clear();
         
-        m_meduza->Update(deltaSecond);
-        Application::OnUpdate(deltaSecond);
+        m_meduza->Update(deltaTime);
+        Application::OnUpdate(deltaTime);
 
         m_meduza->Present();
 

@@ -59,11 +59,6 @@ void Me::Physics::Simplex::Splice(uint16_t const a_index, uint16_t a_indexToRemo
 	m_points = newList;
 }
 
-bool Me::Physics::Simplex::SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao)
-{
-	return DotProduct(a_direction, a_ao) > 0.0f;
-}
-
 bool Me::Physics::Simplex::Line(Math::Vector3& a_direction)
 {
 	Math::Vector3 a = m_points[0];
@@ -72,7 +67,7 @@ bool Me::Physics::Simplex::Line(Math::Vector3& a_direction)
 	Math::Vector3 ab = b - a;
 	Math::Vector3 ao = Inverse(a);
 
-	if (SameDirection(ab, ao))
+	if (GJKAlgorithm::SameDirection(ab, ao))
 	{
 		a_direction = Math::CrossProduct(Math::CrossProduct(ab, ao), ab);
 	}
@@ -96,9 +91,9 @@ bool Me::Physics::Simplex::Triangle(Math::Vector3& a_direction)
 
 	Math::Vector3 abc = CrossProduct(ab, ac);
 
-	if (SameDirection(a_direction, ao))
+	if (GJKAlgorithm::SameDirection(a_direction, ao))
 	{
-		if (SameDirection(ac, ao))
+		if (GJKAlgorithm::SameDirection(ac, ao))
 		{
 			a_direction = Math::CrossProduct(Math::CrossProduct(ac, ao), ac);
 		}
@@ -109,13 +104,13 @@ bool Me::Physics::Simplex::Triangle(Math::Vector3& a_direction)
 	}
 	else
 	{
-		if (SameDirection(CrossProduct(ab, abc), ao))
+		if (GJKAlgorithm::SameDirection(CrossProduct(ab, abc), ao))
 		{
 			return Line(a_direction);
 		}
 		else
 		{
-			if (SameDirection(abc, ao))
+			if (GJKAlgorithm::SameDirection(abc, ao))
 			{
 				a_direction = abc;
 			}
@@ -145,18 +140,18 @@ bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 	Math::Vector3 acd = CrossProduct(ac, ad);
 	Math::Vector3 adb = CrossProduct(ad, ab);
 
-	if (SameDirection(abc, ao))
+	if (GJKAlgorithm::SameDirection(abc, ao))
 	{
 		return Triangle(a_direction);
 	}
-	if (SameDirection(acd, ao))
+	if (GJKAlgorithm::SameDirection(acd, ao))
 	{
 		m_points[1] = c;
 		m_points[2] = d;
 
 		return Triangle(a_direction);
 	}
-	if (SameDirection(adb, ao))
+	if (GJKAlgorithm::SameDirection(adb, ao))
 	{
 		m_points[1] = d;
 		m_points[2] = b;
@@ -213,9 +208,9 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 			}
 			else
 			{
-				//TODO : THIS IS NOT CORRECT!
-				a_data.m_hitNormal = (a_physics[0]->m_transform.GetPosition() - a_physics[1]->m_transform.GetPosition()).Normalize();
-				a_data.m_hitPoint = sPos - (sHalfSize * a_data.m_hitNormal);
+				EPAData data = EPA3D(simplex, a_physics, a_colliders);
+				a_data.m_hitNormal = data.m_normal;
+				a_data.m_hitPoint = sPos - (sHalfSize * data.m_normal);
 			}
 
 			if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_drawHitPoints)
@@ -230,6 +225,11 @@ bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_phy
 	}
 
 	return false;
+}
+
+bool Me::Physics::GJKAlgorithm::SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao)
+{
+	return DotProduct(a_direction, a_ao) > 0.0f;
 }
 
 Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
@@ -295,4 +295,148 @@ Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, P
 	}
 
 	return data;
+}
+
+Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA3D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
+{
+	std::vector<Math::Vector3> polytope = a_simplex.GetPoints();
+	std::vector<size_t> faces = {
+		0, 1, 2,
+		0, 3, 1,
+		0, 2, 3,
+		1, 3, 2
+	};
+
+	float const infinity = std::numeric_limits<float>::infinity();
+	auto [normals, minFace] = GetFaceNormals(polytope, faces);
+
+	uint8_t maxItter = 5;
+	float minDistance = infinity;
+	Math::Vector3 minNormal;
+
+	while (minDistance == infinity && maxItter > 0)
+	{
+		minNormal = normals[minFace].first;
+		minDistance = normals[minFace].second;
+
+		Math::Vector3 support = Support(a_physics, a_colliders, minNormal);
+		float sDistance = Math::DotProduct(minNormal, support);
+
+		if (std::abs(sDistance - minDistance) > 0.001f)
+		{
+			minDistance = infinity;
+			maxItter--;
+			
+			std::vector<std::pair<size_t, size_t>> uniqueEdges;
+
+			for (size_t i = 0; i < normals.size(); i++)
+			{
+				if (SameDirection(normals.at(i).first, support))
+				{
+					size_t f = i * 3;
+
+					AddIfUniqueEdge(uniqueEdges, faces, f, f + 1);
+					AddIfUniqueEdge(uniqueEdges, faces, f + 1, f + 2);
+					AddIfUniqueEdge(uniqueEdges, faces, f + 2, f);
+
+					faces[f + 2] = faces.back();
+					faces.pop_back();
+
+					faces[f + 1] = faces.back();
+					faces.pop_back();
+
+					faces[f] = faces.back();
+					faces.pop_back();
+
+					normals[i] = normals.back();
+					normals.pop_back();
+
+					i--;
+				}
+			}
+		
+			std::vector<size_t> newFaces;
+			for (auto [edgeIndex1, edgeIndex2] : uniqueEdges)
+			{
+				newFaces.push_back(edgeIndex1);
+				newFaces.push_back(edgeIndex2);
+				newFaces.push_back(polytope.size());
+			}
+
+			polytope.push_back(support);
+			
+			auto [newNormals, newMinFace] = GetFaceNormals(polytope, newFaces);
+			
+			float oldMinDistance = infinity;
+			for (size_t i = 0; i < normals.size(); i++)
+			{
+				if (normals[i].second < oldMinDistance)
+				{
+					oldMinDistance = normals[i].second;
+					minFace = i;
+				}
+			}
+
+			if (newNormals[newMinFace].second < oldMinDistance)
+			{
+				minFace = newMinFace + normals.size();
+			}
+
+			faces.insert(faces.end(), newFaces.begin(), newFaces.end());
+			normals.insert(normals.end(), newNormals.begin(), newNormals.end());
+		}
+	}
+
+	EPAData data;
+	data.m_normal = minNormal;
+	data.m_distance = minDistance + 0.001f;
+
+	return data;
+}
+
+void Me::Physics::GJKAlgorithm::AddIfUniqueEdge(std::vector<std::pair<size_t, size_t>>& a_edges, std::vector<size_t> const a_faces, size_t a_faceA, size_t a_faceB)
+{
+	auto reverse = std::find(a_edges.begin(), a_edges.end(), std::make_pair(a_faces[a_faceB], a_faces[a_faceA]));
+
+	if (reverse != a_edges.end())
+	{
+		a_edges.erase(reverse);
+	}
+	else
+	{
+		a_edges.emplace_back(a_faces[a_faceA], a_faces[a_faceB]);
+	}
+}
+
+std::pair<std::vector<std::pair<Me::Math::Vector3, float>>, size_t> Me::Physics::GJKAlgorithm::GetFaceNormals(std::vector<Math::Vector3> a_polytope, std::vector<size_t> a_faces)
+{
+	std::vector<std::pair<Me::Math::Vector3, float>> normals;
+	size_t minTriangle = 0;
+	float const infinity = std::numeric_limits<float>::infinity();
+	float minDistance = infinity;
+
+	for (size_t i = 0; i < a_faces.size(); i += 3)
+	{
+		Math::Vector3 a = a_polytope[a_faces[i]];
+		Math::Vector3 b = a_polytope[a_faces[i + 1]];
+		Math::Vector3 c = a_polytope[a_faces[i + 2]];
+
+		Math::Vector3 normal = Math::CrossProduct((b - a), (c - a)).Normalize();
+		float distance = Math::DotProduct(normal, a);
+
+		if (distance < 0)
+		{
+			normal *= -1.0f;
+			distance *= -1.0f;
+		}
+
+		normals.emplace_back(std::pair<Me::Math::Vector3, float>(normal, distance));
+		if (distance < minDistance)
+		{
+			minTriangle = i / 3;
+			minDistance = distance;
+		}
+	}
+
+	return { normals, minTriangle };
 }

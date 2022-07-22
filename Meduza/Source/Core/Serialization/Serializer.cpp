@@ -709,7 +709,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
             Physics::ColliderTagComponent* cTag = new Physics::ColliderTagComponent(a_comp);
             eManager->AddComponent(ent, cTag);
 
-        })) compAmount--;
+        })) compAmount -= 3;
         if(CanDeserialize<Physics::BoxCollider3DComponent>(archive, [&ent, &eManager, &archive](auto& a_comp)
         {          
             archive(cereal::make_nvp("CollisionType", (Physics::CollisionType)a_comp->m_collisionType)); 
@@ -750,7 +750,7 @@ bool Me::Serialization::Serializer::DeserializeScene(std::string a_file, bool a_
                 std::string scriptPath = "ScriptPath" + std::to_string(i);
                 std::string script;
                 archive(cereal::make_nvp(scriptPath.c_str(), script));
-                Me::Resource resourceID = rLibrary->LoadResource<Resources::Script>(script)->GetID();
+                Me::Resource resourceID = rLibrary->LoadResource<Me::Resources::Script>(script)->GetID();
                 a_comp->AddScript(script);
 
                 int amountOfValues = 0;

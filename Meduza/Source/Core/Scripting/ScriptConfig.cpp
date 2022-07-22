@@ -91,7 +91,6 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 
 	int amount;
 	archive(cereal::make_nvp(gc_scriptConfigured, amount));
-
 	for (int i = 0; i < amount; i++)
 	{
 		archive.startNode();
@@ -159,7 +158,6 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 			}
 			archive.finishNode();
 		}
-
 		m_config[scriptData->m_resourceId] = scriptData;
 
 		archive.finishNode();
@@ -177,7 +175,12 @@ bool Me::Scripting::ScriptConfig::LoadScriptConfig(std::string const& a_path, st
 			noPath = true;
 			continue;
 		}
-		rLibrary->LoadResource<Resources::Script>(c.second->m_scriptPath);
+		Resources::Script* scriptResource = rLibrary->LoadResource<Resources::Script>(c.second->m_scriptPath);
+		for (auto value : c.second->m_inputValues)
+		{
+			scriptResource->AddInputField(value);
+		}
+
 	}
 
 #ifdef PLATFORM_WINDOWS
@@ -224,6 +227,7 @@ void Me::Scripting::ScriptConfig::AddValue(Resource const a_resource)
 {
 	if (m_config[a_resource] == nullptr)
 	{
+		ME_CORE_ASSERT_M(m_config[a_resource] == nullptr, "Failed to add new Value to resource!");
 		return;
 	}
 
@@ -232,8 +236,6 @@ void Me::Scripting::ScriptConfig::AddValue(Resource const a_resource)
 
 void Me::Scripting::ScriptConfig::OnChange(Resource const a_resource)
 {
-	SerializeScriptData();
-
 	auto comps = EntityManager::GetEntityManager()->GetComponents<ScriptComponent>();
 
 	for (auto s : comps)
@@ -242,10 +244,53 @@ void Me::Scripting::ScriptConfig::OnChange(Resource const a_resource)
 		{
 			if (script->m_scriptID == a_resource)
 			{
-				script->SetInputField(*m_config[a_resource]);
+				ScriptConfigData config;
+				for (auto value : m_config[a_resource]->m_inputValues)
+				{
+					bool hasValue = false;
+					for (Value* oldValue : script->m_inputFields)
+					{
+						if ((oldValue->m_argumentName == value->m_argumentName)
+							&& oldValue->m_type == value->m_type)
+						{
+							switch (oldValue->m_type)
+							{
+							case ValueType::Boolean:
+								config.m_inputValues.push_back(new ValueBool(static_cast<ValueBool const&>(*oldValue)));
+								break;
+							case ValueType::String:
+								config.m_inputValues.push_back(new ValueString(static_cast<ValueString const&>(*oldValue)));
+								break;
+							case ValueType::Number:
+								config.m_inputValues.push_back(new ValueNumber(static_cast<ValueNumber const&>(*oldValue)));
+								break;
+							case ValueType::Vector3:
+								config.m_inputValues.push_back(new ValueVector3(static_cast<ValueVector3 const&>(*oldValue)));
+								break;
+							case ValueType::Entity:
+								config.m_inputValues.push_back(new ValueEntity(static_cast<ValueEntity const&>(*oldValue)));
+								break;
+							case ValueType::Asset:
+								config.m_inputValues.push_back(new ValueAsset(static_cast<ValueAsset const&>(*oldValue)));
+								break;
+							}
+
+							hasValue = true;
+						}
+					}
+
+					if (!hasValue)
+					{
+						config.m_inputValues.push_back(value);
+					}
+				}
+
+				script->SetInputField(config);
 			}
 		}
 	}
+
+	SerializeScriptData();
 }
 
 Me::Value* Me::Scripting::ScriptConfig::ChangeType(ScriptConfigData* a_dataSet, int a_index, ValueType a_newType)

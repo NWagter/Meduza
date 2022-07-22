@@ -21,6 +21,12 @@ namespace Me
         ValueType m_type;
         std::string m_argumentName;
 
+        Value(Value const& a_value)
+        {
+            m_type = a_value.m_type;
+            m_argumentName = a_value.m_argumentName;
+        }
+
         Value(std::string const& a_argumentName, ValueType const a_type)
         {
             m_type = a_type;
@@ -33,7 +39,12 @@ namespace Me
     struct ValueNumber : public Value
     {
         float m_value;
-        float m_defaultValue = 0.0f;;
+        float m_defaultValue = 0.0f;
+
+        ValueNumber(ValueNumber const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
 
         ValueNumber(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Number)
         {
@@ -56,6 +67,11 @@ namespace Me
         bool m_value;
         bool m_defaultValue = false;
 
+        ValueBool(ValueBool const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
+
         ValueBool(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Boolean)
         {
             Reset();
@@ -76,6 +92,11 @@ namespace Me
     {
         std::string m_value;
         std::string m_defaultValue = "";
+
+        ValueString(ValueString const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
 
         ValueString(std::string const& a_argumentName) : Value(a_argumentName, ValueType::String)
         {
@@ -98,6 +119,11 @@ namespace Me
         Math::Vector3 m_value;
         Math::Vector3 m_defaultValue = Math::Vector3(0);
 
+        ValueVector3(ValueVector3 const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
+
         ValueVector3(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Vector3)
         {
             Reset();
@@ -119,6 +145,11 @@ namespace Me
         EntityID m_value;
         EntityID m_defaultValue = ENTITY_NULL;
 
+        ValueEntity(ValueEntity const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
+
         ValueEntity(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Entity)
         {
             Reset();
@@ -139,6 +170,11 @@ namespace Me
     {
         std::string m_value;
         std::string m_defaultValue = "";
+
+        ValueAsset(ValueAsset const& a_value) : Value(a_value)
+        {
+            m_value = a_value.m_value;
+        }
 
         ValueAsset(std::string const& a_argumentName) : Value(a_argumentName, ValueType::Asset)
         {

@@ -38,9 +38,9 @@ function OnUpdate(a_host, a_eEntity, a_nDt)
     end
       
     if _OnKeyDown(69) == 1 then
-        vRotation.y = vRotation.y + (nRotateSpeed * a_nDt)        
-    elseif _OnKeyDown(81) == 1 then
         vRotation.y = vRotation.y - (nRotateSpeed * a_nDt)        
+    elseif _OnKeyDown(81) == 1 then
+        vRotation.y = vRotation.y + (nRotateSpeed * a_nDt)        
     end
 
     _Move(a_eEntity, vMovement)

@@ -92,11 +92,11 @@ void Me::Editor::EditorCameraSystem::OnUpdate(float a_dt)
 
         if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::Q))
         {
-            rotation.m_yaw -= (20.0f) * a_dt;
+            rotation.m_yaw += (20.0f) * a_dt;
         }
         else if(Me::Event::EventSystem::GetEventSystem()->KeyDown(Me::Event::KeyCode::E))
         {
-            rotation.m_yaw += (20.0f) * a_dt;
+            rotation.m_yaw -= (20.0f) * a_dt;
         }
         
         Me::Math::Vector3 position = trans->m_translation;

@@ -9,6 +9,13 @@ namespace Me
     struct TransformComponent;
     namespace Renderer
     {
+        enum class RenderType
+        {
+            Default = 0,
+            Debug,
+            Editor
+        };
+
         struct LineRender
         {
             Math::Vector3 m_start;

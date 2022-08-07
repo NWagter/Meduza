@@ -23,6 +23,13 @@ namespace Me
         
         namespace GL
         {
+            struct RenderData
+            {
+                Mesh m_mesh;
+                Shader m_shader;
+                Texture m_texture;
+            };
+
             struct DefaultInstancedBuffer
             {
                 Math::Matrix4 m_model = Math::Matrix4::Identity();
@@ -106,11 +113,11 @@ namespace Me
                 
                 Window* GetWindow() override {return m_window;}
             private:
+                void AddToInstance(DefaultInstancedBuffer a_data, RenderData a_renderData, RenderType const a_renderType);
                 Window* m_window;
                 Context* m_context;
 
-                std::vector<BaseInstanced*> m_instances;
-                std::vector<BaseInstanced*> m_debugInstances;
+                std::map<RenderType, std::vector<BaseInstanced*>> m_instanceMap;
 
                 std::vector<DebugLine*> m_debugLines;
                 std::vector<DebugCricle*> m_debugCircle;

@@ -75,17 +75,15 @@ Me::Renderer::GL::RenderLayerGL::~RenderLayerGL()
     }
     m_debugLines.clear();
 
-    for (auto i : m_instances)
+    for (auto instancePair : m_instanceMap)
     {
-        delete i;
+        for (auto instance : instancePair.second)
+        {
+            delete instance;
+        }
+        instancePair.second.clear();
     }
-    m_instances.clear();
-
-    for (auto i : m_debugInstances)
-    {
-        delete i;
-    }
-    m_debugInstances.clear();
+    m_instanceMap.clear();
 
     delete m_frameBuffer;
     delete m_context;
@@ -106,17 +104,14 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour const a_clearColour)
     }
     m_debugCircle.clear();
 
-    for (auto i : m_instances)
+    for (auto instancePair : m_instanceMap)
     {
-        i->ClearBuffer();
+        for (auto instance : instancePair.second)
+        {
+            instance->ClearBuffer();
+        }
+        //instancePair.second.clear();
     }
-    //m_instances.clear();
-
-    for (auto i : m_debugInstances)
-    {
-        i->ClearBuffer();
-    }
-    //m_debugInstances.clear();
 
     m_frameBuffer->Bind();
     glViewport(0,0, m_context->m_width, m_context->m_height);
@@ -154,47 +149,45 @@ void Me::Renderer::GL::RenderLayerGL::Present()
     m_context->SwapBuffer();
 }
 
-
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
     Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_ALPHA_TEST);
-
-    for (auto i : m_instances)
+    for (auto instancePair : m_instanceMap)
     {
-        if (i->Empty())
+        if (instancePair.first == RenderType::Debug)
         {
-            continue;
+            glDisable(GL_ALPHA_TEST);
+            glDisable(GL_DEPTH_TEST);
+        }
+        else
+        {
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_ALPHA_TEST);
         }
 
-        glEnable(GL_CULL_FACE);
+        for (auto instance : instancePair.second)
+        {
+            if (instance->Empty())
+            {
+                continue;
+            }
 
-        auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(i);
-        int vertSize = glI->Draw(m_camera->m_cameraMatrix);
+            glEnable(GL_CULL_FACE);
+
+            auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instance);
+            int vertSize = glI->Draw(m_camera->m_cameraMatrix);
 
 #ifdef EDITOR  
-        m_renderStats.m_drawCalls++;
-        m_renderStats.m_vertices += vertSize * glI->Amount();
+            m_renderStats.m_drawCalls++;
+            m_renderStats.m_vertices += vertSize * glI->Amount();
 #endif
+
+        }
     }
 
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_DEPTH_TEST);
-
-    for (auto i : m_debugInstances)
-    {
-        glEnable(GL_CULL_FACE);
-
-        auto glI = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(i);
-        int vertSize = glI->Draw(m_camera->m_cameraMatrix);
-
-#ifdef EDITOR  
-        m_renderStats.m_drawCalls++;
-        m_renderStats.m_vertices += vertSize * glI->Amount();
-#endif
-    }
 
     for (auto lines : m_debugLines)
     {
@@ -263,27 +256,59 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
 void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComponent, TransformComponent& a_transformComponent)
 {
-    // If no instanced Renderers we just create one
+    auto iB = DefaultInstancedBuffer();
+
+    Me::Colour colour = a_renderComponent.m_colour;
+    iB.m_colour = colour.m_colour;
+    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
+    iB.m_textureCoords = a_renderComponent.m_textureCoords;
+
+    auto rD = RenderData();
+    rD.m_mesh = a_renderComponent.m_mesh;
+    rD.m_shader = a_renderComponent.m_shader;
+    rD.m_texture = a_renderComponent.m_texture;
+
+    AddToInstance(iB, rD, RenderType::Default);
+}
+
+void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent)
+{
+    auto iB = DefaultInstancedBuffer();
+    Me::Colour colour = a_debugRenderComponent.m_debugColour;
+    iB.m_colour = colour.m_colour;
+    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
+
+    auto rD = RenderData();
+    rD.m_mesh = a_debugRenderComponent.m_mesh;
+    rD.m_shader = a_debugRenderComponent.m_shader;
+    rD.m_texture = 0;
+
+    AddToInstance(iB, rD, RenderType::Debug);
+}
+
+void Me::Renderer::GL::RenderLayerGL::AddToInstance(DefaultInstancedBuffer a_data, RenderData a_renderData, RenderType const a_renderType)
+{
     BaseInstanced* instancedRenderer = nullptr;
     int texture = 0;
 
-    if (m_instances.empty())
+    auto& instances = m_instanceMap[a_renderType];
+
+    if (instances.empty())
     {
-        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderComponent.m_mesh, a_renderComponent.m_shader);
-        m_instances.push_back(b);
-        texture = b->AddTexture(a_renderComponent.m_texture);
+        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderData.m_mesh, a_renderData.m_shader);
+        instances.push_back(b);
 
         instancedRenderer = b;
     }
     else
     {
-        for (auto iR : m_instances)
+        for (auto iR : instances)
         {
             auto glIR = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(iR);
-            texture = glIR->AddTexture(a_renderComponent.m_texture);
+            texture = glIR->AddTexture(a_renderData.m_texture);
 
-            if (a_renderComponent.m_mesh == glIR->GetMesh()
-                && a_renderComponent.m_shader == glIR->GetShader()
+            if (a_renderData.m_mesh == glIR->GetMesh()
+                && a_renderData.m_shader == glIR->GetShader()
                 && texture != -1)
             {
                 if (!glIR->ReachedMaxSize())
@@ -296,69 +321,17 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComp
 
         if (instancedRenderer == nullptr)
         {
-            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderComponent.m_mesh, a_renderComponent.m_shader);
-            texture = b->AddTexture(a_renderComponent.m_texture);
-            m_instances.push_back(b);
+            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_renderData.m_mesh, a_renderData.m_shader);
+            texture = b->AddTexture(a_renderData.m_texture);
+            instances.push_back(b);
 
             instancedRenderer = b;
         }
     }
 
-    auto iB = DefaultInstancedBuffer();
+    a_data.m_textureId = texture;
 
-    Me::Colour colour = a_renderComponent.m_colour;
-    iB.m_colour = colour.m_colour;
-    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
-    iB.m_textureCoords = a_renderComponent.m_textureCoords;
-    iB.m_textureId = texture;
-
-    static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
-}
-
-void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent)
-{
-    BaseInstanced* instancedRenderer = nullptr;
-
-    if (m_debugInstances.empty())
-    {
-        auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_debugRenderComponent.m_mesh, a_debugRenderComponent.m_shader);
-        m_debugInstances.push_back(b);
-
-        instancedRenderer = b;
-    }
-    else
-    {
-        for (auto iR : m_debugInstances)
-        {
-            auto glIR = static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(iR);
-
-            if (a_debugRenderComponent.m_mesh == glIR->GetMesh()
-                && a_debugRenderComponent.m_shader == glIR->GetShader())
-            {
-                if (!glIR->ReachedMaxSize())
-                {
-                    instancedRenderer = iR;
-                    break;
-                }
-            }
-        }
-
-        if (instancedRenderer == nullptr)
-        {
-            auto b = new InstancedRenderCall<DefaultInstancedBuffer>(a_debugRenderComponent.m_mesh, a_debugRenderComponent.m_shader);
-            m_debugInstances.push_back(b);
-
-            instancedRenderer = b;
-        }
-    }
-
-    auto iB = DefaultInstancedBuffer();
-
-    Me::Colour colour = a_debugRenderComponent.m_debugColour;
-    iB.m_colour = colour.m_colour;
-    iB.m_model = Math::Transpose(a_transformComponent.GetTransform());
-
-    static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(iB);
+    static_cast<InstancedRenderCall<DefaultInstancedBuffer>*>(instancedRenderer)->AddData(a_data);
 }
 
 void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender const& a_lineRender)

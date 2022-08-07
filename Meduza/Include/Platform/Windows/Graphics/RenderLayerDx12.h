@@ -30,12 +30,6 @@ namespace Me
 
         namespace Dx12
         {
-            enum class CommandListType
-            {
-                Default = 0,
-                Editor = 1
-            };
-
             class RenderLayerDx12 : public RenderLayer
             {
                 public:

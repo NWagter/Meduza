@@ -1,6 +1,5 @@
 #pragma once
 #include "Platform/General/Graphics/RenderLayer.h"
-#include "Platform/Windows/Helper/BufferStructures.h"
 
 namespace Me 
 {
@@ -31,13 +30,11 @@ namespace Me
 
         namespace Dx12
         {
-            class Device;
-            class Context;
-            class CommandQueue;
-            class Descriptor;
-            class CommandList;
-            class DepthStencilBuffer;
-
+            enum class CommandListType
+            {
+                Default = 0,
+                Editor = 1
+            };
 
             class RenderLayerDx12 : public RenderLayer
             {
@@ -59,37 +56,13 @@ namespace Me
                 Resources::Dx12::Texture* LoadTexture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
                 Helper::Dx12::TextureLoader* GetTextureLoader() { return m_textureLoader; }
 
-                CommandList& GetCmd(int a_id = 0);
-                Device& GetDevice();
-                Context& GetContext();
-                Descriptor& GetSRV();
-
                 Window* GetWindow() override;
 
                 private:
 
                 WindowsWindow* m_window = nullptr;
-                
-                Context* m_context = nullptr;
-                Device* m_device = nullptr;
 
                 Helper::Dx12::TextureLoader* m_textureLoader = nullptr;
-
-                CommandQueue* m_queue = nullptr;
-                Descriptor* m_rtv = nullptr;
-                Descriptor* m_srv = nullptr;
-                DepthStencilBuffer* m_dsBuffer = nullptr;
-                std::vector<CommandList*> m_cmd;
-                
-                Helper::Dx12::UploadBuffer<Helper::Dx12::CameraBuffer>* m_camBuffer;
-                std::vector<RenderComponent*> m_renderables;
-                Resources::Dx12::Shader* m_activeShader;
-
-                std::vector<BaseInstanced*> m_instancedRenderer;
-
-                bool m_startUp;
-                
-                DirectX::XMFLOAT4X4 m_viewProjection;
             };
         }
     }

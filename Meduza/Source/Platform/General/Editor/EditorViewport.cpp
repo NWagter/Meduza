@@ -10,11 +10,9 @@
 #include "Platform/General/Window.h"
 
 #include "Platform/General/Graphics/FramebufferGL.h"
-#include "Platform/Windows/Graphics/FramebufferDx12.h"
 
 #include "Platform/General/Resources/Resource.h"
 #ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/Resources/Texture.h"
 #include "Platform/Windows/Helper/Helper.h"
 #endif
 
@@ -53,14 +51,8 @@ void Me::Editor::EditorViewport::Draw()
     switch (colourAttachment->m_api)
     {
     case GFX_API::DX12:
-    {		
-        auto attachment = static_cast<Renderer::ColourAttachmentDx12*>(colourAttachment);
-        CD3DX12_GPU_DESCRIPTOR_HANDLE attachmenthandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(attachment->m_texture);
-        attachmenthandle.Offset(attachment->m_frameIndex, attachment->m_srvSize);
-
-        ImGui::Image(
-            (ImTextureID)attachmenthandle.ptr,
-            ImVec2{ m_viewportSize.m_x, m_viewportSize.m_y });
+    {
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
         break;
     }
     case GFX_API::OpenGL:

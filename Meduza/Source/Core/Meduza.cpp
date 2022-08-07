@@ -43,7 +43,7 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 #endif
 {
 	m_isRunning = true;
-
+	
 #ifdef PLATFORM_WINDOWS
 	m_window = new WindowsWindow(a_width, a_height, "Meduza | Windows");
 	ms_engineState = RUN_EDITOR;
@@ -64,6 +64,7 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	{
 		ME_CORE_ASSERT_M(false, "No Renderer Available!");
 		m_window->Quit();
+		return;
 	}
 
 	Resources::ResourceLibrary::CreateResourceLibrary();

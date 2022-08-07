@@ -7,7 +7,6 @@
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
-#include "Platform/Windows/Resources/Shader.h"
 #elif PLATFORM_LINUX
 
 #elif PLATFORM_APPLE
@@ -47,7 +46,8 @@ Me::Resources::ShaderBase* Me::Resources::ShaderBase::OnCreate(const std::string
 
 			tryPath.close();
 		}
-		return new Dx12::Shader(path, *dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer()));
+		ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+		return nullptr;
 #else
 		ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
@@ -81,7 +81,8 @@ Me::Resources::ShaderBase* Me::Resources::ShaderBase::OnCreate(const std::string
 			return nullptr;
 		}
 
-		return new Dx12::Shader(path, *dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer()));
+		ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+		return nullptr;
 #elif PLATFORM_LINUX
 		if (ext != "glsl")
 		{

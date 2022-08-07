@@ -9,7 +9,6 @@
 #include "Platform/General/Editor/EditorWidget.h"
 
 #ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/Editor/EditorRendererDx12.h"
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
 #elif PLATFORM_LINUX
 
@@ -23,7 +22,8 @@ Me::Editor::EditorRenderer* Me::Editor::EditorRenderer::CreateEditor(Me::Rendere
     {
         case Me::GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
-            return new Dx12::EditorRendererDx12(static_cast<Renderer::Dx12::RenderLayerDx12*>(a_renderLayer));
+            ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+            return nullptr;
 #else
             ME_CORE_ASSERT_M(false, "Can't open a dx12 editor on this platform!")
 #endif
@@ -37,7 +37,8 @@ Me::Editor::EditorRenderer* Me::Editor::EditorRenderer::CreateEditor(Me::Rendere
             break;
         case Me::GFX_API::Unknown:
 #ifdef PLATFORM_WINDOWS
-            return new Dx12::EditorRendererDx12(static_cast<Renderer::Dx12::RenderLayerDx12*>(a_renderLayer));
+            ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+            return nullptr;
 #elif PLATFORM_LINUX
             return nullptr;
 #elif PLATFORM_APPLE

@@ -4,7 +4,6 @@
 #ifdef PLATFORM_WINDOWS
 
 #include "Platform/General/Graphics/FramebufferGL.h"
-#include "Platform/Windows/Graphics/FramebufferDx12.h"
 
 #elif PLATFORM_LINUX
 #include "Platform/General/Graphics/FramebufferGL.h"
@@ -20,7 +19,8 @@ Me::Renderer::FrameBuffer* Me::Renderer::FrameBuffer::Create(FrameBufferSpecs co
         break;
     case GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
-        return new Dx12::FrameBufferDx12(a_spec, a_context);
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+        return nullptr;
 #else
             ME_CORE_ASSERT_M(false, "This platform doesn't support DirectX12")
             return nullptr;

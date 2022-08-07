@@ -6,7 +6,6 @@
 
 #ifdef PLATFORM_WINDOWS
 #include "Platform/Windows/Graphics/RenderLayerDx12.h"
-#include "Platform/Windows/Resources/Texture.h"
 #elif PLATFORM_LINUX
 
 #elif PLATFORM_APPLE
@@ -32,7 +31,8 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::OnCreate(std::string con
     case GFX_API::DX12:
     {
 #ifdef PLATFORM_WINDOWS
-        return dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->LoadTexture(a_path);
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+        return nullptr;
 #else
         ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
@@ -46,7 +46,8 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::OnCreate(std::string con
     case GFX_API::Unknown:
     {
 #ifdef PLATFORM_WINDOWS
-        return dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->LoadTexture(a_path);
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+        return nullptr;
 #elif PLATFORM_LINUX
         return new GL::Texture(a_path);
 #endif
@@ -66,7 +67,8 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::Create(std::vector<unsig
     case GFX_API::DX12:
     {
 #ifdef PLATFORM_WINDOWS
-        return dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->LoadTexture(a_texture, a_width, a_height);
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+        return nullptr;
 #else
         ME_CORE_ASSERT_M(false, "Platform doesn't support DX12!")
 #endif
@@ -80,7 +82,8 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::Create(std::vector<unsig
     case GFX_API::Unknown:
     {
 #ifdef PLATFORM_WINDOWS
-        return dynamic_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->LoadTexture(a_texture, a_width, a_height);
+        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+        return nullptr;
 #elif PLATFORM_LINUX
         return new GL::Texture(a_texture, a_width, a_height);
 #endif

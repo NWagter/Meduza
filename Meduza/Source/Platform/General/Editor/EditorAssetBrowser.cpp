@@ -11,7 +11,6 @@
 
 #include "Platform/General/Resources/Texture.h"
 #ifdef PLATFORM_WINDOWS
-#include "Platform/Windows/Resources/Texture.h"
 #include "Platform/Windows/Helper/Helper.h"
 #endif // PLATFORM_WINDOWS
 
@@ -193,17 +192,8 @@ void Me::Editor::EditorAssetBrowser::LoadIcons()
 	else if (api == Me::GFX_API::DX12)
 	{
 #ifdef PLATFORM_WINDOWS
-		auto folderTexture = static_cast<Resources::Dx12::Texture*>(folderIcon);
-		auto fileTexture = static_cast<Resources::Dx12::Texture*>(fileIcon);
-
-		CD3DX12_GPU_DESCRIPTOR_HANDLE folderHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(folderTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
-		folderHandle.Offset(folderTexture->GetTexture().m_srvOffset, folderTexture->GetTexture().m_handleIncrementer);
-
-		CD3DX12_GPU_DESCRIPTOR_HANDLE fileHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(fileTexture->GetTexture().m_srv->GetGPUDescriptorHandleForHeapStart());
-		fileHandle.Offset(fileTexture->GetTexture().m_srvOffset, fileTexture->GetTexture().m_handleIncrementer);
-
-		folderTextureID = (ImTextureID)folderHandle.ptr;
-		fileTextureID = (ImTextureID)fileHandle.ptr;
+		ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+		return;
 #endif // PLATFORM_WINDOWS
 	}
 }

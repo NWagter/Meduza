@@ -29,6 +29,21 @@ namespace Me
 				return (a_rhs - a_delta);
 			}
 		}
+		inline float Min(float const a_rhs, float const a_lhs)
+		{
+			return std::min(a_rhs, a_lhs);
+		}		
+		inline float Max(float const a_rhs, float const a_lhs)
+		{
+			return std::max(a_rhs, a_lhs);
+		}
+		inline float Clamp(float const a_rhs, float const a_lhs, float const a_value)
+		{
+			float min = a_rhs < a_lhs ? a_rhs : a_lhs;
+			float max = a_rhs > a_lhs ? a_rhs : a_lhs;
+
+			return Max(min, Min(max, a_value));
+		}
 
 		namespace Random
 		{

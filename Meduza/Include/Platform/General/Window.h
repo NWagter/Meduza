@@ -27,12 +27,16 @@ namespace Me
 		
 		inline bool IsActive() { return m_active; }
 		inline Math::Vector2 GetSize() { return m_size; }
+		inline Math::Vector2 GetHalfSize() { return m_halfSize; }
 
 	private:
 		void SetEventSystem(Event::EventSystem* a_eventSystem);
 	protected:
+		void OnResize(int const a_w, int const a_h);
+
 		Renderer::ContextBase* m_context;
 		Math::Vector2 m_size;
+		Math::Vector2 m_halfSize;
 		const char* m_title;
 
 		bool m_active;

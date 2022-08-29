@@ -43,7 +43,8 @@ void Me::Editor::EditorViewport::Draw()
 	Math::Vector2 panelSize = Math::Vector2(viewportPanelSize.x, viewportPanelSize.y);
 	if(m_viewportSize != panelSize)
 	{
-		frameBuffer->Resize(Math::Vector2(viewportPanelSize.x, viewportPanelSize.y));
+		frameBuffer->Resize(panelSize);
+        Me::Event::EventSystem::GetEventSystem()->SetViewportSize(panelSize);
 	}
 	m_viewportSize = panelSize;
     auto colourAttachment = frameBuffer->GetColourAttachment();

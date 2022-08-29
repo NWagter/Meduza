@@ -14,16 +14,31 @@ Me::WindowsWindow::WindowsWindow(int const a_width, int const a_height, const ch
 
 	ME_LOG("Window Created : %s \n", m_title);
 
-	RECT wr;
-	wr.left = 0;
-	wr.right = int(m_size.m_x) + wr.left;
-	wr.top = 0;
-	wr.bottom = int(m_size.m_y) + wr.top;
-	
-	m_hWnd = CreateWindow(WindowClass::GetName(), m_title,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_BORDER | WS_SIZEBOX ,
-		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
-		nullptr, nullptr, WindowClass::GetInstance(), this);
+	DWORD wFlags = WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_BORDER | WS_SIZEBOX;
+	RECT wr = {0,0, a_width, a_height};
+	AdjustWindowRect(&wr, wFlags, true);
+
+	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+	int windowWidth = wr.right - wr.left;
+	int windowHeight = wr.bottom - wr.top;
+
+	// Center the window within the screen. Clamp to 0, 0 for the top-left corner.
+	int windowX = std::max<int>(0, (screenWidth - windowWidth) / 2);
+	int windowY = std::max<int>(0, (screenHeight - windowHeight) / 2);
+
+	m_hWnd = CreateWindow(WindowClass::GetName(), 
+		m_title,
+		wFlags,
+		windowX,
+		windowY,
+		windowWidth,
+		windowHeight,
+		nullptr, 
+		nullptr, 
+		WindowClass::GetInstance(),
+		this);
 
 	ActiveCursor(true);
 	ShowWindow(m_hWnd, SW_SHOWDEFAULT);
@@ -130,10 +145,14 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 
 		int width = LOWORD(a_lParam);
 		int height = HIWORD(a_lParam);
+		OnResize(width, height);
+
 		if(m_context != nullptr)
 		{
 			m_context->Resize(width,height);
+			m_eventSystem->SetScreenSize(m_size);
 		}
+
 		break;
 	}
 	case WM_KILLFOCUS: 
@@ -145,24 +164,19 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 		break;
 	}
 // ---- Mouse
-	case WM_MOUSEMOVE: {
+	case WM_MOUSEMOVE: 
+	{
 		const auto mousePos = MAKEPOINTS(a_lParam);
-		Math::Vector2 mPos;
-		mPos.m_x = static_cast<float>(mousePos.x) - (m_size.m_x / 2);
-		mPos.m_y = (m_size.m_y / 2) - static_cast<float>(mousePos.y);
+		float const mouseX = static_cast<float>(mousePos.x) - (m_size.m_x * .5f);
+		float const mouseY = (m_size.m_y * .5f) - static_cast<float>(mousePos.y);
 
-		if (mousePos.x >= 0 && float(mousePos.x) < m_size.m_x && mousePos.y >= 0 && float(mousePos.y) < m_size.m_y) {
-			m_eventSystem->OnMouseMove(mPos);
-			SetCapture(a_hwnd);
-		}
-		else {
-			if ((a_wParam & (MK_LBUTTON | MK_RBUTTON)) != 0u) {
-				m_eventSystem->OnMouseMove(mPos);
-			}
-			else {
-				ReleaseCapture();
-			}
-		}
+		Math::Vector2 mPos
+		{
+			Math::Clamp(-m_halfSize.m_x, m_halfSize.m_x, mouseX),
+			Math::Clamp(-m_halfSize.m_y, m_halfSize.m_y, mouseY)
+		};
+
+		m_eventSystem->OnMouseMove(mPos);
 		break;
 	}
 
@@ -184,6 +198,23 @@ LRESULT Me::WindowsWindow::HandleMsg(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, L
 	case WM_RBUTTONUP:
 	{
 		m_eventSystem->OnMouseEvent(Event::MouseButton::RButton, Event::MouseEvent::MouseUp);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		float const mouseDelta = GET_WHEEL_DELTA_WPARAM(a_wParam);
+
+		if (mouseDelta < 0.0f)
+		{
+			// Scroll Down
+			m_eventSystem->OnMouseScroll(false);
+		}
+		else if (mouseDelta > 0.0f)
+		{
+			// Scroll Up
+			m_eventSystem->OnMouseScroll(true);
+		}
+
 		break;
 	}
 // ---- Keyboard

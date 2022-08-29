@@ -55,8 +55,8 @@ void Me::MousePickingSystem::OnUpdate(float a_dt)
         }
     }
 
-    if(camera != nullptr && transform != nullptr)
+    if(camera != nullptr && transform != nullptr && eventSystem->KeyDown(Event::KeyCode::Space))
     {
-        eventSystem->SetMouseWorldSpace(*camera, *transform);
+        eventSystem->GetMouseScroll();
     }
 }

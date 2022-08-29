@@ -6,6 +6,7 @@
 Me::Window::Window(int const a_w, int const a_h, const char* a_title)
 {
 	m_size = Math::Vector2(a_w, a_h);
+	m_halfSize = Math::Vector2(a_w * .5f, a_h * 0.5f);
 	m_title = a_title;
 
 	m_active = false;
@@ -20,4 +21,10 @@ void Me::Window::SetEventSystem(Event::EventSystem* a_system)
 {
 	m_eventSystem = a_system;
 	m_eventSystem->m_screenSize = m_size;
+}
+
+void Me::Window::OnResize(int const a_w, int const a_h)
+{
+	m_size = Math::Vector2(a_w, a_h);
+	m_halfSize = Math::Vector2(a_w * .5f, a_h * 0.5f);
 }

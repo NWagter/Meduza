@@ -106,14 +106,9 @@ bool Me::Event::EventSystem::MouseButtonPressed(MouseButton const& a_button)
     return false;
 }
 
-Me::Math::Vector2 Me::Event::EventSystem::MousePosition()
+float Me::Event::EventSystem::GetMouseScroll()
 {
-    return m_mouse->GetPosition();
-}
-
-Me::Math::Vector2 Me::Event::EventSystem::ScreenSize()
-{
-    return m_screenSize;
+    return m_mouse->m_scrollDelta;
 }
 
 void Me::Event::EventSystem::OnKeyEvent(KeyCode const& a_key, KeyState const& a_state)
@@ -129,7 +124,10 @@ void Me::Event::EventSystem::OnMouseMove(Math::Vector2 const& a_position)
 {
     m_mouse->SetPosition(a_position);
 }
-void Me::Event::EventSystem::SetMouseWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_trans)
+
+void Me::Event::EventSystem::OnMouseScroll(bool const a_scrollUp)
 {
-    m_mouse->SetWorldSpace(a_camera, a_trans);
+    float const scrollWeigth = 10.0f;
+
+    m_mouse->AddScrollDelta(a_scrollUp ? scrollWeigth : -scrollWeigth);
 }

@@ -35,9 +35,14 @@ Me::Event::MouseEvent Me::Event::Input::Mouse::State(MouseButton const& a_button
     return mEvent->second;
 }
 
-Me::Math::Vector2 Me::Event::Input::Mouse::GetPosition()
+Me::Math::Vector2 Me::Event::Input::Mouse::GetScreenPosition()
 {
     return m_position;
+}
+
+Me::Math::Vector2 Me::Event::Input::Mouse::GetWorldPosition()
+{
+    return m_worldPosition;
 }
 
 Me::Physics::Ray Me::Event::Input::Mouse::GetScreenRay()
@@ -67,26 +72,15 @@ void Me::Event::Input::Mouse::SetPosition(Math::Vector2 const& a_position)
     m_position = a_position;
 }
 
+void Me::Event::Input::Mouse::AddScrollDelta(float const i_scrollDelta)
+{
+    float const minScroll = -50.0f;
+    float const maxScroll = 50.0f;
+
+    m_scrollDelta = Math::Clamp(minScroll, maxScroll, m_scrollDelta + i_scrollDelta);
+}
+
 void Me::Event::Input::Mouse::SetWorldSpace(CameraComponent const& a_camera, TransformComponent const& a_transform)
 {
-    float x = (m_position.m_x * 2) / a_camera.m_size.m_x;
-    float y = (m_position.m_y * 2) / a_camera.m_size.m_y;
 
-    Math::Vector4 ray_clip = Math::Vector4(x,y, -1, 1);
-
-    Math::Matrix4 pMat = Math::Matrix4::Identity();
-    pMat.SetPosition(a_transform.m_translation);
-
-    Math::Matrix4 rMat = Math::Matrix4::Identity();
-    rMat.Rotation(a_transform.m_rotation);
-
-    Math::Matrix4 view = rMat * pMat.Inverse();
-
-    Math::Matrix4 projection = Math::GetProjectionMatrix(45.0f,
-    a_camera.m_size.m_x / a_camera.m_size.m_y, a_camera.m_near, a_camera.m_far);
-
-    Math::Vector4 rayEye = ( projection.Inverse() * ray_clip);
-    rayEye = Math::Vector4(rayEye.m_x, rayEye.m_y, -1.0, 0.0);
-    Math::Vector4 rayWorld = (view.Inverse() * rayEye);
-    m_screenRay->m_origin = Math::Vector3(rayWorld.m_x,rayWorld.m_y,rayWorld.m_z).Normalize();
 }

@@ -25,6 +25,7 @@ Me::Editor::EditorViewport::EditorViewport(EntityEditor& a_editor, EditorToolbar
     m_toolbar = &a_toolbar;
 
     m_editorCamera = 0;
+    Me::Event::EventSystem::GetEventSystem()->HasActiveViewport();
 }
 
 Me::Editor::EditorViewport::~EditorViewport()
@@ -39,8 +40,11 @@ void Me::Editor::EditorViewport::Draw()
 	ImGui::Begin("Viewport");
     Me::Event::EventSystem::GetEventSystem()->SetViewportFocus(ImGui::IsWindowFocused());
 
-	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	Math::Vector2 panelSize = Math::Vector2(viewportPanelSize.x, viewportPanelSize.y);
+    UpdateMousePosition();
+
+    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+    Math::Vector2 panelSize = Math::Vector2(viewportPanelSize.x, viewportPanelSize.y);
+
 	if(m_viewportSize != panelSize)
 	{
 		frameBuffer->Resize(panelSize);
@@ -162,9 +166,25 @@ void Me::Editor::EditorViewport::Draw()
         }
 
     }
-
-
-
-
 	ImGui::End();
+}
+
+void Me::Editor::EditorViewport::UpdateMousePosition()
+{
+    auto viewPortOffset = ImGui::GetCursorPos();
+    auto windowSize = ImGui::GetWindowSize();
+    ImVec2 minBounds = ImGui::GetWindowPos();
+
+    minBounds.x += viewPortOffset.x;
+    minBounds.y += viewPortOffset.y;
+
+    ImVec2 maxBounds = { minBounds.x + windowSize.x, minBounds.y + windowSize.y };
+    m_viewportBounds[0] = { minBounds.x, minBounds.y };
+    m_viewportBounds[1] = { maxBounds.x, maxBounds.y };
+
+    ImVec2 mousePos = ImGui::GetMousePos();
+    mousePos.x -= m_viewportBounds[0].m_x;
+    mousePos.y -= m_viewportBounds[0].m_y;
+    Math::Vector2 mPos = Math::Vector2(Math::Clamp(0, windowSize.x, mousePos.x), Math::Clamp(0, windowSize.y, mousePos.y));
+    Me::Event::EventSystem::GetEventSystem()->SetViewportMouseCoordinates(mPos);
 }

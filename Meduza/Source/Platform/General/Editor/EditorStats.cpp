@@ -43,5 +43,12 @@ void Me::Editor::EditorStats::Draw()
 	std::string vertices = "Vertices : " + std::to_string(stats.m_vertices);
 	ImGui::LabelText("##Vertices", vertices.c_str());
 
+	if (Event::EventSystem* eventSystem = Event::EventSystem::GetEventSystem())
+	{
+		Math::Vector2 mPos = eventSystem->GetMousePosition();
+
+		std::string mousePos = "MousePos : " + std::to_string(static_cast<int>(mPos.m_x)) + "," + std::to_string(static_cast<int>(mPos.m_y));
+		ImGui::LabelText("##MousePos", mousePos.c_str());
+	}
 	ImGui::End();
 }

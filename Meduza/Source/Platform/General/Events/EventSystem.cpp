@@ -54,6 +54,11 @@ void Me::Event::EventSystem::Clear()
     m_keyboard->Clear();
 }
 
+void Me::Event::EventSystem::SetViewportMouseCoordinates(Me::Math::Vector2 const a_mousePos)
+{
+    m_mouse->SetViewportCoords(a_mousePos);
+}
+
 // User Check
 
 bool Me::Event::EventSystem::KeyDown(KeyCode const& a_key)
@@ -80,6 +85,17 @@ bool Me::Event::EventSystem::KeyUp(KeyCode const& a_key)
     
     return false;
 }
+
+Me::Math::Vector2 Me::Event::EventSystem::GetMousePosition()
+{
+    if (m_hasViewport)
+    {
+        return m_mouse->GetViewportCoords();
+    }
+
+    return m_mouse->GetScreenPosition();
+}
+
 bool Me::Event::EventSystem::MouseButtonDown(MouseButton const& a_button)
 {    
     if(m_mouse->State(a_button) == MouseEvent::MouseDown)

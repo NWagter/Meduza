@@ -55,8 +55,5 @@ void Me::MousePickingSystem::OnUpdate(float a_dt)
         }
     }
 
-    if(camera != nullptr && transform != nullptr && eventSystem->KeyDown(Event::KeyCode::Space))
-    {
-        eventSystem->GetMouseScroll();
-    }
+    Math::Vector2 mPos = eventSystem->GetMousePosition();
 }

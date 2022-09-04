@@ -24,12 +24,15 @@ namespace Me
                 void Draw() override;
 
             private:
+                void UpdateMousePosition();
+
                 EntityEditor* m_editor;
                 EditorToolbar* m_toolbar;
                 Renderer::RenderLayer* m_renderLayer;
                 EntityID m_editorCamera;
 
                 Math::Vector2 m_viewportSize = { 0.0f, 0.0f };
+                Math::Vector2 m_viewportBounds[2];
         };
     }
 }

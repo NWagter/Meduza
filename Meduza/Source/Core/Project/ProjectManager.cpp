@@ -121,8 +121,8 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 		return;
 	}
 
-	std::string newProjectPath = projectPath + projectName;
-	std::string newScriptPath = projectPath + scriptName;
+	std::string const newProjectPath = projectPath + projectName;
+	std::string const newScriptPath = projectPath + scriptName;
 
 	std::ofstream configFile(newProjectPath.c_str());
 
@@ -145,8 +145,8 @@ void Me::Project::ProjectManager::CreateProject(std::string const& a_name)
 		std::string path = "Projects/";
 		path.append(a_name);
 
-		std::string vsStudio = Files::FileSystem::CreateNewFile("Start_VisualStudio.bat", path);
-		std::string vsCode = Files::FileSystem::CreateNewFile("Start_VisualStudioCode.bat", path);
+		std::string const vsStudio = Files::FileSystem::CreateNewFile("Start_VisualStudio.bat", path);
+		std::string const vsCode = Files::FileSystem::CreateNewFile("Start_VisualStudioCode.bat", path);
 		std::ofstream startupFile;
 		startupFile.open(vsStudio);
 		startupFile << "start devenv /Edit %CD%/Assets";

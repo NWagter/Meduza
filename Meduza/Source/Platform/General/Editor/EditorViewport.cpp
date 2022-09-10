@@ -185,6 +185,6 @@ void Me::Editor::EditorViewport::UpdateMousePosition()
     ImVec2 mousePos = ImGui::GetMousePos();
     mousePos.x -= m_viewportBounds[0].m_x;
     mousePos.y -= m_viewportBounds[0].m_y;
-    Math::Vector2 mPos = Math::Vector2(Math::Clamp(0, windowSize.x, mousePos.x), Math::Clamp(0, windowSize.y, mousePos.y));
+    Math::Vector2 mPos = Math::Vector2(Math::Clamp(0, windowSize.x - viewPortOffset.x, mousePos.x), Math::Clamp(0, windowSize.y - viewPortOffset.y, mousePos.y));
     Me::Event::EventSystem::GetEventSystem()->SetViewportMouseCoordinates(mPos);
 }

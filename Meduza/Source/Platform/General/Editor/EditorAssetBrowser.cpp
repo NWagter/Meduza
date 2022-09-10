@@ -186,8 +186,8 @@ void Me::Editor::EditorAssetBrowser::LoadIcons()
 
 	if (api == Me::GFX_API::OpenGL)
 	{
-		folderTextureID = (void*)(static_cast<Resources::GL::Texture*>(folderIcon)->GetTexture());
-		fileTextureID = (void*)(static_cast<Resources::GL::Texture*>(fileIcon)->GetTexture());
+		folderTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(folderIcon)->GetTexture()));
+		fileTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(fileIcon)->GetTexture()));
 	}
 	else if (api == Me::GFX_API::DX12)
 	{

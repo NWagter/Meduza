@@ -2,7 +2,7 @@
 
 #include "Math/Math.h"
 
-using ComponentID = uint32_t;
+using ComponentID = uint64_t;
 
 namespace Me
 {

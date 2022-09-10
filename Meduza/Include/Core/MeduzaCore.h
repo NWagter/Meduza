@@ -2,9 +2,9 @@
 
 #define ENTITY_NULL 0u
 
-using EntityID = uint32_t;
-using ComponentID = uint32_t;
-using SystemID = uint32_t;
+using EntityID = uint64_t;
+using ComponentID = uint64_t;
+using SystemID = uint64_t;
 using EntityFilter = std::set<ComponentID>;
 
 namespace Me

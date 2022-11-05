@@ -30,6 +30,12 @@ namespace Me
 
         namespace Dx12
         {
+            class Device;
+            class Context;
+            class CommandQueue;
+            class Descriptor;
+            class CommandList;
+
             class RenderLayerDx12 : public RenderLayer
             {
                 public:
@@ -52,10 +58,18 @@ namespace Me
 
                     Window* GetWindow() override;
 
+                    CommandList& GetCmd(int a_id = 0) const { return *m_commandLists.at(a_id); }
+                    Device& GetDevice() const { return *m_device; }
+                    Context& GetContext() const { return *m_context; }
+
                 private:
                     std::map<RenderType, std::vector<BaseInstanced*>> m_instanceMap;
 
                     WindowsWindow* m_window = nullptr;
+                    Device* m_device = nullptr;
+                    Context* m_context = nullptr;
+
+                    std::vector<CommandList*> m_commandLists;
 
                     Helper::Dx12::TextureLoader* m_textureLoader = nullptr;
             };

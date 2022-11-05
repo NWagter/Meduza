@@ -20,8 +20,8 @@ Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::CreateRenderer(Me::Window*
     {
         case Me::GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
-            ME_CORE_ASSERT_M(false, "No implementation for DX12 yet");
-            return nullptr;
+            ms_instance = new Dx12::RenderLayerDx12(a_window);
+            return ms_instance;
 #else
             ME_CORE_ASSERT_M(false, "This platform doesn't support DirectX12");
             return nullptr;
@@ -32,15 +32,12 @@ Me::Renderer::RenderLayer* Me::Renderer::RenderLayer::CreateRenderer(Me::Window*
             return ms_instance;
         break;
         default:
-#ifdef PLATFORM_WINDOWS
-            ME_CORE_ASSERT_M(false, "No implementation for DX12 yet");
-            return nullptr;
-#elif PLATFORM_LINUX
+#ifdef PLATFORM_APPLE
+            ME_CORE_ASSERT_M(false, "We don't support Apple :(")
+                return nullptr;
+#else
             ms_instance = new GL::RenderLayerGL(a_window);
             return ms_instance;
-#elif PLATFORM_APPLE
-            ME_CORE_ASSERT_M(false, "We don't support Apple :(")
-            return nullptr;
 #endif
         break;
     }

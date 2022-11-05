@@ -16,6 +16,17 @@ namespace Me
         OpenGL
     };
 
+    enum class ThreadType
+    {
+        Main,
+        Render,
+        Physics,
+        Transformation,
+        Scripting,
+
+        Unkown
+    };
+
     using Mesh = uint16_t;
     using Shader = uint16_t;
     using Texture = uint16_t;

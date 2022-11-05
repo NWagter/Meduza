@@ -70,8 +70,7 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::Create(std::vector<Vertex> a_v
 	{
 	case GFX_API::DX12:
 #ifdef PLATFORM_WINDOWS
-		ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
-		return nullptr;
+		return static_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->CreateMesh(a_vertices, a_indices);
 #else
 		ME_CORE_ASSERT_M(false, "This platform doesn't support DX12!")
 #endif
@@ -80,11 +79,7 @@ Me::Resources::MeshBase* Me::Resources::MeshBase::Create(std::vector<Vertex> a_v
 		return static_cast<Renderer::GL::RenderLayerGL*>(Renderer::RenderLayer::GetRenderLayer())->CreateMesh(a_vertices, a_indices);
 		break;
 	case GFX_API::Unknown:
-#ifdef PLATFORM_WINDOWS
-		return static_cast<Renderer::Dx12::RenderLayerDx12*>(Renderer::RenderLayer::GetRenderLayer())->CreateMesh(a_vertices, a_indices);
-#elif PLATFORM_LINUX
 		return static_cast<Renderer::GL::RenderLayerGL*>(Renderer::RenderLayer::GetRenderLayer())->CreateMesh(a_vertices, a_indices);
-#endif
 		break;
 	}
 

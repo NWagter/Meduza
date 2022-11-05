@@ -1,6 +1,7 @@
 #include "MePCH.h"
 
 #include "Core/Meduza.h"
+#include "Core/ThreadPool.h"
 
 #include "ECS/EntityManager.h"
 
@@ -57,7 +58,6 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 	if(m_window != nullptr)
 	{
 		m_renderLayer = Renderer::RenderLayer::CreateRenderer(m_window, a_api);
-
 	}
 
 	if (m_renderLayer == nullptr)
@@ -66,6 +66,8 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 		m_window->Quit();
 		return;
 	}
+
+	Threading::ThreadPool::CreateThreadPool();
 
 	Resources::ResourceLibrary::CreateResourceLibrary();
 	Event::EventSystem::Create(m_window);
@@ -211,5 +213,6 @@ void Me::Meduza::Destroy()
 	delete m_scriptConfig;
 
 	EntityManager::DestroyEntityManager();
+	Threading::ThreadPool::DestroyThreadPool();
 }
 

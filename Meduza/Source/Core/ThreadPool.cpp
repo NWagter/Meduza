@@ -33,12 +33,12 @@ Me::Threading::ThreadPool::ThreadPool() :
     { 
         ThreadType::Main,
         ThreadType::Render,
-        //ThreadType::Physics,
-        //ThreadType::Transformation,
-        //ThreadType::Scripting,
+        ThreadType::Physics,
+        ThreadType::Transformation,
+        ThreadType::Scripting,
     };
 
-    uint8_t const threadsAllowed = 2; // static_cast<uint8_t>(Math::Max(requiredTypes.size(), m_hardwareMaxThreads * g_fractionOfMaxThreadsUsed));
+    uint8_t const threadsAllowed = static_cast<uint8_t>(Math::Max(requiredTypes.size(), m_hardwareMaxThreads * g_fractionOfMaxThreadsUsed));
     ME_CORE_LOG("%u threads supported | %u allowedThreads \n", m_hardwareMaxThreads, threadsAllowed);
 
     //Create Required Workers

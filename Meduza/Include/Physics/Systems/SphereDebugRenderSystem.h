@@ -26,6 +26,8 @@ namespace Me
         
     public:
         SphereDebugRenderSystem(Renderer::RenderLayer* a_renderLayer);
+
+        ThreadType GetThreadType() const override { return ThreadType::Physics; }
         
     protected:
         void OnUpdate(float a_dt) override;

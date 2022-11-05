@@ -14,6 +14,8 @@ namespace Me
         {
         public:
             GravitySystem();
+
+            ThreadType GetThreadType() const override { return ThreadType::Physics; }
             
         protected:
             void OnUpdate(float a_dt) override;

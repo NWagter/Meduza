@@ -23,7 +23,6 @@ namespace Me
 			~Worker();
 
 			void StartWorker();
-			void NotifyWorker();
 			void StopWorker();
 			void AddTask(Task);
 			void Join();

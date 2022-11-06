@@ -3,6 +3,7 @@
 
 #include "Core/Application.h"
 #include "Core/Meduza.h"
+#include "Core/ThreadPool.h"
 
 #include "ECS/EntityManager.h"
 #include "Core/Components/RenderComponent.h"
@@ -25,6 +26,7 @@ Me::Application::~Application()
 void Me::Application::OnUpdate(float a_dt)
 {
     OnUpdate(a_dt);
+    Threading::ThreadPool::GetThreadPool()->PushTasks();
 }
 
 bool Me::Application::Run()
@@ -55,6 +57,7 @@ bool Me::Application::Run()
         m_meduza->Update(deltaTime);
         Application::OnUpdate(deltaTime);
 
+        Threading::ThreadPool::GetThreadPool()->WaitForWorkersFinished();
         m_meduza->Present();
 
         totalTime += deltaSecond;

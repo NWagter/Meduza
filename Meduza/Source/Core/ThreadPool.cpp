@@ -33,7 +33,8 @@ Me::Threading::ThreadPool::ThreadPool() :
     { 
         ThreadType::Main,
         ThreadType::Render,
-        ThreadType::Physics,
+        ThreadType::Physics_Begin,
+        ThreadType::Physics_End,
         ThreadType::Transformation,
         ThreadType::Scripting,
     };
@@ -51,6 +52,20 @@ Me::Threading::ThreadPool::ThreadPool() :
     for (uint8_t i = m_workers.size(); i < threadsAllowed; i++)
     {
         m_workers.push_back(new Worker(i));
+    }
+
+    // Add dependencies where needed
+    for (auto worker : m_workers)
+    {
+        if (worker->GetThreadType() == ThreadType::Scripting)
+        {
+            worker->AddDependency(ThreadType::Physics_Begin);
+        }
+        if (worker->GetThreadType() == ThreadType::Physics_End)
+        {
+            worker->AddDependency(ThreadType::Scripting);
+            worker->AddDependency(ThreadType::Physics_Begin);
+        }
     }
 }
 
@@ -83,25 +98,85 @@ void Me::Threading::ThreadPool::AddTask(Task a_newTask, ThreadType const a_type)
 
     if (usableWorker)
     {
-        usableWorker->AddTask(a_newTask);
+        m_tasks[usableWorker->GetIndex()].push_back(a_newTask);
     }
 }
 
-void Me::Threading::ThreadPool::JoinWorkers()
+void Me::Threading::ThreadPool::PushTasks()
 {
     for (auto worker : m_workers)
     {
-        worker->Join();
-    }
-}
-
-void Me::Threading::ThreadPool::JoinWorkersOfType(ThreadType const a_type)
-{
-    for (auto worker : m_workers)
-    {
-        if (worker->GetThreadType() == a_type)
+        auto it = m_tasks.find(worker->GetIndex());
+        if (it != m_tasks.end())
         {
-            worker->Join();
+            worker->AddTasks(m_tasks.at(worker->GetIndex()));
+            m_tasks.at(worker->GetIndex()).clear();
+        }
+    }
+}
+
+void Me::Threading::ThreadPool::WaitForWorkersFinished()
+{
+    bool working = true;
+    while (working)
+    {
+        bool stillWorking = false;
+
+        for (auto worker : m_workers)
+        {
+            stillWorking |= worker->IsWorking();
+        }
+
+        if (!stillWorking)
+        {
+            working = stillWorking;
+        }
+    }
+}
+
+void Me::Threading::ThreadPool::WaitForWorkersFinishedOfType(ThreadType const a_type)
+{
+    bool working = true;
+    while (working)
+    {
+        bool stillWorking = false;
+
+        for (auto worker : m_workers)
+        {
+            if (worker->GetThreadType() == a_type)
+            {
+                stillWorking |= worker->IsWorking();
+            }
+        }
+
+        if (!stillWorking)
+        {
+            working = stillWorking;
+        }
+    }
+}
+
+void Me::Threading::ThreadPool::WaitForWorkersFinishedOfTypes(std::vector<ThreadType> const a_types)
+{
+    bool working = true;
+    while (working && !a_types.empty())
+    {
+        bool stillWorking = false;
+
+        for (auto worker : m_workers)
+        {
+            for (auto type : a_types)
+            {
+                if (worker->GetThreadType() == type)
+                {
+                    stillWorking |= worker->IsWorking();
+                }
+            }
+        }
+
+        if (!stillWorking)
+        {
+            working = stillWorking;
         }
     }
 }
@@ -132,25 +207,26 @@ void Me::Threading::Worker::StartWorker()
     ME_CORE_LOG("Worker%u started | %s \n", m_index, GetThreadTypeName(m_type).c_str());
     m_active = true;
 
-    size_t index = 0;
     while (m_active)
     {
-        if (m_tasks.empty() || index >= m_tasks.size())
+        WaitForDependencies();
+
+        if (m_currentTaskIdx >= m_tasks.size())
         {
             std::unique_lock<std::mutex> lk(m_lock);
             m_hasTasks.wait(lk, [this]()
                 {
-                    return !m_tasks.empty() || !m_active;
+                    return (m_currentTaskIdx < m_tasks.size()) || !m_active;
                 });
             continue;
         }
 
         m_lock.lock();
         // Run Task
-        Task task = m_tasks.at(index);
+        Task task = m_tasks.at(m_currentTaskIdx);
         task.taskFunction(task.m_system, task.m_deltaTime);
         task.m_completed = true;
-        index++;
+        m_currentTaskIdx.fetch_add(1);
         m_lock.unlock();
     }
 
@@ -172,12 +248,22 @@ void Me::Threading::Worker::Join()
     }
 }
 
-void Me::Threading::Worker::AddTask(Task a_task)
+void Me::Threading::Worker::AddTasks(std::vector<Task> a_tasks)
 {
-    m_tasks.push_back(a_task);
-
     std::lock_guard<std::mutex> lk(m_lock);
+    m_tasks = a_tasks;
+    m_currentTaskIdx = 0u;
     m_hasTasks.notify_all();
+}
+
+bool Me::Threading::Worker::IsWorking() const
+{
+    return !(m_currentTaskIdx >= m_tasks.size());
+}
+
+void Me::Threading::Worker::WaitForDependencies()
+{
+    ThreadPool::GetThreadPool()->WaitForWorkersFinishedOfTypes(m_dependencies);
 }
 
 std::string Me::Threading::GetThreadTypeName(ThreadType const a_type)
@@ -190,8 +276,11 @@ std::string Me::Threading::GetThreadTypeName(ThreadType const a_type)
     case ThreadType::Render:
         return "RenderThread";
         break;
-    case ThreadType::Physics:
-        return "PhysicsThread";
+    case ThreadType::Physics_Begin:
+        return "Physics_BeginThread";
+        break;
+    case ThreadType::Physics_End:
+        return "Physics_EndThread";
         break;
     case ThreadType::Transformation:
         return "TransformationThread";

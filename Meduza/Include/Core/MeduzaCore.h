@@ -20,11 +20,13 @@ namespace Me
     {
         Main,
         Render,
-        Physics,
+        Physics_Begin,
+        Physics_End,
         Transformation,
         Scripting,
 
-        Unkown
+        Unkown,
+        All
     };
 
     using Mesh = uint16_t;

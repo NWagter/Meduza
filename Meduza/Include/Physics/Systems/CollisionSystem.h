@@ -17,7 +17,7 @@ namespace Me
         public:
             CollisionSystem();
 
-            ThreadType GetThreadType() const override { return ThreadType::Physics; }
+            ThreadType GetThreadType() const override { return ThreadType::Physics_Begin; }
             
         protected:
             void OnUpdate(float a_dt) override;

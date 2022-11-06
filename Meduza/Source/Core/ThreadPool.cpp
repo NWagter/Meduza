@@ -5,7 +5,6 @@
 // ThreadPool
 //----------------------------------------------------------------
 
-constexpr float g_fractionOfMaxThreadsUsed = 0.8f;
 Me::Threading::ThreadPool* Me::Threading::ThreadPool::ms_threadPool = nullptr;
 
 Me::Threading::ThreadPool* Me::Threading::ThreadPool::CreateThreadPool()
@@ -35,23 +34,15 @@ Me::Threading::ThreadPool::ThreadPool() :
         ThreadType::Render,
         ThreadType::Physics_Begin,
         ThreadType::Physics_End,
-        ThreadType::Transformation,
         ThreadType::Scripting,
     };
 
-    uint8_t const threadsAllowed = static_cast<uint8_t>(Math::Max(requiredTypes.size(), m_hardwareMaxThreads * g_fractionOfMaxThreadsUsed));
-    ME_CORE_LOG("%u threads supported | %u allowedThreads \n", m_hardwareMaxThreads, threadsAllowed);
+    ME_CORE_LOG("%u threads supported | %zu Threads Used \n", m_hardwareMaxThreads, requiredTypes.size());
 
     //Create Required Workers
     for (uint8_t i = m_workers.size(); i < requiredTypes.size(); i++)
     {
         m_workers.push_back(new Worker(i, requiredTypes.at(i)));
-    }
-
-    // Create extra Workers
-    for (uint8_t i = m_workers.size(); i < threadsAllowed; i++)
-    {
-        m_workers.push_back(new Worker(i));
     }
 
     // Add dependencies where needed
@@ -198,13 +189,13 @@ Me::Threading::Worker::Worker(uint8_t const a_index, ThreadType const a_type) :
 
 Me::Threading::Worker::~Worker()
 {
-    ME_CORE_LOG("Worker%u deleted \n", m_index);
+    ME_CORE_LOG("%s:Worker:ID %u deleted \n", GetThreadTypeName(m_type).c_str(), m_index);
     m_worker.join();
 }
 
 void Me::Threading::Worker::StartWorker()
 {
-    ME_CORE_LOG("Worker%u started | %s \n", m_index, GetThreadTypeName(m_type).c_str());
+    ME_CORE_LOG("%s:Worker:ID %u started |  \n", GetThreadTypeName(m_type).c_str(), m_index);
     m_active = true;
 
     while (m_active)
@@ -229,8 +220,6 @@ void Me::Threading::Worker::StartWorker()
         m_currentTaskIdx.fetch_add(1);
         m_lock.unlock();
     }
-
-    ME_CORE_LOG("Worker%u stopped \n", m_index);
 }
 
 void Me::Threading::Worker::StopWorker()
@@ -282,14 +271,8 @@ std::string Me::Threading::GetThreadTypeName(ThreadType const a_type)
     case ThreadType::Physics_End:
         return "Physics_EndThread";
         break;
-    case ThreadType::Transformation:
-        return "TransformationThread";
-        break;
     case ThreadType::Scripting:
         return "ScriptingThread";
-        break;
-    case ThreadType::Unkown:
-        return "UnkownThread";
         break;
     }
 

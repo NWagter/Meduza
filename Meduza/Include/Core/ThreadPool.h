@@ -19,7 +19,7 @@ namespace Me
 		class Worker
 		{
 		public:
-			Worker(uint8_t const a_index, ThreadType const a_type = ThreadType::Unkown);
+			Worker(uint8_t const a_index, ThreadType const a_type);
 			~Worker();
 
 			void StartWorker();

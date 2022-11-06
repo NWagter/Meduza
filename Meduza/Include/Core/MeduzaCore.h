@@ -22,11 +22,7 @@ namespace Me
         Render,
         Physics_Begin,
         Physics_End,
-        Transformation,
-        Scripting,
-
-        Unkown,
-        All
+        Scripting
     };
 
     using Mesh = uint16_t;

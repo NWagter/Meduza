@@ -43,11 +43,12 @@ if(WIN32)
 	)
 elseif(UNIX AND NOT APPLE)
     find_package(OpenGL)
+    find_package (Threads)
     add_compile_definitions(PLATFORM_LINUX)
     include_directories(/usr/include/X11)
     target_link_libraries( ${PROJECT_NAME}
         X11
-        pthread
+        Threads::Threads
         ${OPENGL_LIBRARY}
         ${CMAKE_DL_LIBS}
     )

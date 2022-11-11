@@ -47,6 +47,7 @@ elseif(UNIX AND NOT APPLE)
     include_directories(/usr/include/X11)
     target_link_libraries( ${PROJECT_NAME}
         X11
+        pthread
         ${OPENGL_LIBRARY}
         ${CMAKE_DL_LIBS}
     )

@@ -4,6 +4,8 @@
 #include "ECS/BaseSystem.h"
 #include "ECS/BaseComponent.h"
 
+#include "Core/ThreadPool.h"
+
 #include "Core/Meduza.h"
 
 Me::EntityManager* Me::EntityManager::ms_entityManager = nullptr;
@@ -88,6 +90,13 @@ void Me::EntityManager::Update(float a_dt)
 {
     DestroyEntities();
 
+    Threading::ThreadPool* threadPool = Threading::ThreadPool::GetThreadPool();
+
+    auto fnUpdateSystem = [](ECSSystem* a_system, float a_dt)
+    {
+        a_system->OnUpdate(a_dt);
+    };
+
     for(auto s : m_systems)
     {
         if(!s->m_OnCreated)
@@ -105,12 +114,26 @@ void Me::EntityManager::Update(float a_dt)
 
             if (s->m_executeMask & (EXECUTE_ALL))
             {
-                s->OnUpdate(a_dt);
+                Threading::Task task =
+                {
+                    fnUpdateSystem,
+                    a_dt,
+                    s
+                };
+
+                threadPool->AddTask(task, s->GetThreadType());
             }
 
             if (Meduza::GetEngineState() & (RUN_GAME) && s->m_executeMask & (EXECUTE_INGAME))
             {
-                s->OnUpdate(a_dt);
+                Threading::Task task =
+                {
+                    fnUpdateSystem,
+                    a_dt,
+                    s
+                };
+
+                threadPool->AddTask(task, s->GetThreadType());
             }
         }
         else if(Meduza::GetEngineState() & RUN_EDITOR)
@@ -118,10 +141,19 @@ void Me::EntityManager::Update(float a_dt)
 
             if(s->m_executeMask & (EXECUTE_INEDITOR | EXECUTE_ALL))
             {
-                s->OnUpdate(a_dt);
+                Threading::Task task =
+                {
+                    fnUpdateSystem,
+                    a_dt,
+                    s
+                };
+
+                threadPool->AddTask(task, s->GetThreadType());
             } 
         }
     }
+
+    //threadPool->JoinWorkers();
 
     if(m_started && Meduza::GetEngineState() & RUN_EDITOR)
     {

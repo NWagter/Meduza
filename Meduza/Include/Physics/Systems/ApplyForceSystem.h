@@ -13,6 +13,8 @@ namespace Me
         public:
             ApplyForceSystem();
 
+            ThreadType GetThreadType() const override { return ThreadType::Physics_End; }
+
         protected:
             void OnUpdate(float a_dt) override;
 

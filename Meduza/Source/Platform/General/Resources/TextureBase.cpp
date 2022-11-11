@@ -45,12 +45,7 @@ Me::Resources::TextureBase* Me::Resources::TextureBase::OnCreate(std::string con
     break;
     case GFX_API::Unknown:
     {
-#ifdef PLATFORM_WINDOWS
-        ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
-        return nullptr;
-#elif PLATFORM_LINUX
         return new GL::Texture(a_path);
-#endif
     }
     break;
     }

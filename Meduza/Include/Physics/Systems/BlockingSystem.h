@@ -15,6 +15,8 @@ namespace Me
         public:
             BlockingSystem();
 
+            ThreadType GetThreadType() const override { return ThreadType::Physics_End; }
+
         protected:
             void OnUpdate(float a_dt) override;
 

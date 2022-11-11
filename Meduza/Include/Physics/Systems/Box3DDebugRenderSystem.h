@@ -26,6 +26,8 @@ namespace Me
         
     public:
         Box3DDebugRenderSystem(Renderer::RenderLayer* a_renderLayer);
+
+        ThreadType GetThreadType() const override { return ThreadType::Render; }
         
     protected:
         void OnUpdate(float a_dt) override;

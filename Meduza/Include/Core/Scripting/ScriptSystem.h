@@ -13,6 +13,8 @@ namespace Me
                 ScriptSystem();
                 ~ScriptSystem();
 
+                ThreadType GetThreadType() const override { return ThreadType::Scripting; }
+
             protected:
                 void OnStart() override;
                 void OnUpdate(float a_dt) override;

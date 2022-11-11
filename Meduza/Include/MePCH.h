@@ -26,6 +26,11 @@
 #include <fstream>
 #include <filesystem>
 
+#include <atomic>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 #include <cereal/archives/xml.hpp>
 #include <FontAwesome/FontAwesome.h>
 

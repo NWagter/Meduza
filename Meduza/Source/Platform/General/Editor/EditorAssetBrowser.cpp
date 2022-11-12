@@ -52,6 +52,36 @@ void Me::Editor::EditorAssetBrowser::Update(float a_dt)
 void Me::Editor::EditorAssetBrowser::Draw()
 {
 	Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
+
+	ImTextureID folderTextureID;
+	ImTextureID fileTextureID;
+
+	Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
+
+	auto folderTexture = rLibrary->GetResource<Resources::TextureBase>(m_folderTextureID);
+	auto fileTexure = rLibrary->GetResource<Resources::TextureBase>(m_fileTextureID);
+
+	if (folderTexture && fileTexure)
+	{
+		if (api == Me::GFX_API::OpenGL)
+		{
+		
+				folderTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(folderTexture)->GetTexture()));
+				fileTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(fileTexure)->GetTexture()));
+		}
+		else if (api == Me::GFX_API::DX12)
+		{
+#ifdef PLATFORM_WINDOWS
+			ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
+			return;
+#endif // PLATFORM_WINDOWS
+		}
+	}
+	else
+	{
+		LoadIcons();
+	}
+
 	if (ImGui::Begin("AssetBrowser"))
 	{
 		if (m_browserPath.empty() || m_browserBase != Project::ProjectManager::GetAssetBrowserPath())
@@ -179,21 +209,6 @@ void Me::Editor::EditorAssetBrowser::Draw()
 
 void Me::Editor::EditorAssetBrowser::LoadIcons()
 {
-	auto folderIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png");
-	auto fileIcon = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FileIcon.png");
-
-	Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
-
-	if (api == Me::GFX_API::OpenGL)
-	{
-		folderTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(folderIcon)->GetTexture()));
-		fileTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(fileIcon)->GetTexture()));
-	}
-	else if (api == Me::GFX_API::DX12)
-	{
-#ifdef PLATFORM_WINDOWS
-		ME_CORE_ASSERT_M(false, "No implementation yet for DX12");
-		return;
-#endif // PLATFORM_WINDOWS
-	}
+	m_folderTextureID = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FolderIcon.png")->GetID();
+	m_fileTextureID = Resources::ResourceLibrary::GetInstance()->LoadResource<Resources::TextureBase>("Resources/Textures/Icons/AssetBrowser/FileIcon.png")->GetID();
 }

@@ -128,6 +128,7 @@ void Me::Meduza::Update(float a_dt)
 	}
 	
 	m_window->Peek();
+	Resources::ResourceLibrary::GetInstance()->LoadNewResources();
 	EntityManager::GetEntityManager()->Update(a_dt);
 		
 #ifdef PLATFORM_WINDOWS

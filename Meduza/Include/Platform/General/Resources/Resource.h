@@ -38,6 +38,7 @@ namespace Me
             {}
 
             virtual void OnInit() {}
+            virtual void OnLoad() {}
 
             std::string m_path;
             std::string m_fileName;

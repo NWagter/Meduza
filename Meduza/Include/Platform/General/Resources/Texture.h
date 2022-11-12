@@ -15,6 +15,7 @@ namespace Me
                     Texture(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
                     virtual ~Texture();
 
+                    void Load() override;
                     void Reload() override;
                     void Unload() override;
 
@@ -23,7 +24,11 @@ namespace Me
 
                     unsigned int GetTexture() { return m_texture; }
                 private:
-                    unsigned int m_texture;
+                    unsigned int m_texture; 
+                    std::vector<unsigned char> m_textureData;
+
+                    void LoadFromFile();
+                    void LoadFromData();
                 };
             }
     }

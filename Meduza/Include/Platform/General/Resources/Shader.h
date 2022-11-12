@@ -17,6 +17,7 @@ namespace Me
 
                 virtual ~Shader();   
 
+                void Load() override;
                 void Reload() override;
                 void Unload() override;
 

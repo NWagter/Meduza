@@ -19,6 +19,7 @@ namespace Me
             ShaderBase() : ResourceBase(ResourceType::Shader) {};
             virtual ~ShaderBase();   
 
+            virtual void Load() {};
             virtual void Reload() {};
             virtual void Unload() {};
 
@@ -26,6 +27,7 @@ namespace Me
             virtual void UnBind() {};
 
             ShaderBase* OnCreate(const std::string& a_path) override;
+            void OnLoad() override { Load(); }
         protected:
 
         };

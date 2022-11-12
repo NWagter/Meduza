@@ -28,6 +28,7 @@ namespace Me
 			std::unordered_map<Resource, ResourceBase*> const& GetResources() const { return m_resources; }
 
 			void Cleanup(bool a_baseLoad);
+			void LoadNewResources();
         private:
 			ResourceLibrary();
 			~ResourceLibrary() = default;
@@ -41,6 +42,7 @@ namespace Me
 
 			static ResourceLibrary* ms_instance;
             std::unordered_map<Resource, ResourceBase*> m_resources;
+			std::vector<ResourceBase*> m_resourceToLoad;
         };
 
 		template <typename T, typename, class... Args>
@@ -65,6 +67,7 @@ namespace Me
 
 			resource->InitializeResource(id, a_path, fileName);
 			m_resources.insert(std::make_pair(id, resource));
+			m_resourceToLoad.push_back(resource);
 
 			return resource;
 		}
@@ -83,6 +86,7 @@ namespace Me
 
 			a_resource->InitializeResource(id, a_path, a_name);
 			m_resources.insert(std::make_pair(id, a_resource));
+			m_resourceToLoad.push_back(resource);
 
 			return a_resource;
 		}

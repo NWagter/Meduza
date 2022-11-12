@@ -4,6 +4,15 @@
 Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase()
 {
     m_source = Helper::GL::ShaderHelper::GetSources(a_shader);
+}
+
+Me::Resources::GL::Shader::~Shader()
+{
+    glDeleteShader(m_program);
+}
+
+void Me::Resources::GL::Shader::Load()
+{
     m_program = GenerateShader();
 
     glUseProgram(m_program);
@@ -16,11 +25,6 @@ Me::Resources::GL::Shader::Shader(std::string a_shader) : ShaderBase()
     glUniform1i(glGetUniformLocation(m_program, "u_texture5"), 5);
     glUniform1i(glGetUniformLocation(m_program, "u_texture6"), 6);
     glUniform1i(glGetUniformLocation(m_program, "u_texture7"), 7);
-}
-
-Me::Resources::GL::Shader::~Shader()
-{
-    glDeleteShader(m_program);
 }
 
 void Me::Resources::GL::Shader::Reload()

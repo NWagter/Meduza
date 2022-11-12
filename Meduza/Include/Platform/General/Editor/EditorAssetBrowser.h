@@ -53,8 +53,8 @@ namespace Me
             bool m_showOptions;
             Options m_options;
 
-            ImTextureID folderTextureID = 0;
-            ImTextureID fileTextureID = 0;
+            Texture m_folderTextureID = 0;
+            Texture m_fileTextureID = 0;
         };
     }
 }

@@ -48,6 +48,16 @@ void Me::Resources::ResourceLibrary::Cleanup(bool a_baseLoad)
 	}
 }
 
+void Me::Resources::ResourceLibrary::LoadNewResources()
+{
+	for (auto r : ms_instance->m_resourceToLoad)
+	{
+		r->OnLoad();
+	}
+
+	ms_instance->m_resourceToLoad.clear();
+}
+
 void Me::Resources::ResourceLibrary::BaseLoad()
 {
 	CreateQuad();

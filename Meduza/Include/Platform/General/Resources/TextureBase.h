@@ -14,12 +14,14 @@ namespace Me
 
             virtual ~TextureBase();   
 
+            virtual void Load() {};
             virtual void Reload() {};
             virtual void Unload() {};
 
             inline Math::Vector2 GetSize() const {return m_size;}
 
             TextureBase* OnCreate(const std::string& a_path) override;
+            void OnLoad() override { Load(); }
             TextureBase* Create(std::vector<unsigned char> const& a_texture, int const a_width, int const a_height);
         protected:
             Math::Vector2 m_size;

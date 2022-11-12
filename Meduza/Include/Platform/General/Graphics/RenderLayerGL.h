@@ -58,15 +58,18 @@ namespace Me
 
                 struct DebugLine
                 {
+                    Math::Vector3 m_begin;
+                    Math::Vector3 m_end;
+
                     unsigned int m_vbo;
                     unsigned int m_vao;
 
                     Colour m_colour;
 
-                    DebugLine(unsigned int a_vbo, unsigned int a_vao, Colour a_colour = Colours::MAGENTA)
+                    DebugLine(Math::Vector3 const a_begin, Math::Vector3 const a_end, Colour a_colour = Colours::MAGENTA)
                     {
-                        m_vbo = a_vbo;
-                        m_vao = a_vao;
+                        m_begin = a_begin;
+                        m_end = a_end;
 
                         m_colour = a_colour;
                     }
@@ -75,6 +78,27 @@ namespace Me
                     {
                         glDeleteVertexArrays(1, &m_vao);
                         glDeleteBuffers(1, &m_vbo);
+                    }
+
+                    void GenerateBuffers()
+                    {
+                        std::vector<float> vertices = {
+                            m_begin.m_x, m_begin.m_y, m_begin.m_z,
+                            m_end.m_x, m_end.m_y, m_end.m_z
+                        };
+
+                        glGenVertexArrays(1, &m_vao);
+                        glGenBuffers(1, &m_vbo);
+                        glBindVertexArray(m_vao);
+
+                        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+                        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+
+                        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+                        glEnableVertexAttribArray(0);
+
+                        glBindBuffer(GL_ARRAY_BUFFER, 0);
+                        glBindVertexArray(0);
                     }
                 };
                 struct DebugCricle

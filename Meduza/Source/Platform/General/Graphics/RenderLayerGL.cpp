@@ -188,9 +188,9 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_DEPTH_TEST);
-
     for (auto lines : m_debugLines)
     {
+
         auto s = static_cast<Resources::GL::Shader*>(rLibrary->GetResource<Resources::ShaderBase>(m_lineShader));
 
         if (m_activeShader == nullptr || m_activeShader != s) // only change when shader / pso changes
@@ -209,11 +209,13 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
         m_activeShader->SetMat4("u_projectionView", m_camera->m_cameraMatrix, false);
         m_activeShader->SetVec4("u_colour", Math::Vector4(lines->m_colour.m_colour));
 
+        lines->GenerateBuffers();
         glBindVertexArray(lines->m_vao);
-        glDrawArrays(GL_LINES, 0, 2);
+        glDrawArrays(GL_LINES, 0, 2); 
 
 #ifdef EDITOR  
         m_renderStats.m_drawCalls++;
+        m_renderStats.m_vertices += 2;
 #endif
     }
 
@@ -340,35 +342,12 @@ void Me::Renderer::GL::RenderLayerGL::RenderLine(LineRender const& a_lineRender)
     {
         return;
     }
-
-    unsigned int vao, vbo;
-    std::vector<float> vertices = {
-             a_lineRender.m_start.m_x, a_lineRender.m_start.m_y, a_lineRender.m_start.m_z,
-             a_lineRender.m_end.m_x, a_lineRender.m_end.m_y, a_lineRender.m_end.m_z,
-
-    };
-
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glBindVertexArray(vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-#ifdef EDITOR  
-    m_renderStats.m_vertices += 2;
-#endif
-    m_debugLines.push_back(new DebugLine(vbo, vao, a_lineRender.m_colour));
+    m_debugLines.push_back(new DebugLine(a_lineRender.m_start, a_lineRender.m_end, a_lineRender.m_colour));
 }
 
 void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender const& a_circleRender)
 {
-    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_lineDebugger)
+    if (!Debug::MeduzaDebug::GetDebuggingSettings().m_debugCircle)
     {
         return;
     }

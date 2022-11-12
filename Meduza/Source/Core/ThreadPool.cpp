@@ -29,9 +29,9 @@ Me::Threading::ThreadPool::ThreadPool() :
     m_hardwareMaxThreads(std::thread::hardware_concurrency())
 {
     std::vector<ThreadType> requiredTypes = 
-    { 
-        ThreadType::Main,
+    {
         ThreadType::Render,
+        ThreadType::Main,
         ThreadType::Physics_Begin,
         ThreadType::Physics_End,
         ThreadType::Scripting,

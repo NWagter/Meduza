@@ -56,18 +56,16 @@ void Me::Editor::EditorAssetBrowser::Draw()
 	ImTextureID folderTextureID;
 	ImTextureID fileTextureID;
 
-	Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
-
 	auto folderTexture = rLibrary->GetResource<Resources::TextureBase>(m_folderTextureID);
 	auto fileTexure = rLibrary->GetResource<Resources::TextureBase>(m_fileTextureID);
 
 	if (folderTexture && fileTexure)
 	{
+		Me::GFX_API const api = Renderer::RenderLayer::GetAPI();
 		if (api == Me::GFX_API::OpenGL)
 		{
-		
-				folderTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(folderTexture)->GetTexture()));
-				fileTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(fileTexure)->GetTexture()));
+			folderTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(folderTexture)->GetTexture()));
+			fileTextureID = (void*)((uint64_t)(static_cast<Resources::GL::Texture*>(fileTexure)->GetTexture()));
 		}
 		else if (api == Me::GFX_API::DX12)
 		{

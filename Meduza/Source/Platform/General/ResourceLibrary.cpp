@@ -52,7 +52,10 @@ void Me::Resources::ResourceLibrary::LoadNewResources()
 {
 	for (auto r : ms_instance->m_resourceToLoad)
 	{
-		r->OnLoad();
+		if (r)
+		{
+			r->OnLoad();
+		}
 	}
 
 	ms_instance->m_resourceToLoad.clear();

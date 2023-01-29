@@ -28,4 +28,7 @@
 //------ Events ---------
 #include "Platform/General/Events/EventSystem.h"
 #include "Platform/General/Events/Events.h"
-
+///--- Base Resources --
+#include "Platform/General/Resources/MeshBase.h"
+#include "Platform/General/Resources/ShaderBase.h"
+#include "Platform/General/Resources/TextureBase.h"

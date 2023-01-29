@@ -209,6 +209,12 @@ void Me::Editor::EntityEditor::Draw()
                 ImGui::TreePop();
             }
             ImGui::PopID();
+
+            if (removeComponent)
+            {
+                // TODO: Need to remove this component from the Entity
+                ME_CORE_ERROR("missing implemenation to remove component : %s \n", comp->EditorComponentName().c_str());
+            }
         }
 
         DrawComponent<RenderComponent>(eManager, "Render Component", m_selectedEntity, [&rLibrary](auto& a_comp)
@@ -674,7 +680,7 @@ void Me::Editor::EntityEditor::Draw()
 
             ImGui::CloseCurrentPopup();
         }        
-        if (ImGui::MenuItem("Circle Component"))
+        if(ImGui::MenuItem("Circle Component"))
         {
             auto cComp = new Physics::CircleColliderComponent();
             eManager->AddComponent(m_selectedEntity, cComp);
@@ -719,7 +725,7 @@ void Me::Editor::EntityEditor::Draw()
 
             ImGui::CloseCurrentPopup();
         }
-        if (ImGui::MenuItem("ParticleSystem Component"))
+        if(ImGui::MenuItem("ParticleSystem Component"))
         {
             auto pComp = new Particle::ParticleSystemComponent();
             eManager->AddComponent(m_selectedEntity, pComp);
@@ -737,6 +743,8 @@ void Me::Editor::EntityEditor::Draw()
             eManager->AddComponent(m_selectedEntity, nSComp);
             ImGui::CloseCurrentPopup();
         }
+
+        // TODO : New custom Components
 
         ImGui::EndPopup();
     }

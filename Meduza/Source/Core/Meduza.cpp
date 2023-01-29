@@ -31,7 +31,7 @@
 
 unsigned char Me::Meduza::ms_engineState = RUN_GAME;
 
-Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
+Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api, std::string a_startingProject)
 	:
 	m_renderLayer(nullptr),
 	m_serializer(nullptr),
@@ -82,6 +82,11 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 
 	m_projectManager = Project::ProjectManager::CreateProjectManager();
 
+	if (!a_startingProject.empty())
+	{
+		m_projectManager->LoadProject(a_startingProject);
+	}
+
 #ifdef PLATFORM_WINDOWS
 #ifdef EDITOR
 	m_editor = Editor::EditorRenderer::CreateEditor(m_renderLayer);
@@ -89,8 +94,9 @@ Me::Meduza::Meduza(int a_width, int a_height, GFX_API a_api)
 #endif
 
 #ifndef EDITOR
+	std::string startingProject = a_startingProject.empty() ? "Projects/MeduzaTests/Config/.ProjectMeduzaTests.mec" : a_startingProject;
 	ms_engineState = RUN_GAME;
-	m_projectManager->LoadProject("Projects/MeduzaTests/Config/.ProjectMeduzaTests.mec");
+	m_projectManager->LoadProject(startingProject);
 #endif
 }
 

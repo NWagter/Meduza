@@ -12,9 +12,9 @@
 
 #include "Utils/MeduzaDebug.h"
 
-Me::Application::Application(int a_w,int a_h, int a_api)
+Me::Application::Application(int a_w,int a_h, int a_api, std::string a_startingProject)
 {
-    m_meduza = new Meduza(a_w,a_h, static_cast<GFX_API>(a_api));
+    m_meduza = new Meduza(a_w,a_h, static_cast<GFX_API>(a_api), a_startingProject);
 }
 
 Me::Application::~Application()

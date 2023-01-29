@@ -51,7 +51,7 @@ namespace Me
 	class Meduza
 	{
 	public:
-		Meduza(int a_width, int a_height, GFX_API a_api);
+		Meduza(int a_width, int a_height, GFX_API a_api, std::string a_startingProject);
 		~Meduza();
 		
 		inline bool IsRunning() { return m_isRunning; }

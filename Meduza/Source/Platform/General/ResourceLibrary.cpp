@@ -41,6 +41,7 @@ void Me::Resources::ResourceLibrary::Cleanup(bool a_baseLoad)
 	}
 
 	ms_instance->m_resources.clear();
+	ms_instance->m_resourceToLoad.clear();
 
 	if (a_baseLoad)
 	{

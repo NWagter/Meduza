@@ -12,7 +12,7 @@ namespace Me
     class Application
     {
     public:
-        Application(int a_width = 1280 ,int a_height = 720, int a_api = 0);
+        Application(int a_width = 1280, int a_height = 720, int a_api = 0, std::string a_startingProject = "");
         virtual ~Application();
 
         virtual void OnUpdate(float a_dt);

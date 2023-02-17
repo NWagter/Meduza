@@ -55,7 +55,7 @@ namespace Me
 			static void DestroyThreadPool();
 			inline static ThreadPool* GetThreadPool() { return ms_threadPool; }
 						
-			void AddTask(Task a_newTask, ThreadType const a_type = ThreadType::Main);
+			void AddTask(Task a_newTask, ThreadType const a_type = ThreadType::Core);
 			void PushTasks();
 			void WaitForWorkersFinished();
 			void WaitForWorkersFinishedOfType(ThreadType const a_type);

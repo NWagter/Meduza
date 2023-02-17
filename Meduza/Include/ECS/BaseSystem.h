@@ -17,7 +17,7 @@ namespace Me
         ECSSystem();
         virtual ~ECSSystem() = default;
 
-        virtual ThreadType GetThreadType() const { return ThreadType::Main; }
+        virtual ThreadType GetThreadType() const { return ThreadType::Core; }
 
     protected:
         virtual void OnCreate() {}

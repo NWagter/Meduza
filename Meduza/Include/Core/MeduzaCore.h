@@ -18,7 +18,7 @@ namespace Me
 
     enum class ThreadType
     {
-        Main,
+        Core,
         Render,
         Physics_Begin,
         Physics_End,

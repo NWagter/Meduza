@@ -31,7 +31,7 @@ Me::Threading::ThreadPool::ThreadPool() :
     std::vector<ThreadType> requiredTypes = 
     {
         ThreadType::Render,
-        ThreadType::Main,
+        ThreadType::Core,
         ThreadType::Physics_Begin,
         ThreadType::Physics_End,
         ThreadType::Scripting,
@@ -195,6 +195,7 @@ Me::Threading::Worker::~Worker()
 
 void Me::Threading::Worker::StartWorker()
 {
+    ME_PROFILE_THREAD(GetThreadTypeName(m_type).c_str());
     ME_CORE_LOG("%s:Worker:ID %u started |  \n", GetThreadTypeName(m_type).c_str(), m_index);
     m_active = true;
 
@@ -259,8 +260,8 @@ std::string Me::Threading::GetThreadTypeName(ThreadType const a_type)
 {
     switch (a_type)
     {
-    case ThreadType::Main:
-        return "MainThread";
+    case ThreadType::Core:
+        return "CoreThread";
         break;
     case ThreadType::Render:
         return "RenderThread";

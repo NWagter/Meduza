@@ -42,7 +42,7 @@ bool Me::Application::Run()
     ME_PROFILE_APP("Meduza");
     while(m_meduza->IsRunning())
     {
-        ME_PROFILE_FRAME("MainThread");
+        ME_PROFILE_FRAME("Meduza_Application");
 
         float const deltaSecond = deltaTimer.GetElapsedTime();
 
@@ -72,6 +72,7 @@ bool Me::Application::Run()
     };
 
     OnClose();
+    ME_PROFILE_STOP();
 
     return true;
 }

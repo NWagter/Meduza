@@ -38,7 +38,7 @@ namespace Me
                 void ClearBuffer() override
                 {
                     m_instancedData.clear(); 
-                    m_instancedData.reserve();
+                    m_instancedData.reserve(MAX_INSTANCES);
                     m_alignmentItem = 0;
                 }
 

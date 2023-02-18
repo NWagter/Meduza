@@ -38,10 +38,8 @@ namespace Me
                 void ClearBuffer() override
                 {
                     m_instancedData.clear(); 
-                    m_instancedData = std::vector<InstancedData>(MAX_INSTANCES);
-                    m_textures.clear();
+                    m_instancedData.reserve();
                     m_alignmentItem = 0;
-                    m_textureAmount = 0;
                 }
 
                 Mesh GetMesh() override { return m_meshIndex; }
@@ -59,6 +57,7 @@ namespace Me
 
                 unsigned int m_alignmentItem = 0;
                 unsigned int m_textureAmount = 0;
+                unsigned int m_instancedVBO = 0;
 
 
                 std::vector<InstancedData> m_instancedData = std::vector<InstancedData>(MAX_INSTANCES);
@@ -67,12 +66,22 @@ namespace Me
             template<typename InstancedData>
             int InstancedRenderCall<InstancedData>::Draw(Math::Matrix4 const& a_cameraMatrix, bool const a_debugMode)
             {
-                CreateInstancedBuffer();
+                ME_PROFILE_FUNC("Instanced Draw");
+                if (m_alignmentItem <= 0)
+                {
+                    return 0;
+                }
+
+                if (m_instancedVBO == 0)
+                {
+                    CreateInstancedBuffer();
+                }
 
                 auto mesh = static_cast<Resources::GL::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
                 auto shader = static_cast<Resources::GL::Shader*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::ShaderBase>(m_shaderIndex));
 
                 shader->Bind();
+                shader->SetMat4("u_projectionView", a_cameraMatrix, false);
 
                 for (size_t i = 0; i < m_textures.size(); i++)
                 {
@@ -83,14 +92,15 @@ namespace Me
                     }
                 }
 
+                // Upload instanced data
+                glBindBuffer(GL_UNIFORM_BUFFER, m_instancedVBO);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(InstancedData) * m_alignmentItem, m_instancedData.data());
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
                 glBindVertexArray(mesh->GetVAO());
 
                 // render objects in scene
-                int indices = mesh->GetIndices().size();
-
-                shader->SetMat4("u_projectionView", a_cameraMatrix, false);
-                glDrawElementsInstanced(GL_TRIANGLES, mesh->GetIndices().size(), GL_UNSIGNED_SHORT, 0, m_alignmentItem);
-                // render objects in scene
+                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, mesh->GetVerticesSize(), m_alignmentItem);
 
                 glBindVertexArray(0);
 
@@ -100,6 +110,7 @@ namespace Me
                 }
 
                 shader->UnBind();
+                glBindVertexArray(0);
                 return mesh->GetVerticesSize();
             }
 
@@ -111,9 +122,8 @@ namespace Me
                     return false;
                 }
 
-                m_instancedData[m_alignmentItem] = a_instanceData;
+                m_instancedData.push_back(a_instanceData);
                 m_alignmentItem++;
-
 
                 return true;
             }
@@ -146,35 +156,40 @@ namespace Me
             template<typename InstancedData>
             void InstancedRenderCall<InstancedData>::CreateInstancedBuffer()
             {
-                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
+                ME_PROFILE_FUNC("Create Instanced Buffer");
+                glGenBuffers(1, &m_instancedVBO);
+                glBindBuffer(GL_ARRAY_BUFFER, m_instancedVBO);
+                glBufferData(GL_ARRAY_BUFFER, sizeof(InstancedData), &m_instancedData[0], GL_STREAM_DRAW);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+                auto mesh = static_cast<Resources::GL::Mesh*>(Resources::ResourceLibrary::GetInstance()->GetResource<Resources::MeshBase>(m_meshIndex));
                 glBindVertexArray(mesh->GetVAO());
 
-                unsigned int ibo;
-                glGenBuffers(1, &ibo);
-                glBindBuffer(GL_ARRAY_BUFFER, ibo);
-                glBufferData(GL_ARRAY_BUFFER, m_alignmentItem * sizeof(InstancedData), &m_instancedData[0], GL_STATIC_DRAW);
+                glBindBuffer(GL_ARRAY_BUFFER, m_instancedVBO);
+
+                //ModelMat
+                glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
+                glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(1 * sizeof(Math::Vector4)));
+                glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(2 * sizeof(Math::Vector4)));
+                glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(3 * sizeof(Math::Vector4)));
+                //Colour
+                glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(4 * sizeof(Math::Vector4)));
+                //UV
+                glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(5 * sizeof(Math::Vector4)));
+                //textureID
+                glVertexAttribPointer(9, 1, GL_FLOAT, false, sizeof(InstancedData), (void*)(6 * sizeof(Math::Vector4)));
 
                 //ModelMat
                 glEnableVertexAttribArray(3);
-                glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(sizeof(float) * 0));
                 glEnableVertexAttribArray(4);
-                glVertexAttribPointer(4, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(1 * sizeof(Math::Vector4)));
                 glEnableVertexAttribArray(5);
-                glVertexAttribPointer(5, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(2 * sizeof(Math::Vector4)));
                 glEnableVertexAttribArray(6);
-                glVertexAttribPointer(6, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(3 * sizeof(Math::Vector4)));
                 //Colour
                 glEnableVertexAttribArray(7);
-                glVertexAttribPointer(7, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(4 * sizeof(Math::Vector4)));
                 //UV
                 glEnableVertexAttribArray(8);
-                glVertexAttribPointer(8, 4, GL_FLOAT, false, sizeof(InstancedData), (void*)(5 * sizeof(Math::Vector4)));
                 //textureID
-
                 glEnableVertexAttribArray(9);
-                glVertexAttribPointer(9, 1, GL_FLOAT, false, sizeof(InstancedData), (void*)(6 * sizeof(Math::Vector4)));
-
 
                 // sent these attributes only once per instance to the program:
                 glVertexAttribDivisor(3, 1);
@@ -185,8 +200,11 @@ namespace Me
                 glVertexAttribDivisor(8, 1);
                 glVertexAttribDivisor(9, 1);
 
-                glBindVertexArray(0);
-                glDeleteBuffers(1, &ibo);
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+                glBindBuffer(GL_UNIFORM_BUFFER, m_instancedVBO);
+                glBufferData(GL_UNIFORM_BUFFER, sizeof(InstancedData) * MAX_INSTANCES, NULL, GL_DYNAMIC_DRAW);
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
             }
         }
     }

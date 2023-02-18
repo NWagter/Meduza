@@ -129,6 +129,7 @@ void Me::Renderer::GL::RenderLayerGL::Clear(Colour const a_clearColour)
 
 void Me::Renderer::GL::RenderLayerGL::Present()
 {
+    ME_PROFILE_FUNC("Renderer Present");
     Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
     
 #ifndef EDITOR    
@@ -151,6 +152,7 @@ void Me::Renderer::GL::RenderLayerGL::Present()
 
 void Me::Renderer::GL::RenderLayerGL::Populate()
 {
+    ME_PROFILE_FUNC("Renderer Populate");
     Resources::ResourceLibrary* rLibrary = Resources::ResourceLibrary::GetInstance();
 
     for (auto instancePair : m_instanceMap)
@@ -258,6 +260,7 @@ void Me::Renderer::GL::RenderLayerGL::Populate()
 
 void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComponent, TransformComponent& a_transformComponent)
 {
+    ME_PROFILE_FUNC("Submit Drawable");
     auto iB = DefaultInstancedBuffer();
 
     Me::Colour colour = a_renderComponent.m_colour;
@@ -275,6 +278,7 @@ void Me::Renderer::GL::RenderLayerGL::Submit(RenderComponent const& a_renderComp
 
 void Me::Renderer::GL::RenderLayerGL::DebugSubmit(DebugRenderComponent const& a_debugRenderComponent, TransformComponent& a_transformComponent)
 {
+    ME_PROFILE_FUNC("Submit Debug Drawable");
     auto iB = DefaultInstancedBuffer();
     Me::Colour colour = a_debugRenderComponent.m_debugColour;
     iB.m_colour = colour.m_colour;
@@ -360,6 +364,7 @@ void Me::Renderer::GL::RenderLayerGL::RenderCircle(CircleRender const& a_circleR
 
 void Me::Renderer::GL::RenderLayerGL::SetCamera(CameraComponent const& a_cameraComponent, TransformComponent& a_transformComponent)
 {
+    ME_PROFILE_FUNC("Set Camera");
     Math::Matrix4 camMat = Math::Matrix4::Identity();
 
     if(a_cameraComponent.m_cameraType == Me::CameraType::Orthographic)

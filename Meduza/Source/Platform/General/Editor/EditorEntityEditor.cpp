@@ -166,11 +166,32 @@ void Me::Editor::EntityEditor::Draw()
             ME_LOG("Add Script : %s \n", script.c_str());
         }
 
-        ImGui::Checkbox("Locked", &m_locked);
+        if (ImGui::Button(m_locked ? ICON_FA_LOCK : ICON_FA_LOCK_OPEN))
+        {
+            m_locked = !m_locked;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_FA_BUG))
+        {
+            m_debugViewMode = !m_debugViewMode;
+        }
+
         auto components = eManager->GetComponents(m_selectedEntity);
 
         const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
             ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+
+        if (m_debugViewMode)
+        {
+            auto component = eManager->GetComponent<UIDComponent>(m_selectedEntity);
+            if (component != nullptr)
+            {
+                std::string label = "UID : ";
+                uint32_t id = static_cast<uint32_t>(component->m_guid);
+                label.append(std::to_string(id));
+                ImGui::Text(label.c_str());
+            }
+        }
 
         for (auto comp : components)
         {

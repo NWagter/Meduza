@@ -97,6 +97,7 @@ Me::Editor::GL::EditorRendererGL::~EditorRendererGL()
 
 void Me::Editor::GL::EditorRendererGL::Clear()
 {
+	ME_PROFILE_FUNC("Clear Editor");
     ImGui_ImplOpenGL3_NewFrame();
 #ifdef PLATFORM_WINDOWS
 
@@ -112,6 +113,7 @@ void Me::Editor::GL::EditorRendererGL::Clear()
 
 void Me::Editor::GL::EditorRendererGL::Update(float a_dt)
 {
+	ME_PROFILE_FUNC("Update Editor");
 	for (int i = 0; i < m_editorWidgets.size(); i++)
 	{
 		m_editorWidgets[i]->Update(a_dt);
@@ -120,6 +122,7 @@ void Me::Editor::GL::EditorRendererGL::Update(float a_dt)
 
 void Me::Editor::GL::EditorRendererGL::Populate()
 {
+	ME_PROFILE_FUNC("Populate Editor");
 	ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
 	Math::Vector2 size = m_renderLayer->GetWindow()->GetSize();

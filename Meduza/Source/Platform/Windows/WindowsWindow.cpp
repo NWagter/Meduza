@@ -55,6 +55,7 @@ void Me::WindowsWindow::ActiveCursor(bool a_showCursor)
 
 void Me::WindowsWindow::Peek()
 {
+	ME_PROFILE_FUNC("WinWindow Peek");
 	MSG msg;
 
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) != 0)
@@ -105,7 +106,6 @@ void Me::WindowsWindow::SetContext(Renderer::ContextBase* a_context)
 
 LRESULT __stdcall Me::WindowsWindow::HandleMsgSetup(HWND const a_hwnd, UINT const a_msg, WPARAM const a_wParam, LPARAM const a_lParam)
 {
-
 	if (a_msg == WM_NCCREATE) {
 		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(a_lParam);
 		WindowsWindow* const pWnd = static_cast<WindowsWindow*>(pCreate->lpCreateParams);
@@ -117,8 +117,8 @@ LRESULT __stdcall Me::WindowsWindow::HandleMsgSetup(HWND const a_hwnd, UINT cons
 }
 
 LRESULT __stdcall Me::WindowsWindow::HandleMsgThunk(HWND a_hwnd, UINT a_msg, WPARAM a_wParam, LPARAM a_lParam)
-{	//Get The window ptr stored in the API user data
-
+{	
+	//Get The window ptr stored in the API user data
 	WindowsWindow* const pWnd = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(a_hwnd, GWLP_USERDATA));
 
 	//Handle the messages!

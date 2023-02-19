@@ -12,6 +12,8 @@ Me::Math::Vector3 Me::Physics::PhysicsHelper::GetFurthestPointInDirection
 	Math::Vector3 const a_offset
 )
 {
+	ME_PROFILE_FUNC("GetFurthestPointInDirection");
+
 	float distance = std::numeric_limits<float>::lowest();
 	Math::Vector3 const searchDirection = (Math::SetInverseRotation(a_transform.GetEuler()) * a_direction).Normalize();
 	Math::Vector3 point;

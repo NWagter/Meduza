@@ -2,7 +2,7 @@
 
 #ifdef PLATFORM_WINDOWS
     #include <optick.h>
-    #define ME_ENABLE_PROFILING 1
+    #define ME_ENABLE_PROFILING 0
 #else
     #define ME_ENABLE_PROFILING 0
 #endif

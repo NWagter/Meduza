@@ -88,6 +88,7 @@ void Me::EntityManager::DestroyEntities()
 
 void Me::EntityManager::Update(float a_dt)
 {
+    ME_PROFILE_FUNC("ECS Manager Update");
     DestroyEntities();
 
     Threading::ThreadPool* threadPool = Threading::ThreadPool::GetThreadPool();

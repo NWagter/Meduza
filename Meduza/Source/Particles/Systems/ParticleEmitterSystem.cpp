@@ -19,6 +19,7 @@ Me::Particle::ParticleEmitterSystem::ParticleEmitterSystem()
 
 void Me::Particle::ParticleEmitterSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("ParticleEmitterSystem");
     auto eManager = EntityManager::GetEntityManager();
 
     for (auto& compTuple : m_components)

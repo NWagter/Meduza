@@ -164,6 +164,7 @@ bool Me::Physics::Simplex::Tetrahedron(Math::Vector3& a_direction)
 
 bool Me::Physics::GJKAlgorithm::GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data)
 {
+	ME_PROFILE_FUNC("GJKIntersection Function");
 	if (a_colliders[0]->Is3DCollider() != a_colliders[1]->Is3DCollider())
 	{
 		return false;
@@ -234,6 +235,7 @@ bool Me::Physics::GJKAlgorithm::SameDirection(Math::Vector3 const& a_direction, 
 
 Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction)
 {
+	ME_PROFILE_FUNC("GJK Support Function");
 	Math::Vector3 furthersPointA = a_colliders[0]->GetFurthestPointInDirection(a_physics[0]->m_transform, a_direction);
 	Math::Vector3 furthersPointB = a_colliders[1]->GetFurthestPointInDirection(a_physics[1]->m_transform, Inverse(a_direction));
 
@@ -249,6 +251,7 @@ Me::Math::Vector3 Me::Physics::GJKAlgorithm::Support(Physics::PhysicsComponent* 
 
 Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
 {
+	ME_PROFILE_FUNC("EPA2D Function");
 	EPAData data;
 	float const infinity = std::numeric_limits<float>::infinity();
 	uint16_t minIndex = 0;
@@ -299,6 +302,7 @@ Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA2D(Simplex const a_simplex, P
 
 Me::Physics::EPAData Me::Physics::GJKAlgorithm::EPA3D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2])
 {
+	ME_PROFILE_FUNC("EPA3D Function");
 	std::vector<Math::Vector3> polytope = a_simplex.GetPoints();
 	std::vector<size_t> faces = {
 		0, 1, 2,

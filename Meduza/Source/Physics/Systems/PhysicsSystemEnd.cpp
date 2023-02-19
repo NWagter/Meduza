@@ -13,7 +13,7 @@ Me::Physics::PhysicsSystemEnd::PhysicsSystemEnd()
 
 void Me::Physics::PhysicsSystemEnd::OnUpdate(float a_dT)
 {
-    ME_PROFILE_FUNC("PhysicsSystem");
+    ME_PROFILE_FUNC("PhysicsSystemEnd");
 
     for (auto& compTuple : m_components)
     {

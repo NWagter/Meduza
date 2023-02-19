@@ -18,7 +18,7 @@ Me::Editor::EditorCameraSystem::~EditorCameraSystem()
 
 void Me::Editor::EditorCameraSystem::OnCreate()
 {
-    ME_PROFILE_FUNC("EditorCamera");
+    ME_PROFILE_FUNC("EditorCameraSystem");
 
     auto eManager = EntityManager::GetEntityManager();
 

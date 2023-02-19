@@ -13,6 +13,7 @@ Me::Particle::ParticleSystem::ParticleSystem()
 
 void Me::Particle::ParticleSystem::OnUpdate(float a_dt)
 {
+    ME_PROFILE_FUNC("ParticleSystem");
     auto eManager = EntityManager::GetEntityManager();
 
 

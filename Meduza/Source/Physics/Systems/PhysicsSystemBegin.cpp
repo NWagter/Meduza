@@ -13,7 +13,7 @@ Me::Physics::PhysicsSystemBegin::PhysicsSystemBegin()
 
 void Me::Physics::PhysicsSystemBegin::OnUpdate(float a_dt)
 {
-    ME_PROFILE_FUNC("PhysicsSystem");
+    ME_PROFILE_FUNC("PhysicsSystemBegin");
     
     for(auto& compTuple : m_components)
     {

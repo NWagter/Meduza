@@ -30,7 +30,7 @@ Me::Threading::ThreadPool::ThreadPool() :
 {
     std::vector<ThreadType> requiredTypes = 
     {
-        ThreadType::Render,
+        ThreadType::RenderCommand,
         ThreadType::Core,
         ThreadType::Physics_Begin,
         ThreadType::Physics_End,
@@ -265,6 +265,9 @@ std::string Me::Threading::GetThreadTypeName(ThreadType const a_type)
         break;
     case ThreadType::Render:
         return "RenderThread";
+        break;
+    case ThreadType::RenderCommand:
+        return "RenderCommandThread";
         break;
     case ThreadType::Physics_Begin:
         return "Physics_BeginThread";

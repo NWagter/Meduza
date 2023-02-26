@@ -20,6 +20,7 @@ namespace Me
     {
         Core,
         Render,
+        RenderCommand,
         Physics_Begin,
         Physics_End,
         Scripting

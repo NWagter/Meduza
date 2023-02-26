@@ -52,13 +52,12 @@ bool Me::Application::Run()
 #endif // EDITOR
 
         float const deltaTime = deltaSecond * timeScale;
-        m_meduza->Clear();
+        m_meduza->Render();
         
         m_meduza->Update(deltaTime);
         Application::OnUpdate(deltaTime);
 
         Threading::ThreadPool::GetThreadPool()->WaitForWorkersFinished();
-        m_meduza->Present();
 
         totalTime += deltaSecond;
         frameCount++;

@@ -56,9 +56,8 @@ namespace Me
 		
 		inline bool IsRunning() { return m_isRunning; }
 
-		void Clear();
 		void Update(float a_dt);
-		void Present();
+		void Render();
 
 		void SetAppName(std::string a_appName);
 		Math::Vector2 GetScreenSize();

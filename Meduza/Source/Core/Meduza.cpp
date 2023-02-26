@@ -105,26 +105,6 @@ Me::Meduza::~Meduza()
 	Destroy();
 }
 
-void Me::Meduza::Clear()
-{
-	if(m_renderLayer != nullptr)
-	{
-#ifdef PLATFORM_WINDOWS
-#ifdef EDITOR
-		if (m_editor != nullptr)
-		{
-			m_editor->Clear();
-		}
-#endif
-#endif
-		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
-
-		return;
-	}
-
-	m_isRunning = false;
-}
-
 void Me::Meduza::Update(float a_dt)
 {
 	if(m_window == nullptr)
@@ -152,7 +132,7 @@ void Me::Meduza::Update(float a_dt)
 	}
 }
 
-void Me::Meduza::Present()
+void Me::Meduza::Render()
 {
 	if(m_renderLayer != nullptr)
 	{		
@@ -162,11 +142,13 @@ void Me::Meduza::Present()
 	#ifdef EDITOR		
 		if(m_editor != nullptr)
 		{
+			m_editor->Clear();
 			m_editor->Populate();
 		}
 	#endif
 #endif
 		m_renderLayer->Present();
+		m_renderLayer->Clear(Colours::CELESTIAL_BLUE);
 		return;
 	}
 

@@ -24,7 +24,7 @@ namespace Me
     public:
         CircleDebugRenderSystem();
 
-        ThreadType GetThreadType() const override { return ThreadType::Render; }
+        ThreadType GetThreadType() const override { return ThreadType::RenderCommand; }
 
     protected:
         void OnUpdate(float a_dt) override;

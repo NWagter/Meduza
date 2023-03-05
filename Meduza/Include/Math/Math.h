@@ -48,13 +48,23 @@ namespace Me
 		namespace Random
 		{
 			static constexpr float gs_seed = 12121998;
-			inline float RandomRange(const float a_min, const float a_max)
+			inline float RandomRange(float const a_min, float const a_max)
 			{
 				float max = std::max(a_min, a_max);
 				float min = std::min(a_min, a_max);
 
 				float randomDelta = ((float)rand()) / (float)RAND_MAX;
 				float r = (1 - randomDelta) * min + randomDelta * max;
+				return r;
+			}
+
+			inline unsigned int RandomRange(unsigned int const a_min, unsigned int const a_max)
+			{
+				unsigned int max = std::max(a_min, a_max);
+				unsigned int min = std::min(a_min, a_max);
+
+				float randomDelta = ((float)rand()) / (float)RAND_MAX;
+				unsigned int r = static_cast<unsigned int>((1 - randomDelta) * min + randomDelta * max);
 				return r;
 			}
 		}

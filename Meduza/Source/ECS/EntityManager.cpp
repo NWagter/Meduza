@@ -158,6 +158,11 @@ void Me::EntityManager::Update(float a_dt)
 
     if(m_started && Meduza::GetEngineState() & RUN_EDITOR)
     {
+        for (auto s : m_systems)
+        {
+            s->OnDestroy();
+        }
+
         m_started = false;
     }
     else if(!m_started &&Meduza::GetEngineState() & (RUN_GAME | RUN_PAUSED))

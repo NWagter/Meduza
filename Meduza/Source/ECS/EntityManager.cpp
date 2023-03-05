@@ -160,7 +160,7 @@ void Me::EntityManager::Update(float a_dt)
     {
         for (auto s : m_systems)
         {
-            s->OnDestroy();
+            s->OnApplicationQuit();
         }
 
         m_started = false;

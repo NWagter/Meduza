@@ -24,6 +24,14 @@ namespace Me
             static bool CheckCollision(PhysicsComponent const* a_physics[2], ColliderComponent const* a_colliders[2], ComponentID const a_componentIds[2], CollisionData& a_data);
             static bool RayIntersection(Ray const* a_ray, PhysicsComponent const* a_physic, ColliderComponent const* a_collider, CollisionData& a_data);
 
+            // ==== Ray intersection
+            struct IntersectionData
+            {
+                Math::Vector3 m_intersectionPoints;
+                bool m_intersection = false;
+            };
+            static IntersectionData RaySphereIntersection(Ray const* a_ray, PhysicsComponent const* a_physics, SphereColliderComponent const* a_sphereColl);
+
             // ==== AABB collision Checks
             static bool AABB_Box2DToBox2D(PhysicsComponent const* a_physics[2], BoxCollider2DComponent const* a_colliders[2], CollisionData& a_data);
             static bool AABB_Box3DToBox3D(PhysicsComponent const* a_physics[2], BoxCollider3DComponent const* a_colliders[2], CollisionData& a_data);

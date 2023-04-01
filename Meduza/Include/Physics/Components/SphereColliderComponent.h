@@ -13,7 +13,7 @@ namespace Me
             Math::Vector3 m_colliderOffset = Math::Vector3(0,0,0);
             float m_radius = 1;
 
-            ComponentID GetColliderComponentID() override
+            ComponentID GetColliderComponentID() const override
             {
                 return s_componentID;
             }

@@ -13,7 +13,7 @@ namespace Me
             CollisionType m_collisionType;
             CollisionLayerID m_collisionLayer;
 
-            virtual ComponentID GetColliderComponentID()
+            virtual ComponentID GetColliderComponentID() const
             {
                 return s_componentID;
             }       

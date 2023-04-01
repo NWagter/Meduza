@@ -106,11 +106,34 @@ bool Me::Physics::Collision::CheckCollision(PhysicsComponent const* a_physics[2]
 
 bool Me::Physics::Collision::RayIntersection(Ray const* a_ray, PhysicsComponent const* a_physic, ColliderComponent const* a_collider, CollisionData& a_data)
 {
-    bool validIntersection = false;
-    // triangle intersection
+    bool triangleIntersection = true;
+    switch (static_cast<Components>(a_collider->GetColliderComponentID()))
+    {
+    case Components::CircleCollider:
+    case Components::SphereCollider:
+    {
+        triangleIntersection = false;
+        break;
+    }
+    default:
+        break;
+    }
+
+    IntersectionData intersectionData;
+    if (triangleIntersection)
+    {
+        // Triangle intersection
+
+    }
+    else
+    {
+        // Sphere intersection
+        intersectionData = RaySphereIntersection(a_ray, a_physic, static_cast<SphereColliderComponent const*>(a_collider));
+    }
+
 
     Me::Debug::Settings const& debugSettings = Me::Debug::MeduzaDebug::GetDebuggingSettings();
-    if (debugSettings.m_rayIntersections && validIntersection)
+    if (debugSettings.m_rayIntersections && intersectionData.m_intersection)
     {
         Me::Debug::MeduzaDebug::RenderLine(a_ray->m_origin, a_ray->m_direction, 10.0f, Colours::RED);
 
@@ -119,7 +142,32 @@ bool Me::Physics::Collision::RayIntersection(Ray const* a_ray, PhysicsComponent 
         Me::Debug::MeduzaDebug::RenderSphere(transform, debugSettings.m_scaleVertices);
     }
 
-    return validIntersection;
+    return intersectionData.m_intersection;
+}
+
+Me::Physics::Collision::IntersectionData Me::Physics::Collision::RaySphereIntersection(Ray const* a_ray, PhysicsComponent const* a_physics, SphereColliderComponent const* a_sphereColl)
+{
+    IntersectionData data;
+
+    Math::Vector3 m = a_ray->m_origin - a_physics->m_transform.GetPosition();
+    float b = Math::DotProduct(m, a_ray->m_direction);
+    float c = Math::DotProduct(m, m) - a_sphereColl->m_radius * a_sphereColl->m_radius;
+
+    // Exit if r’s origin outside s (c > 0) and r pointing away from s (b > 0) 
+    if (c > 0.0f && b > 0.0f) return data;
+    float discr = b * b - c;
+
+    // A negative discriminant corresponds to ray missing sphere 
+    if (discr < 0.0f) return data;
+
+    // Ray now found to intersect sphere, compute smallest t value of intersection
+    float t = -b - std::sqrt(discr);
+
+    // If t is negative, ray started inside sphere so clamp t to zero 
+    if (t < 0.0f) t = 0.0f;
+    data.m_intersectionPoints = a_ray->m_origin + (a_ray->m_direction * t);
+
+    return data;
 }
 
 // ==== AABB collision Checks

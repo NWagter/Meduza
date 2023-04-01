@@ -106,12 +106,20 @@ bool Me::Physics::Collision::CheckCollision(PhysicsComponent const* a_physics[2]
 
 bool Me::Physics::Collision::RayIntersection(Ray const* a_ray, PhysicsComponent const* a_physic, ColliderComponent const* a_collider, CollisionData& a_data)
 {
-    Math::Vector3 furthersPointA = a_collider->GetFurthestPointInDirection(a_physic->m_transform, a_ray->m_direction);
-    if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_rayIntersections)
+    bool validIntersection = false;
+    // triangle intersection
+
+    Me::Debug::Settings const& debugSettings = Me::Debug::MeduzaDebug::GetDebuggingSettings();
+    if (debugSettings.m_rayIntersections && validIntersection)
     {
         Me::Debug::MeduzaDebug::RenderLine(a_ray->m_origin, a_ray->m_direction, 10.0f, Colours::RED);
+
+        Math::Matrix4 transform;
+        transform.SetPosition(a_data.m_hitPoint);
+        Me::Debug::MeduzaDebug::RenderSphere(transform, debugSettings.m_scaleVertices);
     }
-    return false;
+
+    return validIntersection;
 }
 
 // ==== AABB collision Checks

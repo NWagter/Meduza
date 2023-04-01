@@ -22,6 +22,20 @@ namespace Me
 			bool m_drawHitPoints = true;
 			float m_scaleVertices = 0.2f;
 			float m_timeScale = 1.0f;
+
+			static Settings Empty()
+			{
+				Settings emptySettings;
+				emptySettings.m_lineDebugger = false;
+				emptySettings.m_collisionDebugger = false;
+				emptySettings.m_showStats = false;
+				emptySettings.m_debugCircle = false;
+				emptySettings.m_gjkDebugger = false;
+				emptySettings.m_rayIntersections = false;
+				emptySettings.m_showVertices = false;
+				emptySettings.m_drawHitPoints = false;
+				return emptySettings;
+			}
 		};
 
 		class MeduzaDebug
@@ -33,7 +47,7 @@ namespace Me
 			static void RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_direction, float const a_lenght, Colour const a_colour = Colours::MAGENTA);
 			static void RenderCircle(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
 			static void RenderSphere(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
-			static Settings& GetDebuggingSettings() { return ms_instance->m_debuggingSettings; }
+			static Settings& GetDebuggingSettings();
 		private:
 			MeduzaDebug(Renderer::RenderLayer& a_renderLayer);
 

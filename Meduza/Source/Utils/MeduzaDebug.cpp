@@ -78,3 +78,11 @@ void Me::Debug::MeduzaDebug::RenderSphere(Math::Matrix4 const& a_trans, float co
 	// Should be Shader only
 }
 
+Me::Debug::Settings& Me::Debug::MeduzaDebug::GetDebuggingSettings()
+{
+#ifndef EDITOR
+	return Settings::Empty();
+#endif // !EDITOR
+	return ms_instance->m_debuggingSettings;
+}
+

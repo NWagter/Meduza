@@ -99,28 +99,28 @@ namespace Me
 				}
 			}
 
-			inline Vector2 operator+(const Vector2& a_rhs)
+			inline Vector2 operator+(const Vector2& a_rhs) const
 			{
 				float x = m_x + a_rhs.m_x;
 				float y = m_y + a_rhs.m_y;
 
 				return Vector2(x, y);
 			}
-			inline Vector2 operator-(const Vector2& a_rhs)
+			inline Vector2 operator-(const Vector2& a_rhs) const
 			{
 				float x = m_x - a_rhs.m_x;
 				float y = m_y - a_rhs.m_y;
 
 				return Vector2(x, y);
 			}
-			inline Vector2 operator*(float a_rhs)
+			inline Vector2 operator*(float a_rhs) const
 			{
 				float x = m_x * a_rhs;
 				float y = m_y * a_rhs;
 
 				return Vector2(x, y);
 			}
-			inline Vector2 operator/(float a_rhs)
+			inline Vector2 operator/(float a_rhs) const
 			{
 				float x = m_x / a_rhs;
 				float y = m_y / a_rhs;
@@ -128,11 +128,11 @@ namespace Me
 				return Vector2(x, y);
 			}
 
-			inline float Lenght()
+			inline float Lenght() const
 			{
 				return std::sqrt(m_x * m_x + m_y * m_y);
 			}
-			inline float Distance(Vector2 a_rhs)
+			inline float Distance(Vector2 a_rhs) const
 			{
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;

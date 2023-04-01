@@ -40,12 +40,12 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
             CollisionData data;
             data.m_entity = e;
             
-            PhysicsComponent* listPhysics[2] = 
+            PhysicsComponent const* listPhysics[2] = 
             {
                 pC, physicsObjects[e]
             };
 
-            ColliderComponent* listColliders[2] = 
+            ColliderComponent const* listColliders[2] = 
             {
                 bC->m_collider, colliderComponents[e]->m_collider
             };
@@ -56,7 +56,7 @@ void Me::Physics::CollisionSystem::OnUpdate(float a_dt)
                 colliderComponents[e]->m_collider->GetColliderComponentID()
             };
 
-            if (Collision::AABB_CheckCollision(listPhysics, listColliders, components, data))
+            if (Collision::CheckCollision(listPhysics, listColliders, components, data))
             {
                 data.m_collisionLayerID = colliderComponents[e]->m_collider->m_collisionLayer;
 

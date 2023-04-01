@@ -38,12 +38,12 @@ namespace Me
 		class GJKAlgorithm
 		{
 		public:
-			static bool GJKIntersaction(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Physics::CollisionData& a_data);
+			static bool GJKIntersaction(Physics::PhysicsComponent const* a_physics[2], Physics::ColliderComponent const* a_colliders[2], Physics::CollisionData& a_data);
 			static bool SameDirection(Math::Vector3 const& a_direction, Math::Vector3 const& a_ao);
 		private:
-			static Math::Vector3 Support(Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2], Math::Vector3 const a_direction);
-			static EPAData EPA2D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2]);
-			static EPAData EPA3D(Simplex const a_simplex, Physics::PhysicsComponent* a_physics[2], Physics::ColliderComponent* a_colliders[2]);
+			static Math::Vector3 Support(Physics::PhysicsComponent const* a_physics[2], Physics::ColliderComponent const* a_colliders[2], Math::Vector3 const a_direction);
+			static EPAData EPA2D(Simplex const a_simplex, Physics::PhysicsComponent const* a_physics[2], Physics::ColliderComponent const* a_colliders[2]);
+			static EPAData EPA3D(Simplex const a_simplex, Physics::PhysicsComponent const* a_physics[2], Physics::ColliderComponent const* a_colliders[2]);
 			static void AddIfUniqueEdge(std::vector<std::pair<size_t, size_t>>& a_edges, std::vector<size_t> const a_faces, size_t a_faceA, size_t a_faceB);
 			static std::pair<std::vector<std::pair<Me::Math::Vector3, float>>, size_t> GetFaceNormals(std::vector<Math::Vector3> a_polytope, std::vector<size_t> a_faces);
 		};

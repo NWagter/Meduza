@@ -94,15 +94,6 @@ namespace Me
 
 				return *this;
 			}
-
-			inline Vector3 operator+(float a_rhs)
-			{
-				float x = m_x + a_rhs;
-				float y = m_y + a_rhs;
-				float z = m_z + a_rhs;
-
-				return Vector3(x, y, z);
-			}
 			inline Vector3& operator*=(float a_rhs)
 			{
 				m_x = m_x * a_rhs;
@@ -111,7 +102,16 @@ namespace Me
 
 				return *this;
 			}
-			inline Vector3 operator*(float  a_rhs)
+
+			inline Vector3 operator+(float a_rhs) const
+			{
+				float x = m_x + a_rhs;
+				float y = m_y + a_rhs;
+				float z = m_z + a_rhs;
+
+				return Vector3(x, y, z);
+			}
+			inline Vector3 operator*(float a_rhs) const
 			{
 				float x = m_x * a_rhs;
 				float y = m_y * a_rhs;
@@ -119,7 +119,7 @@ namespace Me
 
 				return Vector3(x, y, z);
 			}
-			inline Vector3 operator+(const Vector3& a_rhs)
+			inline Vector3 operator+(const Vector3& a_rhs) const
 			{
 				float x = m_x + a_rhs.m_x;
 				float y = m_y + a_rhs.m_y;
@@ -127,7 +127,7 @@ namespace Me
 
 				return Vector3(x, y, z);
 			}
-			inline Vector3 operator+(const Vector2& a_rhs)
+			inline Vector3 operator+(const Vector2& a_rhs) const
 			{
 				float x = m_x + a_rhs.m_x;
 				float y = m_y + a_rhs.m_y;
@@ -135,7 +135,7 @@ namespace Me
 
 				return Vector3(x, y, z);
 			}
-			inline Vector3 operator-(const Vector3& a_rhs)
+			inline Vector3 operator-(const Vector3& a_rhs) const
 			{
 				float x = m_x - a_rhs.m_x;
 				float y = m_y - a_rhs.m_y;
@@ -143,7 +143,7 @@ namespace Me
 
 				return Vector3(x, y, z);
 			}
-			inline Vector3 operator*(const Vector3& a_rhs)
+			inline Vector3 operator*(const Vector3& a_rhs) const
 			{
 				float x = m_x * a_rhs.m_x;
 				float y = m_y * a_rhs.m_y;
@@ -151,7 +151,7 @@ namespace Me
 
 				return Vector3(x, y, z);
 			}
-			inline Vector3 operator/(const Vector3& a_rhs)
+			inline Vector3 operator/(const Vector3& a_rhs) const
 			{
 				float x = m_x / a_rhs.m_x;
 				float y = m_y / a_rhs.m_y;
@@ -214,7 +214,7 @@ namespace Me
 				return *this;
 			}
 
-			inline float Distance(Vector3 a_rhs)
+			inline float Distance(Vector3 a_rhs) const
 			{
 				float x = a_rhs.m_x - m_x;
 				float y = a_rhs.m_y - m_y;
@@ -241,7 +241,7 @@ namespace Me
 				return *this;
 			}
 
-			inline bool IsNan()
+			inline bool IsNan() const
 			{
 				int i = 0;
 				if (std::isnan(m_x))

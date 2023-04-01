@@ -14,7 +14,7 @@
 
 #define USE_GJK 1
 
-bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2], ColliderComponent* a_colliders[2], ComponentID a_componentIds[2], CollisionData& a_data)
+bool Me::Physics::Collision::CheckCollision(PhysicsComponent const* a_physics[2], ColliderComponent const* a_colliders[2], ComponentID const a_componentIds[2], CollisionData& a_data)
 {
 #if USE_GJK
     return Physics::GJKAlgorithm::GJKIntersaction(a_physics, a_colliders, a_data);
@@ -44,56 +44,56 @@ bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2],
 
     if (types[0] == BodyType::Box2D && types[1] == BodyType::Box2D)
     {
-        BoxCollider2DComponent* colliders[2] =
+        BoxCollider2DComponent const* colliders[2] =
         {
-            static_cast<BoxCollider2DComponent*>(a_colliders[0]),
-            static_cast<BoxCollider2DComponent*>(a_colliders[1])
+            static_cast<BoxCollider2DComponent const*>(a_colliders[0]),
+            static_cast<BoxCollider2DComponent const*>(a_colliders[1])
         };
 
         return AABB_Box2DToBox2D(a_physics, colliders, a_data);
     }
     if (types[0] == BodyType::Box2D && types[1] == BodyType::Cirlce)
     {
-        return AABB_Box2DToCircle(a_physics, static_cast<BoxCollider2DComponent*>(a_colliders[0]), static_cast<CircleColliderComponent*>(a_colliders[1]), a_data);
+        return AABB_Box2DToCircle(a_physics, static_cast<BoxCollider2DComponent const*>(a_colliders[0]), static_cast<CircleColliderComponent const*>(a_colliders[1]), a_data);
     }
     if (types[0] == BodyType::Cirlce && types[1] == BodyType::Box2D)
     {
-        return AABB_CircleToBox2D(a_physics, static_cast<CircleColliderComponent*>(a_colliders[0]), static_cast<BoxCollider2DComponent*>(a_colliders[1]), a_data);
+        return AABB_CircleToBox2D(a_physics, static_cast<CircleColliderComponent const*>(a_colliders[0]), static_cast<BoxCollider2DComponent const*>(a_colliders[1]), a_data);
     }
     if (types[0] == BodyType::Cirlce && types[1] == BodyType::Cirlce)
     {
-        CircleColliderComponent* colliders[2] =
+        CircleColliderComponent const* colliders[2] =
         {
-            static_cast<CircleColliderComponent*>(a_colliders[0]),
-            static_cast<CircleColliderComponent*>(a_colliders[1])
+            static_cast<CircleColliderComponent const*>(a_colliders[0]),
+            static_cast<CircleColliderComponent const*>(a_colliders[1])
         };
 
         return CircleToCircle(a_physics, colliders, a_data);
     }
     if (types[0] == BodyType::Box3D && types[1] == BodyType::Box3D)
     {
-        BoxCollider3DComponent* colliders[2] =
+        BoxCollider3DComponent const* colliders[2] =
         {
-            static_cast<BoxCollider3DComponent*>(a_colliders[0]),
-            static_cast<BoxCollider3DComponent*>(a_colliders[1])
+            static_cast<BoxCollider3DComponent const*>(a_colliders[0]),
+            static_cast<BoxCollider3DComponent const*>(a_colliders[1])
         };
 
         return AABB_Box3DToBox3D(a_physics, colliders, a_data);
     }
     if (types[0] == BodyType::Box3D && types[1] == BodyType::Sphere)
     {
-        return AABB_Box3DToSphere(a_physics, static_cast<BoxCollider3DComponent*>(a_colliders[0]), static_cast<SphereColliderComponent*>(a_colliders[1]), a_data);
+        return AABB_Box3DToSphere(a_physics, static_cast<BoxCollider3DComponent const*>(a_colliders[0]), static_cast<SphereColliderComponent const*>(a_colliders[1]), a_data);
     }
     if (types[0] == BodyType::Sphere && types[1] == BodyType::Box3D)
     {
-        return AABB_SphereToBox3D(a_physics, static_cast<SphereColliderComponent*>(a_colliders[0]), static_cast<BoxCollider3DComponent*>(a_colliders[1]), a_data);
+        return AABB_SphereToBox3D(a_physics, static_cast<SphereColliderComponent const*>(a_colliders[0]), static_cast<BoxCollider3DComponent const*>(a_colliders[1]), a_data);
     }
     if (types[0] == BodyType::Sphere && types[1] == BodyType::Sphere)
     {
-        SphereColliderComponent* colliders[2] =
+        SphereColliderComponent const* colliders[2] =
         {
-            static_cast<SphereColliderComponent*>(a_colliders[0]),
-            static_cast<SphereColliderComponent*>(a_colliders[1])
+            static_cast<SphereColliderComponent const*>(a_colliders[0]),
+            static_cast<SphereColliderComponent const*>(a_colliders[1])
         };
 
         return SphereToSphere(a_physics, colliders, a_data);
@@ -102,16 +102,24 @@ bool Me::Physics::Collision::AABB_CheckCollision(PhysicsComponent* a_physics[2],
     return false;
 }
 
-bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_colliders[2], CollisionData& a_data)
+bool Me::Physics::Collision::RayIntersection(Ray const* a_ray, PhysicsComponent const* a_physic, ColliderComponent const* a_collider, CollisionData& a_data)
+{
+
+    return false;
+}
+
+// ==== AABB collision Checks
+
+bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent const* a_physics[2], BoxCollider2DComponent const* a_colliders[2], CollisionData& a_data)
 {
     // box2d to box2d collision check
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
     sPos.m_z = 0;
-    Math::Vector2 sHalfSize = a_colliders[0]->m_colliderSize / 2;
+    Math::Vector2 sHalfSize = a_colliders[0]->m_colliderSize / 2.f;
 
     Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
     oPos.m_z = 0;
-    Math::Vector2 oHalfSize = a_colliders[1]->m_colliderSize / 2;
+    Math::Vector2 oHalfSize = a_colliders[1]->m_colliderSize / 2.f;
 
     if ((sPos.m_x - sHalfSize.m_x <= oPos.m_x + oHalfSize.m_x
         && sPos.m_x + sHalfSize.m_x >= oPos.m_x - oHalfSize.m_x) &&
@@ -134,7 +142,7 @@ bool Me::Physics::Collision::AABB_Box2DToBox2D(PhysicsComponent* a_physics[2], B
     return false;
 }
 
-bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent* a_physics[2], BoxCollider2DComponent* a_boxColl, CircleColliderComponent* a_cirlceCol, CollisionData& a_data)
+bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent const* a_physics[2], BoxCollider2DComponent const* a_boxColl, CircleColliderComponent const* a_cirlceCol, CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector2 sHalfSize = a_boxColl->m_colliderSize / 2;
@@ -160,7 +168,7 @@ bool Me::Physics::Collision::AABB_Box2DToCircle(PhysicsComponent* a_physics[2], 
     return col;
 }
 
-bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent* a_physics[2], CircleColliderComponent* a_cirlceCol, BoxCollider2DComponent* a_boxColl, CollisionData& a_data)
+bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent const* a_physics[2], CircleColliderComponent const* a_cirlceCol, BoxCollider2DComponent const* a_boxColl, CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector2 sHalfSize = a_boxColl->m_colliderSize / 2;
@@ -186,7 +194,7 @@ bool Me::Physics::Collision::AABB_CircleToBox2D(PhysicsComponent* a_physics[2], 
     return col;
 }
 
-bool Me::Physics::Collision::CircleToCircle(PhysicsComponent* a_physics[2], CircleColliderComponent* a_colliders[2], CollisionData& a_data)
+bool Me::Physics::Collision::CircleToCircle(PhysicsComponent const* a_physics[2], CircleColliderComponent const* a_colliders[2], CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
     Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_colliders[1]->m_colliderOffset;
@@ -208,7 +216,7 @@ bool Me::Physics::Collision::CircleToCircle(PhysicsComponent* a_physics[2], Circ
     return col;
 }
 
-bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_colliders[2], CollisionData& a_data)
+bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent const* a_physics[2], BoxCollider3DComponent const* a_colliders[2], CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_colliders[0]->m_colliderOffset;
     Math::Vector3 sHalfSize = a_colliders[0]->m_colliderSize / 2;
@@ -237,7 +245,7 @@ bool Me::Physics::Collision::AABB_Box3DToBox3D(PhysicsComponent* a_physics[2], B
     return false;
 }
 
-bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], BoxCollider3DComponent* a_boxColl, SphereColliderComponent* a_sphereColl, CollisionData& a_data)
+bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent const* a_physics[2], BoxCollider3DComponent const* a_boxColl, SphereColliderComponent const* a_sphereColl, CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector3 sHalfSize = a_boxColl->m_colliderSize / 2;
@@ -261,7 +269,7 @@ bool Me::Physics::Collision::AABB_Box3DToSphere(PhysicsComponent* a_physics[2], 
     return col;
 }
 
-bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereColl, BoxCollider3DComponent* a_boxColl, CollisionData& a_data)
+bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent const* a_physics[2], SphereColliderComponent const* a_sphereColl, BoxCollider3DComponent const* a_boxColl, CollisionData& a_data)
 {
     Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_boxColl->m_colliderOffset;
     Math::Vector3 sHalfSize = a_boxColl->m_colliderSize / 2;
@@ -286,7 +294,7 @@ bool Me::Physics::Collision::AABB_SphereToBox3D(PhysicsComponent* a_physics[2], 
     return col;
 }
 
-bool Me::Physics::Collision::SphereToSphere(PhysicsComponent* a_physics[2], SphereColliderComponent* a_sphereCollider[2], CollisionData& a_data)
+bool Me::Physics::Collision::SphereToSphere(PhysicsComponent const* a_physics[2], SphereColliderComponent const* a_sphereCollider[2], CollisionData& a_data)
 {
     Math::Vector3 sPos = (a_physics[0]->m_transform.GetPosition() + a_physics[0]->m_movement) + a_sphereCollider[0]->m_colliderOffset;
     Math::Vector3 oPos = (a_physics[1]->m_transform.GetPosition() + a_physics[1]->m_movement) + a_sphereCollider[1]->m_colliderOffset;

@@ -101,7 +101,7 @@ namespace Me
 				return *this;
 			}
 
-			inline Vector4 operator+(const Vector4& a_rhs)
+			inline Vector4 operator+(const Vector4& a_rhs) const
 			{
 				float x = m_x + a_rhs.m_x;
 				float y = m_y + a_rhs.m_y;
@@ -110,7 +110,7 @@ namespace Me
 
 				return Vector4(x, y, z, w);
 			}
-			inline Vector4 operator-(const Vector4& a_rhs)
+			inline Vector4 operator-(const Vector4& a_rhs) const
 			{
 				float x = m_x - a_rhs.m_x;
 				float y = m_y - a_rhs.m_y;
@@ -119,7 +119,7 @@ namespace Me
 
 				return Vector4(x, y, z, w);
 			}
-			inline Vector4 operator*(const Vector4& a_rhs)
+			inline Vector4 operator*(const Vector4& a_rhs) const
 			{
 				float x = m_x * a_rhs.m_x;
 				float y = m_y * a_rhs.m_y;
@@ -128,7 +128,7 @@ namespace Me
 
 				return Vector4(x, y, z, w);
 			}
-			inline Vector4 operator/(const Vector4& a_rhs)
+			inline Vector4 operator/(const Vector4& a_rhs) const
 			{
 				float x = m_x / a_rhs.m_x;
 				float y = m_y / a_rhs.m_y;
@@ -156,7 +156,7 @@ namespace Me
 				}
 			}
 
-			inline float Lenght()
+			inline float Lenght() const
 			{
 				return std::sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
 			}

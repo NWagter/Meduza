@@ -17,6 +17,7 @@ namespace Me
 			bool m_showStats = false;
 			bool m_debugCircle = true;
 			bool m_gjkDebugger = false;
+			bool m_rayIntersections = false;
 			bool m_showVertices = false;
 			bool m_drawHitPoints = true;
 			float m_scaleVertices = 0.2f;
@@ -29,7 +30,7 @@ namespace Me
 			static Me::Debug::MeduzaDebug* CreateDebugger(Renderer::RenderLayer& a_renderLayer);
 			~MeduzaDebug();
 			static void RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_end, Colour const a_colour = Colours::MAGENTA);
-			static void RenderLine(Math::Vector3& a_start, Math::Vector3& a_direction, float const a_lenght, Colour const a_colour = Colours::MAGENTA);
+			static void RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_direction, float const a_lenght, Colour const a_colour = Colours::MAGENTA);
 			static void RenderCircle(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
 			static void RenderSphere(Math::Matrix4 const& a_trans, float const a_radius, Colour const a_colour = Colours::MAGENTA);
 			static Settings& GetDebuggingSettings() { return ms_instance->m_debuggingSettings; }

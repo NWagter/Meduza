@@ -28,7 +28,7 @@ namespace Me
                 public:
                     static bool LoadModel(std::string const& a_path, std::vector<MeshPrimitives>& a_meshes);
 
-                    static unsigned char * LoadImage(std::string const& a_path, int* a_width, int* a_height, int* a_channels);
+                    static unsigned char* LoadImage(std::string const& a_path, int* a_width, int* a_height, int* a_channels);
                     static void FreeImage(void* a_data);
 
                 private:

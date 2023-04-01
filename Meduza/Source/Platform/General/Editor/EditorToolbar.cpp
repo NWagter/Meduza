@@ -248,10 +248,16 @@ void Me::Editor::EditorToolbar::Draw()
             ImGui::DragFloat("TimeScale", &settings.m_timeScale, 0.1f, 0, 5.0f);
 
             ImGui::Text("Physics Debugging");
+            ImGui::Checkbox("GJK", &settings.m_gjkDebugger);
+            ImGui::Checkbox("RayIntersections", &settings.m_rayIntersections);
             ImGui::Checkbox("Collision", &settings.m_collisionDebugger);
-            ImGui::Checkbox("HitPoints", &settings.m_drawHitPoints);
+            ImGui::Separator();
             ImGui::Checkbox("Lines", &settings.m_lineDebugger);
             ImGui::DragFloat("Line Lenght", &settings.m_debugLineLenght, 0.1f, 0, 5.0f);
+            ImGui::Checkbox("HitPoints", &settings.m_drawHitPoints);
+            ImGui::Separator();
+            ImGui::Checkbox("Circles", &settings.m_debugCircle);
+            ImGui::Separator();
             ImGui::Checkbox("Show Vertices", &settings.m_showVertices);
             ImGui::DragFloat("Vertices Size", &settings.m_scaleVertices, 0.1f, 0, 5.0f);
 

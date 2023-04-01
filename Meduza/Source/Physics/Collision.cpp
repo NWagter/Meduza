@@ -12,6 +12,8 @@
 #include "Physics/Components/BoxCollider3DComponent.h"
 #include "Physics/Components/SphereColliderComponent.h"
 
+#include "Utils/MeduzaDebug.h"
+
 #define USE_GJK 1
 
 bool Me::Physics::Collision::CheckCollision(PhysicsComponent const* a_physics[2], ColliderComponent const* a_colliders[2], ComponentID const a_componentIds[2], CollisionData& a_data)
@@ -104,7 +106,11 @@ bool Me::Physics::Collision::CheckCollision(PhysicsComponent const* a_physics[2]
 
 bool Me::Physics::Collision::RayIntersection(Ray const* a_ray, PhysicsComponent const* a_physic, ColliderComponent const* a_collider, CollisionData& a_data)
 {
-
+    Math::Vector3 furthersPointA = a_collider->GetFurthestPointInDirection(a_physic->m_transform, a_ray->m_direction);
+    if (Me::Debug::MeduzaDebug::GetDebuggingSettings().m_rayIntersections)
+    {
+        Me::Debug::MeduzaDebug::RenderLine(a_ray->m_origin, a_ray->m_direction, 10.0f, Colours::RED);
+    }
     return false;
 }
 

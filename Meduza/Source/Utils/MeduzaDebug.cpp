@@ -43,7 +43,7 @@ void Me::Debug::MeduzaDebug::RenderLine(Math::Vector3 const& a_start, Math::Vect
 	ms_instance->m_renderLayer->RenderLine(line);
 }
 
-void Me::Debug::MeduzaDebug::RenderLine(Math::Vector3& a_start, Math::Vector3& a_direction, float const a_lenght, Colour const a_colour)
+void Me::Debug::MeduzaDebug::RenderLine(Math::Vector3 const& a_start, Math::Vector3 const& a_direction, float const a_lenght, Colour const a_colour)
 {
 #ifndef EDITOR
 	return;

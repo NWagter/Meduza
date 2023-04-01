@@ -37,7 +37,7 @@ namespace Me
 				m_30 = a_30; m_31 = a_31; m_32 = a_32; m_33 = a_33;
 			}
 
-			Matrix4(float a_matrix[16])
+			Matrix4(float const a_matrix[16])
 			{
 				for (int i = 0; i < 16; i++)
 				{
@@ -199,7 +199,7 @@ namespace Me
 
 				return *this;
 			}
-			inline Matrix4 operator+(const Matrix4& a_rhs)
+			inline Matrix4 operator+(const Matrix4& a_rhs) const
 			{
 				Matrix4 temp = *this;
 
@@ -210,7 +210,7 @@ namespace Me
 
 				return temp;
 			}
-			inline Matrix4 operator*(const Matrix4& a_rhs)
+			inline Matrix4 operator*(const Matrix4& a_rhs) const
 			{
 				Matrix4 result = Matrix4::Identity();
 				Matrix4 self = *this;
@@ -231,7 +231,7 @@ namespace Me
 				return result;
 			}
 
-			inline Vector4 operator*(const Vector4& a_rhs)
+			inline Vector4 operator*(const Vector4& a_rhs) const
 			{
 				Vector4 value;
 
@@ -245,7 +245,7 @@ namespace Me
 
 				return value;
 			}
-			inline Vector3 operator*(const Vector3& a_rhs)
+			inline Vector3 operator*(const Vector3& a_rhs) const
 			{
 				Vector4 result = Matrix4(m_m) * Vector4(a_rhs, 1.0f);
 				return Vector3(result.m_x / result.m_w, result.m_y / result.m_w, result.m_z / result.m_w);

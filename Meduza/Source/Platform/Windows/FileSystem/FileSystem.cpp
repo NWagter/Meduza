@@ -18,7 +18,6 @@ void Me::Files::Windows::FileSystem::OpenFolder(std::string const& a_path)
 	openCommand.append(pathToOpen);
 
 	system(openCommand.c_str());
-	
 }
 
 std::string Me::Files::Windows::FileSystem::FindFullPath()
